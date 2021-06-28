@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.abl.fragment.DashboardFragment"
+        android:label="@string/Home"
+        tools:layout="@layout/fragment_dashboard" >
+
+        <action
+            android:id="@+id/action_nav_home_to_nav_profile"
+            app:destination="@id/nav_profile" />
+
+        <action
+            android:id="@+id/action_nav_home_to_call_logs"
+            app:destination="@id/nav_call_logs" />
+
+        <action
+            android:id="@+id/action_nav_home_to_visit_logs"
+            app:destination="@id/nav_visit_logs" />
+
+        <action
+            android:id="@+id/action_nav_home_to_nav_notification"
+            app:destination="@id/nav_notification" />
+
+        <action
+            android:id="@+id/action_nav_home_to_nav_calculator"
+            app:destination="@id/nav_calculator" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.abl.fragment.PortfolioFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/portfolio_fragment">
+
+        <action
+            android:id="@+id/action_portfolioFragment_to_customerDetailsFragment"
+            app:destination="@id/customerDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/customerDetailsFragment"
+        android:name="com.example.abl.fragment.CustomerDetailsFragment"
+        android:label="Customer Details"
+        tools:layout="@layout/customer_details_fragment" />
+
+    <fragment
+        android:id="@+id/checkInFormFragment"
+        android:name="com.example.abl.fragment.CheckInFormFragment"
+        android:label="@string/check_in_cap"
+        tools:layout="@layout/check_in_form_fragment" >
+
+
+        <action
+            android:id="@+id/action_checkInFormFragment_to_nav_home"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"
+            app:destination="@id/nav_home" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_visit"
+        android:name="com.example.abl.fragment.AddLeadFragment"
+        android:label="@string/add_lead"
+        tools:layout="@layout/add_fragment" >
+
+        <action
+            android:id="@+id/action_nav_visit_to_checkInFormFragment"
+            app:launchSingleTop="true"
+            app:destination="@id/checkInFormFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/followup_fragment"
+        android:name="com.example.abl.fragment.FollowupFragment"
+        android:label="@string/followup_meeting_scheduler_fragment"
+        tools:layout="@layout/followup_fragment" >
+
+        <action
+            android:id="@+id/action_followup_to_home"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"
+            app:destination="@id/nav_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_call_logs"
+        android:name="com.example.abl.fragment.CallLogsFragment"
+        android:label="@string/call_log"
+        tools:layout="@layout/call_logs_fragment" />
+
+    <fragment
+        android:id="@+id/nav_visit_logs"
+        android:name="com.example.abl.fragment.VisitLogsFragment"
+        android:label="@string/visit_log"
+        tools:layout="@layout/visit_logs_fragment" />
+
+    <fragment
+        android:id="@+id/nav_notification"
+        android:name="com.example.abl.fragment.NotificationFragment"
+        android:label="@string/notification"
+        tools:layout="@layout/notification_fragment" />
+
+    <fragment
+        android:id="@+id/nav_calculator"
+        android:name="com.example.abl.fragment.CalculatorFragment"
+        android:label="@string/calculator"
+        tools:layout="@layout/calculator_fragment" />
+</navigation>

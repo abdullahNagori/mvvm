@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFAFA"
+    android:orientation="vertical"
+    android:scrollbars="none"
+    tools:context="fragment.DashboardFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFAFA"
+        android:orientation="vertical"
+        tools:context=".ui.fragment.dashboard.DashboardFragment">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_180sdp"
+            android:background="@drawable/group1123" />
+
+        <LinearLayout
+            android:id="@+id/user_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/text_user_db"
+                android:text="@string/dummy_name"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bdb"
+                style="@style/text_user_db"
+                android:text="@string/dummy_bdb" />
+
+            <TextView
+                android:id="@+id/shift_start"
+                style="@style/text_user_db"
+                android:text="@string/dummy_shift_started_at" />
+
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/topCards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_detail"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/ll_target_vs_achievement"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_170sdp"
+                android:layout_marginTop="@dimen/_15sdp">
+
+                <androidx.cardview.widget.CardView style="@style/dbTopCard">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/cardtxtDB"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/mtd_deposit"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/cardtxtDB"
+                            android:text="@string/target_vs_achievement" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal">
+
+                            <TextView
+                                android:id="@+id/ntb_deposit_target"
+                                style="@style/txtTargetDB"
+                                android:text="@string/_10" />
+
+                            <TextView
+                                style="@style/txtAchvDB"
+                                android:textColor="@color/colorAccent"
+                                android:text="@string/_M" />
+
+                            <TextView
+                                android:id="@+id/ntb_deposit_achieve"
+                                style="@style/txtAchvDB"
+                                android:text="@string/_slash_20M" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    style="@style/dbTopCard">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/cardtxtDB"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/mtd_accounts"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/cardtxtDB"
+                            android:text="@string/target_vs_achievement" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal">
+
+                            <TextView
+                                android:id="@+id/ntb_account_target"
+                                style="@style/txtTargetDB"
+                                android:text="@string/_10" />
+
+                            <TextView
+                                android:id="@+id/ntb_account_achieve"
+                                style="@style/txtAchvDB"
+                                android:text="@string/twnty" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView style="@style/dbTopCard">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/cardtxtDB"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/ytd"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/cardtxtDB"
+                            android:layout_marginBottom="0dp"
+                            android:text="@string/deposit"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/txtTargetDB"
+                            android:layout_width="match_parent"
+                            android:text="@string/twohundred_m"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                style="@style/txtTargetDB"
+                                android:layout_width="match_parent"
+                                android:text="20 % ↑"
+                                android:textColor="@android:color/holo_green_light"
+                                android:textSize="@dimen/_9sdp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            style="@style/cardtxtDB"
+                            android:layout_marginBottom="@dimen/_0sdp"
+                            android:text="@string/accounts"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/txtTargetDB"
+                            android:layout_width="match_parent"
+                            android:text="@string/fivehundred"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
+        <LinearLayout
+            android:id="@+id/ll_bar_chart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_below="@+id/topCards"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/bg_white">
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barchart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp" />
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/Cards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_bar_chart"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/ll_todays_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_170sdp">
+
+                <androidx.cardview.widget.CardView
+                    style="@style/dbTopCard"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_115sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/cardtxtDB"
+                            android:text="@string/todays_follow_up" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:gravity="center_horizontal">
+
+                            <TextView
+                                android:id="@+id/todays_follow_up"
+                                style="@style/txtTargetDB"
+                                android:text="@string/_10"
+                                android:textColor="@color/colorAccent" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    style="@style/dbTopCard"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_115sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/cardtxtDB"
+                            android:text="@string/todays_call" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:gravity="center_horizontal">
+
+                            <TextView
+                                android:id="@+id/target_call"
+                                style="@style/txtTargetDB"
+                                android:text="@string/_10"
+                                android:textColor="@color/colorAccent" />
+
+                            <TextView
+                                android:id="@+id/achieve_call"
+                                style="@style/txtAchvDB"
+                                android:text="@string/_slash_20"
+                                android:textColor="@color/colorAccent" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    style="@style/dbTopCard"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_115sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/cardtxtDB"
+                            android:text="@string/todays_visit" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:gravity="center_horizontal">
+
+                            <TextView
+                                android:id="@+id/target_visit"
+                                style="@style/txtTargetDB"
+                                android:text="@string/_10"
+                                android:textColor="@color/colorAccent" />
+
+                            <TextView
+                                android:id="@+id/achieve_visit"
+                                style="@style/txtAchvDB"
+                                android:text="@string/_slash_20"
+                                android:textColor="@color/colorAccent" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </RelativeLayout>
+</ScrollView>
+

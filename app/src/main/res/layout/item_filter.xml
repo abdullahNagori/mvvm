@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="@dimen/_120sdp"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/heading"
+    android:layout_alignParentEnd="true"
+    android:id="@+id/filterLayout"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_marginEnd="@dimen/_5sdp"
+    android:visibility="gone"
+    android:background="@drawable/cardview_background"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:textAlignment="center"
+        android:text="All"
+        android:id="@+id/all"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:text="10M +"
+        android:textAlignment="center"
+        android:id="@+id/tenM"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:text="5M +"
+        android:id="@+id/fiveM"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:text="3M +"
+        android:id="@+id/threeM"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:textAlignment="center"
+        android:text="1M +"
+        android:id="@+id/oneM"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:text="Largest to Smallest"
+        android:id="@+id/LtoS"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:id="@+id/StoL"
+        android:text="Smallest to Largest"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:text="Dormant Accounts"
+        android:id="@+id/dormantAccount"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:id="@+id/zeroBalance"
+        android:text="Zero Balance Accounts"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:text="Tail Accounts"
+        android:id="@+id/tailAccount"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary" />
+
+
+
+
+</LinearLayout>

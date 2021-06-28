@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/_15sdp"
+    android:background="@drawable/cardview_background"
+    android:orientation="vertical"
+    android:scrollbars="none"
+    tools:context=".fragment.CheckInFormFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/txtStyle"
+            android:text="@string/customer_name" />
+
+        <EditText
+            android:id="@+id/customer_name"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+            style="@style/customerInfoInputFields"
+            android:maxLength="25"
+            android:hint="@string/enter_customer_name"
+            android:inputType="text" />
+
+
+        <TextView
+            style="@style/txtStyle"
+            android:text="@string/account_no" />
+
+        <EditText
+            android:id="@+id/account_no"
+            style="@style/customerInfoInputFields"
+            android:maxLength="24"
+            android:hint="@string/enter_ac_name"
+            android:inputType="number" />
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/txtStyle"
+                android:text="@string/status" />
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/txtStyle"
+                android:text="@string/contact_no" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="2"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_holo_black"
+                android:layout_height="match_parent">
+
+
+                <Spinner
+                    android:id="@+id/status"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/colorAccent"
+                    android:entries="@array/select_status" />
+            </RelativeLayout>
+
+
+            <EditText
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_height="match_parent"
+                android:id="@+id/contact_no"
+                android:hint="@string/contact_number_wdout_asterik"
+                android:maxLength="11"
+                android:background="@drawable/bg_holo_black"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:textColorHint="@color/lightGray"
+                android:inputType="number" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:id="@+id/ll_date"
+                android:layout_width="0dp"
+                android:visibility="visible"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <TextView
+                    style="@style/txtStyle"
+                    android:layout_height="wrap_content"
+                    android:text="@string/follow_up_date" />
+
+
+                <TextView
+                    android:id="@+id/date"
+                    style="@style/customerInfoInputFields"
+                    android:hint="xx-xx-xxxx" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <TextView
+                    style="@style/txtStyle"
+                    android:text="@string/time" />
+
+                <TextView
+                    android:id="@+id/time"
+                    style="@style/customerInfoInputFields"
+                    android:hint="@string/dummy_time" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_date_of_conversion"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/txtStyle"
+                android:text="@string/date_of_conversion" />
+
+            <TextView
+                android:id="@+id/date_of_conversion"
+                style="@style/customerInfoInputFields"
+                android:hint="xx-xx-xxxx"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/txtStyle"
+            android:text="@string/product" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Spinner
+                android:id="@+id/s"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/colorAccent"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/product"
+                android:hint="Select Product"
+                style="@style/customerInfoInputFields"/>
+
+
+        </RelativeLayout>
+
+
+        <TextView
+            style="@style/txtStyle"
+            android:text="@string/amount" />
+
+        <EditText
+            android:id="@+id/amount"
+            style="@style/customerInfoInputFields"
+            android:hint="@string/dummy_amt"
+            android:maxLength="8"
+            android:inputType="numberDecimal" />
+
+
+        <TextView
+            style="@style/txtStyle"
+            android:text="@string/remarks" />
+
+        <EditText
+            android:id="@+id/remarks"
+            style="@style/customerInfoInputFields"
+            android:layout_height="@dimen/_60sdp"
+            android:gravity="top"
+            android:maxLength="100"
+            android:hint="@string/remarks"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/submit"
+            style="@style/btnStyle"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:text="@string/submit" />
+
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,700 @@
+<resources>
+    <string name="app_name">ABL</string>
+    <string name="nav_header_desc">TODO</string>
+    <string name="nav_header_title">Abdullah</string>
+    <string name="Home">Dashboard</string>
+    <string name="customer_name">Customer Name *</string>
+    <string name="customer_name_wdout_asterik">Customer Name </string>
+    <string name="enter_customer_name">Enter Customer Name</string>
+    <string name="please_select_date">Please Select Date</string>
+    <string name="enter_ac_name">Enter Account No</string>
+    <string name="contact_number">Contact Number *</string>
+    <string name="contact_number_wdout_asterik">Contact Number </string>
+    <string name="enter_contact_number">Enter Contact Number</string>
+    <string name="company_name">Company Name *</string>
+    <string name="company_name_wdout_asterik">Company Name </string>
+    <string name="enter_company_name">Enter Company Name</string>
+    <string name="address">Address *</string>
+    <string name="addresswdout_asterik">Address </string>
+    <string name="user_name">"PLease Enter Username" </string>
+    <string name="enter_address">Enter Address</string>
+    <string name="additional_information">Additional Information</string>
+    <string name="cnic">CNIC</string>
+    <string name="enter_cnic">Enter CNIC</string>
+    <string name="martial_status">Martial Status</string>
+    <string name="source_of_income">Source of Income</string>
+    <string name="estimated_income">Estimated Income</string>
+    <string name="enter_income">Enter Income</string>
+    <string name="plus">+</string>
+    <string name="minus">−</string>
+    <string name="age">Age</string>
+    <string name="enter_age">Enter Age</string>
+    <string name="gender">GENDER</string>
+    <string name="update">update</string>
+    <string name="error_permission">Kindly grant permission</string>
+    <string name="are_u_existing_bank_customer">Are You Existing Bank Customer?</string>
+    <string name="car_make">Car Make</string>
+    <string name="car_model">Car Model</string>
+    <string name="vehicle_type">Vehicle Type</string>
+    <string name="vehicle_price">Vehicle Price</string>
+    <string name="down_payment_percent">Down Payment (%)</string>
+    <string name="enter_tenure">Enter Tenure</string>
+    <string name="tenure_in__years">Tenure in Years</string>
+    <string name="insurance_option">Insurance Option</string>
+    <string name="insurance">Insurance</string>
+    <string name="insuranceline">Insurance\n</string>
+    <string name="mark_up_rate_percent">Mark up Rate (%)</string>
+    <string name="mark_up_rate">Mark up Rate</string>
+    <string name="calculate">Calculate</string>
+    <string name="reset">Reset</string>
+    <string name="apni_car"><u>APNI CAR</u></string>
+    <string name="add_lead"><u>Add Lead</u></string>
+    <string name="dummy_name">Shakoor Ali</string>
+    <string name="dummy_number">0345*******</string>
+    <string name="dummy_company_name">Hoobnob</string>
+    <string name="dummy_address">P.E.C.H.S Housing Society</string>
+    <string name="dummy_cnic">42***********</string>
+    <string name="dummy_source_of_income">Salaried</string>
+    <string name="dummy_martial_status">Married</string>
+    <string name="dummy_estimated_income">50000</string>
+    <string name="dummy_age">50</string>
+    <string name="dummy_gender">Female</string>
+    <string name="sync">SYNC</string>
+    <string name="upload">UPLOAD</string>
+    <string name="call_lead">CALL LEAD</string>
+    <string name="visit_lead">VISIT LEAD</string>
+    <string name="visit">Visit Lead</string>
+    <string name="daily_ncomments">DAILY \n COMMITMENTS</string>
+    <string name="monthly_ncomments">MONTHLY \n COMMITMENTS</string>
+    <string name="dummy_account_no">12345-12345678</string>
+    <string name="dummy_date">16-10-2020</string>
+    <string name="dummy_time">12:10 PM</string>
+    <string name="dummy_amt">2,000,00</string>
+    <string name="add_event_title">Add Event Title</string>
+    <string name="add_event_description">Add Event Description</string>
+    <string name="select_color">Select Color</string>
+    <string name="dummy_remarks">Customer willing to deposit amount soon.</string>
+    <string name="submit">Submit</string>
+    <string name="account_no">Account Number</string>
+    <string name="event_title">Event Title</string>
+    <string name="status">Status * </string>
+    <string name="contact_no">Contact No *</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="date_of_conversion">Date of Conversion</string>
+    <string name="product">Product *</string>
+    <string name="amount">Amount</string>
+    <string name="remarks">Remarks</string>
+    <string name="r_u_sure_want_to_logout">Are You Sure ? \n You want to logout ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="please_enter_valid_cnic_number">Please enter valid cnic number</string>
+    <string name="please_enter_valid_email_address">Please enter valid email address</string>
+    <string name="please_enter_valid_year">Please enter valid year</string>
+    <string name="please_enter_valid_account_number">Please enter valid account number</string>
+    <string name="please_enter_valid_phone_number">Please enter valid phone number</string>
+    <string name="something_went_wrong">Something went wrong</string>
+
+    <string name="this_field_is_required">This field is required.</string>
+    <string name="housing_finance">Housing Finance</string>
+    <string name="apni_car_lower">Apni Car</string>
+    <string name="cash_finance">Cash Finance</string>
+    <string name="low_cost_housingfacility">Low Cost HousingFacility</string>
+    <string name="two">2</string>
+    <string name="four">4</string>
+    <string name="six">6</string>
+    <string name="eight">8</string>
+    <string name="branch_name">Branch Name :   </string>
+    <string name="branch_code">Branch Code :   </string>
+    <string name="branch_address">Branch Address :   </string>
+    <string name="area">Area :   </string>
+    <string name="zone">Zone :   </string>
+    <string name="dummy_branch_name">Shahrah-e-Faisal Branch</string>
+    <string name="dummy_branch_name_code">1003 - Shahrah-e-Faisal Branch</string>
+    <string name="account_type">Account Type</string>
+
+    <string name="dummy_branch_code">0025</string>
+    <string name="dummy_branch_address">Plot No. C-1 Main Shahrah-e-Faisal, Karachi </string>
+    <string name="dummy_area"> Shahrah-e-Faisal </string>
+    <string name="dummy_zone">Downtown </string>
+    <string name="sector">Sector </string>
+    <string name="get_direction">Get Direction </string>
+    <string name="bdo_s">BDO\'s</string>
+    <string name="account_title">Account Title</string>
+    <string name="account_number">Account Number</string>
+    <string name="branch_code_name">Branch Code / Name</string>
+    <string name="visit_date">Visit Date</string>
+    <string name="visit_time">Visit Time</string>
+    <string name="follow_up_date">Follow up Date</string>
+    <string name="follow_up_time">Follow up Time</string>
+    <string name="product_s">Product(s)</string>
+    <string name="dummy_product">Deposit</string>
+    <string name="call_log_details">Call Log Details</string>
+    <string name="visit_log_details">Visit Log Details</string>
+    <string name="previous_visits">Previous Visits</string>
+    <string name="dummy_bdb">BDB - 123456</string>
+    <string name="dummy_shift_started_at">Shift Started At 10:47 AM 21-10-2020</string>
+    <string name="ntb_deposit">NTB DEPOSIT</string>
+    <string name="mtd_deposit">MTD DEPOSIT</string>
+    <string name="mtd_accounts">MTD ACCOUNTS</string>
+    <string name="mtd_ntb_accounts">MTD NTB ACCOUNTS</string>
+    <string name="ytd_ntb_accounts">YTD NTB ACCOUNTS</string>
+    <string name="ntb_account">NTB ACCOUNTS</string>
+    <string name="target_vs_achievement">TARGET \n VS \n ACHIEVEMENT</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login">LOGIN</string>
+    <string name="forgot_pass">Forgot Password</string>
+    <string name="login_id">Please enter your Login ID</string>
+    <string name="error_empty_email">PLease Provide Login ID</string>
+    <string name="error_empty_customer">PLease Provide Customer Name</string>
+    <string name="error_empty_contact">PLease Provide Contact No</string>
+    <string name="error_status">PLease Select Status</string>
+    <string name="error_product">PLease Select Product</string>
+    <string name="error_empty_company">PLease Provide Company Name</string>
+    <string name="error_empty_address">PLease Provide Address</string>
+    <string name="error_empty_pass">PLease Provide Password</string>
+    <string name="enter_otp">PLease Enter OTP</string>
+    <string name="error_invalid_id">Invalid Email</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="error_password_length">Password Must be 8 Character</string>
+    <string name="request_otp">Request OTP</string>
+    <string name="verify">Verify</string>
+    <string name="generate_otp">Generate OTP</string>
+    <string name="re_enter_password">Re-enter Password</string>
+    <string name="new_password">New Password</string>
+    <string name="create_password">Create Password</string>
+    <string name="error_empty_field">Empty field not allowed</string>
+    <string name="password_hint">Make sure to chose minimum 8 characters password,\nhint: John@123</string>
+    <string name="error_wrong_password_pattern">Password with minimum 8 characters having:\n\u2022 Small letter(s)\n\u2022 Capital letter(s)\n\u2022 Number(s)\n\u2022 Special character(s)</string>
+    <string name="error_different_fields">Password didn\'t match</string>
+    <string name="todays_follow_up">TODAY\'S FOLLOW UP</string>
+    <string name="todays_call">TODAY\'S CALL</string>
+    <string name="todays_visit">TODAY\'S VISIT</string>
+    <string name="sales_target">Sales Target</string>
+    <string name="achievement">Achievements</string>
+    <string name="enter_old_password">Enter Old Password *</string>
+    <string name="enter_new_password">Enter New Password *</string>
+    <string name="confirm_new_password">Confirm New Password *</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ltd">LTD</string>
+    <string name="ntb">NTB</string>
+    <string name="ytd">YTD</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="X">X</string>
+    <string name="_10">10</string>
+    <string name="_M">M</string>
+    <string name="_slash_20M">/20M</string>
+    <string name="_slash_20">/20</string>
+    <string name="todo">TODO</string>
+    <string name="logout">Logout</string>
+    <string name="calculator">Calculators</string>
+    <string name="branch_directory">Branch Directory</string>
+    <string name="total_leads">Total Leads</string>
+    <string name="_4">(0)</string>
+    <string name="msg_shift_recorded">Shift recorded!</string>
+
+    <string name="name">Abdullah Nagori</string>
+    <string name="current_account">Current Account</string>
+    <string name="currency">Currency</string>
+    <string name="account_number_dummy">Account Number : XXXXXXXXX7980</string>
+    <string name="phone_number_dummy">Phone Number : 0320 - XXXXXXX</string>
+    <string name="branch_dummy">Branch : Sharah-e-Faisal, Karachi</string>
+    <string name="select_mode">Select Mode</string>
+    <string name="a_c">A/C</string>
+    <string name="dummy_account_X">xxxxxxxxxx</string>
+    <string name="add">Add</string>
+    <string name="view_monthly_commitment">View Monthly Commitments</string>
+
+    <string name="txt_login_id">Login ID</string>
+    <string name="password">Password</string>
+    <string name="pkr">PKR</string>
+    <string name="account_openning_date">Account Opening Date</string>
+    <string name="dummy_account_openning_date">01-08-2019</string>
+    <string name="account_category">Account Category</string>
+    <string name="account_balance">Account Balance</string>
+    <string name="dummy_account_balance">10,000,000</string>
+    <string name="last_day_balance">Last Day Balance</string>
+    <string name="highest_average_balance">Highest Average Balance</string>
+    <string name="variance">Variance</string>
+    <string name="business">Business</string>
+    <string name="welcome">Welcome</string>
+    <string name="uzair">Uzair</string>
+    <string name="powered_by">POWERED BY</string>
+    <string name="deposit">Deposit</string>
+    <string name="twohundred_m">200 M</string>
+    <string name="accounts">Accounts</string>
+    <string name="fivehundred">500</string>
+    <string name="twnty">/20</string>
+    <string name="asterik">*</string>
+    <string name="occupation">Occupation</string>
+    <string name="total_customers">Total Customers</string>
+    <string name="crm">CRM</string>
+    <string name="select_month">Select Month</string>
+    <string name="call_log">Call log</string>
+    <string name="visit_log">Visit Log</string>
+    <string name="select_date">Select Date</string>
+    <string name="daily_commitment">Daily Commitment</string>
+    <string name="monthly_commitment">Monthly Commitment</string>
+    <string name="review_session">Review Session</string>
+    <string name="deepening">Deepening</string>
+    <string name="report">Report</string>
+    <string name="marketing_collateral">Marketing Collateral</string>
+    <string name="hall_of_fame">Hall of Fame</string>
+    <string name="rate_sheet">Rate Sheet</string>
+    <string name="faq">FAQ</string>
+    <string name="notification">Notification</string>
+    <string name="btl">BTL</string>
+    <string name="own_lead_fragment">Own Leads</string>
+    <string name="followup_meeting_scheduler_fragment">Follow Up</string>
+    <string name="repeated_leads">Repeated Leads</string>
+    <string name="car_calculator">Car  Calculator</string>
+    <string name="branch_dir">Branch Directory</string>
+    <string name="Name">NAME</string>
+    <string name="email_address">EMAIL ADDRESS</string>
+    <string name="dummy_email">test123@gmail.com</string>
+    <string name="my_profile">My Profile</string>
+    <string name="personal_details">Personal Details</string>
+    <string name="phone_number">PHONE NUMBER</string>
+    <string name="dob">DOB</string>
+    <string name="br_code">BRANCH CODE</string>
+    <string name="br_name">BRANCH NAME</string>
+    <string name="profile">Profile</string>
+    <string name="notifications">Notifications</string>
+    <string name="close_bracket">" )"</string>
+    <string name="new_lead">New Lead</string>
+    <string name="u_ve_new_lead">You have a New Lead</string>
+    <string name="dummy_notif_date">9th November</string>
+    <string name="rate_sheet_updated">Rate Sheet Updated</string>
+    <string name="new_rate_sheet_has_been_uploaded">New Rate sheet has been uploaded ...</string>
+    <string name="morning_commitment">Morning Commitment</string>
+    <string name="evening_commitment">Evening Commitment</string>
+    <string name="type">TYPE</string>
+    <string name="search">Search</string>
+    <string name="total_follow_up">Total Follow Up</string>
+    <string name="qualified">Qualified</string>
+    <string name="not_interested">Not Interested</string>
+    <string name="open">Open</string>
+    <string name="inprocess">Inprocess</string>
+    <string name="_12_30">12:30</string>
+    <string name="pm">PM</string>
+    <string name="dot">.</string>
+    <string name="customer_type_etb">Customer Type : ETB</string>
+    <string name="_032xxxxxxxx">032XXXIX</string>
+    <string name="aftab_qureshi">Aftab Qureshi</string>
+    <string name="status_follow_up">Status : Follow up</string>
+    <string name="total_calls">Total Calls</string>
+    <string name="total_visit">Total Visits</string>
+    <string name="profit_rates_for_month_of_april_2020">Profit Rates for Month of April 2020</string>
+    <string name="pdf_format">PDF Format</string>
+    <string name="total_branches">Total Branches</string>
+    <string name="what_is_gateway_to_equity_market_gem">What is Gateway to Equity Market(GEM)</string>
+    <string name="lipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="text_heading_2">Who can open GEM Account?</string>
+    <string name="change_password">Change Password</string>
+    <string name="branch_detail">Branch Detail</string>
+    <string name="check_in">Check in</string>
+    <string name="log_details">Log Details</string>
+    <string name="data_not_found">Data Not Found</string>
+    <string name="search_here">Search Here</string>
+    <string name="search_by">Search By</string>
+    <string name="first_name">Uzair</string>
+    <string name="rs">Rs.</string>
+    <string name="all">All</string>
+    <string name="down_payment">Down Payment</string>
+    <string name="finance_amount">Finance Amount</string>
+    <string name="result">Result</string>
+    <string name="financing_details"><u>Financing Details</u></string>
+    <string name="upfront_payment"><u>Upfront Payment</u></string>
+    <string name="first_year_insurance">1st year insurance</string>
+    <string name="processing_fee">Processing Fee</string>
+    <string name="first_year">1st Year</string>
+    <string name="number_of_installments">Number of installments</string>
+    <string name="_12">12</string>
+    <string name="emi">EMI\n</string>
+    <string name="total_monthly_payment">Total Monthly Payment</string>
+    <string name="total_upfront">Total Upfront</string>
+    <string name="start_your_shift">Start your shift</string>
+    <string name="end_your_shift">End your shift</string>
+    <string name="check_in_cap">Check In</string>
+    <string name="branch_city">Branch City</string>
+    <string name="close">Close</string>
+    <string name="customer_info_fragment">Customer Info</string>
+    <string name="bdb__bdo__planner_fragment">BDB BDO Planner</string>
+
+
+    <string name="fcm_message">test</string>
+    <string name="default_notification_channel_id">com.app.bahl</string>
+
+    <!--New Service-->
+    <string name="preference_file_key">com.app.bank_al_habib.PREFERENCE_FILE_KEY</string>
+    <string name="launch_activity">Launch activity</string>
+    <string name="location_unknown">Location Unknown</string>
+    <string name="location_updates_label">Location Updates</string>
+    <string name="permission_rationale">Location permission needed for core functionality</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
+    <string name="settings">Settings</string>
+    <string name="ok">OK</string>
+    <string name="start_location_updates_button_text">Start receiving location updates</string>
+    <string name="stop_location_updates_button_text">Stop receiving location updates</string>
+    <string name="location_updated">Location Updated: %1$s</string>
+    <string name="no_location_text">No current location</string>
+    <string name="ytd_deposit">YTD DEPOSIT</string>
+    <string name="ytd_accounts">YTD ACCOUNTS</string>
+    <string name="region">Region :</string>
+    <string name="to_do_list">To-Do List</string>
+    <string name="regular_event">Regular event</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
+    <!--New Service-->
+
+    <array name="branch_code_name">
+        <item>1003 - Shahrah-e-Faisal</item>
+        <item>1004 - abc</item>
+        <item>10053 - xyz</item>
+    </array>
+
+    <array name="call_log_search">
+        <item>YTD</item>
+        <item>LTD</item>
+        <item>NTB</item>
+        <item>Lead</item>
+    </array>
+
+    <array name="select_mode_morning">
+        <item>Transfer</item>
+        <item>Withdrawal</item>
+        <item>Cash</item>
+        <item>Clearing</item>
+    </array>
+
+    <array name="select_mode_monthly_comitment">
+        <item>NTB</item>
+        <item>Deposit</item>
+        <item>CMU</item>
+        <item>Apni Car</item>
+        <item>Interviews</item>
+        <item>Senior Citizen</item>
+        <item>CA</item>
+    </array>
+
+    <array name="select_mode_monthly">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
+
+    <array name="select_mode_evening">
+        <item>Expected Day Change</item>
+    </array>
+
+    <array name="select_search">
+        <item>Name</item>
+        <item>Contact Number</item>
+        <item>Address</item>
+        <item>Company Name</item>
+    </array>
+
+
+    <array name="occupation">
+        <item>Select Occupation</item>
+        <item>a</item>
+        <item>b</item>
+        <item>c</item>
+    </array>
+
+    <array name="source_of_income">
+        <item>Enter Income</item>
+        <item>a</item>
+        <item>b</item>
+        <item>c</item>
+    </array>
+
+    <array name="gender">
+        <item>Enter Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+    </array>
+
+    <array name="select_customer">
+        <item>Select Customer Type</item>
+        <item>Non existing or less than 6 months</item>
+        <item>Existing Customer more than 6 months</item>
+        <item>Existing with registered company</item>
+    </array>
+
+    <array name="select_car_make">
+        <item>Select Car Make</item>
+        <item>Honda</item>
+    </array>
+
+    <array name="select_car_model">
+        <item>Select Car Model</item>
+        <item>BRV 1.5 Manual</item>
+    </array>
+
+    <array name="vehicle_type">
+        <item>Imported/Used</item>
+        <item>New</item>
+    </array>
+
+    <array name="select_down_payment">
+        <item>20 percent</item>
+        <item>25 percent</item>
+        <item>30 percent</item>
+        <item>35 percent</item>
+        <item>40 percent</item>
+        <item>45 percent</item>
+        <item>50 percent</item>
+        <item>55 percent</item>
+        <item>60 percent</item>
+    </array>
+
+    <array name="select_tenure">
+        <item>Select Tenure</item>
+        <item>1 Year</item>
+        <item>2 Year</item>
+        <item>3 Year</item>
+        <item>4 Year</item>
+        <item>5 Year</item>
+    </array>
+
+    <array name="select_insurance">
+        <item>Jubilee</item>
+    </array>
+
+    <array name="select_insurance_option">
+        <item>Select Insurance Option</item>
+        <item>2.5 percent</item>
+    </array>
+
+    <array name="select_mark_up_rate">
+        <item>Variable</item>
+        <item>Fixed</item>
+    </array>
+
+    <array name="select_status">
+        <item>Follow up</item>
+        <item>a</item>
+        <item>b</item>
+        <item>c</item>
+    </array>
+
+    <array name="select_product">
+        <item>Deposit</item>
+        <item>a</item>
+        <item>b</item>
+        <item>c</item>
+    </array>
+
+    <!-- todolist calendar-->
+    <string name="all_day">All-day</string>
+    <string name="reminder">Reminder</string>
+    <string name="selection_contains_repetition">The selection contains repeating events</string>
+    <string name="weeks_raw">weeks</string>
+    <string name="months_raw">months</string>
+    <string name="years_raw">years</string>
+    <string name="event_is_repeatable">The event is repeatable</string>
+    <string name="delete_one_only">Delete the selected occurrence only</string>
+    <string name="delete_future_occurrences">Delete this and all future occurrences</string>
+    <string name="delete_all_occurrences">Delete  all  occurrences</string>
+    <string name="no_repetition">No repetition</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+    <string name="public_event_notification_text">An event is upcoming</string>
+    <string name="duplicate_event">Duplicate event</string>
+    <string name="edit_event">Edit event</string>
+    <string name="new_event">New event</string>
+    <string name="repeat">Repeat</string>
+    <string name="forever">Forever</string>
+    <string name="repeat_till">Repeat Till</string>
+    <string name="times">times</string>
+    <string name="repeat_on_the_same_day_monthly">Repeat on the same day each month</string>
+    <string name="repeat_on_the_last_day_monthly">Repeat on the last day of the month</string>
+    <string name="repeat_on_the_same_day_yearly">Repeat on the same day every year</string>
+    <string name="repeat_every_m">Repeat every</string>
+    <string name="every_m">Every</string>
+    <string name="first_m">first</string>
+    <string name="second_m">second</string>
+    <string name="third_m">third</string>
+    <string name="fourth_m">fourth</string>
+    <string name="fifth_m">fifth</string>
+    <string name="last_m">last</string>
+    <string name="repeat_every_f">Repeat every</string>
+    <string name="every_f">Every</string>
+    <string name="first_f">first</string>
+    <string name="second_f">second</string>
+    <string name="third_f">third</string>
+    <string name="fourth_f">fourth</string>
+    <string name="fifth_f">fifth</string>
+    <string name="last_f">last</string>
+    <string name="monday_alt">Monday</string>
+    <string name="tuesday_alt">Tuesday</string>
+    <string name="wednesday_alt">Wednesday</string>
+    <string name="thursday_alt">Thursday</string>
+    <string name="friday_alt">Friday</string>
+    <string name="saturday_alt">Saturday</string>
+    <string name="sunday_alt">Sunday</string>
+    <string name="repeat_on">Repeat on</string>
+    <string name="every_day">Every day</string>
+    <string name="selected_days">On selected days</string>
+    <string name="the_same_day">The same day</string>
+    <string name="the_last_day">The last day</string>
+    <string name="last_used_one">Last used one</string>
+    <string name="other_time">Other time</string>
+    <string name="highlight_weekends">Highlight weekends on some views</string>
+    <string name="allow_changing_time_zones">Allow changing event time zones</string>
+    <string name="event_types">Event types</string>
+    <string name="add_new_type">Add a new type</string>
+    <string name="edit_type">Edit type</string>
+    <string name="title_empty">Title Empty</string>
+    <string name="type_already_exists">Type Already Exists</string>
+    <string name="editing_calendar_failed">Editing Calendar Failed</string>
+    <string name="add_another_reminder">Add another Reminder</string>
+    <string name="store_locally_only">Store locally only</string>
+    <string name="end_before_start">End before Start</string>
+    <string name="insufficient_permissions">Insufficient permissions</string>
+    <string name="enter_a_country">Enter a country</string>
+    <string name="add_another_attendee">Add another attendee</string>
+    <string name="my_status">My status:</string>
+    <string name="going">Going</string>
+    <string name="not_going">Not going</string>
+    <string name="maybe_going">Maybe going</string>
+    <string name="invited">Invited</string>
+    <string name="please_fill_location">Please fill location</string>
+    <string name="location">Location</string>
+    <string name="description">Description</string>
+    <string name="update_one_only">Update the selected occurrence only</string>
+    <string name="update_this_and_future_occurrences">Update this and all future occurrences</string>
+    <string name="update_all_occurrences">Update all occurrences</string>
+    <string name="color">Color</string>
+    <string name="repeat_till_date">Repeat till a date</string>
+    <string name="stop_repeating_after_x">Stop repeating after x occurrences</string>
+    <string name="repeat_forever">Repeat forever</string>
+    <string name="select_a_different_caldav_color">Select a different color (might be applied locally only)</string>
+    <string name="no_upcoming_events">no upcoming events</string>
+    <string name="upgraded_from_free">Hey,\n\nseems like you upgraded from the old free app. You have to migrate locally stored events manually via exporting in an .ics file, then importing. You can find both export/import buttons at the main screen menu.\n\nYou can then uninstall the old version, which has an \'Upgrade to Pro\' button at the top of the app settings. You will then only have to reset your app settings.\n\nThanks!</string>
+    <string name="week">week</string>
+    <string name="caldav_event_not_found">Event not found. Please enable CalDAV sync for the appropriate calendar in the app settings.</string>
+    <string name="no_synchronized_calendars">No synchronizable calendars have been found</string>
+    <string name="daily_view">Daily view</string>
+    <string name="weekly_view">Weekly view</string>
+    <string name="monthly_view">Monthly view</string>
+    <string name="monthly_daily_view">Monthly + daily view</string>
+    <string name="yearly_view">Yearly view</string>
+    <string name="simple_event_list">Simple event list</string>
+    <string name="refreshing">Refreshing</string>
+    <string name="refreshing_complete">Refreshing complete</string>
+    <string name="holidays">Holidays</string>
+    <string name="birthdays">Birthdays</string>
+    <string name="add_birthdays">Add contact birthdays</string>
+    <string name="no_birthdays">No birthdays have been found</string>
+    <string name="no_new_birthdays">No new birthdays have been found</string>
+    <string name="birthdays_added">Birthdays added successfully</string>
+    <string name="event_reminders">Event reminders</string>
+    <string name="anniversaries">Anniversaries</string>
+    <string name="add_anniversaries">Add contact anniversaries</string>
+    <string name="no_anniversaries">No anniversaries have been found</string>
+    <string name="no_new_anniversaries">No new anniversaries have been found</string>
+    <string name="anniversaries_added">Anniversaries added successfully</string>
+    <string name="holidays_imported_successfully">Holidays have been successfully imported into the \"Holidays\" event type</string>
+    <string name="importing_some_holidays_failed">Importing some events failed</string>
+    <string name="importing_holidays_failed">Importing holidays failed</string>
+    <string name="import_events">Import events</string>
+    <string name="events">Events</string>
+    <string name="export_events">Export Events</string>
+    <string name="move_events_into_default">Move affected events into the default event type</string>
+    <string name="remove_affected_events">Permanently remove affected events</string>
+    <string name="unsync_caldav_calendar">To remove a CalDAV calendar you have to unsynchronize it</string>
+    <string name="cannot_delete_default_type">Default event type cannot be deleted</string>
+    <string name="select_caldav_calendars">Select calendars to sync</string>
+    <string name="manage_synced_calendars">Manage synced calendars</string>
+    <string name="syncing">Syncing</string>
+    <string name="synchronization_completed">Sync completed</string>
+    <string name="delete_all_events_confirmation">Are you sure you want to delete all events? This will leave your event types and other settings intact.</string>
+    <string name="reminder_stream">Audio stream used by reminders</string>
+    <string name="system_stream">System</string>
+    <string name="alarm_stream">Alarm</string>
+    <string name="notification_stream">Notification</string>
+    <string name="ring_stream">Ring</string>
+    <string name="use_last_event_reminders">Use the last events\' reminders as the default for new events</string>
+    <string name="default_reminder_1">Default reminder 1</string>
+    <string name="default_reminder_2">Default reminder 2</string>
+    <string name="default_reminder_3">Default reminder 3</string>
+    <string name="sample_title_1">Workout</string>
+    <string name="sample_description_1">Leg day</string>
+    <string name="sample_title_2">Meeting with John</string>
+    <string name="sample_description_2">In Rockstone garden</string>
+    <string name="sample_title_3">Library</string>
+    <string name="sample_title_4">Lunch with Mary</string>
+    <string name="sample_description_4">In the Plaza</string>
+    <string name="sample_title_5">Coffee time</string>
+    <string name="last_view">Last view</string>
+    <string name="next_full_hour">Next full hour</string>
+    <string name="current_time">Current time</string>
+    <string name="faq_1_title">How can I remove the holidays imported via the \"Add holidays\" button?</string>
+    <string name="faq_1_text">Holidays created that way are inserted in a new event type called \"Holidays\". You can go in Settings -> Manage Event Types,
+        long press the given event type and delete it by selecting the trashbin.</string>
+    <string name="faq_2_title">Can I sync my events via Google Calendar, or other service supporting CalDAV?</string>
+    <string name="faq_2_text">Yes, just toggle \"CalDAV sync\" in the app settings and select the calendars you want to sync. However, you will need some third party app handling the synchronization between the device and servers.
+        In case you want to synchronize a Google calendar, their official Calendar app will do the job. For other calendars you will need a third party sync adapter, for example DAVx5.</string>
+    <string name="faq_3_title">I see the visual reminders, but hear no audio. What can I do?</string>
+    <string name="faq_3_text">Not just displaying the actual reminder, but playing the audio is hugely affected by the system too. If you can\'t hear any sound, try going in the app settings,
+        pressing the \"Audio stream used by reminders\" option and changing it to a different value. If it still won\'t work, check your sound settings, if the particular stream isn\'t muted.</string>
+    <string name="faq_4_title">Does the app support time zones?</string>
+    <string name="faq_4_text">Yes, it does. By default all events are created in your current time zone. If you want to change an events\' time zone,
+        you will first have to enable the time zone picker at the app settings, then change it at the Event Details screen. It is disabled by default as most people won\'t need it.</string>
+
+    <string name="manage_event_types">Manage event types</string>
+    <string name="start_day_at">Start day at</string>
+    <string name="end_day_at">End day at</string>
+    <string name="midnight_spanning">Show events spanning across midnight at the top bar</string>
+    <string name="allow_customizing_day_count">Allow customizing day count</string>
+    <string name="week_numbers">Show week numbers</string>
+    <string name="vibrate">Vibrate on reminder notification</string>
+    <string name="reminder_sound">Reminder sound</string>
+    <string name="no_ringtone_picker">No app capable of setting ringtone found</string>
+    <string name="no_ringtone_selected">None</string>
+    <string name="day_end_before_start">The day cannot end earlier than it starts</string>
+    <string name="caldav_sync">CalDAV sync</string>
+    <string name="event_lists">Event lists</string>
+    <string name="display_past_events">Display events from the past</string>
+    <string name="replace_description_with_location">Replace event description with location</string>
+    <string name="delete_all_events">Delete all events</string>
+    <string name="show_a_grid">Show a grid</string>
+    <string name="loop_reminders">Loop reminders until dismissed</string>
+    <string name="dim_past_events">Dim past events</string>
+    <string name="view_to_open_from_widget">View to open from the event list widget</string>
+    <string name="new_events">New events</string>
+    <string name="default_start_time">Default start time</string>
+    <string name="default_duration">Default duration</string>
+    <string name="filename_without_ics">Filename (without .ics)</string>
+    <string name="go_to_today">Go to today</string>
+    <string name="go_to_date">Go to date</string>
+    <string name="import_events_from_ics">Import events from an .ics file</string>
+    <string name="export_events_to_ics">Export events to an .ics file</string>
+    <string name="add_holidays">Add Holidays</string>
+    <string name="refresh_caldav_calendars">Refresh CalDAV calendars</string>
+    <string name="filter_events_by_type">Filter events by type</string>
+    <string name="change_view">Change view</string>
+    <string name="caldav">CalDAV</string>
+    <string name="default_event_type">Default event type</string>
+    <string name="export_past_events_too">Export past events too</string>
+    <string name="include_event_types">Include event types</string>
+    <string name="override_event_types">Override event types</string>
+    <string name="create_new_event">create new event</string>
+    <string name="event_desc">Event Description</string>
+    <string name="add_event">Add Event</string>
+
+</resources>

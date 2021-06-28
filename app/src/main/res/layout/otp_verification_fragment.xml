@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="fragment.OTPVerificationFragment">
+
+    <LinearLayout
+        android:id="@+id/llOTP"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_18sdp"
+        android:layout_marginEnd="@dimen/_18sdp"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtNoteOTP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:gravity="center"
+            android:text="Verify OTP"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_20sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:text="OTP has been sent to you on Phone No.\nPlease enter it below"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:scrollbars="horizontal">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edOTP1"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginVertical="7dp"
+                    android:background="@drawable/otp_bg"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_16sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/edOTP2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edOTP2"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/otp_bg"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_16sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/edOTP1"
+                    app:layout_constraintEnd_toStartOf="@+id/edOTP3"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/edOTP1"
+                    app:layout_constraintTop_toTopOf="@+id/edOTP1" />
+
+                <EditText
+                    android:id="@+id/edOTP3"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/otp_bg"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_16sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/edOTP2"
+                    app:layout_constraintEnd_toStartOf="@+id/edOTP4"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/edOTP2"
+                    app:layout_constraintTop_toTopOf="@+id/edOTP2" />
+
+                <EditText
+                    android:id="@+id/edOTP4"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/otp_bg"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_16sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/edOTP3"
+                    app:layout_constraintEnd_toStartOf="@+id/edOTP5"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/edOTP3"
+                    app:layout_constraintTop_toTopOf="@+id/edOTP3" />
+
+                <EditText
+                    android:id="@+id/edOTP5"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/otp_bg"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_16sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/edOTP4"
+                    app:layout_constraintEnd_toStartOf="@+id/edOTP6"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/edOTP4"
+                    app:layout_constraintTop_toTopOf="@+id/edOTP4" />
+
+                <EditText
+                    android:id="@+id/edOTP6"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/otp_bg"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_16sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/edOTP5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/edOTP5"
+                    app:layout_constraintTop_toTopOf="@+id/edOTP5" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/txtTimer"
+            android:layout_marginBottom="@dimen/_7sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="timer"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnVerify"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:background="@drawable/btn_background"
+        android:text="@string/verify"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/llOTP"
+        app:layout_constraintStart_toStartOf="@+id/llOTP"
+        app:layout_constraintTop_toBottomOf="@+id/llOTP"
+        app:layout_constraintVertical_bias="0.251" />
+
+    <ProgressBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/frProgressBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/llOTP"
+        app:layout_constraintStart_toStartOf="@+id/llOTP"
+        app:layout_constraintTop_toBottomOf="@+id/llOTP"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/requestAgain"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:background="@drawable/btn_background"
+        android:text="@string/generate_otp"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/llOTP"
+        app:layout_constraintStart_toStartOf="@+id/llOTP"
+        app:layout_constraintTop_toBottomOf="@+id/llOTP" />
+</androidx.constraintlayout.widget.ConstraintLayout>
