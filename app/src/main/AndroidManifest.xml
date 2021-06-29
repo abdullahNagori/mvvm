@@ -3,9 +3,12 @@
     package="com.example.abl">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name="com.example.abl.App"
         android:allowBackup="true"
+        android:networkSecurityConfig="@xml/network_config"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"

@@ -47,21 +47,6 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
         return myDockActivity
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onAttach(activity: Activity) {
-        super.onAttach(activity)
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
     protected fun loadingStarted() {
         if (parentFragment != null) (parentFragment as LoadingListener?)?.onLoadingStarted() else getDockActivity()!!.onLoadingStarted()
@@ -73,10 +58,10 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
         isLoading = false
     }
 
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        myDockActivity = context as DockActivity
-//    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        myDockActivity = context as DockActivity
+    }
 
     override fun onStarted() {
         myDockActivity?.onLoadingStarted()
