@@ -2,6 +2,7 @@ package com.example.abl
 
 import android.app.Application
 import com.example.abl.components.AppComponent
+import com.example.abl.components.DaggerAppComponent
 import com.example.abl.modules.AppInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -15,11 +16,11 @@ class App: Application(), HasAndroidInjector {
 
     override fun onCreate() {
         super.onCreate()
-//        appComponent = DaggerAppComponent.builder()
-//            .application(this)
-//            .build()
-//        appComponent.inject(this)
-//        AppInjector.init(this)
+        appComponent = DaggerAppComponent.builder()
+            .application(this)
+            .build()
+        appComponent.inject(this)
+        AppInjector.init(this)
     }
 
     override fun androidInjector(): AndroidInjector<Any> {

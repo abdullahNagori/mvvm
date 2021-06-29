@@ -73,10 +73,10 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
         isLoading = false
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        myDockActivity = context as DockActivity
-    }
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        myDockActivity = context as DockActivity
+//    }
 
     override fun onStarted() {
         myDockActivity?.onLoadingStarted()

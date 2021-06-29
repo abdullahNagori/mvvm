@@ -64,7 +64,6 @@
             android:hint="username"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:maxLength="15"
           />
 
     </com.google.android.material.textfield.TextInputLayout>

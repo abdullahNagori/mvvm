@@ -11,7 +11,6 @@ import retrofit2.http.POST
 interface Api {
 
     //Login
-    @FormUrlEncoded
     @POST("login")
     fun login(
         @Body loginModel: LoginModel): Call<ResponseBody>

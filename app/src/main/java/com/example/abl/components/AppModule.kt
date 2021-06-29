@@ -11,8 +11,7 @@ import retrofit2.Retrofit
 import javax.inject.Singleton
 
 /**
- *  @author Usman Ahmed Siddiqui
- *  skype : usmaan.siddiquii1@gmail.com
+ *  @author Abdullah Nagori
  */
 
 @Module(includes = [(ViewModelModule::class)])

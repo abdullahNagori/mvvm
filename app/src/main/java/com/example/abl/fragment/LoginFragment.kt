@@ -86,11 +86,13 @@ class LoginFragment : BaseDockFragment() {
 
             else -> {
 
+                loginUser()
+
             }
         }
     }
 
-    private fun updateRoutes() {
+    private fun loginUser() {
         myDockActivity?.getUserViewModel()?.login(LoginModel(binding.edUserName.text.toString(),binding.edPassword.text.toString()))
     }
 
