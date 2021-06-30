@@ -16,7 +16,7 @@ import javax.inject.Inject
  */
 
 
-abstract class DockActivity : DaggerAppCompatActivity(), LoadingListener {
+abstract class DockActivity : DaggerAppCompatActivity() {
     abstract fun getDockFrameLayoutId(): Int
 
     val KEY_FRAG_FIRST = "firstFrag"

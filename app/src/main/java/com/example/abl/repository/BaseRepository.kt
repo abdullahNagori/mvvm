@@ -1,5 +1,6 @@
 package com.example.abl.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.abl.model.ResponseEnt
 import com.example.abl.network.ApiListener
@@ -23,6 +24,7 @@ open class BaseRepository {
         api.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 apiResponse.value = t.message
+                Log.i("xx1",t.message.toString())
                 apiListener?.onFailure(t.message!!, tag)
             }
 
@@ -30,9 +32,10 @@ open class BaseRepository {
                 try {
                     if (response.isSuccessful && (response.code() == 200 || response.code() == 201)) {
                         apiResponse.value = response.body()?.string()
+
                         val responseEnt = GsonFactory.getConfiguredGson()?.fromJson(apiResponse.value, ResponseEnt::class.java)
                         if (responseEnt != null) {
-                            if (responseEnt.success)
+                            if (responseEnt.message == "OK")
                                 apiListener?.onSuccess(apiResponse, tag)
                             else
                                 apiListener?.onFailure(responseEnt.message, tag)

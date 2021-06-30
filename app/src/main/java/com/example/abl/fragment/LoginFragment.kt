@@ -40,9 +40,9 @@ class LoginFragment : BaseDockFragment() {
     ): View? {
 
         initView()
-
         binding.txtForgotPassword.setOnClickListener(::onCLickEvent)
         binding.btnLogin.setOnClickListener(::onCLickEvent)
+        myDockActivity?.getUserViewModel()?.apiListener = this
 
         return binding.root
     }
@@ -101,18 +101,22 @@ class LoginFragment : BaseDockFragment() {
         super.onSuccess(liveData, tag)
         when (tag){
             Constants.LOGIN -> {
+                Log.i("xxRes3", "ifblock")
+
                 val routeResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, UserResponse::class.java)
-                if (routeResponseEnt != null && routeResponseEnt.two_factor == "no")
+                Log.i("xxRes2", "ifblock")
+
+                if (routeResponseEnt!!.two_factor == "yes")
                 {
-                    val welcomeIntent = Intent(context, WelcomeActivity::class.java)
-                    welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    startActivity(welcomeIntent)
-                    activity?.finish()
-                    activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
+                    Log.i("xxRes1", "ifblock")
+//                    val welcomeIntent = Intent(context, WelcomeActivity::class.java)
+//                    welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                    startActivity(welcomeIntent)
+//                    activity?.finish()
+//                    activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
                 }
                 else{
                     myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
-
                 }
 
 

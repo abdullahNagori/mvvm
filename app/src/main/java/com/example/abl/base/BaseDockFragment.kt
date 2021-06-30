@@ -49,12 +49,12 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
 
 
     protected fun loadingStarted() {
-        if (parentFragment != null) (parentFragment as LoadingListener?)?.onLoadingStarted() else getDockActivity()!!.onLoadingStarted()
+        if (parentFragment != null) (parentFragment as LoadingListener?)?.onLoadingStarted() else getDockActivity()!!
         isLoading = true
     }
 
     protected fun loadingFinished() {
-        if (parentFragment != null) (parentFragment as LoadingListener?)?.onLoadingFinished() else if (getDockActivity() != null) getDockActivity()!!.onLoadingFinished()
+        if (parentFragment != null) (parentFragment as LoadingListener?)?.onLoadingFinished() else if (getDockActivity() != null) getDockActivity()!!
         isLoading = false
     }
 
@@ -64,15 +64,15 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
     }
 
     override fun onStarted() {
-        myDockActivity?.onLoadingStarted()
+       // myDockActivity?.onLoadingStarted()
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
-        myDockActivity?.onLoadingFinished()
+       // myDockActivity?.onLoadingFinished()
     }
 
     override fun onFailure(message: String, tag: String) {
-        myDockActivity?.onLoadingFinished()
+       // myDockActivity?.onLoadingFinished()
         myDockActivity?.showErrorMessage(message)
     }
 

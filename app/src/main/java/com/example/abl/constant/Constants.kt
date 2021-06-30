@@ -3,7 +3,7 @@ package com.example.abl.constant
 object Constants {
 
     const val HOME : String = "Dashboard"
-    const val LOGIN : String = "Login"
+    const val LOGIN : String = "login"
     const val PORTFOLIO : String = "Portfolio"
     const val LEAD_MANAGEMENT : String = "Lead Management"
     const val SALES_MANAGEMENT : String = "Sales Management"

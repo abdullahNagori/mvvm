@@ -60,15 +60,15 @@ class LoginActivity : DockActivity() {
         return super.onSupportNavigateUp()
     }
 
-    override fun onLoadingStarted() {
-//        progressBar?.visibility = View.VISIBLE
-//        loading = true
-//        window.setFlags(
-//            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-//            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-    }
-
-    override fun onLoadingFinished() {
-        TODO("Not yet implemented")
-    }
+//    override fun onLoadingStarted() {
+////        progressBar?.visibility = View.VISIBLE
+////        loading = true
+////        window.setFlags(
+////            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+////            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+//    }
+//
+//    override fun onLoadingFinished() {
+//        TODO("Not yet implemented")
+//    }
 }
