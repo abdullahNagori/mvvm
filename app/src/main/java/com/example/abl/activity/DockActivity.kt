@@ -1,6 +1,9 @@
 package com.example.abl.activity
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.abl.R
@@ -47,6 +50,11 @@ abstract class DockActivity : DaggerAppCompatActivity() {
         transaction
             .addToBackStack(
                 if (supportFragmentManager.backStackEntryCount == 0) KEY_FRAG_FIRST else null).commit()
+    }
+
+    fun hideKeyboard(view: View) {
+        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(view.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     fun replaceDockableFragmentWithoutBackStack(frag: BaseFragment?) {

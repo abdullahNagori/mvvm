@@ -138,7 +138,7 @@ class MainActivity : BaseActivity() {
             }
 
             Constants.PORTFOLIO -> {
-                navigateToFragment(R.id.action_nav_home_to_nav_profile)
+                navigateToFragment(R.id.action_nav_home_to_nav_profile,)
                 closeDrawer()
             }
 

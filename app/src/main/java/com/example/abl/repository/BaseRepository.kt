@@ -2,6 +2,7 @@ package com.example.abl.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.abl.model.ErrorResponseEnt
 import com.example.abl.model.ResponseEnt
 import com.example.abl.network.ApiListener
 import com.example.abl.utils.GsonFactory
@@ -9,6 +10,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 /**
  * @author Abdullah Nagori
@@ -29,24 +31,27 @@ open class BaseRepository {
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                try {
-                    if (response.isSuccessful && (response.code() == 200 || response.code() == 201)) {
-                        apiResponse.value = response.body()?.string()
-
-                        val responseEnt = GsonFactory.getConfiguredGson()?.fromJson(apiResponse.value, ResponseEnt::class.java)
-                        if (responseEnt != null) {
-                            if (responseEnt.message == "OK")
-                                apiListener?.onSuccess(apiResponse, tag)
-                            else
-                                apiListener?.onFailure(responseEnt.message, tag)
-                        } else
-                            apiListener?.onFailure("Response body null", tag)
-                    } else if (response.code() == 500)
-                        apiListener?.onFailure("Internal Server Error", tag)
-                    else
-                        apiListener?.onFailure("Unknown Error", tag)
-                } catch (ex: Exception) {
+                if (response.isSuccessful && (response.code() == 200 || response.code() == 201)) {
+                   // apiResponse.value = response.body().toString()
+                    apiResponse.value = response.body()?.string()
+                       Log.d("ResponseBOdy",response.body()!!.string())
+                    apiListener?.onSuccess(apiResponse, tag)
+                } else if (response.code() == 500)
                     apiListener?.onFailure("Internal Server Error", tag)
+                else {
+                    try {
+                        apiResponse.value = response.errorBody()?.string()
+                        val errorResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(apiResponse.value, ErrorResponseEnt::class.java)
+                        if (errorResponseEnt != null )
+                            apiListener?.onFailure(errorResponseEnt.error, tag)
+                        else
+                            apiListener?.onFailure("Unknown Error", tag)
+                    }
+                    catch (e: Exception){
+                        apiListener?.onFailure("Internal Server Error", tag)
+
+                    }
+
                 }
             }
 

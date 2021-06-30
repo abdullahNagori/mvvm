@@ -16,7 +16,7 @@
     <string name="enter_company_name">Enter Company Name</string>
     <string name="address">Address *</string>
     <string name="addresswdout_asterik">Address </string>
-    <string name="user_name">"PLease Enter Username" </string>
+    <string name="user_name">PLease Enter Login ID </string>
     <string name="enter_address">Enter Address</string>
     <string name="additional_information">Additional Information</string>
     <string name="cnic">CNIC</string>
@@ -94,6 +94,7 @@
     <string name="please_enter_valid_account_number">Please enter valid account number</string>
     <string name="please_enter_valid_phone_number">Please enter valid phone number</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="token_null">Token Null !!</string>
 
     <string name="this_field_is_required">This field is required.</string>
     <string name="housing_finance">Housing Finance</string>

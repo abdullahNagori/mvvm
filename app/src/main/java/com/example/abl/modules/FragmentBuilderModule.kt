@@ -2,6 +2,8 @@ package com.example.abl.modules
 
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.fragment.LoginFragment
+import com.example.abl.fragment.NewPasswordFragment
+import com.example.abl.fragment.OTPVerificationFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -19,4 +21,10 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeBaseFragment(): BaseDockFragment
+
+    @ContributesAndroidInjector
+    fun contributeOTPFragment(): OTPVerificationFragment
+
+    @ContributesAndroidInjector
+    fun contributeResetPwdReqFragment(): NewPasswordFragment
 }

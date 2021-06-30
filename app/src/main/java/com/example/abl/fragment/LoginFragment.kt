@@ -13,27 +13,19 @@ import com.example.abl.R
 import com.example.abl.activity.LoginActivity
 import com.example.abl.activity.WelcomeActivity
 import com.example.abl.base.BaseDockFragment
-import com.example.abl.base.BaseFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentLoginBinding
 import com.example.abl.model.LoginModel
-import com.example.abl.model.UserResponse
+import com.example.abl.model.LoginResponse
 import com.example.abl.utils.GsonFactory
-import kotlinx.android.synthetic.main.fragment_forgot_password.*
 
 class LoginFragment : BaseDockFragment() {
 
     private lateinit var binding: FragmentLoginBinding
+    lateinit var email: String
+    lateinit var password: String
 
 
-    companion object {
-        fun newInstance(): LoginFragment? {
-            val args = Bundle()
-            val fragment = LoginFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +58,8 @@ class LoginFragment : BaseDockFragment() {
 
     private fun initView() {
         binding = FragmentLoginBinding.inflate(layoutInflater)
+        email = binding.edUserName.text.toString()
+        password = binding.edPassword.text.toString()
     }
 
     private fun onCLickEvent(view: View) {
@@ -93,7 +87,10 @@ class LoginFragment : BaseDockFragment() {
     }
 
     private fun loginUser() {
-        myDockActivity?.getUserViewModel()?.login(LoginModel(binding.edUserName.text.toString(),binding.edPassword.text.toString()))
+        myDockActivity?.getUserViewModel()?.login(LoginModel(email,password))
+        arguments?.getString(email)
+        sharedPrefManager.storeUserId(email)
+        Log.i("xxLoginID", arguments?.getString(email).toString())
     }
 
 
@@ -101,23 +98,34 @@ class LoginFragment : BaseDockFragment() {
         super.onSuccess(liveData, tag)
         when (tag){
             Constants.LOGIN -> {
-                Log.i("xxRes3", "ifblock")
-
-                val routeResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, UserResponse::class.java)
-                Log.i("xxRes2", "ifblock")
-
-                if (routeResponseEnt!!.two_factor == "yes")
+                try
                 {
-                    Log.i("xxRes1", "ifblock")
-//                    val welcomeIntent = Intent(context, WelcomeActivity::class.java)
-//                    welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-//                    startActivity(welcomeIntent)
-//                    activity?.finish()
-//                    activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
+                    Log.d("liveDataValue", liveData.value.toString())
+                    val routeResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LoginResponse::class.java)
+
+                    if (routeResponseEnt?.two_factor == "yes")
+                    {
+                        myDockActivity?.showSuccessMessage(getString(R.string.success))
+                        LoginActivity.navController.navigate(R.id.action_loginFragment_to_otpFragment)
+                    }
+                    else{
+                        if (routeResponseEnt?.token != null && routeResponseEnt.token!!.isNotEmpty())
+                        {
+                            //token saved into shared pref and navigate into welcome
+//                            val welcomeIntent = Intent(context, WelcomeActivity::class.java)
+//                            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                            startActivity(welcomeIntent)
+//                            activity?.finish()
+//                            activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
+                        }
+                        else
+                            myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
+                    }
                 }
-                else{
-                    myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
+                catch (e: Exception){
+                    Log.d("Exception",e.message.toString())
                 }
+
 
 
             }
