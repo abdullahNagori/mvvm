@@ -2,6 +2,7 @@ package com.example.abl.fragment
 
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,27 +11,27 @@ import androidx.lifecycle.LiveData
 import com.example.abl.R
 import com.example.abl.activity.LoginActivity
 import com.example.abl.base.BaseDockFragment
-import com.example.abl.base.BaseFragment
 import com.example.abl.constant.Constants
-import com.example.abl.databinding.NewPasswordFragmentBinding
-import com.example.abl.model.OtpModel
-import com.example.abl.model.OtpResponse
+import com.example.abl.databinding.FragmentNewPasswordBinding
 import com.example.abl.model.ResetPasswordModel
 import com.example.abl.model.ResetPwdReqResponse
+import com.example.abl.model.VerifyPassModel
+import com.example.abl.model.VerifyPwdReqResponse
 import com.example.abl.utils.GsonFactory
 
 
 class NewPasswordFragment : BaseDockFragment() {
 
-    lateinit var binding: NewPasswordFragmentBinding
+    lateinit var binding: FragmentNewPasswordBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        // Inflate the layout for this fragment
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
-       return binding.root
+        return binding.root
     }
 
     override fun closeDrawer() {
@@ -50,47 +51,49 @@ class NewPasswordFragment : BaseDockFragment() {
     }
 
     private fun initView(){
-
-        binding = NewPasswordFragmentBinding.inflate(layoutInflater)
-
+        binding = FragmentNewPasswordBinding.inflate(layoutInflater)
         binding.btnChngPass.setOnClickListener {
             if (binding.edNewPassword.text.toString() == "")
             {
-                showBanner(getString(R.string.user_name), Constants.ERROR)
+                showBanner(getString(R.string.error_empty_pass), Constants.ERROR)
             }
             else
             {
-                resetPwdReq(binding.edNewPassword.text.toString())
+                verifyPwdReq(binding.edNewPassword.text.toString(),"Bearer "+sharedPrefManager.getToken())
             }
         }
-
     }
 
-    private fun resetPwdReq(loginID: String){
-        myDockActivity?.getUserViewModel()?.resetPwdReq(ResetPasswordModel(loginID))
+    private fun verifyPwdReq(pass: String, token: String){
+        myDockActivity?.getUserViewModel()?.verifyPwdReq(VerifyPassModel(pass),token)
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
         when (tag) {
-            Constants.RESET_PWD_REQ -> {
-                try
-                {
-                    Log.d("liveDataValue", liveData.value.toString())
-                    val resetReqResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, ResetPwdReqResponse::class.java)
+            Constants.VERIFY_PWD_REQ -> {
 
-                    if (resetReqResponseEnt?.message == "OTP send to registered Number")
-                    {
-                        myDockActivity?.showSuccessMessage(resetReqResponseEnt.message.toString())
-                        LoginActivity.navController.navigate(R.id.action_newPasswordFragment_to_loginFragment)
-                    }
-                    else{
-                            myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
-                    }
-                }
-                catch (e: Exception){
-                    Log.d("Exception",e.message.toString())
-                }
+                val verifyPassResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, VerifyPwdReqResponse::class.java)
+//                try
+//                {
+//                    Log.d("liveDataValue", liveData.value.toString())
+//                    val verifyPassResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, VerifyPwdReqResponse::class.java)
+//
+//                    if (verifyPassResponseEnt?.message == "OTP send to registered Number")
+//                    {
+//                        myDockActivity?.showSuccessMessage(verifyPassResponseEnt.message.toString())
+//                        LoginActivity.navController.navigate(R.id.action_newPasswordFragment_to_loginFragment)
+//                    }
+//                    else{
+//                        myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
+//                    }
+//                }
+//                catch (e: Exception){
+//                    Log.d("Exception",e.message.toString())
+//                }
+                LoginActivity.navController.navigate(R.id.action_newPassFragment_to_loginFragment)
+                myDockActivity?.showSuccessMessage(verifyPassResponseEnt?.message.toString())
+
             }
         }
     }

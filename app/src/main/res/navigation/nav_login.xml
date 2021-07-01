@@ -46,19 +46,35 @@
         tools:layout="@layout/otp_verification_fragment" >
         <action
             android:id="@+id/action_OTPVerificationFragment_to_newPasswordFragment"
-            app:destination="@id/newPasswordFragment"
+            app:destination="@id/reqPasswordFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
-        android:id="@+id/newPasswordFragment"
+        android:id="@+id/reqPasswordFragment"
+        android:name="com.example.abl.fragment.ReqPswrdFragment"
+        android:label="new_password_fragment"
+        tools:layout="@layout/req_password_fragment" >
+        <action
+            android:id="@+id/action_reqPasswordFragment_to_newPassFragment"
+            app:destination="@id/newPassFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/loginFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/newPassFragment"
         android:name="com.example.abl.fragment.NewPasswordFragment"
         android:label="new_password_fragment"
-        tools:layout="@layout/new_password_fragment" >
+        tools:layout="@layout/req_password_fragment" >
         <action
-            android:id="@+id/action_newPasswordFragment_to_loginFragment"
+            android:id="@+id/action_newPassFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:popUpToInclusive="true"
             app:popUpTo="@id/loginFragment"

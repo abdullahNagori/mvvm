@@ -102,6 +102,7 @@ class OTPVerificationFragment : BaseDockFragment() {
                     if (otpResponseEnt?.verify == "yes")
                     {
                         myDockActivity?.showSuccessMessage(getString(R.string.success))
+                        sharedPrefManager.setToken(otpResponseEnt.token.toString())
                         LoginActivity.navController.navigate(R.id.action_OTPVerificationFragment_to_newPasswordFragment)
 
                     }

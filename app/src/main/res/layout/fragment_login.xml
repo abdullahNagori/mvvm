@@ -88,7 +88,6 @@
             android:drawablePadding="@dimen/_10sdp"
             android:focusableInTouchMode="true"
             android:hint="@string/password"
-            android:text="Uhf@1234"
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:maxLength="15"

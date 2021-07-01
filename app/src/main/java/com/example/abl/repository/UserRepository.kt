@@ -5,6 +5,7 @@ import com.example.abl.constant.Constants
 import com.example.abl.model.LoginModel
 import com.example.abl.model.OtpModel
 import com.example.abl.model.ResetPasswordModel
+import com.example.abl.model.VerifyPassModel
 import com.example.abl.network.Api
 import com.example.abl.utils.SharedPrefManager
 import javax.inject.Inject
@@ -21,6 +22,10 @@ class UserRepository @Inject constructor(private val api: Api, private val share
 
     fun resetPasswordReq(resetPasswordModel: ResetPasswordModel): MutableLiveData<String> {
         return callApi(api.resetPasswordReq(resetPasswordModel), Constants.RESET_PWD_REQ)
+    }
+
+    fun verifyPasswordReq(verifyPassModel: VerifyPassModel, token: String): MutableLiveData<String> {
+        return callApi(api.verifyPassword(verifyPassModel, token), Constants.VERIFY_PWD_REQ)
     }
 
 }

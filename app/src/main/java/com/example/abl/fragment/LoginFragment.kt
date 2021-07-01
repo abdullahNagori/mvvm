@@ -87,7 +87,7 @@ class LoginFragment : BaseDockFragment() {
     }
 
     private fun loginUser() {
-        myDockActivity?.getUserViewModel()?.login(LoginModel(email,password))
+        myDockActivity?.getUserViewModel()?.login(LoginModel(email,binding.edPassword.text.toString()))
         arguments?.getString(email)
         sharedPrefManager.storeUserId(email)
         Log.i("xxLoginID", arguments?.getString(email).toString())
@@ -112,11 +112,11 @@ class LoginFragment : BaseDockFragment() {
                         if (routeResponseEnt?.token != null && routeResponseEnt.token!!.isNotEmpty())
                         {
                             //token saved into shared pref and navigate into welcome
-//                            val welcomeIntent = Intent(context, WelcomeActivity::class.java)
-//                            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-//                            startActivity(welcomeIntent)
-//                            activity?.finish()
-//                            activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
+                            val welcomeIntent = Intent(context, WelcomeActivity::class.java)
+                            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            startActivity(welcomeIntent)
+                            activity?.finish()
+                            activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
                         }
                         else
                             myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))

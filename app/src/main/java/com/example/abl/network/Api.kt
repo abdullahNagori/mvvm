@@ -3,12 +3,10 @@ package com.example.abl.network
 import com.example.abl.model.LoginModel
 import com.example.abl.model.OtpModel
 import com.example.abl.model.ResetPasswordModel
+import com.example.abl.model.VerifyPassModel
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface Api {
 
@@ -27,5 +25,11 @@ interface Api {
     @POST("resetPasswordRequest")
     fun resetPasswordReq(
         @Body resetPasswordModel: ResetPasswordModel
+    ): Call<ResponseBody>
+
+    //Verify Password Request
+    @POST("auth/resetPasswordVerify")
+    fun verifyPassword(
+        @Body verifyPassModel: VerifyPassModel,@Header("Authorization") token: String
     ): Call<ResponseBody>
 }
