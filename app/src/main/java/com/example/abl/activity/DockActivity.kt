@@ -4,11 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.abl.R
 import com.example.abl.base.BaseFragment
 import com.example.abl.common.LoadingListener
+import com.example.abl.network.ApiListener
 import com.example.abl.utils.SharedPrefManager
 import com.example.abl.viewModel.UserViewModel
 import dagger.android.support.DaggerAppCompatActivity
@@ -19,7 +21,7 @@ import javax.inject.Inject
  */
 
 
-abstract class DockActivity : DaggerAppCompatActivity() {
+abstract class DockActivity : DaggerAppCompatActivity(), ApiListener {
     abstract fun getDockFrameLayoutId(): Int
 
     val KEY_FRAG_FIRST = "firstFrag"
@@ -31,11 +33,13 @@ abstract class DockActivity : DaggerAppCompatActivity() {
     lateinit var sharedPrefManager: SharedPrefManager
 
     private lateinit var userViewModel: UserViewModel
+    private lateinit var apiListener: ApiListener
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModels()
+        apiListener = this
     }
 
     private fun initViewModels(){
@@ -90,6 +94,18 @@ abstract class DockActivity : DaggerAppCompatActivity() {
 
     fun getUserViewModel(): UserViewModel {
         return userViewModel
+    }
+
+    override fun onStarted() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSuccess(liveData: LiveData<String>, tag: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onFailure(message: String, tag: String) {
+        TODO("Not yet implemented")
     }
 
 }

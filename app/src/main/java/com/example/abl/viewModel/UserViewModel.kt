@@ -1,10 +1,7 @@
 package com.example.abl.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.abl.model.LoginModel
-import com.example.abl.model.OtpModel
-import com.example.abl.model.ResetPasswordModel
-import com.example.abl.model.VerifyPassModel
+import com.example.abl.model.*
 import com.example.abl.network.ApiListener
 import com.example.abl.repository.UserRepository
 import javax.inject.Inject
@@ -31,5 +28,15 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
     fun verifyPwdReq(verifyPassModel: VerifyPassModel, token: String){
         userRepository.apiListener = apiListener
         userRepository.verifyPasswordReq(verifyPassModel, token)
+    }
+
+    fun uerDetails(token: String){
+        userRepository.apiListener = apiListener
+        userRepository.getUserDetails(token)
+    }
+
+    fun markAttendance(markAttendanceModel: MarkAttendanceModel, token: String){
+        userRepository.apiListener = apiListener
+        userRepository.markAttendance(markAttendanceModel, token)
     }
 }

@@ -25,7 +25,6 @@ class LoginActivity : DockActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         navController = findNavController(R.id.nav_host_login_fragment)
     }
 

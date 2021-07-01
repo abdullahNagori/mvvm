@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_forgotPassFragment"
-            app:destination="@id/forgotPassFragment"
+            app:destination="@id/forgotPasswordFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
@@ -45,23 +45,35 @@
         android:label="o_t_p_verification_fragment"
         tools:layout="@layout/otp_verification_fragment" >
         <action
-            android:id="@+id/action_OTPVerificationFragment_to_newPasswordFragment"
-            app:destination="@id/reqPasswordFragment"
+            android:id="@+id/action_OTPVerificationFragment_to_forgotPassFragment"
+            app:destination="@id/forgotPasswordFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_forgotPassFragment_to_OTPVerificationFragment"
+            app:destination="@id/forgotPassFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
+
+
     </fragment>
+
+
     <fragment
-        android:id="@+id/reqPasswordFragment"
-        android:name="com.example.abl.fragment.ReqPswrdFragment"
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.abl.fragment.ForgotPasswordFragment"
         android:label="new_password_fragment"
-        tools:layout="@layout/req_password_fragment" >
+        tools:layout="@layout/fragment_forgot_password" >
         <action
             android:id="@+id/action_reqPasswordFragment_to_newPassFragment"
             app:destination="@id/newPassFragment"
             app:popUpToInclusive="true"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/newPassFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"

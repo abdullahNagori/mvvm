@@ -1,8 +1,8 @@
 package com.example.abl.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,12 +12,11 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import com.example.abl.R
 import com.example.abl.activity.LoginActivity
+import com.example.abl.activity.MainActivity
+import com.example.abl.activity.WelcomeActivity
 import com.example.abl.base.BaseDockFragment
-import com.example.abl.base.BaseFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.OtpVerificationFragmentBinding
-import com.example.abl.model.LoginModel
-import com.example.abl.model.LoginResponse
 import com.example.abl.model.OtpModel
 import com.example.abl.model.OtpResponse
 import com.example.abl.utils.GsonFactory
@@ -98,23 +97,26 @@ class OTPVerificationFragment : BaseDockFragment() {
                 {
                     Log.d("liveDataValue", liveData.value.toString())
                     val otpResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, OtpResponse::class.java)
-
-                    if (otpResponseEnt?.verify == "yes")
-                    {
-                        myDockActivity?.showSuccessMessage(getString(R.string.success))
-                        sharedPrefManager.setToken(otpResponseEnt.token.toString())
-                        LoginActivity.navController.navigate(R.id.action_OTPVerificationFragment_to_newPasswordFragment)
-
-                    }
-                    else{
-                        if (otpResponseEnt?.token != null && otpResponseEnt.token!!.isNotEmpty())
+                        if (otpResponseEnt?.verify == "yes")
                         {
-                            myDockActivity?.showErrorMessage(getString(R.string.token_null))
+                            myDockActivity?.showSuccessMessage(getString(R.string.success))
+                            sharedPrefManager.setToken(otpResponseEnt.token.toString())
+                            Log.d("liveDataValue", "success")
+
+                            val welcomeIntent = Intent(context, WelcomeActivity::class.java)
+                            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            startActivity(welcomeIntent)
+                            activity?.finish()
+                            activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
 
                         }
                         else
+                        {
+                            LoginActivity.navController.navigate(R.id.action_OTPVerificationFragment_to_forgotPassFragment)
                             myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
-                    }
+                        }
+
+
                 }
                 catch (e: Exception){
                     Log.d("Exception",e.message.toString())

@@ -61,10 +61,10 @@
             android:drawableStart="@drawable/ic_username"
             android:drawablePadding="@dimen/_10sdp"
             android:focusableInTouchMode="true"
-            android:hint="username"
             android:text="tariqadmin@uhfsolutions.com"
+            android:hint="username"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
           />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -88,7 +88,8 @@
             android:drawablePadding="@dimen/_10sdp"
             android:focusableInTouchMode="true"
             android:hint="@string/password"
-            android:importantForAutofill="no"
+            android:text="Uhf@1234"
+            android:importantForAutofill="yes"
             android:inputType="textPassword"
             android:maxLength="15"
             />

@@ -5,6 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/nav_home">
 
+
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.abl.fragment.DashboardFragment"
@@ -112,4 +113,5 @@
         android:name="com.example.abl.fragment.CalculatorFragment"
         android:label="@string/calculator"
         tools:layout="@layout/calculator_fragment" />
+
 </navigation>

@@ -2,10 +2,7 @@ package com.example.abl.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.abl.constant.Constants
-import com.example.abl.model.LoginModel
-import com.example.abl.model.OtpModel
-import com.example.abl.model.ResetPasswordModel
-import com.example.abl.model.VerifyPassModel
+import com.example.abl.model.*
 import com.example.abl.network.Api
 import com.example.abl.utils.SharedPrefManager
 import javax.inject.Inject
@@ -26,6 +23,14 @@ class UserRepository @Inject constructor(private val api: Api, private val share
 
     fun verifyPasswordReq(verifyPassModel: VerifyPassModel, token: String): MutableLiveData<String> {
         return callApi(api.verifyPassword(verifyPassModel, token), Constants.VERIFY_PWD_REQ)
+    }
+
+    fun getUserDetails(token: String): MutableLiveData<String> {
+        return callApi(api.getUserDetails(token), Constants.USER_DETAIL)
+    }
+
+    fun markAttendance(markAttendanceModel: MarkAttendanceModel, token: String): MutableLiveData<String> {
+        return callApi(api.markAttendance(markAttendanceModel, token), Constants.MARK_ATTENDANCE)
     }
 
 }

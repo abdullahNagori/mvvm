@@ -7,6 +7,8 @@ object Constants {
     const val VERIFY_OTP : String = "otp"
     const val RESET_PWD_REQ : String = "reset_pwd_req"
     const val VERIFY_PWD_REQ : String = "verify_pwd_req"
+    const val USER_DETAIL : String = "get_user_details"
+    const val MARK_ATTENDANCE : String = "mark_attendance"
     const val LOGIN_ID : String = "login_id"
     const val PORTFOLIO : String = "Portfolio"
     const val LEAD_MANAGEMENT : String = "Lead Management"
