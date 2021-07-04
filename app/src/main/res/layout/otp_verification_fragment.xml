@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/ot_frag"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="fragment.OTPVerificationFragment">
 
@@ -88,23 +89,22 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp" />
 
+
+        <Button
+            android:id="@+id/btnVerify"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_background"
+            android:text="@string/verify"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp"/>
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/btnVerify"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        android:background="@drawable/btn_background"
-        android:text="@string/verify"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_15sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/llOTP"
-        app:layout_constraintStart_toStartOf="@+id/llOTP"
-        app:layout_constraintTop_toBottomOf="@+id/llOTP"
-        app:layout_constraintVertical_bias="0.251" />
+
 
     <ProgressBar
         android:layout_width="0dp"

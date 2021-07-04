@@ -54,6 +54,14 @@ class LoginActivity : DockActivity() {
             .show()
     }
 
+    override fun closeDrawer() {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToFragment(id: Int, args: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         navController = findNavController(R.id.nav_host_login_fragment)
         return super.onSupportNavigateUp()

@@ -9,8 +9,10 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.annotation.IdRes
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -19,17 +21,30 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.Unbinder
 import com.example.abl.R
 import com.example.abl.adapter.ExpandableListAdapter
 import com.example.abl.base.BaseActivity
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
+import com.example.abl.utils.SharedPrefKeyManager
+import com.example.abl.utils.SharedPrefManager
+import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.reflect.Array.get
+import java.nio.file.Paths.get
 import java.util.HashMap
 
-class MainActivity : BaseActivity() {
+class MainActivity : DockActivity() {
+
 
     companion object{
+
+        @SuppressLint("StaticFieldLeak")
+        private lateinit var unbinder: Unbinder
         lateinit var navController: NavController
+        lateinit var navWelcome: NavController
         lateinit var drawerLayout: DrawerLayout
     }
 
@@ -40,19 +55,37 @@ class MainActivity : BaseActivity() {
     private lateinit var actionBarMenu: Menu
     private lateinit var switchAB: SwitchCompat
     private lateinit var sharedPreferences: SharedPreferences
+    override fun getDockFrameLayoutId(): Int {
+        return R.id.container
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
+        unbinder = ButterKnife.bind(this)
         setContentView(binding.root)
+        navController = findNavController(R.id.nav_host_main)
+        navWelcome = findNavController(R.id.nav_host_welcome)
 
         initView()
         setGesture()
     }
 
+    override fun showErrorMessage(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showSuccessMessage(message: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         navController = findNavController(R.id.nav_host_main)
+        navWelcome = findNavController(R.id.nav_host_welcome)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
@@ -64,7 +97,10 @@ class MainActivity : BaseActivity() {
 
 
         actionBarMenu.findItem(R.id.action_notification).setOnMenuItemClickListener {
-            navController.navigate(R.id.nav_notification)
+            if (SharedPrefKeyManager.get<Boolean>(Constants.IS_SHIFT) == true)
+                navController.navigate(R.id.nav_notification)
+            else
+                showErrorMessage(getString(R.string.start_your_shift))
             true
         }
 
@@ -73,7 +109,20 @@ class MainActivity : BaseActivity() {
         switchAB = item.actionView.findViewById(R.id.switchAB)
         sharedPreferences = this.getSharedPreferences("SharedPrefs", MODE_PRIVATE)
 
+        if (SharedPrefKeyManager.get<Boolean>(Constants.IS_SHIFT) == true) {
+            switchAB.isChecked = true
+        }
 
+        switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked){
+
+                Log.i("xxChecked", "check")
+            }else{
+                Log.i("xxChecked", "uncheck")
+             //  navigateToFragment(R.id.action_nav_home_to_welcome_fragment)
+            }
+
+        }
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -138,7 +187,7 @@ class MainActivity : BaseActivity() {
             }
 
             Constants.PORTFOLIO -> {
-                navigateToFragment(R.id.action_nav_home_to_nav_profile,)
+                navigateToFragment(R.id.action_nav_home_to_nav_profile)
                 closeDrawer()
             }
 
@@ -227,21 +276,15 @@ class MainActivity : BaseActivity() {
 
             Log.i("xxGroup", "child")
             val str = listDataChild[listDataHeader[groupPosition]]!![childPosition]
-
                 fragmentClickEvent(str)
                 closeDrawer()
-
-
-
             false
         }
 
 
         binding.sideLayout.lvExp.setOnGroupExpandListener { groupPosition: Int ->
-
             Log.i("xxGroup", "group")
             fragmentClickEvent(listDataHeader[groupPosition])
-
         }
     }
 
@@ -263,12 +306,12 @@ class MainActivity : BaseActivity() {
             R.id.sync -> {}
             R.id.upload -> {}
             R.id.cold_calling -> {}
-            R.id.addLead -> {
-                navigateToFragment(R.id.nav_visit)
-            }
-            R.id.followup -> {
-                navigateToFragment(R.id.followup_fragment)
-            }
+//            R.id.addLead -> {
+//                navigateToFragment(R.id.nav_visit)
+//            }
+//            R.id.followup -> {
+//                navigateToFragment(R.id.followup_fragment)
+//            }
             R.id.close -> {
                 goneWithAnimation(binding.appBarMain.sideMenu.root)
                 visibleWithAnimation(binding.appBarMain.dropdownMenu)
@@ -327,5 +370,19 @@ class MainActivity : BaseActivity() {
             }
             true
         }
+    }
+
+    override fun closeDrawer() {
+        drawer_layout.closeDrawer(GravityCompat.START)
+    }
+
+    override fun navigateToFragment(@IdRes id: Int, args: Bundle?) {
+        if (args != null) {
+            navController.navigate(id, args)
+            navWelcome.navigate(id, args)
+            return
+        }
+        navController.navigate(id)
+        navWelcome.navigate(id)
     }
 }

@@ -25,6 +25,9 @@
             app:destination="@id/nav_visit_logs" />
 
         <action
+            android:id="@+id/action_nav_home_to_welcome_fragment"
+            app:destination="@id/nav_welcome_fragment" />
+        <action
             android:id="@+id/action_nav_home_to_nav_notification"
             app:destination="@id/nav_notification" />
 
@@ -101,6 +104,12 @@
         android:name="com.example.abl.fragment.VisitLogsFragment"
         android:label="@string/visit_log"
         tools:layout="@layout/visit_logs_fragment" />
+
+    <fragment
+        android:id="@+id/nav_welcome_fragment"
+        android:name="com.example.abl.fragment.WelcomeFragment"
+        android:label="@string/visit_log"
+        tools:layout="@layout/fragment_welcome" />
 
     <fragment
         android:id="@+id/nav_notification"

@@ -103,4 +103,12 @@ class WelcomeActivity : DockActivity() {
             }
         }
     }
+
+    override fun closeDrawer() {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToFragment(id: Int, args: Bundle?) {
+        TODO("Not yet implemented")
+    }
 }

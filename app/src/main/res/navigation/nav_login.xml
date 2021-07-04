@@ -17,7 +17,6 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"/>
-
         <action
             android:id="@+id/action_loginFragment_to_otpFragment"
             app:destination="@id/OTPVerificationFragment"
@@ -60,6 +59,13 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"/>
 
+        <action
+            android:id="@+id/action_otpFragment_to_welcome"
+            app:destination="@id/welcomeFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
 
     </fragment>
 
@@ -96,5 +102,9 @@
             app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
 
-
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.abl.fragment.WelcomeFragment"
+        android:label="new_password_fragment"
+        tools:layout="@layout/fragment_welcome" />
 </navigation>

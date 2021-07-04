@@ -40,4 +40,16 @@ interface Api {
     fun markAttendance(
         @Body markAttendanceModel: MarkAttendanceModel,@Header("Authorization") token: String
     ): Call<ResponseBody>
+
+    //Get Lovs
+    @GET("leads/getLovs")
+    fun getLovs(@Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    //Get Lovs
+    @GET("leads/getLeadsForDynamicData")
+    fun getLeadsForDynamicData(@Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+
 }

@@ -4,10 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.IdRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.abl.R
+import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.BaseFragment
 import com.example.abl.common.LoadingListener
 import com.example.abl.network.ApiListener
@@ -68,7 +70,7 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener {
         transaction.commit()
     }
 
-    fun replaceDockableFragmentWithAnimation(frag: BaseFragment?) {
+    fun replaceDockableFragmentWithAnimation(frag: BaseDockFragment?) {
         val transaction = supportFragmentManager
             .beginTransaction()
         transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
@@ -107,5 +109,8 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener {
     override fun onFailure(message: String, tag: String) {
         TODO("Not yet implemented")
     }
+
+    abstract fun closeDrawer()
+    abstract fun navigateToFragment(@IdRes id: Int, args: Bundle? = null)
 
 }

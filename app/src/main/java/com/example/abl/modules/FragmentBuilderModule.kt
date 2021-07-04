@@ -31,4 +31,7 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeForgotPasswordFragment(): ForgotPasswordFragment
+
+    @ContributesAndroidInjector
+    fun contributeWelcomeFragment(): WelcomeFragment
 }

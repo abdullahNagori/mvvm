@@ -33,4 +33,13 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.markAttendance(markAttendanceModel, token), Constants.MARK_ATTENDANCE)
     }
 
+    fun getLovs(token: String): MutableLiveData<String> {
+        return callApi(api.getLovs(token), Constants.GET_LOVS)
+    }
+
+    fun getDynamicLeads(token: String): MutableLiveData<String> {
+        return callApi(api.getLeadsForDynamicData(token), Constants.GET_DYNAMIC_LEADS)
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.example.abl.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.GsonBuilder
 import javax.inject.Inject
 
 class SharedPrefManager @Inject constructor(private val context: Context) {
@@ -10,8 +11,10 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
     private val AGENT_ID = "KEY_AGENT_ID"
     private val TOKEN = "KEY_TOKEN"
     private val KEY_USER = "KEY_USER"
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(Key_Pref, Context.MODE_PRIVATE)
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences(Key_Pref, Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
+
+
 
 
     fun storeUserId(user_id: String): Boolean {

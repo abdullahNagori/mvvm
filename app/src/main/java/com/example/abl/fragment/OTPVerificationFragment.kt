@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
+import androidx.navigation.Navigation
 import com.example.abl.R
 import com.example.abl.activity.LoginActivity
 import com.example.abl.activity.MainActivity
@@ -17,6 +18,7 @@ import com.example.abl.activity.WelcomeActivity
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.OtpVerificationFragmentBinding
+import com.example.abl.fragment.CalculatorFragment.Companion.newInstance
 import com.example.abl.model.OtpModel
 import com.example.abl.model.OtpResponse
 import com.example.abl.utils.GsonFactory
@@ -102,12 +104,7 @@ class OTPVerificationFragment : BaseDockFragment() {
                             myDockActivity?.showSuccessMessage(getString(R.string.success))
                             sharedPrefManager.setToken(otpResponseEnt.token.toString())
                             Log.d("liveDataValue", "success")
-
-                            val welcomeIntent = Intent(context, WelcomeActivity::class.java)
-                            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                            startActivity(welcomeIntent)
-                            activity?.finish()
-                            activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
+                            LoginActivity.navController.navigate(R.id.action_otpFragment_to_welcome)
 
                         }
                         else
