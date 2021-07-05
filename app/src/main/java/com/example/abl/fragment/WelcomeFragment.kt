@@ -22,6 +22,7 @@ import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentWelcomeBinding
 import com.example.abl.model.GenericMsgResponse
 import com.example.abl.model.MarkAttendanceModel
+import com.example.abl.model.ResetPwdReqResponse
 import com.example.abl.model.UserDetailsResponse
 import com.example.abl.utils.GsonFactory
 import com.example.abl.utils.SharedPrefKeyManager
@@ -56,7 +57,12 @@ class WelcomeFragment : BaseDockFragment() {
 
         binding.fab.setOnClickListener {
             SharedPrefKeyManager.put(true, Constants.IS_SHIFT)
-            markAttendance("checkin", "23.45", "35.40")
+            //markAttendance("checkin", "23.45", "35.40")
+            val welcomeIntent = Intent(context, MainActivity::class.java)
+            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(welcomeIntent)
+            activity?.finish()
+            activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
         }
 
         return binding.root
@@ -139,8 +145,7 @@ class WelcomeFragment : BaseDockFragment() {
             Constants.USER_DETAIL -> {
                 try {
                     Log.d("liveDataValue", liveData.value.toString())
-                    val userDetailResponseEnt = GsonFactory.getConfiguredGson()
-                        ?.fromJson(liveData.value, UserDetailsResponse::class.java)
+                    val userDetailResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, UserDetailsResponse::class.java)
                     binding.name.text = userDetailResponseEnt?.first_name
 
                 } catch (e: Exception) {
@@ -151,8 +156,7 @@ class WelcomeFragment : BaseDockFragment() {
             Constants.MARK_ATTENDANCE -> {
                 try {
                     Log.d("liveDataValue", liveData.value.toString())
-                    val attendanceResponseEnt = GsonFactory.getConfiguredGson()
-                        ?.fromJson(liveData.value, GenericMsgResponse::class.java)
+                    val attendanceResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, GenericMsgResponse::class.java)
                     Log.d("AttendanceResponse", attendanceResponseEnt?.message.toString())
 
                     val welcomeIntent = Intent(context, MainActivity::class.java)

@@ -97,10 +97,10 @@ class MainActivity : DockActivity() {
 
 
         actionBarMenu.findItem(R.id.action_notification).setOnMenuItemClickListener {
-            if (SharedPrefKeyManager.get<Boolean>(Constants.IS_SHIFT) == true)
-                navController.navigate(R.id.nav_notification)
-            else
-                showErrorMessage(getString(R.string.start_your_shift))
+//            if (SharedPrefKeyManager.get<Boolean>(Constants.IS_SHIFT) == true)
+//                navController.navigate(R.id.nav_notification)
+//            else
+//                showErrorMessage(getString(R.string.start_your_shift))
             true
         }
 
@@ -109,9 +109,9 @@ class MainActivity : DockActivity() {
         switchAB = item.actionView.findViewById(R.id.switchAB)
         sharedPreferences = this.getSharedPreferences("SharedPrefs", MODE_PRIVATE)
 
-        if (SharedPrefKeyManager.get<Boolean>(Constants.IS_SHIFT) == true) {
-            switchAB.isChecked = true
-        }
+//        if (SharedPrefKeyManager.get<Boolean>(Constants.IS_SHIFT) == true) {
+//            switchAB.isChecked = true
+//        }
 
         switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked){
@@ -183,11 +183,15 @@ class MainActivity : DockActivity() {
 
         when(itemString){
             Constants.DASHBOARD -> {
-
             }
 
             Constants.PORTFOLIO -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_profile)
+                closeDrawer()
+            }
+
+            Constants.CRM -> {
+                navigateToFragment(R.id.action_nav_home_to_nav_crm)
                 closeDrawer()
             }
 
@@ -264,7 +268,11 @@ class MainActivity : DockActivity() {
         salesManagement.add(Constants.CALL_LOG)
         salesManagement.add(Constants.VISIT_LOG)
 
+        val leadManagement: MutableList<String> = ArrayList()
+        leadManagement.add(Constants.CRM)
+
         listDataChild[listDataHeader[3]] = salesManagement
+        listDataChild[listDataHeader[4]] = leadManagement
 
 
         // setting list adapter

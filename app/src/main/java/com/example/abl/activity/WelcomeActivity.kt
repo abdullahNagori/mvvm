@@ -47,7 +47,7 @@ class WelcomeActivity : DockActivity() {
 //            startActivity(Intent(this, MainActivity::class.java))
 //            finish()
             Log.d("Exception", "test")
-            markAttendance("checkin","23.34", "50.56")
+          //  markAttendance("checkin","23.34", "50.56")
         }
     }
 
@@ -71,9 +71,9 @@ class WelcomeActivity : DockActivity() {
         getUserViewModel().uerDetails("Bearer "+sharedPrefManager.getToken())
     }
 
-    fun markAttendance(type: String, lat: String, lng: String){
-        getUserViewModel().markAttendance(MarkAttendanceModel(type,lat,lng),"Bearer "+sharedPrefManager.getToken())
-    }
+//    fun markAttendance(type: String, lat: String, lng: String){
+//        getUserViewModel().markAttendance(MarkAttendanceModel(type,lat,lng),"Bearer "+sharedPrefManager.getToken())
+//    }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
