@@ -44,7 +44,6 @@ class MainActivity : DockActivity() {
         @SuppressLint("StaticFieldLeak")
         private lateinit var unbinder: Unbinder
         lateinit var navController: NavController
-        lateinit var navWelcome: NavController
         lateinit var drawerLayout: DrawerLayout
     }
 
@@ -69,7 +68,6 @@ class MainActivity : DockActivity() {
         unbinder = ButterKnife.bind(this)
         setContentView(binding.root)
         navController = findNavController(R.id.nav_host_main)
-        navWelcome = findNavController(R.id.nav_host_welcome)
 
         initView()
         setGesture()
@@ -85,7 +83,6 @@ class MainActivity : DockActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         navController = findNavController(R.id.nav_host_main)
-        navWelcome = findNavController(R.id.nav_host_welcome)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
@@ -314,12 +311,12 @@ class MainActivity : DockActivity() {
             R.id.sync -> {}
             R.id.upload -> {}
             R.id.cold_calling -> {}
-//            R.id.addLead -> {
-//                navigateToFragment(R.id.nav_visit)
-//            }
-//            R.id.followup -> {
-//                navigateToFragment(R.id.followup_fragment)
-//            }
+            R.id.addLead -> {
+                navigateToFragment(R.id.nav_visit)
+            }
+            R.id.followup -> {
+                navigateToFragment(R.id.followup_fragment)
+            }
             R.id.close -> {
                 goneWithAnimation(binding.appBarMain.sideMenu.root)
                 visibleWithAnimation(binding.appBarMain.dropdownMenu)
@@ -387,10 +384,8 @@ class MainActivity : DockActivity() {
     override fun navigateToFragment(@IdRes id: Int, args: Bundle?) {
         if (args != null) {
             navController.navigate(id, args)
-            navWelcome.navigate(id, args)
             return
         }
         navController.navigate(id)
-        navWelcome.navigate(id)
     }
 }

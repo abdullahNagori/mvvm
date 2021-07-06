@@ -37,4 +37,7 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeCRMFragment(): CRMFragment
+
+    @ContributesAndroidInjector
+    fun contributeAddLeadFragment(): AddLeadFragment
 }

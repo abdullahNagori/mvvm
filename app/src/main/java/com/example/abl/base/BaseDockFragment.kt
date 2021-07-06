@@ -77,7 +77,7 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
     }
 
     override fun showBanner(text: String, type: String) {
-        if (activity != null) (activity as BaseActivity).showBanner(text, type)
+        if (activity != null) (activity as DockActivity)
     }
 
 

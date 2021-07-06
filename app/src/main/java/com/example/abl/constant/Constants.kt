@@ -11,6 +11,7 @@ object Constants {
     const val MARK_ATTENDANCE : String = "mark_attendance"
     const val GET_LOVS : String = "get_lovs"
     const val GET_DYNAMIC_LEADS : String = "get_dynamic_leads"
+    const val ADD_LEAD : String = "add_lead"
     const val LOGIN_ID : String = "login_id"
     const val PORTFOLIO : String = "Portfolio"
     const val LEAD_MANAGEMENT : String = "Lead Management"

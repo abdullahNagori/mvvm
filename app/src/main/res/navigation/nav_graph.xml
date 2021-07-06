@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_calculator"
             app:destination="@id/nav_calculator" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_add_lead"
+            app:destination="@id/nav_visit" />
     </fragment>
 
     <fragment

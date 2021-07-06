@@ -51,5 +51,11 @@ interface Api {
     fun getLeadsForDynamicData(@Header("Authorization") token: String
     ): Call<ResponseBody>
 
+    //Add Leads
+    @POST("leads/addLead")
+    fun addLead(@Body addLeadModelItem: AddLeadModelItem,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
 
 }
