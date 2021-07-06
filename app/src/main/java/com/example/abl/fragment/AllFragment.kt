@@ -10,7 +10,7 @@ import com.example.abl.R
 class AllFragment : Fragment() {
 
     companion object {
-        fun newInstance(title: String) = AllFragment()
+        fun newInstance() = AllFragment()
     }
 
     override fun onCreateView(

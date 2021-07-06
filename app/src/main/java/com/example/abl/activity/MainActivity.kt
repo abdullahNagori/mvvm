@@ -76,7 +76,7 @@ class MainActivity : DockActivity() {
     }
 
     override fun showErrorMessage(message: String) {
-        TODO("Not yet implemented")
+        Log.i("Error", message)
     }
 
     override fun showSuccessMessage(message: String) {

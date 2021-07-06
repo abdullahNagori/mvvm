@@ -17,7 +17,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Customers(
-
     var customer_name: String,
     var contact_number: String,
     var account_num: String,

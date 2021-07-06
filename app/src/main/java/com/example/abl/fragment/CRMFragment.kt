@@ -5,25 +5,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
+import androidx.viewpager.widget.ViewPager
+import com.example.abl.R
 import com.example.abl.adapter.DynamicViewPagerAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentCrmBinding
 import com.example.abl.model.DynamicLeadsResponse
-import com.example.abl.utils.GsonFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.fragment_crm.*
+import kotlinx.android.synthetic.main.portfolio_fragment.*
+import kotlinx.android.synthetic.main.portfolio_fragment.tab_layout
 import java.lang.reflect.Type
-import kotlin.properties.Delegates
 
 
 class CRMFragment : BaseDockFragment() {
 
     lateinit var binding: FragmentCrmBinding
-    var size = 0
+    lateinit var pagerAdapter: DynamicViewPagerAdapter
 
     // lateinit var list: List<DynamicLeadsItem>
     override fun onCreateView(
@@ -32,9 +36,14 @@ class CRMFragment : BaseDockFragment() {
     ): View? {
         // Inflate the layout for this fragment
         initView()
-      //  viewPager()
         myDockActivity?.getUserViewModel()?.apiListener = this
+      //  viewPager()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewPager()
     }
 
     override fun closeDrawer() {
@@ -53,44 +62,16 @@ class CRMFragment : BaseDockFragment() {
         TODO("Not yet implemented")
     }
 
-
     private fun initView(){
         binding = FragmentCrmBinding.inflate(layoutInflater)
        // getDynamicData("Bearer "+sharedPrefManager.getToken())
-        getDynamicData("Bearer "+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbGxpZWQtYmFuayIsInN1YiI6IjEiLCJpYXQiOjE2MjU1MTgzNDcsImV4cCI6MTYyNTUyMTk0NywiZGF0YSI6eyJzdWNjZXNzIjp0cnVlLCJjb2RlIjowLCJtZXNzYWdlIjoiTG9naW4gU3VjY2Vzc2Z1bGx5Iiwic2lkIjoiNDVlNzE1OTczNWYzNDM3OTg2Njk1MzVhZmM3YTdlOGUiLCIyX2ZhIjoieWVzIiwidXNlcl9pZCI6IjEifX0.HS1j8SkJoeXrJMruqSRtIxCZ8kXDiBCpbho3SlgxBYM")
+        getDynamicData("Bearer "+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbGxpZWQtYmFuayIsInN1YiI6IjEiLCJpYXQiOjE2MjU1OTgzMzEsImV4cCI6MTYyNTYwMTkzMSwiZGF0YSI6eyJzdWNjZXNzIjp0cnVlLCJjb2RlIjowLCJtZXNzYWdlIjoiTG9naW4gU3VjY2Vzc2Z1bGx5Iiwic2lkIjoiNjYxZDVlZmUyMzQyZGYwYjA4YzE4NTJiMTMyZTFhMTciLCIyX2ZhIjoieWVzIiwidXNlcl9pZCI6IjEifX0.j4VMgc6QkiQdgdBChH3C2kmEVGV8Bb-CMFw3vFdJpOw")
     }
 
     private fun getDynamicData(token: String){
         myDockActivity?.getUserViewModel()?.getDynamicLeads(token)
     }
 
-    private fun viewPager(){
-
-        var section = 10
-        for (i in 0..section){
-
-            binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Hello Fragment"))
-
-        }
-
-        var pagerViewAdapter = DynamicViewPagerAdapter(childFragmentManager,binding.tabLayout.tabCount,"")
-        binding.viewPager.adapter = pagerViewAdapter
-        binding.viewPager.adapter = pagerViewAdapter
-
-        binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-            override fun onTabReselected(p0: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabSelected(p0: TabLayout.Tab?) {
-                binding.viewPager.currentItem = p0!!.position
-            }
-
-            override fun onTabUnselected(p0: TabLayout.Tab?) {
-
-            }
-        })
-    }
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
         when (tag) {
@@ -101,33 +82,13 @@ class CRMFragment : BaseDockFragment() {
                     val gson = Gson()
                     val listType: Type = object : TypeToken<List<DynamicLeadsResponse?>?>() {}.type
                     val posts: List<DynamicLeadsResponse> = gson.fromJson<List<DynamicLeadsResponse>>(liveData.value, listType)
-                    //posts.size
-                    for (secName in posts)
+                    sharedPrefManager.setSection(posts.size)
 
-                            binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Hello Fragment"))
-                            val pagerViewAdapter = DynamicViewPagerAdapter(childFragmentManager,binding.tabLayout.tabCount, "")
-                            binding.viewPager.adapter = pagerViewAdapter
-                            binding.viewPager.adapter = pagerViewAdapter
-
-
-
-
-
-                    binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-                        override fun onTabReselected(p0: TabLayout.Tab?) {
-
-                        }
-
-                        override fun onTabSelected(p0: TabLayout.Tab?) {
-                            binding.viewPager.currentItem = p0!!.position
-                        }
-
-                        override fun onTabUnselected(p0: TabLayout.Tab?) {
-
-                        }
-                    })
-
-
+                    posts.forEachIndexed { index, element ->
+                        binding.tabLayout.getTabAt(index)?.text = element.section
+                        Log.i("Index", index.toString())
+                        Log.i("Element", element.section)
+                    }
 
                 }
                 catch (e: Exception){
@@ -138,5 +99,77 @@ class CRMFragment : BaseDockFragment() {
         }
 
 
+    private fun viewPager(){
 
+        setUpViewPager()
+        tabAnimation()
+        setupTabIcons()
+
+        binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                //binding.viewPager.currentItem = p0!!.position
+                if (tab == null)
+                    return
+                val position = tab.position
+                tab_layout.getTabAt(position)?.view?.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        context,
+                        R.anim.zoomin
+                    )
+                )
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                if (tab == null)
+                    return
+                val position = tab.position
+                tab_layout.getTabAt(position)?.view?.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        context,
+                        R.anim.zoomout
+                    )
+                )
+            }
+
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+            }
+        })
+    }
+
+    private fun setUpViewPager() {
+        binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager,sharedPrefManager.getSection())
+        addTabs(binding.viewPager)
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
+    }
+
+    private fun addTabs(viewPager: ViewPager) {
+        val adapter = DynamicViewPagerAdapter(childFragmentManager, sharedPrefManager.getSection())
+        viewPager.adapter = adapter
+    }
+
+    private fun tabAnimation() {
+        binding.tabLayout.getTabAt(1)?.view?.startAnimation(
+            AnimationUtils.loadAnimation(
+                context,
+                R.anim.zoomout
+            )
+        )
+        binding.tabLayout.getTabAt(2)?.view?.startAnimation(
+            AnimationUtils.loadAnimation(
+                context,
+                R.anim.zoomout
+            )
+        )
+
+    }
+
+    private fun setupTabIcons() {
+        binding.tabLayout.getTabAt(0)?.text = "all"
+        binding.tabLayout.getTabAt(1)?.text = "open"
+        binding.tabLayout.getTabAt(2)?.text = "inprocess"
+        binding.tabLayout.getTabAt(3)?.text = "closed"
+        binding.tabLayout.getTabAt(4)?.text = "qualified"
+        binding.tabLayout.getTabAt(5)?.text = "followup"
+        binding.tabLayout.getTabAt(6)?.text = "not_interested"
+    }
 }
