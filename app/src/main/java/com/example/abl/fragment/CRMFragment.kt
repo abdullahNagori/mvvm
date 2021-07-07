@@ -22,12 +22,13 @@ import kotlinx.android.synthetic.main.fragment_crm.*
 import kotlinx.android.synthetic.main.portfolio_fragment.*
 import kotlinx.android.synthetic.main.portfolio_fragment.tab_layout
 import java.lang.reflect.Type
+import java.util.ArrayList
 
 
 class CRMFragment : BaseDockFragment() {
 
     lateinit var binding: FragmentCrmBinding
-    lateinit var pagerAdapter: DynamicViewPagerAdapter
+
 
     // lateinit var list: List<DynamicLeadsItem>
     override fun onCreateView(
@@ -99,6 +100,9 @@ class CRMFragment : BaseDockFragment() {
                 if (tab == null)
                     return
                 val position = tab.position
+                Log.i("xxpos", position.toString())
+
+
                 tab_layout.getTabAt(position)?.view?.startAnimation(
                     AnimationUtils.loadAnimation(
                         context,

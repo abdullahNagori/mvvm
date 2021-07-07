@@ -10,10 +10,11 @@ import com.example.abl.R
 import com.example.abl.base.ClickListner
 import com.example.abl.databinding.ItemCustomerBinding
 import com.example.abl.fragment.Customers
+import com.example.abl.model.DynamicLeadsItem
 
 class CustomerAdapter(val context: Context?, val listner: ClickListner) : RecyclerView.Adapter<CustomerAdapter.ViewHolder>() {
 
-    private lateinit var customerList : ArrayList<Customers>
+    private lateinit var customerList : List<DynamicLeadsItem>
     lateinit var view : ItemCustomerBinding
 
 
@@ -22,10 +23,10 @@ class CustomerAdapter(val context: Context?, val listner: ClickListner) : Recycl
 
 
 
-        fun bindItems(item: Customers) {
-            view.customerName.text = (item.customer_name ?: "N/A")
-            view.phoneNumber.text = "Phone Number : "+item.contact_number
-            view.accountNumber.text = "Account Number : "+ (item.account_num ?: "N/A")
+        fun bindItems(item: DynamicLeadsItem) {
+            view.customerName.text = (item.first_name ?: "N/A")
+            view.phoneNumber.text = "Phone Number : "+item.mobile_phone_number
+            view.accountNumber.text = "Account Number : "+ (item.mobile_phone_number ?: "N/A")
             //view.branch.text = "Branch : "+(item.branch ?: "N/A")
             view.leadStatus.text = "Lead Status : "+(item.lead_status ?: "N/A")
         }
@@ -34,7 +35,7 @@ class CustomerAdapter(val context: Context?, val listner: ClickListner) : Recycl
 
 
 
-    fun setList(list: ArrayList<Customers>){
+    fun setList(list: List<DynamicLeadsItem>){
         customerList = list
         notifyDataSetChanged()
     }

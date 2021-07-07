@@ -85,6 +85,7 @@
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:textSize">@dimen/_14sdp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="tab_text_customer_detail" parent="@android:style/TextAppearance.Widget.TabWidget">

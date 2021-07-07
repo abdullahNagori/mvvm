@@ -89,9 +89,9 @@ class LTDFragment : BaseFragment(), ClickListner {
         else
         {
             adapter = CustomerAdapter(requireContext(), this)
-            adapter.setList(dataList)
-            adapter.notifyDataSetChanged()
-            ltd.adapter = adapter
+//            adapter.setList(dataList)
+//            adapter.notifyDataSetChanged()
+//            ltd.adapter = adapter
             binding.pullToRefresh.isRefreshing = false
 
         }

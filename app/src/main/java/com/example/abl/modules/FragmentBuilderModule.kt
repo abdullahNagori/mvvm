@@ -40,4 +40,7 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeAddLeadFragment(): AddLeadFragment
+
+    @ContributesAndroidInjector
+    fun contributeAllFragment(): AllFragment
 }

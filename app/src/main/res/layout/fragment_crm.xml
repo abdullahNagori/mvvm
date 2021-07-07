@@ -11,10 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="@dimen/margin_small"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_50sdp"
+        android:layout_margin="@dimen/_10sdp"
         app:strokeColor="@color/colorAccent"
         android:theme="@style/Theme.MaterialComponents.Light"
         app:strokeWidth="@dimen/_1sdp"
@@ -30,6 +27,7 @@
             android:layout_height="wrap_content"
             app:tabSelectedTextColor="@color/colorAccent"
             app:tabTextAppearance="@style/tab_text"
+            app:tabMode="scrollable"
             app:tabIndicatorHeight="0dp">
 
     </com.google.android.material.tabs.TabLayout>
