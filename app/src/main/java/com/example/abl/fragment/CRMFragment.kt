@@ -35,15 +35,15 @@ class CRMFragment : BaseDockFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
-      //  viewPager()
+        binding = FragmentCrmBinding.inflate(layoutInflater)
+        getDynamicData("")
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager()
+        //viewPager()
     }
 
     override fun closeDrawer() {
@@ -62,12 +62,6 @@ class CRMFragment : BaseDockFragment() {
         TODO("Not yet implemented")
     }
 
-    private fun initView(){
-        binding = FragmentCrmBinding.inflate(layoutInflater)
-       // getDynamicData("Bearer "+sharedPrefManager.getToken())
-        getDynamicData("Bearer "+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbGxpZWQtYmFuayIsInN1YiI6IjEiLCJpYXQiOjE2MjU1OTgzMzEsImV4cCI6MTYyNTYwMTkzMSwiZGF0YSI6eyJzdWNjZXNzIjp0cnVlLCJjb2RlIjowLCJtZXNzYWdlIjoiTG9naW4gU3VjY2Vzc2Z1bGx5Iiwic2lkIjoiNjYxZDVlZmUyMzQyZGYwYjA4YzE4NTJiMTMyZTFhMTciLCIyX2ZhIjoieWVzIiwidXNlcl9pZCI6IjEifX0.j4VMgc6QkiQdgdBChH3C2kmEVGV8Bb-CMFw3vFdJpOw")
-    }
-
     private fun getDynamicData(token: String){
         myDockActivity?.getUserViewModel()?.getDynamicLeads(token)
     }
@@ -76,34 +70,28 @@ class CRMFragment : BaseDockFragment() {
         super.onSuccess(liveData, tag)
         when (tag) {
             Constants.GET_DYNAMIC_LEADS -> {
-                try
-                {
+                try {
                     Log.d("liveDataValue", liveData.value.toString())
                     val gson = Gson()
                     val listType: Type = object : TypeToken<List<DynamicLeadsResponse?>?>() {}.type
-                    val posts: List<DynamicLeadsResponse> = gson.fromJson<List<DynamicLeadsResponse>>(liveData.value, listType)
-                    sharedPrefManager.setSection(posts.size)
-
-                    posts.forEachIndexed { index, element ->
-                        binding.tabLayout.getTabAt(index)?.text = element.section
-                        Log.i("Index", index.toString())
-                        Log.i("Element", element.section)
-                    }
-
+                    val posts: List<DynamicLeadsResponse> =
+                        gson.fromJson<List<DynamicLeadsResponse>>(liveData.value, listType)
+                    setupViewPager(posts)
+                } catch (e: Exception) {
+                    Log.d("Exception", e.message.toString())
                 }
-                catch (e: Exception){
-                    Log.d("Exception",e.message.toString())
-                }
-            }
             }
         }
+    }
 
-
-    private fun viewPager(){
-
-        setUpViewPager()
+    private fun setupViewPager(data: List<DynamicLeadsResponse>){
+        binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager,data.size)
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
         tabAnimation()
-        setupTabIcons()
+
+        data.forEachIndexed { index, element ->
+            binding.tabLayout.getTabAt(index)?.text = element.section
+        }
 
         binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -136,17 +124,6 @@ class CRMFragment : BaseDockFragment() {
         })
     }
 
-    private fun setUpViewPager() {
-        binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager,sharedPrefManager.getSection())
-        addTabs(binding.viewPager)
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
-    }
-
-    private fun addTabs(viewPager: ViewPager) {
-        val adapter = DynamicViewPagerAdapter(childFragmentManager, sharedPrefManager.getSection())
-        viewPager.adapter = adapter
-    }
-
     private fun tabAnimation() {
         binding.tabLayout.getTabAt(1)?.view?.startAnimation(
             AnimationUtils.loadAnimation(
@@ -160,16 +137,5 @@ class CRMFragment : BaseDockFragment() {
                 R.anim.zoomout
             )
         )
-
-    }
-
-    private fun setupTabIcons() {
-        binding.tabLayout.getTabAt(0)?.text = "all"
-        binding.tabLayout.getTabAt(1)?.text = "open"
-        binding.tabLayout.getTabAt(2)?.text = "inprocess"
-        binding.tabLayout.getTabAt(3)?.text = "closed"
-        binding.tabLayout.getTabAt(4)?.text = "qualified"
-        binding.tabLayout.getTabAt(5)?.text = "followup"
-        binding.tabLayout.getTabAt(6)?.text = "not_interested"
     }
 }

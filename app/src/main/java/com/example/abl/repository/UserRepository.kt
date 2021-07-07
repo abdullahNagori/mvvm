@@ -26,23 +26,23 @@ class UserRepository @Inject constructor(private val api: Api, private val share
     }
 
     fun getUserDetails(token: String): MutableLiveData<String> {
-        return callApi(api.getUserDetails(token), Constants.USER_DETAIL)
+        return callApi(api.getUserDetails("Bearer " + sharedPrefManager.getToken()), Constants.USER_DETAIL)
     }
 
     fun markAttendance(markAttendanceModel: MarkAttendanceModel, token: String): MutableLiveData<String> {
-        return callApi(api.markAttendance(markAttendanceModel, token), Constants.MARK_ATTENDANCE)
+        return callApi(api.markAttendance(markAttendanceModel, "Bearer " + sharedPrefManager.getToken()), Constants.MARK_ATTENDANCE)
     }
 
     fun getLovs(token: String): MutableLiveData<String> {
-        return callApi(api.getLovs(token), Constants.GET_LOVS)
+        return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
     }
 
     fun getDynamicLeads(token: String): MutableLiveData<String> {
-        return callApi(api.getLeadsForDynamicData(token), Constants.GET_DYNAMIC_LEADS)
+        return callApi(api.getLeadsForDynamicData("Bearer " + sharedPrefManager.getToken()), Constants.GET_DYNAMIC_LEADS)
     }
 
     fun addLead(addLeadModelItem: AddLeadModelItem,token: String): MutableLiveData<String> {
-        return callApi(api.addLead(addLeadModelItem,token), Constants.ADD_LEAD)
+        return callApi(api.addLead(addLeadModelItem, "Bearer " + sharedPrefManager.getToken()), Constants.ADD_LEAD)
     }
 
 }

@@ -41,15 +41,14 @@
     <fragment
         android:id="@+id/OTPVerificationFragment"
         android:name="com.example.abl.fragment.OTPVerificationFragment"
-        android:label="o_t_p_verification_fragment"
-        tools:layout="@layout/otp_verification_fragment" >
+        android:label="o_t_p_verification_fragment">
         <action
             android:id="@+id/action_OTPVerificationFragment_to_forgotPassFragment"
             app:destination="@id/forgotPasswordFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right" />
 
         <action
             android:id="@+id/action_forgotPassFragment_to_OTPVerificationFragment"
@@ -57,7 +56,7 @@
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right" />
 
         <action
             android:id="@+id/action_otpFragment_to_welcome"
@@ -65,7 +64,7 @@
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right" />
 
     </fragment>
 

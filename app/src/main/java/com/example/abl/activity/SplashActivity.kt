@@ -8,6 +8,7 @@ import android.os.Looper
 import android.view.View
 import com.example.abl.R
 import com.example.abl.databinding.ActivitySplashBinding
+import com.example.abl.utils.SharedPrefManager
 
 class SplashActivity : AppCompatActivity() {
 
@@ -45,8 +46,16 @@ class SplashActivity : AppCompatActivity() {
 
     private fun nextView() {
 
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
+        val sharedPrefManager = SharedPrefManager(this)
+
+        if (sharedPrefManager.getToken().isNotEmpty()) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        } else {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+
         overridePendingTransition(R.anim.fadein, R.anim.fadeout)
     }
 }
