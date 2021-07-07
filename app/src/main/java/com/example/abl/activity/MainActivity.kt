@@ -1,6 +1,7 @@
 package com.example.abl.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -209,6 +210,13 @@ class MainActivity : DockActivity() {
 
             Constants.CALCULATOR -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_calculator)
+                closeDrawer()
+            }
+
+            Constants.LOGOUT -> {
+                sharedPrefManager.logout()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
                 closeDrawer()
             }
         }

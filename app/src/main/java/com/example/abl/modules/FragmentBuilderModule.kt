@@ -43,4 +43,7 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeAllFragment(): AllFragment
+
+    @ContributesAndroidInjector
+    fun contributeDashboardFragment(): DashboardFragment
 }

@@ -12,6 +12,7 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
     private val AGENT_ID = "KEY_AGENT_ID"
     private val TOKEN = "KEY_TOKEN"
     private val KEY_USER = "KEY_USER"
+    private val KEY_USERNAME = "KEY_USERNAME"
     val sharedPreferences: SharedPreferences = context.getSharedPreferences(Key_Pref, Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
 
@@ -48,6 +49,16 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
 
     fun getToken():String{
         return sharedPreferences.getString(TOKEN,"")!!
+    }
+
+    fun setUsername(name: String?): Boolean{
+        editor.putString(KEY_USERNAME, name);
+        editor.apply();
+        return true;
+    }
+
+    fun getUsername():String?{
+        return sharedPreferences.getString(KEY_USERNAME,"")!!
     }
 
     fun getUserId():String{

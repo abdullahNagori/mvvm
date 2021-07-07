@@ -101,7 +101,6 @@ class OTPVerificationFragment : BaseDockFragment() {
                     val otpResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, OtpResponse::class.java)
                         if (otpResponseEnt?.verify == "yes")
                         {
-                            myDockActivity?.showSuccessMessage(getString(R.string.success))
                             sharedPrefManager.setToken(otpResponseEnt.token.toString())
                             Log.d("liveDataValue", "success")
                             LoginActivity.navController.navigate(R.id.action_otpFragment_to_welcome)

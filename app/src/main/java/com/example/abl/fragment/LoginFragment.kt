@@ -106,19 +106,8 @@ class LoginFragment : BaseDockFragment() {
                         ?.fromJson(liveData.value, LoginResponse::class.java)
 
                     if (routeResponseEnt?.two_factor == "yes") {
-                        myDockActivity?.showSuccessMessage(getString(R.string.success))
                         LoginActivity.navController.navigate(R.id.action_loginFragment_to_otpFragment)
                     }
-//                    else{
-//                        if (routeResponseEnt?.token != null && routeResponseEnt.token!!.isNotEmpty())
-//                        {
-//                            //token saved into shared pref and navigate into welcome
-//                            val welcomeIntent = Intent(context, WelcomeActivity::class.java)
-//                            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-//                            startActivity(welcomeIntent)
-//                            activity?.finish()
-//                            activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
-//                        }
 
                     else {
                         myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))

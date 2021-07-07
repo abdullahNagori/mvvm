@@ -13,6 +13,8 @@ import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.BaseFragment
 import com.example.abl.common.LoadingListener
 import com.example.abl.network.ApiListener
+import com.example.abl.progress.ProgressDialog
+import com.example.abl.progress.ProgressIndicator
 import com.example.abl.utils.SharedPrefManager
 import com.example.abl.viewModel.UserViewModel
 import dagger.android.support.DaggerAppCompatActivity
@@ -23,7 +25,7 @@ import javax.inject.Inject
  */
 
 
-abstract class DockActivity : DaggerAppCompatActivity(), ApiListener {
+abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIndicator {
     abstract fun getDockFrameLayoutId(): Int
 
     val KEY_FRAG_FIRST = "firstFrag"
@@ -33,7 +35,7 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener {
 
     @Inject
     lateinit var sharedPrefManager: SharedPrefManager
-
+    private lateinit var progressBarDialog: ProgressDialog
     private lateinit var userViewModel: UserViewModel
     private lateinit var apiListener: ApiListener
 
@@ -108,6 +110,20 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener {
 
     override fun onFailure(message: String, tag: String) {
         TODO("Not yet implemented")
+    }
+
+    override fun showProgressIndicator() {
+        progressBarDialog = ProgressDialog()
+        progressBarDialog.showDialog(
+            supportFragmentManager,
+            DockActivity::class.java.simpleName
+        )
+    }
+
+    override fun hideProgressIndicator() {
+        if (this::progressBarDialog.isInitialized && progressBarDialog.isAdded ) {
+            progressBarDialog.dismiss()
+        }
     }
 
     abstract fun closeDrawer()

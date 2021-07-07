@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
 import com.example.abl.R
+import com.example.abl.base.BaseDockFragment
 import com.example.abl.databinding.FragmentDashboardBinding
 import com.example.abl.databinding.FragmentForgotPasswordBinding
 import com.github.mikephil.charting.components.Legend
@@ -18,9 +20,10 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.util.*
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseDockFragment() {
 
 
     private lateinit var binding: FragmentDashboardBinding
@@ -40,11 +43,32 @@ class DashboardFragment : Fragment() {
         return binding.root
     }
 
-    private fun init(){
+    override fun closeDrawer() {
+        TODO("Not yet implemented")
+    }
 
+    override fun navigateToFragment(id: Int, args: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setTitle(text: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
+        TODO("Not yet implemented")
+    }
+
+    private fun init(){
         binding = FragmentDashboardBinding.inflate(layoutInflater)
         binding.barchart.description.isEnabled = false
         binding.barchart.setMaxVisibleValueCount(60)
+        binding.name.text = sharedPrefManager.getUsername()
+
+        val sdf = SimpleDateFormat("dd-MM-yyyy")
+        val currentDate = sdf.format(Date())
+        binding.shiftStart.text = "Shift Started At 09:00 AM $currentDate"
+        //System.out.println(" C DATE is  "+currentDate)
     }
 
     private fun initChart(binding: FragmentDashboardBinding, months: List<String>?) {

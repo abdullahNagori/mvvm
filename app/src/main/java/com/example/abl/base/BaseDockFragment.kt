@@ -65,15 +65,18 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
 
     override fun onStarted() {
        // myDockActivity?.onLoadingStarted()
+        myDockActivity?.showProgressIndicator()
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
        // myDockActivity?.onLoadingFinished()
+        myDockActivity?.hideProgressIndicator()
     }
 
     override fun onFailure(message: String, tag: String) {
        // myDockActivity?.onLoadingFinished()
         myDockActivity?.showErrorMessage(message)
+        myDockActivity?.hideProgressIndicator()
     }
 
     override fun showBanner(text: String, type: String) {
