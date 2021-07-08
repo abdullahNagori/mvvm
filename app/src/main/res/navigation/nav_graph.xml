@@ -87,6 +87,8 @@
             app:destination="@id/checkInFormFragment" />
     </fragment>
 
+
+
     <fragment
         android:id="@+id/followup_fragment"
         android:name="com.example.abl.fragment.FollowupFragment"

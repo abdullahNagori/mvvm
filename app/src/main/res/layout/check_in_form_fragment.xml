@@ -162,6 +162,7 @@
         <LinearLayout
             android:id="@+id/ll_date_of_conversion"
             android:orientation="vertical"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -172,6 +173,7 @@
             <TextView
                 android:id="@+id/date_of_conversion"
                 style="@style/customerInfoInputFields"
+                android:visibility="gone"
                 android:hint="xx-xx-xxxx"
                 android:inputType="text" />
         </LinearLayout>

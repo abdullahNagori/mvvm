@@ -41,7 +41,7 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.getLeadsForDynamicData("Bearer " + sharedPrefManager.getToken()), Constants.GET_DYNAMIC_LEADS)
     }
 
-    fun addLead(addLeadModelItem: AddLeadModelItem,token: String): MutableLiveData<String> {
+    fun addLead(addLeadModelItem: AddLeadModelItem): MutableLiveData<String> {
         return callApi(api.addLead(addLeadModelItem, "Bearer " + sharedPrefManager.getToken()), Constants.ADD_LEAD)
     }
 

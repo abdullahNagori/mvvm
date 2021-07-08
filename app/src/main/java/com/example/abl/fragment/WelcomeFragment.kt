@@ -51,7 +51,7 @@ class WelcomeFragment : BaseDockFragment() {
         // Inflate the layout for this fragment
         SharedPrefKeyManager.with(requireContext())
         initView()
-        fabAnimation()
+      //  fabAnimation()
         myDockActivity?.getUserViewModel()?.apiListener = this
         getUserData()
 

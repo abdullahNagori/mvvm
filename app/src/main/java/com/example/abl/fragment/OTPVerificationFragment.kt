@@ -104,7 +104,6 @@ class OTPVerificationFragment : BaseDockFragment() {
                             sharedPrefManager.setToken(otpResponseEnt.token.toString())
                             Log.d("liveDataValue", "success")
                             LoginActivity.navController.navigate(R.id.action_otpFragment_to_welcome)
-
                         }
                         else
                         {

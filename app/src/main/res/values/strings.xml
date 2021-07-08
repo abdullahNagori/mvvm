@@ -484,10 +484,12 @@
     </array>
 
     <array name="select_status">
-        <item>Follow up</item>
-        <item>a</item>
-        <item>b</item>
-        <item>c</item>
+        <item>FOLLOWUP</item>
+        <item>INPROCESS</item>
+        <item>CLOSED</item>
+        <item>NOT INTERESTED</item>
+        <item>INTERESTED</item>
+        <item>NOT AVAILABLE</item>
     </array>
 
     <array name="select_product">

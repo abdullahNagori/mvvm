@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import com.example.abl.R
+import com.example.abl.activity.LoginActivity
+import com.example.abl.activity.MainActivity
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.BaseFragment
 import com.example.abl.constant.Constants
@@ -44,7 +46,7 @@ class AddLeadFragment : BaseDockFragment() {
     }
 
     override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
+        Log.i("navigation","navigate")
     }
 
     override fun setTitle(text: String) {
@@ -61,21 +63,20 @@ class AddLeadFragment : BaseDockFragment() {
 
     private fun auth() {
 
-        when {
-            isEmpty(binding.customerName.text.toString()) -> { showBanner(getString(R.string.error_empty_customer), Constants.ERROR) }
-            isEmpty(binding.contactNum.text.toString()) -> { showBanner(getString(R.string.error_empty_contact), Constants.ERROR) }
-            isEmpty(binding.companyName.text.toString()) -> { showBanner(getString(R.string.error_empty_company), Constants.ERROR) }
-            isEmpty(binding.address.text.toString()) -> { showBanner(getString(R.string.error_empty_address), Constants.ERROR) }
-            else ->
-                saveData()
-//                addLead(CustomerDetail(binding.address.text.toString(),binding.age.text.toString(),binding.cnic.text.toString(),
-//                binding.companyName.text.toString(),binding.contactNum.text.toString(),binding.customerName.text.toString(),binding.esIncome.text.toString(),
-//                binding.gender.toString(),binding.occupation.toString(),binding.sourceOfIncome.toString()),Checkin("test",
-//                "1","2","3","4","5","6","7","8",
-//                "9","10"),"Bearer "+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbGxpZWQtYmFuayIsInN1YiI6IjEiLCJpYXQiOjE2MjU2MDY5NDIsImV4cCI6MTYyNTYxMDU0MiwiZGF0YSI6eyJzdWNjZXNzIjp0cnVlLCJjb2RlIjowLCJtZXNzYWdlIjoiTG9naW4gU3VjY2Vzc2Z1bGx5Iiwic2lkIjoiMDM1OWMwOWQ2ZDI1YTJhODc0MWQ5OTlkODkzMGNlMzAiLCIyX2ZhIjoieWVzIiwidXNlcl9pZCI6IjEifX0.3IAc9e6pS5U_yFb6yteK2YC65V-sj4BKgZl_wfTG5J8")
-        }
 
+            if (!validationhelper.validateString(binding.customerName)) return
+            if (!validationhelper.validateString(binding.contactNum)) return
+            if (!validationhelper.validateString(binding.companyName)) return
+            if (!validationhelper.validateString(binding.address)) return
+
+                addLead(CustomerDetail(binding.address.text.toString(),binding.age.text.toString(),binding.cnic.text.toString(),
+                binding.companyName.text.toString(),binding.contactNum.text.toString(),binding.customerName.text.toString(),binding.esIncome.text.toString(),
+                binding.gender.toString(),binding.occupation.toString(),binding.sourceOfIncome.toString()),Checkin("test",
+                "1000","Satisfied","20-02-2021","22-03-2021","5","Apni Car","7","visit",
+                "43.24","50.57"))
     }
+
+
 
     private fun additionalViewVisibility() {
         binding.AdView.setOnClickListener {
@@ -90,8 +91,8 @@ class AddLeadFragment : BaseDockFragment() {
 
     }
 
-    private fun addLead(customerDetail: CustomerDetail,checkin: Checkin, token: String){
-        myDockActivity?.getUserViewModel()?.addLead(AddLeadModelItem(customerDetail, checkin),token)
+    private fun addLead(customerDetail: CustomerDetail,checkin: Checkin){
+        myDockActivity?.getUserViewModel()?.addLead(AddLeadModelItem(customerDetail, checkin))
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
@@ -106,7 +107,8 @@ class AddLeadFragment : BaseDockFragment() {
 //                    val posts: List<AddLeadModelItem> = gson.fromJson<List<AddLeadModelItem>>(liveData.value, listType)
                     val verifyPassResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, GenericMsgResponse::class.java)
                     Log.i("AddLead", verifyPassResponseEnt.toString())
-                   // saveData()
+                    MainActivity.navController.navigate(R.id.action_nav_visit_to_checkInFormFragment)
+
 
                 }
                 catch (e: Exception){
@@ -117,9 +119,7 @@ class AddLeadFragment : BaseDockFragment() {
         }
     }
 
-    private fun saveData(){
-//        val bundle = Bundle()
-//        bundle.putParcelable(Constant.LEAD_DATA)
-        navigateToFragment(R.id.action_nav_visit_to_checkInFormFragment)
-    }
+
+
+
 }
