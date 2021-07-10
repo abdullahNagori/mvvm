@@ -33,7 +33,7 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.markAttendance(markAttendanceModel, "Bearer " + sharedPrefManager.getToken()), Constants.MARK_ATTENDANCE)
     }
 
-    fun getLovs(token: String): MutableLiveData<String> {
+    fun getLovs(): MutableLiveData<String> {
         return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
     }
 
@@ -41,8 +41,8 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.getLeadsForDynamicData("Bearer " + sharedPrefManager.getToken()), Constants.GET_DYNAMIC_LEADS)
     }
 
-    fun addLead(addLeadModelItem: AddLeadModelItem): MutableLiveData<String> {
-        return callApi(api.addLead(addLeadModelItem, "Bearer " + sharedPrefManager.getToken()), Constants.ADD_LEAD)
+    fun addLead(customerDetail: CustomerDetail): MutableLiveData<String> {
+        return callApi(api.addLead(customerDetail, "Bearer " + sharedPrefManager.getToken()), Constants.ADD_LEAD)
     }
 
 }

@@ -53,7 +53,7 @@ interface Api {
 
     //Add Leads
     @POST("leads/addLead")
-    fun addLead(@Body addLeadModelItem: AddLeadModelItem,
+    fun addLead(@Body customerDetail: CustomerDetail,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 

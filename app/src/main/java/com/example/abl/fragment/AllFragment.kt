@@ -80,9 +80,9 @@ class AllFragment : BaseDockFragment(), ClickListner {
     }
 
     override fun <T> onClick(data: T, createNested: Boolean) {
-
         Log.i("xx2", "Error")
-
     }
+
+
 
 }

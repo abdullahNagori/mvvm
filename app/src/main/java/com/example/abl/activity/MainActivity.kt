@@ -150,6 +150,9 @@ class MainActivity : DockActivity() {
     }
 
 
+    private fun getLov(){
+
+    }
 
     private fun animateNavigationDrawer(drawerLayout: DrawerLayout) {
 
@@ -309,7 +312,6 @@ class MainActivity : DockActivity() {
             binding.appBarMain.sideMenu.addLead.setOnClickListener(::onCLickEvent)
             binding.appBarMain.sideMenu.followup.setOnClickListener(::onCLickEvent)
             binding.appBarMain.sideMenu.close.setOnClickListener(::onCLickEvent)
-
     }
 
     private fun onCLickEvent(view: View) {

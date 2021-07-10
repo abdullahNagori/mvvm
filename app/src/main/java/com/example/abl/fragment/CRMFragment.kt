@@ -100,8 +100,6 @@ class CRMFragment : BaseDockFragment() {
                 if (tab == null)
                     return
                 val position = tab.position
-                Log.i("xxpos", position.toString())
-
 
                 tab_layout.getTabAt(position)?.view?.startAnimation(
                     AnimationUtils.loadAnimation(

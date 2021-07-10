@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import androidx.annotation.IdRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.abl.R
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.BaseFragment
+import com.example.abl.base.BaseView
 import com.example.abl.common.LoadingListener
 import com.example.abl.network.ApiListener
 import com.example.abl.progress.ProgressDialog

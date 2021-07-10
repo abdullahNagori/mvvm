@@ -1,16 +1,23 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
+import androidx.lifecycle.LiveData
 import com.example.abl.R
+import com.example.abl.activity.MainActivity
 import com.example.abl.base.BaseDockFragment
+import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentDashboardBinding
 import com.example.abl.databinding.FragmentForgotPasswordBinding
+import com.example.abl.model.AddLeadResponse
+import com.example.abl.model.LovResponse
+import com.example.abl.utils.GsonFactory
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
@@ -35,6 +42,7 @@ class DashboardFragment : BaseDockFragment() {
         // Inflate the layout for this fragment
 
         init()
+        myDockActivity?.getUserViewModel()?.apiListener = this
 
         setAnim()
         val labels = monthList()
@@ -268,4 +276,5 @@ class DashboardFragment : BaseDockFragment() {
             )
         )
     }
+
 }

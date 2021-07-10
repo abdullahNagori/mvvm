@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import com.example.abl.R
@@ -19,10 +20,14 @@ import com.example.abl.model.*
 import com.example.abl.utils.GsonFactory
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.add_fragment.*
 import java.lang.reflect.Type
 
-class AddLeadFragment : BaseDockFragment() {
+class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
 
+    private var gender : String? = null
+    private var sourceOfIncome : String? = null
+    private var occupation : String? = null
     lateinit var binding: AddFragmentBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +38,9 @@ class AddLeadFragment : BaseDockFragment() {
         myDockActivity?.getUserViewModel()?.apiListener = this
 
         additionalViewVisibility()
-
+        binding.occupation.onItemSelectedListener = this
+        binding.sourceOfIncome.onItemSelectedListener = this
+        binding.gender.onItemSelectedListener = this
         binding.visitLead.setOnClickListener {
             auth()
         }
@@ -69,11 +76,10 @@ class AddLeadFragment : BaseDockFragment() {
             if (!validationhelper.validateString(binding.companyName)) return
             if (!validationhelper.validateString(binding.address)) return
 
-                addLead(CustomerDetail(binding.address.text.toString(),binding.age.text.toString(),binding.cnic.text.toString(),
-                binding.companyName.text.toString(),binding.contactNum.text.toString(),binding.customerName.text.toString(),binding.esIncome.text.toString(),
-                binding.gender.toString(),binding.occupation.toString(),binding.sourceOfIncome.toString()),Checkin("test",
-                "1000","Satisfied","20-02-2021","22-03-2021","5","Apni Car","7","visit",
-                "43.24","50.57"))
+                addLead(CustomerDetail(binding.customerName.text.toString(),binding.contactNum.text.toString(),binding.companyName.text.toString(),
+                    binding.address.text.toString(),binding.cnic.text.toString(),occupation.toString(),sourceOfIncome.toString(),binding.esIncome.text.toString(),
+                binding.age.text.toString(),gender.toString(),"23.45","36.48","7","test","2000","visit",
+                    "10-07-2021","Interested"))
     }
 
 
@@ -91,8 +97,8 @@ class AddLeadFragment : BaseDockFragment() {
 
     }
 
-    private fun addLead(customerDetail: CustomerDetail,checkin: Checkin){
-        myDockActivity?.getUserViewModel()?.addLead(AddLeadModelItem(customerDetail, checkin))
+    private fun addLead(customerDetail: CustomerDetail){
+        myDockActivity?.getUserViewModel()?.addLead(customerDetail)
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
@@ -101,15 +107,14 @@ class AddLeadFragment : BaseDockFragment() {
             Constants.ADD_LEAD ->{
                 try
                 {
-//                    Log.d("liveDataValue", liveData.value.toString())
-//                    val gson = Gson()
-//                    val listType: Type = object : TypeToken<List<AddLeadModelItem?>?>() {}.type
-//                    val posts: List<AddLeadModelItem> = gson.fromJson<List<AddLeadModelItem>>(liveData.value, listType)
-                    val verifyPassResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, GenericMsgResponse::class.java)
-                    Log.i("AddLead", verifyPassResponseEnt.toString())
+                    Log.i("AddLead", liveData.value.toString())
+                    val verifyPassResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, AddLeadResponse::class.java)
+                    Log.i("AddLead", verifyPassResponseEnt?.message.toString())
+                    //verifyPassResponseEnt.data.
+                    CheckInFormFragment.newInstance(verifyPassResponseEnt?.data?.customer_id.toString())
+
+                    Log.i("xxID", verifyPassResponseEnt?.data?.customer_id.toString())
                     MainActivity.navController.navigate(R.id.action_nav_visit_to_checkInFormFragment)
-
-
                 }
                 catch (e: Exception){
                     Log.d("Exception",e.message.toString())
@@ -119,7 +124,29 @@ class AddLeadFragment : BaseDockFragment() {
         }
     }
 
+    override fun onFailure(message: String, tag: String) {
+        super.onFailure(message, tag)
+        myDockActivity?.showErrorMessage(message)
+    }
 
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when (parent?.id) {
+            R.id.occupation -> {
+                occupation = parent.getItemAtPosition(position) as String
+            }
+            R.id.gender -> {
+                gender = parent.getItemAtPosition(position) as String
+            }
+            R.id.source_of_income -> {
+                sourceOfIncome = parent.getItemAtPosition(position) as String
+
+            }
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
+    }
 
 
 }
