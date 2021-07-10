@@ -347,6 +347,8 @@
     <string name="regular_event">Regular event</string>
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
+    <string name="please_select_status">Please select status</string>
+    <string name="please_select_product">Please select product</string>
     <!--New Service-->
 
     <array name="branch_code_name">

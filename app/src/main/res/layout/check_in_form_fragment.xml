@@ -79,7 +79,6 @@
                 android:background="@drawable/bg_holo_black"
                 android:layout_height="match_parent">
 
-
                 <Spinner
                     android:id="@+id/status"
                     android:layout_width="match_parent"
@@ -162,7 +161,6 @@
         <LinearLayout
             android:id="@+id/ll_date_of_conversion"
             android:orientation="vertical"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -186,7 +184,7 @@
             android:layout_height="match_parent">
 
             <Spinner
-                android:id="@+id/s"
+                android:id="@+id/product_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

@@ -16,6 +16,7 @@ import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentDashboardBinding
 import com.example.abl.databinding.FragmentForgotPasswordBinding
 import com.example.abl.model.AddLeadResponse
+import com.example.abl.model.DashboardResponse
 import com.example.abl.model.LovResponse
 import com.example.abl.utils.GsonFactory
 import com.github.mikephil.charting.components.Legend
@@ -34,6 +35,9 @@ class DashboardFragment : BaseDockFragment() {
 
 
     private lateinit var binding: FragmentDashboardBinding
+    private lateinit var todayCall: String
+    private lateinit var todayVisit: String
+    private lateinit var todayFollowup: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +47,7 @@ class DashboardFragment : BaseDockFragment() {
 
         init()
         myDockActivity?.getUserViewModel()?.apiListener = this
-
+        getDashBoardCount()
         setAnim()
         val labels = monthList()
         initChart(binding, labels)
@@ -275,6 +279,30 @@ class DashboardFragment : BaseDockFragment() {
                 R.anim.righttoleft
             )
         )
+    }
+
+    private fun getDashBoardCount(){
+        myDockActivity?.getUserViewModel()?.getDashBoard()
+    }
+
+    override fun onSuccess(liveData: LiveData<String>, tag: String) {
+        super.onSuccess(liveData, tag)
+        when(tag){
+            Constants.DASHBOARD_COUNT ->{
+                Log.i("DashboardCount", liveData.value.toString())
+                val verifyPassResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, DashboardResponse::class.java)
+                todayCall = verifyPassResponseEnt?.today_calls.toString()
+                todayFollowup = verifyPassResponseEnt?.today_followups.toString()
+                todayVisit = verifyPassResponseEnt?.today_visits.toString()
+
+                Log.i("xxcall",verifyPassResponseEnt?.today_calls.toString())
+                Log.i("xxvisit",verifyPassResponseEnt?.today_visits.toString())
+                Log.i("xxfollowup",verifyPassResponseEnt?.today_followups.toString())
+                binding.todayCall.text = todayCall
+                binding.todayVisit.text = todayVisit
+                binding.todaysFollowUp.text = todayFollowup
+            }
+        }
     }
 
 }

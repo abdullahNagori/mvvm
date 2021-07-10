@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.abl.R
 import com.example.abl.databinding.CustomerInfoFragmentBinding
 import com.example.abl.databinding.ProductsFragmentBinding
+import com.example.abl.model.DynamicLeadsItem
 
 
 class ProductsFragment : Fragment() {
@@ -16,7 +17,7 @@ class ProductsFragment : Fragment() {
         fun newInstance() = ProductsFragment()
     }
 
-    lateinit var customers: Customers
+    lateinit var dynamicLeadsItem: DynamicLeadsItem
     lateinit var binding: ProductsFragmentBinding
 
     override fun onCreateView(

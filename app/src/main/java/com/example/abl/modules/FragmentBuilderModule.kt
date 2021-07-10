@@ -49,4 +49,7 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeCheckinFragment(): CheckInFormFragment
+
+    @ContributesAndroidInjector
+    fun contributeCustomerInfoFragment(): CustomerInfoFragment
 }

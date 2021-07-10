@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.abl.R
 import com.example.abl.databinding.CalculatorFragmentBinding
 import com.example.abl.databinding.MeetingQrFragmentBinding
+import com.example.abl.model.DynamicLeadsItem
 
 
 class MeetingQRFragment : Fragment() {
@@ -16,7 +17,7 @@ class MeetingQRFragment : Fragment() {
         fun newInstance() = CalculatorFragment()
     }
 
-    lateinit var customers: Customers
+    lateinit var dynamicLeadsItem: DynamicLeadsItem
     lateinit var binding: MeetingQrFragmentBinding
 
     override fun onCreateView(

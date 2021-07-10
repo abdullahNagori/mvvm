@@ -11,6 +11,7 @@ import com.example.abl.R
 import com.example.abl.adapter.ViewPagerAdapter
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.CustomerDetailsFragmentBinding
+import com.example.abl.model.DynamicLeadsItem
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.portfolio_fragment.*
 
@@ -18,7 +19,8 @@ import kotlinx.android.synthetic.main.portfolio_fragment.*
 class CustomerDetailsFragment : Fragment() {
 
     lateinit var binding: CustomerDetailsFragmentBinding
-    private lateinit var customers: Customers
+  //  private lateinit var customers: Customers
+    private lateinit var dynamicLeadsItem: DynamicLeadsItem
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +66,7 @@ class CustomerDetailsFragment : Fragment() {
 
     private fun initView(){
         binding = CustomerDetailsFragmentBinding.inflate(layoutInflater)
-        customers = arguments?.getParcelable(Constants.CUSTOMER_DATA)!!
+        dynamicLeadsItem = arguments?.getParcelable(Constants.LEAD_DATA)!!
 
     }
 
@@ -111,22 +113,22 @@ class CustomerDetailsFragment : Fragment() {
         val adapter = ViewPagerAdapter(childFragmentManager)
 
         val customerInfoFragment = CustomerInfoFragment()
-        customerInfoFragment.customers = customers
+        customerInfoFragment.dynamicLeadsItem = dynamicLeadsItem
 
         val productsFragment = ProductsFragment()
-        productsFragment.customers = customers
+        productsFragment.dynamicLeadsItem = dynamicLeadsItem
 
         val previousVisitFragment = PreviousVisitFragment()
-        previousVisitFragment.customers = customers
+        previousVisitFragment.dynamicLeadsItem = dynamicLeadsItem
 
         val calculatorFragment = CalculatorFragment()
-        calculatorFragment.customers = customers
+        calculatorFragment.dynamicLeadsItem = dynamicLeadsItem
 
         val meetingQRFragment = MeetingQRFragment()
-        meetingQRFragment.customers = customers
+        meetingQRFragment.dynamicLeadsItem = dynamicLeadsItem
 
         val updateLocationFragment = UpdateLocationFragment()
-        updateLocationFragment.customers = customers
+        updateLocationFragment.dynamicLeadsItem = dynamicLeadsItem
 
         adapter.addFrag(customerInfoFragment, Constants.CUSTOMER_INFO)
         adapter.addFrag(productsFragment, Constants.PRODUCT)

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.abl.R
 import com.example.abl.databinding.MeetingQrFragmentBinding
 import com.example.abl.databinding.UpdateLocationFragmentBinding
+import com.example.abl.model.DynamicLeadsItem
 
 
 class UpdateLocationFragment : Fragment() {
@@ -16,7 +17,7 @@ class UpdateLocationFragment : Fragment() {
         fun newInstance() = CalculatorFragment()
     }
 
-    lateinit var customers: Customers
+    lateinit var dynamicLeadsItem: DynamicLeadsItem
     lateinit var binding: UpdateLocationFragmentBinding
 
     override fun onCreateView(

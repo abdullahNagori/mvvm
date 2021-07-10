@@ -1,5 +1,8 @@
 package com.example.abl.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+@Parcelize
 data class DynamicLeadsItem(
     val address: String,
     val age: String,
@@ -49,4 +52,4 @@ data class DynamicLeadsItem(
     val user_code: String,
     val user_id: String,
     val user_name: String
-)
+):Parcelable

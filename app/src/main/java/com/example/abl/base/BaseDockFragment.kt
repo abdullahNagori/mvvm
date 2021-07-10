@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.abl.R
 import com.example.abl.activity.DockActivity
 import com.example.abl.common.LoadingListener
+import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.network.ApiListener
 import com.example.abl.utils.DateTimeFormatter
 import com.example.abl.utils.SharedPrefManager
@@ -86,6 +87,9 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
         if (activity != null) (activity as DockActivity)
     }
 
+    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
+        if (activity != null) (activity as DockActivity).showDialog(type,contact,dynamicLeadsItem)
+    }
     override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
         val adapter = ArrayAdapter(requireContext(), R.layout.item_spinner, list)
         adapter.setDropDownViewResource(R.layout.item_spinner)

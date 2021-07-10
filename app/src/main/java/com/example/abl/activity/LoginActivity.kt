@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import com.example.abl.R
 import com.example.abl.base.BaseActivity
 import com.example.abl.databinding.ActivityLoginBinding
+import com.example.abl.model.DynamicLeadsItem
 import com.tapadoo.alerter.Alerter
 
 class LoginActivity : DockActivity() {
@@ -65,6 +66,10 @@ class LoginActivity : DockActivity() {
     override fun onSupportNavigateUp(): Boolean {
         navController = findNavController(R.id.nav_host_login_fragment)
         return super.onSupportNavigateUp()
+    }
+
+    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
+        TODO("Not yet implemented")
     }
 
 //    override fun onLoadingStarted() {

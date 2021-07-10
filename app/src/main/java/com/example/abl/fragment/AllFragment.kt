@@ -1,6 +1,7 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import com.example.abl.R
+import com.example.abl.activity.MainActivity
 import com.example.abl.adapter.CustomerAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
@@ -59,7 +61,11 @@ class AllFragment : BaseDockFragment(), ClickListner {
     }
 
     override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
+        if (args != null) {
+            MainActivity.navController.navigate(id, args)
+            return
+        }
+        MainActivity.navController.navigate(id)
     }
 
     override fun setTitle(text: String) {
@@ -80,7 +86,9 @@ class AllFragment : BaseDockFragment(), ClickListner {
     }
 
     override fun <T> onClick(data: T, createNested: Boolean) {
-        Log.i("xx2", "Error")
+        val bundle = Bundle()
+        bundle.putParcelable(Constants.LEAD_DATA,data as Parcelable)
+        navigateToFragment(R.id.customerDetailsFragment,bundle)
     }
 
 

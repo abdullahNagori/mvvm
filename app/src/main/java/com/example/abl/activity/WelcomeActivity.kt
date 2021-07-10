@@ -111,4 +111,8 @@ class WelcomeActivity : DockActivity() {
     override fun navigateToFragment(id: Int, args: Bundle?) {
         TODO("Not yet implemented")
     }
+
+    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
+        TODO("Not yet implemented")
+    }
 }

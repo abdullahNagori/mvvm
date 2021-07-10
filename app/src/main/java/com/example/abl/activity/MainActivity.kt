@@ -17,6 +17,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -30,6 +31,7 @@ import com.example.abl.adapter.ExpandableListAdapter
 import com.example.abl.base.BaseActivity
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
+import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.utils.SharedPrefKeyManager
 import com.example.abl.utils.SharedPrefManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -87,6 +89,10 @@ class MainActivity : DockActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
+        showDialog(type,null,dynamicLeadsItem)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         actionBarMenu = menu
@@ -117,7 +123,9 @@ class MainActivity : DockActivity() {
                 Log.i("xxChecked", "check")
             }else{
                 Log.i("xxChecked", "uncheck")
-             //  navigateToFragment(R.id.action_nav_home_to_welcome_fragment)
+            // LoginActivity.navController.navigate()
+           // Navigation.findNavController().navigate(R.id.nav_graph_actFirstActvity)
+
             }
 
         }
@@ -304,6 +312,10 @@ class MainActivity : DockActivity() {
         }
     }
 
+    private fun callLead() {
+        showDialog(Constants.NTB, null, null)
+    }
+
     fun dropDownMenu(view: View) {
             showOrHide()
             binding.appBarMain.sideMenu.sync.setOnClickListener(::onCLickEvent)
@@ -320,7 +332,7 @@ class MainActivity : DockActivity() {
 
             R.id.sync -> {}
             R.id.upload -> {}
-            R.id.cold_calling -> {}
+            R.id.cold_calling ->  callLead()
             R.id.addLead -> {
                 navigateToFragment(R.id.nav_visit)
             }

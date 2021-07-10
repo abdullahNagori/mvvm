@@ -283,7 +283,7 @@
                             android:gravity="center_horizontal">
 
                             <TextView
-                                android:id="@+id/target_call"
+                                android:id="@+id/today_call"
                                 style="@style/txtTargetDB"
                                 android:text="@string/_10"
                                 android:textColor="@color/colorAccent" />
@@ -319,7 +319,7 @@
                             android:gravity="center_horizontal">
 
                             <TextView
-                                android:id="@+id/target_visit"
+                                android:id="@+id/today_visit"
                                 style="@style/txtTargetDB"
                                 android:text="@string/_10"
                                 android:textColor="@color/colorAccent" />

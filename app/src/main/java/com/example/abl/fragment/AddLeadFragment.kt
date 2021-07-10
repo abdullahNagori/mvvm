@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.example.abl.R
 import com.example.abl.activity.LoginActivity
@@ -53,7 +54,11 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun navigateToFragment(id: Int, args: Bundle?) {
-        Log.i("navigation","navigate")
+        if (args != null) {
+            MainActivity.navController.navigate(id, args)
+            return
+        }
+        MainActivity.navController.navigate(id)
     }
 
     override fun setTitle(text: String) {
@@ -69,16 +74,13 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun auth() {
-
-
             if (!validationhelper.validateString(binding.customerName)) return
             if (!validationhelper.validateString(binding.contactNum)) return
             if (!validationhelper.validateString(binding.companyName)) return
             if (!validationhelper.validateString(binding.address)) return
-
                 addLead(CustomerDetail(binding.customerName.text.toString(),binding.contactNum.text.toString(),binding.companyName.text.toString(),
                     binding.address.text.toString(),binding.cnic.text.toString(),occupation.toString(),sourceOfIncome.toString(),binding.esIncome.text.toString(),
-                binding.age.text.toString(),gender.toString(),"23.45","36.48","7","test","2000","visit",
+                    binding.age.text.toString(),gender.toString(),"23.45","36.48","7","test","2000","visit",
                     "10-07-2021","Interested"))
     }
 
@@ -114,7 +116,13 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                     CheckInFormFragment.newInstance(verifyPassResponseEnt?.data?.customer_id.toString())
 
                     Log.i("xxID", verifyPassResponseEnt?.data?.customer_id.toString())
-                    MainActivity.navController.navigate(R.id.action_nav_visit_to_checkInFormFragment)
+//                    MainActivity.navController.navigate(R.id.action_nav_visit_to_checkInFormFragment)
+                    var cusID = verifyPassResponseEnt?.data?.customer_id
+                    val bundle = Bundle()
+                    bundle.putString("customer_id", cusID)
+                    Toast.makeText(requireContext(),verifyPassResponseEnt?.message,Toast.LENGTH_SHORT).show()
+                    Log.i("xxID", verifyPassResponseEnt?.message.toString())
+                    navigateToFragment(R.id.action_nav_visit_to_checkInFormFragment, bundle)
                 }
                 catch (e: Exception){
                     Log.d("Exception",e.message.toString())

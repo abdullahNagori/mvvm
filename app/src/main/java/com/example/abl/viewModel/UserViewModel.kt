@@ -1,6 +1,7 @@
 package com.example.abl.viewModel
 
 import androidx.lifecycle.ViewModel
+import com.example.abl.fragment.CheckinModel
 import com.example.abl.model.*
 import com.example.abl.network.ApiListener
 import com.example.abl.repository.UserRepository
@@ -53,5 +54,15 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
     fun addLead(customerDetail: CustomerDetail){
         userRepository.apiListener = apiListener
         userRepository.addLead(customerDetail)
+    }
+
+    fun addLeadCheckin(checkinModel: CheckinModel){
+        userRepository.apiListener = apiListener
+        userRepository.addLeadCheckin(checkinModel)
+    }
+
+    fun getDashBoard() {
+        userRepository.apiListener = apiListener
+        userRepository.getDashboard()
     }
 }

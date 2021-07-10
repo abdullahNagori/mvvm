@@ -1,5 +1,6 @@
 package com.example.abl.network
 
+import com.example.abl.fragment.CheckinModel
 import com.example.abl.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -58,4 +59,14 @@ interface Api {
     ): Call<ResponseBody>
 
 
+    //Add Lead Checkin
+    @POST("leads/addLeadCheckin")
+    fun addLeadCheckin(@Body checkinModel: CheckinModel,
+                @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    //Add Lead Checkin
+    @GET("leads/getDashboard")
+    fun getDashboard( @Header("Authorization") token: String
+    ): Call<ResponseBody>
 }

@@ -85,6 +85,7 @@
                     android:text="@string/account_no" />
 
                 <TextView
+                    android:id="@+id/account_number"
                     style="@style/customerInfoInputFields"
                     android:hint="@string/dummy_account_X"
                     android:inputType="text" />
@@ -98,7 +99,7 @@
             android:text="@string/branch_code_name" />
 
         <TextView
-            android:id="@+id/address"
+            android:id="@+id/branch_code_name"
             style="@style/customerInfoInputFields"
             android:hint="@string/dummy_branch_name_code"
             android:inputType="text" />
@@ -131,6 +132,7 @@
 
 
                     <TextView
+                        android:id="@+id/account_type"
                         style="@style/customerInfoInputFields"
                         android:hint="@string/current_account"
                         android:inputType="text" />

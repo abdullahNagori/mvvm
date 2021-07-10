@@ -2,6 +2,7 @@ package com.example.abl.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.abl.constant.Constants
+import com.example.abl.fragment.CheckinModel
 import com.example.abl.model.*
 import com.example.abl.network.Api
 import com.example.abl.utils.SharedPrefManager
@@ -43,6 +44,14 @@ class UserRepository @Inject constructor(private val api: Api, private val share
 
     fun addLead(customerDetail: CustomerDetail): MutableLiveData<String> {
         return callApi(api.addLead(customerDetail, "Bearer " + sharedPrefManager.getToken()), Constants.ADD_LEAD)
+    }
+
+    fun addLeadCheckin(checkinModel: CheckinModel): MutableLiveData<String> {
+        return callApi(api.addLeadCheckin(checkinModel, "Bearer " + sharedPrefManager.getToken()), Constants.ADD_LEAD_CHECKIN)
+    }
+
+    fun getDashboard(): MutableLiveData<String> {
+        return callApi(api.getDashboard( "Bearer " + sharedPrefManager.getToken()), Constants.DASHBOARD_COUNT)
     }
 
 }
