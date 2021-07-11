@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.CheckBox
+import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.databinding.ItemCheckboxBinding
@@ -19,7 +20,7 @@ class ProductAdapter(val context: Context?, val list: List<CompanyProduct>, val 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val checkbox : CheckBox = itemView.checkbox
+        val checkbox : RadioButton = itemView.checkbox
 
         fun bindItems(item: CompanyProduct) {
             view.text.text = item.product_name.toString()
@@ -44,16 +45,18 @@ class ProductAdapter(val context: Context?, val list: List<CompanyProduct>, val 
                 }
             }
         }
-        holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                newProductList.add((list[position]))
-            }else {
-                newProductList.remove(list[position])
-                selectedList.remove(list[position])
-            }
+        holder.checkbox.setOnClickListener {
+
+         //   holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+             //   if (isChecked) {
+                    newProductList.add((list[position]))
+//                } else {
+//                    newProductList.remove(list[position])
+//                    selectedList.remove(list[position])
+
+           // }
+
         }
-
-
         holder.itemView.animation =
             AnimationUtils.loadAnimation(context, R.anim.slide_transition_animation)
     }

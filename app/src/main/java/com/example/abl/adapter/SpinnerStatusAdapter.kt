@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.CheckBox
+import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.databinding.ItemCheckboxBinding
@@ -19,7 +20,7 @@ class SpinnerStatusAdapter(val context: Context?, val list: List<CompanyVisitSta
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val checkbox : CheckBox = itemView.checkbox
+        val checkbox : RadioButton = itemView.checkbox
 
         fun bindItems(item: CompanyVisitStatu) {
             view.text.text = item.name.toString()
@@ -44,14 +45,18 @@ class SpinnerStatusAdapter(val context: Context?, val list: List<CompanyVisitSta
                 }
             }
         }
-        holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                newProductList.add((list[position]))
-            }else {
-                newProductList.remove(list[position])
-                selectedList.remove(list[position])
-            }
+
+        holder.checkbox.setOnClickListener {
+            newProductList.add((list[position]))
         }
+//        holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+//            if (isChecked) {
+//                newProductList.add((list[position]))
+//            }else {
+//                newProductList.remove(list[position])
+//                selectedList.remove(list[position])
+//            }
+//        }
 
 
         holder.itemView.animation =

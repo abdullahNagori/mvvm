@@ -8,6 +8,7 @@
     <string name="enter_customer_name">Enter Customer Name</string>
     <string name="please_select_date">Please Select Date</string>
     <string name="enter_ac_name">Enter Account No</string>
+    <string name="enter_amount">Enter Amount</string>
     <string name="contact_number">Contact Number *</string>
     <string name="contact_number_wdout_asterik">Contact Number </string>
     <string name="enter_contact_number">Enter Contact Number</string>
@@ -409,7 +410,7 @@
 
 
     <array name="occupation">
-        <item>Select Occupation</item>
+        <item>Select Product</item>
         <item>a</item>
         <item>b</item>
         <item>c</item>

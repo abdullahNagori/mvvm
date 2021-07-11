@@ -100,6 +100,14 @@
         <item name="android:contentDescription">@string/app_name</item>
     </style>
 
+    <style name="spinner_style">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:dropDownWidth">match_parent</item>
+        <item name="android:dropDownHeight">500dp</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <item name="android:dropDownSelector">@android:color/white</item>
+    </style>
+
     <style name="customerInfoInputFields">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

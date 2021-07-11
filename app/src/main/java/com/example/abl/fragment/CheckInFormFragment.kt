@@ -70,7 +70,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
         //customerID = arguments?.getString(CUS_ID).toString()
-        getLov()
+        //getLov()
 
         GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString("customer"), AddLeadResponseModel::class.java).let {
             it?.let {
