@@ -12,6 +12,7 @@ import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityWelcomeBinding
 import com.example.abl.model.*
 import com.example.abl.utils.GsonFactory
+import com.tapadoo.alerter.Alerter
 
 class WelcomeActivity : DockActivity() {
 
@@ -33,11 +34,25 @@ class WelcomeActivity : DockActivity() {
     }
 
     override fun showErrorMessage(message: String) {
-        TODO("Not yet implemented")
+        Alerter.create(this)
+            .setTitle(getString(R.string.error))
+            .setText(message)
+            .setDuration(5000)
+            .setIcon(R.drawable.ic_close)
+            .setBackgroundColorRes(R.color.error_color)
+            .enableSwipeToDismiss()
+            .show()
     }
 
     override fun showSuccessMessage(message: String) {
-        TODO("Not yet implemented")
+        Alerter.create(this)
+            .setTitle(getString(R.string.success))
+            .setText(message)
+            .setDuration(5000)
+            .setIcon(R.drawable.ic_close)
+            .setBackgroundColorRes(R.color.banner_green_color)
+            .enableSwipeToDismiss()
+            .show()
     }
 
     private fun initView(){

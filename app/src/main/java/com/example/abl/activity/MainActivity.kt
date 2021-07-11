@@ -34,6 +34,7 @@ import com.example.abl.databinding.ActivityMainBinding
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.utils.SharedPrefKeyManager
 import com.example.abl.utils.SharedPrefManager
+import com.tapadoo.alerter.Alerter
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.reflect.Array.get
 import java.nio.file.Paths.get
@@ -77,11 +78,25 @@ class MainActivity : DockActivity() {
     }
 
     override fun showErrorMessage(message: String) {
-        Log.i("Error", message)
+        Alerter.create(this)
+            .setTitle(getString(R.string.error))
+            .setText(message)
+            .setDuration(5000)
+            .setIcon(R.drawable.ic_close)
+            .setBackgroundColorRes(R.color.error_color)
+            .enableSwipeToDismiss()
+            .show()
     }
 
     override fun showSuccessMessage(message: String) {
-        TODO("Not yet implemented")
+        Alerter.create(this)
+            .setTitle(getString(R.string.success))
+            .setText(message)
+            .setDuration(5000)
+            .setIcon(R.drawable.ic_close)
+            .setBackgroundColorRes(R.color.banner_green_color)
+            .enableSwipeToDismiss()
+            .show()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -156,7 +171,6 @@ class MainActivity : DockActivity() {
         prepareSideMenu()
 
     }
-
 
     private fun getLov(){
 

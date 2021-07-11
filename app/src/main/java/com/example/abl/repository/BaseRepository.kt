@@ -49,12 +49,9 @@ open class BaseRepository {
                     }
                     catch (e: Exception){
                         apiListener?.onFailure("Internal Server Error", tag)
-
                     }
-
                 }
             }
-
         })
         return apiResponse
     }

@@ -36,6 +36,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     lateinit var binding: CheckInFormFragmentBinding
     private lateinit var mCalender: Calendar
     lateinit var customerID: String
+    lateinit var customer: AddLeadResponseModel
 
     // private lateinit var visitStatus: CompanyVisitStatu
     private var productDetailsFragment: ProductDialogFragment? = null
@@ -66,15 +67,24 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         initView()
-        customerID = arguments?.getString(CUS_ID).toString()
         myDockActivity?.getUserViewModel()?.apiListener = this
+        //customerID = arguments?.getString(CUS_ID).toString()
         getLov()
+
+        GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString("customer"), AddLeadResponseModel::class.java).let {
+            it?.let {
+                binding.customerName.setText(it.first_name)
+                binding.contactNo.setText(it.mobile_phone_number)
+                //visitStatus = it.status
+                customerID = it.customer_id
+            }
+        }
 
         arguments?.getParcelable<DynamicLeadsItem>(Constants.LEAD_DATA).let {
             it?.let { it1 -> setData(it1) }
         }
+
         binding.product.setOnClickListener {
             onClickItemSelected(productLovList)
         }
@@ -103,7 +113,6 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
         statusWiseViews()
 
-
         return binding.root
     }
 
@@ -131,7 +140,6 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     override fun setTitle(text: String) {
         TODO("Not yet implemented")
     }
-
 
     private fun initView() {
 

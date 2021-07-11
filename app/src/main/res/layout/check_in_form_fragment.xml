@@ -113,7 +113,7 @@
             android:baselineAligned="false"
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/_3sdp"
-            android:weightSum="2">
+            android:weightSum="1">
 
             <LinearLayout
                 android:id="@+id/ll_date"
@@ -142,8 +142,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:orientation="vertical">
-
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/txtStyle"
@@ -162,7 +162,8 @@
             android:id="@+id/ll_date_of_conversion"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <TextView
                 style="@style/txtStyle"
@@ -173,44 +174,52 @@
                 style="@style/customerInfoInputFields"
                 android:hint="xx-xx-xxxx"
                 android:inputType="text" />
+
         </LinearLayout>
 
-        <TextView
-            style="@style/txtStyle"
-            android:text="@string/product" />
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Spinner
-                android:id="@+id/product_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:backgroundTint="@color/colorAccent"
-                android:gravity="center_vertical" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/product_view_container">
 
             <TextView
-                android:id="@+id/product"
-                android:hint="Select Product"
-                style="@style/customerInfoInputFields"/>
+                style="@style/txtStyle"
+                android:text="@string/product" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Spinner
+                    android:id="@+id/product_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:backgroundTint="@color/colorAccent"
+                    android:gravity="center_vertical" />
+
+                <TextView
+                    android:id="@+id/product"
+                    android:hint="Select Product"
+                    style="@style/customerInfoInputFields"/>
 
 
-        </RelativeLayout>
+            </RelativeLayout>
 
+            <TextView
+                style="@style/txtStyle"
+                android:text="@string/amount" />
 
-        <TextView
-            style="@style/txtStyle"
-            android:text="@string/amount" />
+            <EditText
+                android:id="@+id/amount"
+                style="@style/customerInfoInputFields"
+                android:hint="@string/dummy_amt"
+                android:maxLength="8"
+                android:inputType="numberDecimal" />
 
-        <EditText
-            android:id="@+id/amount"
-            style="@style/customerInfoInputFields"
-            android:hint="@string/dummy_amt"
-            android:maxLength="8"
-            android:inputType="numberDecimal" />
-
+        </LinearLayout>
 
         <TextView
             style="@style/txtStyle"
@@ -230,7 +239,6 @@
             style="@style/btnStyle"
             android:layout_marginBottom="@dimen/_25sdp"
             android:text="@string/submit" />
-
 
     </LinearLayout>
 

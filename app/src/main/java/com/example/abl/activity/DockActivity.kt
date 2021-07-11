@@ -27,6 +27,7 @@ import com.example.abl.progress.ProgressDialog
 import com.example.abl.progress.ProgressIndicator
 import com.example.abl.utils.SharedPrefManager
 import com.example.abl.viewModel.UserViewModel
+import com.tapadoo.alerter.Alerter
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 

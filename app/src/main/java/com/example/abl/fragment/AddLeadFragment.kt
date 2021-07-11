@@ -80,7 +80,7 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
             if (!validationhelper.validateString(binding.address)) return
                 addLead(CustomerDetail(binding.customerName.text.toString(),binding.contactNum.text.toString(),binding.companyName.text.toString(),
                     binding.address.text.toString(),binding.cnic.text.toString(),occupation.toString(),sourceOfIncome.toString(),binding.esIncome.text.toString(),
-                    binding.age.text.toString(),gender.toString(),"23.45","36.48","7","test","2000","visit",
+                    binding.age.text.toString(),gender.toString(),"23.45","36.48","1","SMS","2000","followup",
                     "10-07-2021","Interested"))
     }
 
@@ -109,20 +109,27 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
             Constants.ADD_LEAD ->{
                 try
                 {
-                    Log.i("AddLead", liveData.value.toString())
-                    val verifyPassResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, AddLeadResponse::class.java)
-                    Log.i("AddLead", verifyPassResponseEnt?.message.toString())
-                    //verifyPassResponseEnt.data.
-                    CheckInFormFragment.newInstance(verifyPassResponseEnt?.data?.customer_id.toString())
+                    //Log.i("AddLead", liveData.value.toString())
+                    val addLeadResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, AddLeadResponse::class.java)
+                    if (addLeadResponse?.data != null) {
+                        val bundle = Bundle()
+                        //bundle.putString("customer_id", cusID)
+                        bundle.putString("customer", GsonFactory.getConfiguredGson()?.toJson(addLeadResponse?.data)!!)
+                        //Toast.makeText(requireContext(),verifyPassResponseEnt?.message,Toast.LENGTH_SHORT).show()
+                        //Log.i("xxID", verifyPassResponseEnt?.message.toString())
+                        navigateToFragment(R.id.action_nav_visit_to_checkInFormFragment, bundle)
+                    }
 
-                    Log.i("xxID", verifyPassResponseEnt?.data?.customer_id.toString())
+                    //Log.i("AddLead", verifyPassResponseEnt?.message.toString())
+                    //verifyPassResponseEnt.data.
+                    //CheckInFormFragment.newInstance(verifyPassResponseEnt?.data?.customer_id.toString())
+
+                    //Log.i("xxID", verifyPassResponseEnt?.data?.customer_id.toString())
 //                    MainActivity.navController.navigate(R.id.action_nav_visit_to_checkInFormFragment)
-                    var cusID = verifyPassResponseEnt?.data?.customer_id
-                    val bundle = Bundle()
-                    bundle.putString("customer_id", cusID)
-                    Toast.makeText(requireContext(),verifyPassResponseEnt?.message,Toast.LENGTH_SHORT).show()
-                    Log.i("xxID", verifyPassResponseEnt?.message.toString())
-                    navigateToFragment(R.id.action_nav_visit_to_checkInFormFragment, bundle)
+                    //var cusID = verifyPassResponseEnt?.data?.customer_id
+                    //bundle.putString("customer_id", cusID)
+                    //Toast.makeText(requireContext(),verifyPassResponseEnt?.message,Toast.LENGTH_SHORT).show()
+                    //Log.i("xxID", verifyPassResponseEnt?.message.toString())
                 }
                 catch (e: Exception){
                     Log.d("Exception",e.message.toString())
