@@ -30,17 +30,18 @@ import java.util.*
 
 
 class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
+    lateinit var binding: AddFragmentBinding
 
-    private var gender: String? = null
-    private var sourceOfIncome: String? = null
-    private var occupation: String? = null
     lateinit var productLovList: ArrayList<CompanyProduct>
-    var selectedList: ArrayList<String>? = null
-    var productName: String? = null
-    var productID: String? = null
+    var selectedProduct: CompanyProduct? = null
+    private var sourceOfIncome: String? = null
+    private var gender: String? = null
+    private var occupation: String? = null
+
+    //var selectedList: ArrayList<String>? = null
     var latitude = 0.0
     var longitude = 0.0
-    lateinit var binding: AddFragmentBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,20 +49,16 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         // Inflate the layout for this fragment
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
-        getLov()
         additionalViewVisibility()
         binding.occupation.onItemSelectedListener = this
         binding.sourceOfIncome.onItemSelectedListener = this
         binding.gender.onItemSelectedListener = this
         getLocation()
+        getLov()
+
         binding.visitLead.setOnClickListener {
             auth()
         }
-
-//        binding.productAddLead.setOnClickListener{
-//            onClickItemSelected(productLovList)
-//        }
-
 
         return binding.root
     }
@@ -101,8 +98,7 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         if (!validationhelper.validateString(binding.address)) return
         if (!validationhelper.validateString(binding.amount)) return
 
-        addLead(
-            CustomerDetail(
+        addLead(CustomerDetail(
                 binding.customerName.text.toString(),
                 binding.contactNum.text.toString(),
                 binding.companyName.text.toString(),
@@ -115,18 +111,13 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                 gender.toString(),
                 latitude.toString(),
                 longitude.toString(),
-                productID.toString(),
-                productName.toString(),
+                (selectedProduct?.record_id)!!,
+                (selectedProduct?.product_name)!!,
                 binding.amount.text.toString(),
-                "followup",
-                "10-07-2021",
-                "Interested"
-            )
-        )
-
-
+                "",
+                "",
+                ""))
     }
-
 
     private fun additionalViewVisibility() {
         binding.AdView.setOnClickListener {
@@ -138,7 +129,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                 binding.plus.text = "-"
             }
         }
-
     }
 
 
@@ -151,19 +141,10 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         when (tag) {
             Constants.ADD_LEAD -> {
                 try {
-                    //Log.i("AddLead", liveData.value.toString())
-                    val addLeadResponse = GsonFactory.getConfiguredGson()
-                        ?.fromJson(liveData.value, AddLeadResponse::class.java)
-                    if (addLeadResponse?.data != null) {
+                    val addLeadResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, AddLeadResponseModel::class.java)
+                    if (addLeadResponse != null) {
                         val bundle = Bundle()
-                        //bundle.putString("customer_id", cusID)
-                        bundle.putString(
-                            "customer", GsonFactory.getConfiguredGson()?.toJson(
-                                addLeadResponse.data
-                            )!!
-                        )
-                        //Toast.makeText(requireContext(),verifyPassResponseEnt?.message,Toast.LENGTH_SHORT).show()
-                        //Log.i("xxID", verifyPassResponseEnt?.message.toString())
+                        bundle.putString("customer", GsonFactory.getConfiguredGson()?.toJson(addLeadResponse)!!)
                         navigateToFragment(R.id.action_nav_visit_to_checkInFormFragment, bundle)
                     }
                 } catch (e: Exception) {
@@ -173,9 +154,7 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
 
             Constants.GET_LOVS -> {
                 try {
-                    Log.i("AddLead", liveData.value.toString())
-                    val lovResponse = GsonFactory.getConfiguredGson()
-                        ?.fromJson(liveData.value, LovResponse::class.java)
+                    val lovResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LovResponse::class.java)
                     productLovList = lovResponse?.company_products as ArrayList<CompanyProduct>
                     onClickItemSelected(productLovList)
                     //binding.status.adapter = initiateListArrayAdapter(visitStatusList)
@@ -183,7 +162,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                     Log.d("Exception", e.message.toString())
                 }
             }
-
         }
     }
 
@@ -198,17 +176,8 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                             override fun onNothingSelected(parent: AdapterView<*>?) {
                             }
 
-                            override fun onItemSelected(
-                                parent: AdapterView<*>?,
-                                view: View?,
-                                position: Int,
-                                id: Long
-                            ) {
-//                            sourceOfIncome = parent?.getItemAtPosition(position) as String
-//                            val selectedItemText: String =
-//                                productLovList[binding.productSpinner.selectedItemPosition].product_name
-                                productName = productLovList[position].product_name
-                                productID = productLovList[position].product_code
+                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                selectedProduct = productLovList[position];
                             }
                         }
                 }
@@ -275,6 +244,4 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
 
         }
     }
-
-
 }
