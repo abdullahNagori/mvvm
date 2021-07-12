@@ -138,6 +138,7 @@ class MainActivity : DockActivity() {
                 Log.i("xxChecked", "check")
             }else{
                 Log.i("xxChecked", "uncheck")
+                startActivity(Intent(this, WelcomeActivity::class.java))
             // LoginActivity.navController.navigate()
            // Navigation.findNavController().navigate(R.id.nav_graph_actFirstActvity)
 

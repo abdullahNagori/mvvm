@@ -40,16 +40,13 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIn
     abstract fun getDockFrameLayoutId(): Int
 
     val KEY_FRAG_FIRST = "firstFrag"
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
     @Inject
     lateinit var sharedPrefManager: SharedPrefManager
     private lateinit var progressBarDialog: ProgressDialog
     private lateinit var userViewModel: UserViewModel
-    private lateinit var apiListener: ApiListener
-
+    lateinit var apiListener: ApiListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,11 +146,11 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIn
     }
 
     override fun onStarted() {
-        TODO("Not yet implemented")
+        showProgressIndicator()
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
-        TODO("Not yet implemented")
+     // apiListener?.onSuccess(liveData, tag)
     }
 
     override fun onFailure(message: String, tag: String) {

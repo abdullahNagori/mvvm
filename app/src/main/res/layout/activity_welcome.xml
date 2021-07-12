@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/splash_background">
 
-
     <ImageView
         android:id="@+id/imgLogo"
         android:layout_width="match_parent"
@@ -54,16 +53,21 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_arrow"
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:srcCompat="@drawable/ic_arrow"-->
+<!--        android:id="@+id/fab"-->
+<!--        app:tint="@null"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:backgroundTint="@color/colorAccent"-->
+<!--        android:layout_margin="@dimen/_20ssp"/>-->
+    <Button
         android:id="@+id/fab"
-        app:tint="@null"
+        style="@style/btnStyle"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:backgroundTint="@color/colorAccent"
-        android:layout_margin="@dimen/_20ssp"/>
-
+        android:layout_margin="@dimen/_20ssp"
+        android:text="@string/start_your_shift" />
 </RelativeLayout>
 
