@@ -73,7 +73,7 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIn
         inputManager.hideSoftInputFromWindow(view.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
-    fun replaceDockableFragmentWithoutBackStack(frag: BaseFragment?) {
+    fun replaceDockableFragmentWithoutBackStack(frag: BaseDockFragment?) {
         val transaction = supportFragmentManager
             .beginTransaction()
         transaction.replace(getDockFrameLayoutId(), frag!!)
