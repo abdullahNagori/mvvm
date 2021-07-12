@@ -167,7 +167,7 @@
     <string name="new_password">New Password</string>
     <string name="create_password">Create Password</string>
     <string name="error_empty_field">Empty field not allowed</string>
-    <string name="password_hint">Make sure to chose minimum 8 characters password,\nhint: John@123</string>
+    <string name="password_hint">Make sure to chose minimum 8 characters hint: John@123</string>
     <string name="error_wrong_password_pattern">Password with minimum 8 characters having:\n\u2022 Small letter(s)\n\u2022 Capital letter(s)\n\u2022 Number(s)\n\u2022 Special character(s)</string>
     <string name="error_different_fields">Password didn\'t match</string>
     <string name="todays_follow_up">TODAY\'S FOLLOW UP</string>

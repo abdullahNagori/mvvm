@@ -2,8 +2,11 @@ package com.example.abl.activity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -21,12 +24,14 @@ import com.example.abl.base.BaseFragment
 import com.example.abl.base.BaseView
 import com.example.abl.common.LoadingListener
 import com.example.abl.constant.Constants
+import com.example.abl.databinding.DialogPasswordInstructionBinding
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.network.ApiListener
 import com.example.abl.progress.ProgressDialog
 import com.example.abl.progress.ProgressIndicator
 import com.example.abl.utils.SharedPrefManager
 import com.example.abl.viewModel.UserViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tapadoo.alerter.Alerter
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject

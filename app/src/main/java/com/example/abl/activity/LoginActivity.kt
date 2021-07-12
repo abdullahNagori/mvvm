@@ -72,6 +72,10 @@ class LoginActivity : DockActivity() {
         TODO("Not yet implemented")
     }
 
+    override fun showPasswordchangingInstructions(text: String?) {
+        TODO("Not yet implemented")
+    }
+
 //    override fun onLoadingStarted() {
 ////        progressBar?.visibility = View.VISIBLE
 ////        loading = true

@@ -49,8 +49,15 @@ class SplashActivity : AppCompatActivity() {
         val sharedPrefManager = SharedPrefManager(this)
 
         if (sharedPrefManager.getToken().isNotEmpty()) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            if (sharedPrefManager.getShiftStart()){
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+            else{
+                startActivity(Intent(this, WelcomeActivity::class.java))
+                finish()
+            }
+
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()

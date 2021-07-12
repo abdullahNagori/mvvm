@@ -76,15 +76,17 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_holo_black"
                 android:layout_height="match_parent">
 
                 <Spinner
                     android:id="@+id/status"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@color/colorAccent"
-                    android:entries="@array/select_status" />
+                    android:backgroundTint="@color/colorAccent"/>
+                <TextView
+                    android:id="@+id/add_status"
+                    android:hint=""
+                    style="@style/customerInfoInputFields"/>
             </RelativeLayout>
 
 

@@ -166,17 +166,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                         //Log.i("xxID", verifyPassResponseEnt?.message.toString())
                         navigateToFragment(R.id.action_nav_visit_to_checkInFormFragment, bundle)
                     }
-
-                    //Log.i("AddLead", verifyPassResponseEnt?.message.toString())
-                    //verifyPassResponseEnt.data.
-                    //CheckInFormFragment.newInstance(verifyPassResponseEnt?.data?.customer_id.toString())
-
-                    //Log.i("xxID", verifyPassResponseEnt?.data?.customer_id.toString())
-//                    MainActivity.navController.navigate(R.id.action_nav_visit_to_checkInFormFragment)
-                    //var cusID = verifyPassResponseEnt?.data?.customer_id
-                    //bundle.putString("customer_id", cusID)
-                    //Toast.makeText(requireContext(),verifyPassResponseEnt?.message,Toast.LENGTH_SHORT).show()
-                    //Log.i("xxID", verifyPassResponseEnt?.message.toString())
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }
@@ -204,7 +193,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                 if (productLovList.size > 0) {
                     val adapter = CustomArrayAdapter(requireContext(), lovList)
                     binding.productSpinner.adapter = adapter
-
                     binding.productSpinner.onItemSelectedListener =
                         object : AdapterView.OnItemSelectedListener {
                             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -219,7 +207,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
 //                            sourceOfIncome = parent?.getItemAtPosition(position) as String
 //                            val selectedItemText: String =
 //                                productLovList[binding.productSpinner.selectedItemPosition].product_name
-
                                 productName = productLovList[position].product_name
                                 productID = productLovList[position].product_code
                             }

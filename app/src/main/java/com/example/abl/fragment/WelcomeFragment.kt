@@ -56,13 +56,13 @@ class WelcomeFragment : BaseDockFragment() {
         getUserData()
 
         binding.fab.setOnClickListener {
-            SharedPrefKeyManager.put(true, Constants.IS_SHIFT)
+
             markAttendance("checkin", "23.45", "35.40")
-            val welcomeIntent = Intent(context, MainActivity::class.java)
-            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(welcomeIntent)
-            activity?.finish()
-            activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
+//            val welcomeIntent = Intent(context, MainActivity::class.java)
+//            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+//            startActivity(welcomeIntent)
+//            activity?.finish()
+//            activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
         }
 
         return binding.root
@@ -139,6 +139,7 @@ class WelcomeFragment : BaseDockFragment() {
         }
     }
 
+
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
         when (tag) {
@@ -148,6 +149,7 @@ class WelcomeFragment : BaseDockFragment() {
                     val userDetailResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, UserDetailsResponse::class.java)
                     binding.name.text = userDetailResponseEnt?.first_name
                     sharedPrefManager.setUsername(userDetailResponseEnt?.first_name)
+                    sharedPrefManager.setLoginID(userDetailResponseEnt?.login_id)
 
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
@@ -159,7 +161,7 @@ class WelcomeFragment : BaseDockFragment() {
                     Log.d("liveDataValue", liveData.value.toString())
                     val attendanceResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, GenericMsgResponse::class.java)
                     Log.d("AttendanceResponse", attendanceResponseEnt?.message.toString())
-
+                    sharedPrefManager.setShiftStart(true)
                     val welcomeIntent = Intent(context, MainActivity::class.java)
                     welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(welcomeIntent)
@@ -172,7 +174,6 @@ class WelcomeFragment : BaseDockFragment() {
             }
         }
     }
-
 
 
 

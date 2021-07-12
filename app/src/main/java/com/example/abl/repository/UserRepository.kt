@@ -2,7 +2,6 @@ package com.example.abl.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.abl.constant.Constants
-import com.example.abl.fragment.CheckinModel
 import com.example.abl.model.*
 import com.example.abl.network.Api
 import com.example.abl.utils.SharedPrefManager
@@ -52,6 +51,10 @@ class UserRepository @Inject constructor(private val api: Api, private val share
 
     fun getDashboard(): MutableLiveData<String> {
         return callApi(api.getDashboard( "Bearer " + sharedPrefManager.getToken()), Constants.DASHBOARD_COUNT)
+    }
+
+    fun changePassword(changePasswordModel: ChangePasswordModel): MutableLiveData<String> {
+        return callApi(api.changePassword( changePasswordModel,"Bearer " + sharedPrefManager.getToken()), Constants.CHANGE_PASSWORD)
     }
 
 }

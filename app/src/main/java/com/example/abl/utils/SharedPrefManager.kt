@@ -13,6 +13,8 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
     private val TOKEN = "KEY_TOKEN"
     private val KEY_USER = "KEY_USER"
     private val KEY_USERNAME = "KEY_USERNAME"
+    private val KEY_SHIFT_START = "KEY_SHIFT_START"
+    private val KEY_LOGIN_ID = "KEY_LOGIN_ID"
     val sharedPreferences: SharedPreferences = context.getSharedPreferences(Key_Pref, Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
 
@@ -21,12 +23,6 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
 
     fun storeUserId(user_id: String): Boolean {
         editor.putString(KEY_USER_ID, user_id);
-        editor.apply();
-        return true;
-    }
-
-    fun storeAgentID(agent_id: String): Boolean{
-        editor.putString(AGENT_ID, agent_id);
         editor.apply();
         return true;
     }
@@ -51,6 +47,26 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
         return sharedPreferences.getString(TOKEN,"")!!
     }
 
+    fun setShiftStart(isShiftStart: Boolean): Boolean{
+        editor.putBoolean(KEY_SHIFT_START, isShiftStart);
+        editor.apply();
+        return true;
+    }
+
+    fun setLoginID(userID: String?): Boolean{
+        editor.putString(KEY_LOGIN_ID, userID);
+        editor.apply();
+        return true
+    }
+
+    fun getLoginID():String?{
+        return sharedPreferences.getString(KEY_LOGIN_ID,"")!!
+    }
+
+    fun getShiftStart():Boolean{
+        return sharedPreferences.getBoolean(KEY_SHIFT_START,false)
+    }
+
     fun setUsername(name: String?): Boolean{
         editor.putString(KEY_USERNAME, name);
         editor.apply();
@@ -63,10 +79,6 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
 
     fun getUserId():String{
         return sharedPreferences.getString(KEY_USER_ID,"")!!
-    }
-
-    fun getAgentID():String{
-        return sharedPreferences.getString(AGENT_ID,"")!!
     }
 
     fun isLoggedIn(): Boolean {

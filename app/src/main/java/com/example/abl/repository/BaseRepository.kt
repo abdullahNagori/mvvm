@@ -6,11 +6,14 @@ import com.example.abl.model.ErrorResponseEnt
 import com.example.abl.model.ResponseEnt
 import com.example.abl.network.ApiListener
 import com.example.abl.utils.GsonFactory
+import com.example.abl.utils.UtilHelper
+import com.example.abl.utils.ValidationHelper
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import javax.inject.Inject
 
 /**
  * @author Abdullah Nagori
@@ -18,6 +21,9 @@ import java.lang.Exception
 
 
 open class BaseRepository {
+
+    @Inject
+    lateinit var validationhelper: ValidationHelper
     var apiResponse = MutableLiveData<String>()
     var apiListener: ApiListener? = null
 
@@ -32,17 +38,22 @@ open class BaseRepository {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful && (response.code() == 200 || response.code() == 201)) {
-                   // apiResponse.value = response.body().toString()
                     apiResponse.value = response.body()?.string()
-                       Log.d("ResponseBOdy",response.body()!!.string())
+                       Log.d("ResponseBody",response.body()!!.string())
                     apiListener?.onSuccess(apiResponse, tag)
                 } else if (response.code() == 500)
                     apiListener?.onFailure("Internal Server Error", tag)
+                else if(response.code() == 400)
+                    validationhelper.navigateToLogin()
+                else if(response.code() == 551)
+                    validationhelper.navigateToLogin()
+                else if(response.code() == 552)
+                    validationhelper.navigateToChangePassword()
                 else {
                     try {
                         apiResponse.value = response.errorBody()?.string()
                         val errorResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(apiResponse.value, ErrorResponseEnt::class.java)
-                        if (errorResponseEnt != null )
+                        if (errorResponseEnt?.error == "Provided token is expired." )
                             apiListener?.onFailure(errorResponseEnt.error, tag)
                         else
                             apiListener?.onFailure("Unknown Error", tag)

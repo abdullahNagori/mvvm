@@ -1,8 +1,10 @@
 package com.example.abl.fragment
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,10 +17,13 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import com.example.abl.R
 import com.example.abl.activity.MainActivity
+import com.example.abl.adapter.CustomArrayAdapter
+import com.example.abl.adapter.CustomVisitAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
@@ -26,29 +31,36 @@ import com.example.abl.databinding.AddFragmentBinding
 import com.example.abl.databinding.CheckInFormFragmentBinding
 import com.example.abl.model.*
 import com.example.abl.utils.GsonFactory
+import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.item_checkbox.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListener, ClickListner {
+class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListener {
 
 
     lateinit var binding: CheckInFormFragmentBinding
     private lateinit var mCalender: Calendar
-    lateinit var customerID: String
     lateinit var customer: AddLeadResponseModel
 
     // private lateinit var visitStatus: CompanyVisitStatu
     private var productDetailsFragment: ProductDialogFragment? = null
-    var productLovList: ArrayList<CompanyProduct> = ArrayList<CompanyProduct>()
+    lateinit var visitLovList: ArrayList<CompanyVisitStatu>
     var visitStatusList: ArrayList<CompanyVisitStatu> = ArrayList<CompanyVisitStatu>()
-    private lateinit var selectedList: ArrayList<CompanyProduct>
+    private lateinit var selectedVisitList: ArrayList<CompanyVisitStatu>
     lateinit var dynamicLeadsItem: DynamicLeadsItem
     private var visitStatus: String? = null
-    private var productName: String? = null
-    private var productID: String? = null
+    private var visitName: String? = null
     private var isStatusSelected = false
     private var isProductSelected = false
+    lateinit var leadID: String
+    lateinit var customerID: String
+    lateinit var productID: String
+    lateinit var productName: String
+
+
+    var latitude = 0.0
+    var longitude = 0.0
 
 
     companion object {
@@ -70,14 +82,17 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
         //customerID = arguments?.getString(CUS_ID).toString()
-        //getLov()
-
+        getLov()
+        getLocation()
         GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString("customer"), AddLeadResponseModel::class.java).let {
             it?.let {
                 binding.customerName.setText(it.first_name)
                 binding.contactNo.setText(it.mobile_phone_number)
                 //visitStatus = it.status
                 customerID = it.customer_id
+                leadID = it.lead_id
+                productID = it.record_id
+                productName = it.product_name
             }
         }
 
@@ -85,9 +100,9 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             it?.let { it1 -> setData(it1) }
         }
 
-        binding.product.setOnClickListener {
-            onClickItemSelected(productLovList)
-        }
+//        binding.product.setOnClickListener {
+//            onClickItemSelected(productLovList)
+//        }
 
         binding.dateOfConversion.setOnClickListener {
             DatePickerDialog(
@@ -202,24 +217,22 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             return Toast.makeText(requireContext(),getString(R.string.please_select_status),Toast.LENGTH_SHORT).show()
         if (!isProductSelected)
             return Toast.makeText(requireContext(),getString(R.string.please_select_product),Toast.LENGTH_SHORT).show()
-            for (i in selectedList) {
-                productName = i.product_name
-                productID = i.product_code
-            }
+
             addCheckin(
                 CheckinModel(
                     binding.accountNo.text.toString(),
                     binding.amount.text.toString(),
                     binding.remarks.text.toString(),
-                    customerID,
+                    customerID.toString(),
                     binding.dateOfConversion.text.toString(),
-                    binding.date.text.toString(),
-                    productID.toString(),
-                    productName.toString(),
-                    visitStatus.toString(),
-                    "addLead",
-                    "42.32",
-                    "54.90"
+                    binding.date.toString(),
+                    leadID,
+                    productID,
+                    productName,
+                    "visit",
+                    visitName.toString(),
+                    latitude.toString(),
+                    longitude.toString()
                 )
             )
 
@@ -268,9 +281,9 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
                     Log.i("AddLead", liveData.value.toString())
                     val lovResponse = GsonFactory.getConfiguredGson()
                         ?.fromJson(liveData.value, LovResponse::class.java)
-                    productLovList = lovResponse?.company_products as ArrayList<CompanyProduct>
-                    visitStatusList =
-                        lovResponse.company_visit_status as ArrayList<CompanyVisitStatu>
+                  ///  productLovList = lovResponse?.company_products as ArrayList<CompanyProduct>
+                    visitStatusList = lovResponse?.company_visit_status as ArrayList<CompanyVisitStatu>
+                    onClickItemSelected(visitStatusList)
                     //binding.status.adapter = initiateListArrayAdapter(visitStatusList)
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
@@ -293,26 +306,6 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         }
     }
 
-    private fun onClickItemSelected(lovList: List<CompanyProduct>) {
-        if (productDetailsFragment == null) {
-            if (lovList.isNotEmpty()) {
-                productDetailsFragment = ProductDialogFragment(this)
-                productDetailsFragment!!.listOfProduct = lovList
-                if ((this::selectedList.isInitialized)) {
-                    if (selectedList.size > 0) {
-                        productDetailsFragment!!.alreadySelectedProduct = selectedList
-                    }
-                } else {
-                    productDetailsFragment!!.alreadySelectedProduct = arrayListOf()
-                }
-                productDetailsFragment!!.isCancelable = false
-                productDetailsFragment!!.show(childFragmentManager, "checkin")
-            } else {
-                Log.i("Error", "No data found")
-            }
-        }
-
-    }
 
     private fun statusWiseViews() {
         binding.status.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -379,16 +372,66 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         }
     }
 
-    override fun <T> onClick(data: T, createNested: Boolean) {
-        if (productDetailsFragment != null) {
-            productDetailsFragment!!.dismiss()
-            productDetailsFragment = null
-        }
-        if (::selectedList.isInitialized) selectedList.clear()
-        selectedList = data as ArrayList<CompanyProduct>
-        isProductSelected = true
-        binding.product.text = selectedList.size.toString() + " Items Selected"
+    private fun onClickItemSelected(lovList: List<CompanyVisitStatu>) {
+        if (lovList.isNotEmpty()) {
+            if ((this::visitLovList.isInitialized)) {
+                if (visitLovList.size > 0) {
+                    val adapter = CustomVisitAdapter(requireContext(), lovList)
+                    binding.status.adapter = adapter
+                    binding.status.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onNothingSelected(parent: AdapterView<*>?) {
+                            }
 
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+//                            sourceOfIncome = parent?.getItemAtPosition(position) as String
+//                            val selectedItemText: String =
+//                                productLovList[binding.productSpinner.selectedItemPosition].product_name
+                                visitName = visitLovList[position].name
+                               // productID = visitLovList[position].product_code
+                            }
+                        }
+                }
+            } else {
+                Log.i("Error4", "No data found $lovList")
+
+            }
+        }
+    }
+
+    private fun getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                1
+            )
+            return
+        } else {
+            LocationServices.getFusedLocationProviderClient(requireContext()).lastLocation.addOnSuccessListener {
+                try {
+                    if (it == null) {
+                        getLocation()
+                    }
+                    latitude = it.latitude
+                    longitude = it.longitude
+                } catch (e: java.lang.Exception) {
+                }
+            }
+
+        }
     }
 
 //    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

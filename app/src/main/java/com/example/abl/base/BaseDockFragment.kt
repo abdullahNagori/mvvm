@@ -2,18 +2,23 @@ package com.example.abl.base
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.abl.R
 import com.example.abl.activity.DockActivity
 import com.example.abl.common.LoadingListener
+import com.example.abl.databinding.DialogPasswordInstructionBinding
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.network.ApiListener
 import com.example.abl.utils.DateTimeFormatter
 import com.example.abl.utils.SharedPrefManager
 import com.example.abl.utils.ValidationHelper
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.android.support.DaggerFragment
 
 import javax.inject.Inject
@@ -85,6 +90,25 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
 
     override fun showBanner(text: String, type: String) {
         if (activity != null) (activity as DockActivity)
+    }
+
+    override fun showPasswordchangingInstructions(text: String?) {
+        val alertDialog = BottomSheetDialog(requireContext())
+        val viewBinding = DialogPasswordInstructionBinding.inflate(layoutInflater)
+        alertDialog.setContentView(viewBinding.root)
+        alertDialog.setCancelable(false)
+
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        alertDialog.show()
+        if (!text.isNullOrEmpty()) {
+            viewBinding.txtPasswordInstructions.gravity = Gravity.LEFT
+            viewBinding.txtPasswordInstructions.text = text
+        }
+
+        viewBinding.btnAvow.setOnClickListener {
+            alertDialog.dismiss()
+        }
     }
 
     override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {

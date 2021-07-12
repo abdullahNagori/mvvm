@@ -62,7 +62,7 @@ object Constants {
     const val DEEPENING ="Deepening"
     const val APNI_CAR ="Apni Car"
     const val HOUSING_FINANCE ="Housing Finance"
-    const val CHANGE_PASSWORD ="Change Password"
+    const val CHANGE_PASSWORD ="change_password"
     const val FAQ ="FAQ"
     const val RATE_SHEET ="Rate Sheet"
     const val CRM ="CRM"

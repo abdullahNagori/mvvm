@@ -32,6 +32,7 @@ import com.example.abl.base.BaseActivity
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
 import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.MarkAttendanceModel
 import com.example.abl.utils.SharedPrefKeyManager
 import com.example.abl.utils.SharedPrefManager
 import com.tapadoo.alerter.Alerter
@@ -108,6 +109,10 @@ class MainActivity : DockActivity() {
         showDialog(type,null,dynamicLeadsItem)
     }
 
+    override fun showPasswordchangingInstructions(text: String?) {
+        TODO("Not yet implemented")
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         actionBarMenu = menu
@@ -138,6 +143,7 @@ class MainActivity : DockActivity() {
                 Log.i("xxChecked", "check")
             }else{
                 Log.i("xxChecked", "uncheck")
+                sharedPrefManager.setShiftStart(false)
                 startActivity(Intent(this, WelcomeActivity::class.java))
             // LoginActivity.navController.navigate()
            // Navigation.findNavController().navigate(R.id.nav_graph_actFirstActvity)
@@ -170,10 +176,6 @@ class MainActivity : DockActivity() {
         animateNavigationDrawer(drawerLayout)
 
         prepareSideMenu()
-
-    }
-
-    private fun getLov(){
 
     }
 

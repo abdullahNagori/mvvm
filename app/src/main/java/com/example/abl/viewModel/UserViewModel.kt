@@ -1,7 +1,6 @@
 package com.example.abl.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.abl.fragment.CheckinModel
 import com.example.abl.model.*
 import com.example.abl.network.ApiListener
 import com.example.abl.repository.UserRepository
@@ -64,5 +63,10 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
     fun getDashBoard() {
         userRepository.apiListener = apiListener
         userRepository.getDashboard()
+    }
+
+    fun changePassword(changePasswordModel: ChangePasswordModel) {
+        userRepository.apiListener = apiListener
+        userRepository.changePassword(changePasswordModel)
     }
 }

@@ -146,6 +146,10 @@ class WelcomeActivity : DockActivity() {
         TODO("Not yet implemented")
     }
 
+    override fun showPasswordchangingInstructions(text: String?) {
+        TODO("Not yet implemented")
+    }
+
 //    override fun onClick(v: View?) {
 //        Log.d("Exception", "test")
 //    }

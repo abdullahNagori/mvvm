@@ -1,4 +1,4 @@
-package com.example.abl.fragment
+package com.example.abl.model
 
 data class CheckinModel(
     val account_num: String,
@@ -7,6 +7,7 @@ data class CheckinModel(
     val customer_id: String,
     val date_of_conv: String,
     val followup_date: String,
+    val lead_id: String,
     val product_id: String,
     val product_name: String,
     val visit_status: String,

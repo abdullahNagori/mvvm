@@ -1,12 +1,15 @@
 package com.example.abl.utils
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import com.example.abl.R
+import com.example.abl.activity.ChangePasswordActivity
+import com.example.abl.activity.LoginActivity
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -112,6 +115,16 @@ class ValidationHelper @Inject constructor(private val context: Context) {
 //            return false
 //        }
 //    }
+
+    fun navigateToLogin() {
+        val loginIntent = Intent(context, LoginActivity::class.java)
+        context.startActivity(loginIntent)
+    }
+
+    fun navigateToChangePassword() {
+        val changePassIntent = Intent(context, ChangePasswordActivity::class.java)
+        context.startActivity(changePassIntent)
+    }
 
     fun validateSpinner(spinner: Spinner, error: String?): Boolean {
         val selectedView: View = spinner.getSelectedView()

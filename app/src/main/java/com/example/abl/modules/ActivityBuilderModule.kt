@@ -1,9 +1,6 @@
 package com.example.abl.modules
 
-import com.example.abl.activity.DockActivity
-import com.example.abl.activity.LoginActivity
-import com.example.abl.activity.MainActivity
-import com.example.abl.activity.WelcomeActivity
+import com.example.abl.activity.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -24,5 +21,8 @@ interface ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     fun contributeMainActivity(): MainActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    fun contributeChangePasswordActivity(): ChangePasswordActivity
 
 }
