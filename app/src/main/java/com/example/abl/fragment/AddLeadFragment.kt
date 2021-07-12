@@ -171,13 +171,26 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                 if (productLovList.size > 0) {
                     val adapter = CustomArrayAdapter(requireContext(), lovList)
                     binding.productSpinner.adapter = adapter
-                    binding.productSpinner.onItemSelectedListener =
                         object : AdapterView.OnItemSelectedListener {
                             override fun onNothingSelected(parent: AdapterView<*>?) {
                             }
 
+<<<<<<< HEAD
                             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                                 selectedProduct = productLovList[position];
+=======
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+//                            sourceOfIncome = parent?.getItemAtPosition(position) as String
+//                            val selectedItemText: String =
+//                                productLovList[binding.productSpinner.selectedItemPosition].product_name
+                                productName = productLovList[position].product_name
+                                productID = productLovList[position].record_id
+>>>>>>> 093bf97ef58dea75ec2cf0a670c9b7330022c0d7
                             }
                         }
                 }
