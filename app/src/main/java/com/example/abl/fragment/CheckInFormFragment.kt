@@ -126,7 +126,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             showTimeDialog(requireContext(), binding.time)
         }
 
-        statusWiseViews()
+     //   statusWiseViews()
 
         return binding.root
     }
@@ -174,14 +174,14 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
         }
 
-        val callback: OnBackPressedCallback =
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    showBanner("Please Fill the From", Constants.ERROR)
-                }
-            }
+//        val callback: OnBackPressedCallback =
+//            object : OnBackPressedCallback(true) {
+//                override fun handleOnBackPressed() {
+//                    showBanner("Please Fill the From", Constants.ERROR)
+//                }
+//            }
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
@@ -374,8 +374,8 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
     private fun onClickItemSelected(lovList: List<CompanyVisitStatu>) {
         if (lovList.isNotEmpty()) {
-            if ((this::visitLovList.isInitialized)) {
-                if (visitLovList.size > 0) {
+          //  if ((this::visitLovList.isInitialized)) {
+                if (lovList.size > 0) {
                     val adapter = CustomVisitAdapter(requireContext(), lovList)
                     binding.status.adapter = adapter
                     binding.status.onItemSelectedListener =
@@ -392,12 +392,13 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 //                            sourceOfIncome = parent?.getItemAtPosition(position) as String
 //                            val selectedItemText: String =
 //                                productLovList[binding.productSpinner.selectedItemPosition].product_name
-                                visitName = visitLovList[position].name
+                                visitName = lovList[position].name
                                // productID = visitLovList[position].product_code
                             }
                         }
                 }
-            } else {
+         //   }
+        else {
                 Log.i("Error4", "No data found $lovList")
 
             }

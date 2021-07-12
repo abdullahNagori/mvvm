@@ -82,6 +82,9 @@
                     android:id="@+id/status"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:spinnerMode="dropdown"
+                    android:dropDownVerticalOffset="60dp"
+                    style="@style/spinner_style"
                     android:backgroundTint="@color/colorAccent"/>
                 <TextView
                     android:id="@+id/add_status"
@@ -104,7 +107,6 @@
                 android:textSize="@dimen/_12ssp"
                 android:textColorHint="@color/lightGray"
                 android:inputType="number" />
-
 
         </LinearLayout>
 

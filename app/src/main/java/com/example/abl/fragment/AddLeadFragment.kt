@@ -193,7 +193,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                 if (productLovList.size > 0) {
                     val adapter = CustomArrayAdapter(requireContext(), lovList)
                     binding.productSpinner.adapter = adapter
-                    binding.productSpinner.onItemSelectedListener =
                         object : AdapterView.OnItemSelectedListener {
                             override fun onNothingSelected(parent: AdapterView<*>?) {
                             }
@@ -208,7 +207,7 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
 //                            val selectedItemText: String =
 //                                productLovList[binding.productSpinner.selectedItemPosition].product_name
                                 productName = productLovList[position].product_name
-                                productID = productLovList[position].product_code
+                                productID = productLovList[position].record_id
                             }
                         }
                 }
