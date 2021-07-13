@@ -45,7 +45,7 @@
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.example.abl.fragment.PortfolioFragment"
-        android:label="@string/profile"
+        android:label="@string/portfolio"
         tools:layout="@layout/portfolio_fragment">
 
         <action
@@ -83,6 +83,8 @@
         <action
             android:id="@+id/action_nav_visit_to_checkInFormFragment"
             app:launchSingleTop="true"
+            app:popUpTo="@+id/checkInFormFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/checkInFormFragment" />
 
     </fragment>

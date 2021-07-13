@@ -30,11 +30,13 @@
 
         <TextView
             style="@style/txtStyle"
+            android:visibility="gone"
             android:text="@string/account_no" />
 
         <EditText
             android:id="@+id/account_no"
             style="@style/customerInfoInputFields"
+            android:visibility="gone"
             android:maxLength="24"
             android:hint="@string/enter_ac_name"
             android:inputType="number" />
@@ -80,6 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:spinnerMode="dropdown"
+                    android:focusable="false"
                     android:dropDownVerticalOffset="60dp"
                     style="@style/spinner_style"
                     android:backgroundTint="@color/colorAccent"/>

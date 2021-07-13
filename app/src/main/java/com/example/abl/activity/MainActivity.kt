@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -37,6 +38,7 @@ import com.example.abl.utils.SharedPrefKeyManager
 import com.example.abl.utils.SharedPrefManager
 import com.tapadoo.alerter.Alerter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import java.lang.reflect.Array.get
 import java.nio.file.Paths.get
 import java.util.HashMap
@@ -74,6 +76,8 @@ class MainActivity : DockActivity() {
         setContentView(binding.root)
         navController = findNavController(R.id.nav_host_main)
 
+
+        name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
         initView()
         setGesture()
     }
@@ -154,6 +158,7 @@ class MainActivity : DockActivity() {
 
         return super.onCreateOptionsMenu(menu)
     }
+
 
     private fun initView() {
         drawerLayout = binding.drawerLayout
@@ -284,7 +289,7 @@ class MainActivity : DockActivity() {
 
         listDataHeader.add(Constants.LEADER_BOARD) //8
         listDataHeader.add(Constants.NOTIFICATIONS) //9
-        listDataHeader.add(Constants.CHANGE_PASSWORD) //10
+        listDataHeader.add(Constants.PASSWORD_CHANGE) //10
         listDataHeader.add(Constants.JOIN_VISIT) //11
         listDataHeader.add(Constants.LOGOUT) //12
 
@@ -347,10 +352,13 @@ class MainActivity : DockActivity() {
         showOrHide()
         when (view.id) {
 
-            R.id.sync -> {}
-            R.id.upload -> {}
+            R.id.sync -> {
+                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show() }
+            R.id.upload -> {Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()}
             R.id.cold_calling ->  callLead()
             R.id.addLead -> {
+                val bundle = Bundle()
+                bundle.putString(Constants.TYPE, Constants.VISIT)
                 navigateToFragment(R.id.nav_visit)
             }
             R.id.followup -> {

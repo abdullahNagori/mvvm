@@ -61,7 +61,7 @@
             android:drawableStart="@drawable/ic_username"
             android:drawablePadding="@dimen/_10sdp"
             android:focusableInTouchMode="true"
-            android:hint="username"
+            android:hint="Username"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
           />

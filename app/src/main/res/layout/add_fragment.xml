@@ -275,7 +275,7 @@
             android:id="@+id/visit_lead"
             style="@style/btnStyle"
             android:layout_marginBottom="@dimen/_20sdp"
-            android:text="@string/visit_lead" />
+            android:text="@string/add" />
 
     </LinearLayout>
 

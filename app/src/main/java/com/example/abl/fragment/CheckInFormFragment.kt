@@ -48,6 +48,8 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     var visitStatusList: ArrayList<CompanyVisitStatu> = ArrayList<CompanyVisitStatu>()
     var selectedVisitStatus: CompanyVisitStatu? = null
 
+    var visitType: String = "visit"
+
     var latitude = 0.0
     var longitude = 0.0
 
@@ -72,6 +74,10 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         getLov()
         getLocation()
 
+
+
+
+        Log.i("xxCall", visitType)
         arguments?.getParcelable<DynamicLeadsItem>(Constants.LEAD_DATA).let {
             it?.let { it1 -> setData(it1) }
         }
@@ -107,11 +113,11 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
     }
 
-    private fun setData (data: DynamicLeadsItem){
+    private fun setData (data: DynamicLeadsItem) {
         customer = data
-
         binding.customerName.setText(data.first_name)
         binding.contactNo.setText(data.mobile_phone_number)
+        visitType = data.type
     }
 
     override fun closeDrawer() {
@@ -144,13 +150,13 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
         }
 
-//        val callback: OnBackPressedCallback =
-//            object : OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    showBanner("Please Fill the From", Constants.ERROR)
-//                }
-//            }
-//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    myDockActivity?.showErrorMessage("Please fill the form")
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
     }
 
@@ -179,17 +185,24 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     }
 
     private fun auth() {
+
+        visitType = if (arguments?.get(Constants.TYPE) == null){
+            "visit"
+        } else{
+            arguments?.get(Constants.TYPE).toString()
+        }
+
         if (!validationhelper.validateString(binding.customerName)) return
-        if (!validationhelper.validateString(binding.accountNo)) return
         if (!validationhelper.validateString(binding.contactNo)) return
 
         if (selectedVisitStatus == null)
             return Toast.makeText(requireContext(),getString(R.string.please_select_status),Toast.LENGTH_SHORT).show()
 
+        Log.i("xxhello",visitType)
         var dict = CheckinModel(binding.accountNo.text.toString(),
             (selectedVisitStatus?.record_id)!!,
-            "visit",
-            binding.date.toString(),
+            visitType,
+            binding.date.text.toString(),
             binding.dateOfConversion.text.toString(),
             customer.customer_id,
             customer.customer_id,

@@ -77,9 +77,9 @@ class DashboardFragment : BaseDockFragment() {
         binding.barchart.setMaxVisibleValueCount(60)
         binding.name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
 
-        val sdf = SimpleDateFormat("dd-MM-yyyy")
+        val sdf = SimpleDateFormat("hh:mm:ss dd/M/yyyy")
         val currentDate = sdf.format(Date())
-        binding.shiftStart.text = "Shift Started At 09:00 AM $currentDate"
+        binding.shiftStart.text = "Shift Started At $currentDate"
         //System.out.println(" C DATE is  "+currentDate)
     }
 

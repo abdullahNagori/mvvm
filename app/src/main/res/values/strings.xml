@@ -405,9 +405,9 @@
 
     <array name="select_search">
         <item>Name</item>
-        <item>Contact Number</item>
-        <item>Address</item>
-        <item>Company Name</item>
+        <item>Phone Number</item>
+        <item>Branch</item>
+        <item>Account Title</item>
     </array>
 
 
@@ -429,6 +429,7 @@
         <item>Enter Gender</item>
         <item>Male</item>
         <item>Female</item>
+        <item>Other</item>
     </array>
 
     <array name="select_customer">

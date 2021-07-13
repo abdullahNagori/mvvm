@@ -130,7 +130,7 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIn
                 customers?.let {
                     bundle.putParcelable(Constants.LEAD_DATA, customers)
                 }
-                bundle.putString(Constants.TYPE, Constants.COLD_CALL)
+                bundle.putString(Constants.TYPE, Constants.CALL)
                 bundle.putString(Constants.CUSTOMER_TYPE, customerType)
                 bundle.putString("number", number.text.toString())
                 navigateToFragment(R.id.checkInFormFragment, bundle)

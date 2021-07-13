@@ -108,4 +108,9 @@ class WelcomeActivity : DockActivity() {
     override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
         TODO("Not yet implemented")
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 }

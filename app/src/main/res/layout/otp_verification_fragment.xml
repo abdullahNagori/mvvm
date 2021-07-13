@@ -67,10 +67,10 @@
                 app:cursorColor="@color/colorAccent"
                 app:cursorWidth="@dimen/_1sdp"
                 app:itemCount="6"
-                app:itemHeight="@dimen/_40sdp"
+                app:itemHeight="@dimen/_35sdp"
                 app:itemRadius="@dimen/_1sdp"
                 app:itemSpacing="8dp"
-                app:itemWidth="@dimen/_40sdp"
+                app:itemWidth="@dimen/_35sdp"
                 app:lineColor="@color/colorAccent"
                 app:lineWidth="@dimen/_1sdp"
                 app:viewType="rectangle" />

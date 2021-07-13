@@ -15,9 +15,9 @@
     android:layout_marginLeft="@dimen/_10sdp"
     android:layout_marginRight="@dimen/_10sdp"
     android:layout_marginBottom="@dimen/_10sdp"
-    android:layout_marginTop="@dimen/_50sdp"
+    android:layout_marginTop="@dimen/_10sdp"
     app:cardCornerRadius="@dimen/margin_small"
-    app:strokeColor="@color/colorAccent"
+    app:strokeColor="@color/colorPrimary"
     android:theme="@style/Theme.MaterialComponents.Light"
     app:strokeWidth="@dimen/_1sdp"
     >
