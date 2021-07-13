@@ -30,75 +30,55 @@
 
         <TextView
             style="@style/txtStyle"
-            android:visibility="gone"
+            android:visibility="visible"
             android:text="@string/account_no" />
 
         <EditText
             android:id="@+id/account_no"
             style="@style/customerInfoInputFields"
-            android:visibility="gone"
+            android:visibility="visible"
             android:maxLength="24"
             android:hint="@string/enter_ac_name"
             android:inputType="number" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
 
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:weightSum="2"-->
+<!--            android:layout_marginTop="@dimen/_3sdp"-->
+<!--            android:orientation="horizontal">-->
+
+        <TextView
+            style="@style/txtStyle"
+            android:text="@string/status" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Spinner
+                android:id="@+id/status"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                style="@style/spinner_style"
+                android:layout_width="match_parent"
+                android:dropDownVerticalOffset="60dp"
+                android:layout_height="60dp"
+                android:spinnerMode="dropdown"/>
 
             <TextView
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                style="@style/txtStyle"
-                android:text="@string/status" />
+                android:id="@+id/product_addLead"
+                android:hint=""
+                style="@style/customerInfoInputFields"/>
 
-            <TextView
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                style="@style/txtStyle"
-                android:text="@string/contact_no" />
+        </RelativeLayout>
 
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:weightSum="2"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent">
-
-                <Spinner
-                    android:id="@+id/status"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:spinnerMode="dropdown"
-                    android:focusable="false"
-                    android:dropDownVerticalOffset="60dp"
-                    style="@style/spinner_style"
-                    android:backgroundTint="@color/colorAccent"/>
-
-                <TextView
-                    android:id="@+id/add_status"
-                    android:hint=""
-                    style="@style/customerInfoInputFields"/>
-
-            </RelativeLayout>
-
+        <TextView
+            style="@style/txtStyle"
+            android:text="@string/contact_no"/>
 
             <EditText
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/contact_no"
                 android:hint="@string/contact_number_wdout_asterik"
@@ -110,7 +90,7 @@
                 android:textColorHint="@color/lightGray"
                 android:inputType="number" />
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -3,17 +3,18 @@ package com.example.abl.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -27,6 +28,9 @@ import androidx.navigation.ui.setupWithNavController
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
+import com.deepakkumardk.kontactpickerlib.KontactPicker
+import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
+import com.deepakkumardk.kontactpickerlib.model.SelectionMode
 import com.example.abl.R
 import com.example.abl.adapter.ExpandableListAdapter
 import com.example.abl.base.BaseActivity
@@ -34,6 +38,8 @@ import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.MarkAttendanceModel
+import com.example.abl.utils.CustomEditText
+import com.example.abl.utils.DrawableClickListener
 import com.example.abl.utils.SharedPrefKeyManager
 import com.example.abl.utils.SharedPrefManager
 import com.tapadoo.alerter.Alerter
@@ -335,7 +341,7 @@ class MainActivity : DockActivity() {
     }
 
     private fun callLead() {
-        showDialog(Constants.NTB, null, null)
+        showDialog_new(Constants.NTB, null, null)
     }
 
     fun dropDownMenu(view: View) {
@@ -438,5 +444,60 @@ class MainActivity : DockActivity() {
 
     override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
         TODO("Not yet implemented")
+    }
+
+    fun showDialog_new(customerType: String, contact: String?,customers: DynamicLeadsItem?) {
+
+        val factory = LayoutInflater.from(this)
+        val dialogView: View = factory.inflate(R.layout.dialog_call, null)
+        val dialog = AlertDialog.Builder(this).setCancelable(true).create()
+        dialog.setView(dialogView)
+
+        val number = dialogView.findViewById<CustomEditText>(R.id.call)
+        contact?.let {
+            number.setText(contact)
+        }
+
+        number.setDrawableClickListener(object : DrawableClickListener {
+            override fun onClick(target: DrawableClickListener.DrawablePosition?) {
+                when (target) {
+                    DrawableClickListener.DrawablePosition.RIGHT -> {
+                        val item = KontactPickerItem().apply {
+                            debugMode = true
+                            selectionMode = SelectionMode.Single
+                            textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)
+                        }
+                        KontactPicker().startPickerForResult(this@MainActivity, item, 3000)
+                    }
+                    else -> {
+                    }
+                }
+            }
+        })
+        val btnCall = dialogView.findViewById<ImageButton>(R.id.btn_call)
+        dialog.show()
+
+
+        btnCall.setOnClickListener {
+
+            if (number.text?.length?.compareTo(11)!! < 0){
+                number.error= "invalid number!"
+            }else {
+                dialog.dismiss()
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse("tel:" + number.text)
+                val bundle = Bundle()
+                customers?.let {
+                    bundle.putParcelable(Constants.LEAD_DATA, customers)
+                }
+                bundle.putString(Constants.TYPE, Constants.CALL)
+                bundle.putString(Constants.CUSTOMER_TYPE, customerType)
+                bundle.putString("number", number.text.toString())
+                navigateToFragment(R.id.checkInFormFragment, bundle)
+                startActivity(intent)
+            }
+        }
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+
     }
 }

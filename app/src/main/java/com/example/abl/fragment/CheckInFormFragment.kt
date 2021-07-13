@@ -220,7 +220,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         binding.llDate.visibility = GONE
         binding.llDateOfConversion.visibility = GONE
 
-        when (status.lowercase()) {
+        when (status.toLowerCase()) {
             "followup" -> {
                 binding.llDate.visibility = VISIBLE
             }

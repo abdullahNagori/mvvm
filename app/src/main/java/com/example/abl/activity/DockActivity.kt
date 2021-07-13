@@ -2,39 +2,38 @@ package com.example.abl.activity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.EditText
 import android.widget.ImageButton
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.deepakkumardk.kontactpickerlib.KontactPicker
+import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
+import com.deepakkumardk.kontactpickerlib.model.SelectionMode
 import com.example.abl.R
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.BaseFragment
-import com.example.abl.base.BaseView
-import com.example.abl.common.LoadingListener
 import com.example.abl.constant.Constants
-import com.example.abl.databinding.DialogPasswordInstructionBinding
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.network.ApiListener
 import com.example.abl.progress.ProgressDialog
 import com.example.abl.progress.ProgressIndicator
+import com.example.abl.utils.CustomEditText
+import com.example.abl.utils.DrawableClickListener
+import com.example.abl.utils.DrawableClickListener.DrawablePosition
 import com.example.abl.utils.SharedPrefManager
 import com.example.abl.viewModel.UserViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.tapadoo.alerter.Alerter
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.dialog_call.*
 import javax.inject.Inject
+
 
 /**
  * @author Abdullah Nagori
@@ -110,7 +109,8 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIn
         val dialogView: View = factory.inflate(R.layout.dialog_call, null)
         val dialog = AlertDialog.Builder(this).setCancelable(true).create()
         dialog.setView(dialogView)
-        val number = dialogView.findViewById<EditText>(R.id.call)
+
+        val number = dialogView.findViewById<CustomEditText>(R.id.call)
         contact?.let {
             number.setText(contact)
         }
@@ -120,7 +120,7 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIn
 
         btnCall.setOnClickListener {
 
-            if (number.text.length<11){
+            if (number.text?.length?.compareTo(11)!! < 0){
                 number.error= "invalid number!"
             }else {
                 dialog.dismiss()
