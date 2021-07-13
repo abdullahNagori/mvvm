@@ -7,6 +7,7 @@ import com.example.abl.databinding.ActivityChangePasswordBinding
 import com.example.abl.fragment.ChangePasswordFragment
 import com.example.abl.fragment.WelcomeFragment
 import com.example.abl.model.DynamicLeadsItem
+import com.tapadoo.alerter.Alerter
 
 class ChangePasswordActivity : DockActivity() {
 
@@ -27,11 +28,25 @@ class ChangePasswordActivity : DockActivity() {
     }
 
     override fun showErrorMessage(message: String) {
-        TODO("Not yet implemented")
+        Alerter.create(this)
+            .setTitle(getString(R.string.error))
+            .setText(message)
+            .setDuration(5000)
+            .setIcon(R.drawable.ic_close)
+            .setBackgroundColorRes(R.color.error_color)
+            .enableSwipeToDismiss()
+            .show()
     }
 
     override fun showSuccessMessage(message: String) {
-        TODO("Not yet implemented")
+        Alerter.create(this)
+            .setTitle(getString(R.string.success))
+            .setText(message)
+            .setDuration(5000)
+            .setIcon(R.drawable.ic_close)
+            .setBackgroundColorRes(R.color.banner_green_color)
+            .enableSwipeToDismiss()
+            .show()
     }
 
     override fun closeDrawer() {
@@ -47,6 +62,10 @@ class ChangePasswordActivity : DockActivity() {
     }
 
     override fun showPasswordchangingInstructions(text: String?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
         TODO("Not yet implemented")
     }
 }

@@ -141,11 +141,6 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIn
 
     }
 
-
-
-    abstract fun showErrorMessage(message: String)
-    abstract fun showSuccessMessage(message: String)
-
     fun getUserViewModel(): UserViewModel {
         return userViewModel
     }
@@ -176,7 +171,11 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIn
         }
     }
 
-    abstract fun closeDrawer()
-    abstract fun navigateToFragment(@IdRes id: Int, args: Bundle? = null)
+    abstract fun showErrorMessage(message: String)
 
+    abstract fun showSuccessMessage(message: String)
+
+    abstract fun closeDrawer()
+
+    abstract fun navigateToFragment(@IdRes id: Int, args: Bundle? = null)
 }

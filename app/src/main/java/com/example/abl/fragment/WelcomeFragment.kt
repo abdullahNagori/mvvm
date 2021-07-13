@@ -145,12 +145,11 @@ class WelcomeFragment : BaseDockFragment() {
         when (tag) {
             Constants.USER_DETAIL -> {
                 try {
-                    Log.d("liveDataValue", liveData.value.toString())
-                    val userDetailResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, UserDetailsResponse::class.java)
-                    binding.name.text = userDetailResponseEnt?.first_name
-                    sharedPrefManager.setUsername(userDetailResponseEnt?.first_name)
-                    sharedPrefManager.setLoginID(userDetailResponseEnt?.login_id)
-
+                    val user = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, UserDetailsResponse::class.java)
+                    if (user != null) {
+                        binding.name.text = user.first_name + " " + user.last_name
+                        sharedPrefManager.setUserDetails(user)
+                    }
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }
@@ -158,23 +157,17 @@ class WelcomeFragment : BaseDockFragment() {
 
             Constants.MARK_ATTENDANCE -> {
                 try {
-                    Log.d("liveDataValue", liveData.value.toString())
                     val attendanceResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, GenericMsgResponse::class.java)
-                    Log.d("AttendanceResponse", attendanceResponseEnt?.message.toString())
                     sharedPrefManager.setShiftStart(true)
                     val welcomeIntent = Intent(context, MainActivity::class.java)
                     welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(welcomeIntent)
                     activity?.finish()
                     activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
-
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }
             }
         }
     }
-
-
-
 }

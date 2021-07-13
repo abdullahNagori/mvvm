@@ -21,26 +21,13 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         logoAnimation()
-
-//        val isFirstRun = SharedPrefManager.get(Constant.FIRST_TIME) as Boolean?
-//        if (isFirstRun == null) {
-//            SharedPrefManager.put(false, Constant.FIRST_TIME)
-//        }
     }
 
     private fun logoAnimation() {
-//        val anim = AnimationUtils.loadAnimation(this,R.anim.toptobottom)
-//        binding.imgLogo.startAnimation(anim)
-
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             binding.imgLogo.visibility = View.GONE
             nextView()
         }, TIME_OUT)
-//        binding.imgLogo.startAnimation(
-//            AnimationUtils.loadAnimation(
-//                this@SplashActivity,
-//            )
-//        )
     }
 
 

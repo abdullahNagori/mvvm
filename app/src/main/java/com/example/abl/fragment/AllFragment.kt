@@ -90,7 +90,4 @@ class AllFragment : BaseDockFragment(), ClickListner {
         bundle.putParcelable(Constants.LEAD_DATA,data as Parcelable)
         navigateToFragment(R.id.customerDetailsFragment,bundle)
     }
-
-
-
 }

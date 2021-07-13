@@ -69,8 +69,8 @@ interface Api {
     fun getDashboard( @Header("Authorization") token: String
     ): Call<ResponseBody>
 
-    //Chnage Password
-    @GET("auth/changePassword")
+    //Change Password
+    @POST("auth/changePassword")
     fun changePassword(@Body changePasswordModel: ChangePasswordModel,
                        @Header("Authorization") token: String
     ): Call<ResponseBody>

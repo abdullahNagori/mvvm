@@ -17,23 +17,15 @@ class CustomerAdapter(val context: Context?, val listner: ClickListner) : Recycl
     private lateinit var customerList : List<DynamicLeadsItem>
     lateinit var view : ItemCustomerBinding
 
-
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-
-
         fun bindItems(item: DynamicLeadsItem) {
-            view.customerName.text = (item.first_name ?: "N/A")
-            view.phoneNumber.text = "Phone Number : "+item.mobile_phone_number
-            view.accountNumber.text = "Account Number : "+ (item.mobile_phone_number ?: "N/A")
-            //view.branch.text = "Branch : "+(item.branch ?: "N/A")
-            view.leadStatus.text = "Lead Status : "+(item.lead_status ?: "N/A")
+            view.customerName.text = item.first_name + " " + item.last_name
+            view.accountNumber.text = "Account Number: -"
+            view.phoneNumber.text = "Phone Number: " + item.mobile_phone_number
+            view.leadStatus.text = "Lead Status: " + (item.lead_status_name ?: "-")
         }
-
     }
-
-
 
     fun setList(list: List<DynamicLeadsItem>){
         customerList = list

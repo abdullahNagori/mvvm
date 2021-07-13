@@ -5,7 +5,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/nav_home">
 
-
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.abl.fragment.DashboardFragment"
@@ -52,6 +51,7 @@
         <action
             android:id="@+id/action_portfolioFragment_to_customerDetailsFragment"
             app:destination="@id/customerDetailsFragment" />
+
     </fragment>
 
     <fragment
@@ -65,7 +65,6 @@
         android:name="com.example.abl.fragment.CheckInFormFragment"
         android:label="@string/check_in_cap"
         tools:layout="@layout/check_in_form_fragment" >
-
 
         <action
             android:id="@+id/action_checkInFormFragment_to_nav_home"
@@ -85,9 +84,8 @@
             android:id="@+id/action_nav_visit_to_checkInFormFragment"
             app:launchSingleTop="true"
             app:destination="@id/checkInFormFragment" />
+
     </fragment>
-
-
 
     <fragment
         android:id="@+id/followup_fragment"

@@ -1,6 +1,7 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.TextUtils.isEmpty
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,11 +19,10 @@ import com.example.abl.model.LoginResponse
 import com.example.abl.utils.GsonFactory
 
 class LoginFragment : BaseDockFragment() {
-
     private lateinit var binding: FragmentLoginBinding
+
     lateinit var email: String
     lateinit var password: String
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,23 +36,6 @@ class LoginFragment : BaseDockFragment() {
 
         return binding.root
     }
-
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
-    }
-
 
     private fun initView() {
         binding = FragmentLoginBinding.inflate(layoutInflater)
@@ -83,45 +66,33 @@ class LoginFragment : BaseDockFragment() {
     }
 
     private fun loginUser() {
-
         email = binding.edUserName.text.toString()
         password = binding.edPassword.text.toString()
-
-
-        myDockActivity?.getUserViewModel()
-            ?.login(LoginModel(email, password))
-        arguments?.getString(email)
-        sharedPrefManager.storeUserId(email)
-        Log.i("xxLoginID", arguments?.getString(email).toString())
+        myDockActivity?.getUserViewModel()?.login(LoginModel(email, password))
     }
-
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
         when (tag) {
             Constants.LOGIN -> {
                 try {
-                    Log.d("liveDataValue", liveData.value.toString())
-                    val routeResponseEnt = GsonFactory.getConfiguredGson()
-                        ?.fromJson(liveData.value, LoginResponse::class.java)
-
+                    val routeResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LoginResponse::class.java)
                     if (routeResponseEnt?.two_factor == "yes") {
-                        LoginActivity.navController.navigate(R.id.action_loginFragment_to_otpFragment)
+                        val bundle = Bundle()
+                        bundle.putString("LOGIN_ID", binding.edUserName.text.toString())
+                        LoginActivity.navController.navigate(R.id.action_loginFragment_to_otpFragment, bundle)
+                    } else {
+                        if (routeResponseEnt?.token != null && (routeResponseEnt?.token)!!.isNotEmpty()) {
+                            LoginActivity.navController.navigate(R.id.action_loginFragment_to_welcomeFragment)
+                        } else {
+                            myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
+                        }
                     }
-
-                    else {
-                        myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
-                    }
-
                 } catch (e: Exception) {
-                    Log.d("Exception", e.message.toString())
+                    myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
                 }
-
-
             }
-
         }
-
     }
 
     override fun onFailure(message: String, tag: String) {
@@ -129,5 +100,21 @@ class LoginFragment : BaseDockFragment() {
         if (tag == Constants.LOGIN) {
             Log.i("xxError", "Error")
         }
+    }
+
+    override fun closeDrawer() {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToFragment(id: Int, args: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setTitle(text: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
+        TODO("Not yet implemented")
     }
 }

@@ -33,6 +33,7 @@ data class DynamicLeadsItem(
     val last_name: String,
     val latitude: String,
     val lead_status: String,
+    val lead_status_name: String,
     val longitude: String,
     val marital_status: String,
     val mobile_phone_number: String,

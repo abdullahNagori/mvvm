@@ -427,4 +427,8 @@ class MainActivity : DockActivity() {
         }
         navController.navigate(id)
     }
+
+    override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
+        TODO("Not yet implemented")
+    }
 }

@@ -2,6 +2,7 @@ package com.example.abl.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.abl.constant.Constants
 import com.example.abl.model.ErrorResponseEnt
 import com.example.abl.model.ResponseEnt
 import com.example.abl.network.ApiListener
@@ -32,34 +33,33 @@ open class BaseRepository {
         api.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 apiResponse.value = t.message
-                Log.i("xx1",t.message.toString())
                 apiListener?.onFailure(t.message!!, tag)
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful && (response.code() == 200 || response.code() == 201)) {
+                if (response.isSuccessful && (response.code() == 200)) {
                     apiResponse.value = response.body()?.string()
-                       Log.d("ResponseBody",response.body()!!.string())
                     apiListener?.onSuccess(apiResponse, tag)
-                } else if (response.code() == 500)
+                } else if (response.code() == 500) {
                     apiListener?.onFailure("Internal Server Error", tag)
-                else if(response.code() == 400)
-                    validationhelper.navigateToLogin()
-                else if(response.code() == 551)
-                    validationhelper.navigateToLogin()
-                else if(response.code() == 552)
-                    validationhelper.navigateToChangePassword()
-                else {
+                } else if(response.code() == 551) {
+                    apiListener?.onFailureWithResponseCode(response.code(), "Force logout", tag)
+                    //validationhelper.navigateToLogin()
+                } else if(response.code() == 552) {
+                    apiListener?.onFailureWithResponseCode(response.code(), "Change password", tag)
+                    //validationhelper.navigateToChangePassword()
+                } else {
                     try {
                         apiResponse.value = response.errorBody()?.string()
                         val errorResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(apiResponse.value, ErrorResponseEnt::class.java)
-                        if (errorResponseEnt?.error == "Provided token is expired." )
+                        if (errorResponseEnt?.error != null) {
                             apiListener?.onFailure(errorResponseEnt.error, tag)
-                        else
-                            apiListener?.onFailure("Unknown Error", tag)
+                        } else {
+                            apiListener?.onFailure("Something went wrong", tag)
+                        }
                     }
                     catch (e: Exception){
-                        apiListener?.onFailure("Internal Server Error", tag)
+                        apiListener?.onFailure("Something went wrong", tag)
                     }
                 }
             }

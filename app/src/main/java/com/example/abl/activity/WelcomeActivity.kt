@@ -48,20 +48,6 @@ class WelcomeActivity : DockActivity() {
         setContentView(binding.root)
         SharedPrefKeyManager.with(this)
         initFragment()
-       // getUserViewModel().apiListener = this
-      //  initView()
-      //  logoAnimation()
-       // fabAnimation()
-      //  getUserData()
-      //  binding.fab.setOnClickListener(this);
-//        binding.fab.setOnClickListener {
-//            SharedPrefKeyManager.put(true, Constants.IS_SHIFT)
-//            markAttendance("checkin", "23.45", "35.40")
-//            val welcomeIntent = Intent(this, MainActivity::class.java)
-//            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-//            startActivity(welcomeIntent)
-//        }
-
     }
 
     override fun showErrorMessage(message: String) {
@@ -103,37 +89,6 @@ class WelcomeActivity : DockActivity() {
         getUserViewModel().markAttendance(MarkAttendanceModel(type,lat,lng),"Bearer "+sharedPrefManager.getToken())
     }
 
-//    override fun onSuccess(liveData: LiveData<String>, tag: String) {
-//        super.onSuccess(liveData, tag)
-//        when (tag) {
-//            Constants.USER_DETAIL -> {
-//                try {
-//                    Log.d("liveDataValue", liveData.value.toString())
-//                    val userDetailResponseEnt = GsonFactory.getConfiguredGson()
-//                        ?.fromJson(liveData.value, UserDetailsResponse::class.java)
-//                        binding.name.text = userDetailResponseEnt?.first_name
-//                } catch (e: Exception) {
-//                    Log.d("Exception", e.message.toString())
-//                }
-//            }
-//
-//            Constants.MARK_ATTENDANCE -> {
-//                try {
-//                    Log.d("liveDataValue", liveData.value.toString())
-//                    val attendanceResponseEnt = GsonFactory.getConfiguredGson()
-//                        ?.fromJson(liveData.value, GenericMsgResponse::class.java)
-//                    Log.d("AttendanceResponse", attendanceResponseEnt?.message.toString())
-//                    val welcomeIntent = Intent(this, MainActivity::class.java)
-//                    welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-//                    startActivity(welcomeIntent)
-//
-//                } catch (e: Exception) {
-//                    Log.d("Exception", e.message.toString())
-//                }
-//            }
-//        }
-//    }
-
     override fun closeDrawer() {
         TODO("Not yet implemented")
     }
@@ -150,7 +105,7 @@ class WelcomeActivity : DockActivity() {
         TODO("Not yet implemented")
     }
 
-//    override fun onClick(v: View?) {
-//        Log.d("Exception", "test")
-//    }
+    override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
+        TODO("Not yet implemented")
+    }
 }

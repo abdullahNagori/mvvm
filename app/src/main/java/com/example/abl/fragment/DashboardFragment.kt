@@ -75,7 +75,7 @@ class DashboardFragment : BaseDockFragment() {
         binding = FragmentDashboardBinding.inflate(layoutInflater)
         binding.barchart.description.isEnabled = false
         binding.barchart.setMaxVisibleValueCount(60)
-        binding.name.text = sharedPrefManager.getUsername()
+        binding.name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
 
         val sdf = SimpleDateFormat("dd-MM-yyyy")
         val currentDate = sdf.format(Date())

@@ -2,6 +2,7 @@ package com.example.abl.base
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,7 +11,10 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.abl.R
+import com.example.abl.activity.ChangePasswordActivity
 import com.example.abl.activity.DockActivity
+import com.example.abl.activity.LoginActivity
+import com.example.abl.activity.WelcomeActivity
 import com.example.abl.common.LoadingListener
 import com.example.abl.databinding.DialogPasswordInstructionBinding
 import com.example.abl.model.DynamicLeadsItem
@@ -56,7 +60,6 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
         return myDockActivity
     }
 
-
     protected fun loadingStarted() {
         if (parentFragment != null) (parentFragment as LoadingListener?)?.onLoadingStarted() else getDockActivity()!!
         isLoading = true
@@ -83,9 +86,20 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
     }
 
     override fun onFailure(message: String, tag: String) {
-       // myDockActivity?.onLoadingFinished()
-        myDockActivity?.showErrorMessage(message)
         myDockActivity?.hideProgressIndicator()
+        myDockActivity?.showErrorMessage(message)
+    }
+
+    override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
+        myDockActivity?.hideProgressIndicator()
+
+        if (code == 551) {
+            sharedPrefManager.clear()
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+        } else if (code == 552) {
+            //myDockActivity?.showErrorMessage("")
+            startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
+        }
     }
 
     override fun showBanner(text: String, type: String) {

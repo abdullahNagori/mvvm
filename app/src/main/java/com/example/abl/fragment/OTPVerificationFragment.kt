@@ -19,6 +19,7 @@ import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.OtpVerificationFragmentBinding
 import com.example.abl.fragment.CalculatorFragment.Companion.newInstance
+import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.OtpModel
 import com.example.abl.model.OtpResponse
 import com.example.abl.utils.GsonFactory
@@ -30,7 +31,7 @@ class OTPVerificationFragment : BaseDockFragment() {
     lateinit var loginID: String
     private var isPinnFilled = false
     private lateinit var pin: String
-
+    var isResetPassword = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,29 +40,14 @@ class OTPVerificationFragment : BaseDockFragment() {
 
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
+        loginID = arguments?.getString("LOGIN_ID", "" ).toString()
+        isResetPassword = arguments?.getBoolean("RESET_PASSWORD") == true
         binding.btnVerify.setOnClickListener { onClick() }
         return binding.root
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
-    }
-
     private fun initView() {
         binding = OtpVerificationFragmentBinding.inflate(layoutInflater)
-        loginID =  sharedPrefManager.getUserId()
         setPinViewListener()
     }
 
@@ -78,6 +64,7 @@ class OTPVerificationFragment : BaseDockFragment() {
             }
         })
     }
+
     private fun onClick() {
 
         if (isPinnFilled)
@@ -99,25 +86,42 @@ class OTPVerificationFragment : BaseDockFragment() {
                 {
                     Log.d("liveDataValue", liveData.value.toString())
                     val otpResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, OtpResponse::class.java)
-                        if (otpResponseEnt?.verify == "yes")
-                        {
-                            sharedPrefManager.setToken(otpResponseEnt.token.toString())
-                            Log.d("liveDataValue", "success")
-                            startActivity(Intent(requireContext(), WelcomeActivity::class.java))
-                           // LoginActivity.navController.navigate(R.id.action_otpFragment_to_welcome)
+                        if (otpResponseEnt?.verify == "yes") {
+                            if (!otpResponseEnt.token.isNullOrBlank()) {
+                                sharedPrefManager.setToken(otpResponseEnt.token.toString())
+                                if (isResetPassword) {
+                                    LoginActivity.navController.navigate(R.id.action_OTPVerificationFragment_to_newPassFragment)
+                                } else {
+                                    startActivity(Intent(requireContext(), WelcomeActivity::class.java))
+                                }
+                            } else {
+                                myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
+                            }
                         }
-                        else
-                        {
-                            LoginActivity.navController.navigate(R.id.action_OTPVerificationFragment_to_forgotPassFragment)
-                            myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
+                        else {
+                            myDockActivity?.showErrorMessage(getString(R.string.verification_failed))
                         }
-
-
                 }
                 catch (e: Exception){
-                    Log.d("Exception",e.message.toString())
+                    myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
                 }
             }
         }
+    }
+
+    override fun closeDrawer() {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToFragment(id: Int, args: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setTitle(text: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
+        TODO("Not yet implemented")
     }
 }

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LiveData
 import com.example.abl.R
+import com.example.abl.activity.DockActivity
 import com.example.abl.activity.MainActivity
 import com.example.abl.adapter.CustomArrayAdapter
 import com.example.abl.base.BaseDockFragment
@@ -98,6 +100,11 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         if (!validationhelper.validateString(binding.address)) return
         if (!validationhelper.validateString(binding.amount)) return
 
+        if (selectedProduct == null) {
+            myDockActivity?.showErrorMessage("Please select product")
+            return
+        }
+
         addLead(CustomerDetail(
                 binding.customerName.text.toString(),
                 binding.contactNum.text.toString(),
@@ -131,7 +138,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-
     private fun addLead(customerDetail: CustomerDetail) {
         myDockActivity?.getUserViewModel()?.addLead(customerDetail)
     }
@@ -141,14 +147,14 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         when (tag) {
             Constants.ADD_LEAD -> {
                 try {
-                    val addLeadResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, AddLeadResponseModel::class.java)
-                    if (addLeadResponse != null) {
+                    val leadModel = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, DynamicLeadsItem::class.java)
+                    if (leadModel != null) {
                         val bundle = Bundle()
-                        bundle.putString("customer", GsonFactory.getConfiguredGson()?.toJson(addLeadResponse)!!)
+                        bundle.putParcelable(Constants.LEAD_DATA, leadModel as Parcelable)
                         navigateToFragment(R.id.action_nav_visit_to_checkInFormFragment, bundle)
                     }
                 } catch (e: Exception) {
-                    Log.d("Exception", e.message.toString())
+                    myDockActivity?.showErrorMessage("Something went wrong")
                 }
             }
 
@@ -171,32 +177,16 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                 if (productLovList.size > 0) {
                     val adapter = CustomArrayAdapter(requireContext(), lovList)
                     binding.productSpinner.adapter = adapter
+                    binding.productSpinner.onItemSelectedListener =
                         object : AdapterView.OnItemSelectedListener {
-                            override fun onNothingSelected(parent: AdapterView<*>?) {
-                            }
-
-<<<<<<< HEAD
+                            override fun onNothingSelected(parent: AdapterView<*>?) {}
                             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                                 selectedProduct = productLovList[position];
-=======
-                            override fun onItemSelected(
-                                parent: AdapterView<*>?,
-                                view: View?,
-                                position: Int,
-                                id: Long
-                            ) {
-//                            sourceOfIncome = parent?.getItemAtPosition(position) as String
-//                            val selectedItemText: String =
-//                                productLovList[binding.productSpinner.selectedItemPosition].product_name
-                                productName = productLovList[position].product_name
-                                productID = productLovList[position].record_id
->>>>>>> 093bf97ef58dea75ec2cf0a670c9b7330022c0d7
                             }
                         }
                 }
             } else {
                 Log.i("Error4", "No data found $lovList")
-
             }
         }
     }

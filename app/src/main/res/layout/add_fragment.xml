@@ -72,20 +72,6 @@
             android:hint="@string/enter_address"
             android:inputType="text" />
 
-
-        <TextView
-            style="@style/txtStyle"
-            android:text="@string/amount" />
-
-
-        <EditText
-            android:id="@+id/amount"
-            style="@style/borderStyle"
-            android:maxLength="35"
-            android:maxLines="1"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
-            android:hint="@string/enter_amount"
-            android:inputType="text" />
         <TextView
             style="@style/txtStyle"
             android:text="@string/product" />
@@ -94,30 +80,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-<!--            <Spinner-->
-<!--                android:id="@+id/product_spinner"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:backgroundTint="@color/colorAccent"-->
-<!--                android:gravity="center_vertical" />-->
-
             <Spinner
-            android:id="@+id/product_spinner"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/white"
-            style="@style/spinner_style"
-            android:layout_width="match_parent"
-            android:dropDownVerticalOffset="60dp"
-            android:layout_height="60dp"
-            android:spinnerMode="dropdown"/>
+                android:id="@+id/product_spinner"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                style="@style/spinner_style"
+                android:layout_width="match_parent"
+                android:dropDownVerticalOffset="60dp"
+                android:layout_height="60dp"
+                android:spinnerMode="dropdown"/>
+
             <TextView
                 android:id="@+id/product_addLead"
                 android:hint=""
                 style="@style/customerInfoInputFields"/>
 
-
         </RelativeLayout>
+
+        <TextView
+            style="@style/txtStyle"
+            android:text="@string/amount" />
+
+        <EditText
+            android:id="@+id/amount"
+            style="@style/customerInfoInputFields"
+            android:hint="@string/dummy_amt"
+            android:maxLength="8"
+            android:inputType="numberDecimal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -236,8 +225,6 @@
 
 
             </LinearLayout>
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"

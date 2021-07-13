@@ -21,8 +21,8 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.resetPasswordReq(resetPasswordModel), Constants.RESET_PWD_REQ)
     }
 
-    fun verifyPasswordReq(verifyPassModel: VerifyPassModel, token: String): MutableLiveData<String> {
-        return callApi(api.verifyPassword(verifyPassModel, token), Constants.VERIFY_PWD_REQ)
+    fun verifyPasswordReq(verifyPassModel: VerifyPassModel): MutableLiveData<String> {
+        return callApi(api.verifyPassword(verifyPassModel, "Bearer " + sharedPrefManager.getToken()), Constants.VERIFY_PWD_REQ)
     }
 
     fun getUserDetails(token: String): MutableLiveData<String> {
@@ -54,7 +54,7 @@ class UserRepository @Inject constructor(private val api: Api, private val share
     }
 
     fun changePassword(changePasswordModel: ChangePasswordModel): MutableLiveData<String> {
-        return callApi(api.changePassword( changePasswordModel,"Bearer " + sharedPrefManager.getToken()), Constants.CHANGE_PASSWORD)
+        return callApi(api.changePassword(changePasswordModel,"Bearer " + sharedPrefManager.getToken()), Constants.CHANGE_PASSWORD)
     }
 
 }

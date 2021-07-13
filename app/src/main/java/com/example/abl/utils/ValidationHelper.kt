@@ -118,6 +118,7 @@ class ValidationHelper @Inject constructor(private val context: Context) {
 
     fun navigateToLogin() {
         val loginIntent = Intent(context, LoginActivity::class.java)
+        //loginIntent.addFlags(FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(loginIntent)
     }
 

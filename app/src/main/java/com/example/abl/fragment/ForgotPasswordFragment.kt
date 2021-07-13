@@ -32,6 +32,44 @@ class ForgotPasswordFragment : BaseDockFragment() {
         return binding.root
     }
 
+    private fun initView() {
+        binding = FragmentForgotPasswordBinding.inflate(layoutInflater)
+    }
+
+    private fun onCLickEvent() {
+        if (binding.edForgotUserName.text.toString().isEmpty()) {
+            showBanner(getString(R.string.user_name), Constants.ERROR)
+        } else {
+           // LoginActivity.navController.navigate(R.id.action_forgotPassFragment_to_OTPVerificationFragment)
+            resetPwdReq(binding.edForgotUserName.text.toString())
+        }
+    }
+
+    private fun resetPwdReq(loginID: String){
+        myDockActivity?.getUserViewModel()?.resetPwdReq(ResetPasswordModel(loginID))
+    }
+
+    override fun onSuccess(liveData: LiveData<String>, tag: String) {
+        super.onSuccess(liveData, tag)
+        when (tag) {
+            Constants.RESET_PWD_REQ -> {
+                try {
+                    val resetReqResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, ResetPwdReqResponse::class.java)
+                    if (resetReqResponseEnt?.message != null) {
+                        myDockActivity?.showSuccessMessage(resetReqResponseEnt.message.toString())
+                    }
+                    val bundle = Bundle()
+                    bundle.putString("LOGIN_ID", binding.edForgotUserName.text.toString())
+                    bundle.putBoolean("RESET_PASSWORD", true)
+                    LoginActivity.navController.navigate(R.id.action_forgotPasswordFragment_to_OTPVerificationFragment, bundle)
+                }
+                catch (e: Exception){
+                    myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
+                }
+            }
+        }
+    }
+
     override fun closeDrawer() {
         TODO("Not yet implemented")
     }
@@ -46,50 +84,5 @@ class ForgotPasswordFragment : BaseDockFragment() {
 
     override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
         TODO("Not yet implemented")
-    }
-
-    private fun initView() {
-        binding = FragmentForgotPasswordBinding.inflate(layoutInflater)
-    }
-
-    private fun onCLickEvent() {
-        if (binding.edForgotUserName.text.toString() == "")
-        {
-            showBanner(getString(R.string.user_name), Constants.ERROR)
-        }
-        else {
-           // LoginActivity.navController.navigate(R.id.action_forgotPassFragment_to_OTPVerificationFragment)
-            resetPwdReq(binding.edForgotUserName.text.toString())
-        }
-
-    }
-
-    private fun resetPwdReq(loginID: String){
-        myDockActivity?.getUserViewModel()?.resetPwdReq(ResetPasswordModel(loginID))
-    }
-
-    override fun onSuccess(liveData: LiveData<String>, tag: String) {
-        super.onSuccess(liveData, tag)
-        when (tag) {
-            Constants.RESET_PWD_REQ -> {
-                try
-                {
-                    Log.d("liveDataValue", liveData.value.toString())
-                    val resetReqResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, ResetPwdReqResponse::class.java)
-
-                    if (resetReqResponseEnt?.message == "OTP send to registered Number")
-                    {
-                        myDockActivity?.showSuccessMessage(resetReqResponseEnt.message.toString())
-                        LoginActivity.navController.navigate(R.id.action_reqPasswordFragment_to_newPassFragment)
-                    }
-                    else{
-                        myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
-                    }
-                }
-                catch (e: Exception){
-                    Log.d("Exception",e.message.toString())
-                }
-            }
-        }
     }
 }

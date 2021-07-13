@@ -1,6 +1,7 @@
 package com.example.abl.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.provider.SyncStateContract
 import android.util.Log
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
 import com.example.abl.R
+import com.example.abl.activity.LoginActivity
 import com.example.abl.base.BaseDialogFragment
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
@@ -89,8 +91,11 @@ class ChangePasswordFragment : BaseDockFragment(){
             showPasswordchangingInstructions(getString(R.string.error_wrong_password_pattern))
             return
         }
-        changePassword(ChangePasswordModel(sharedPrefManager.getLoginID().toString(),binding.edOldPassword.text.toString(),
-        binding.edNewPassword.text.toString(), binding.edConfirmPassword.text.toString()))
+
+        changePassword(ChangePasswordModel("",
+            binding.edOldPassword.text.toString(),
+            binding.edNewPassword.text.toString(),
+            binding.edConfirmPassword.text.toString()))
     }
 
     private fun changePassword(changePasswordModel: ChangePasswordModel){
@@ -101,15 +106,8 @@ class ChangePasswordFragment : BaseDockFragment(){
         super.onSuccess(liveData, tag)
         when(tag){
             Constants.CHANGE_PASSWORD -> {
-                try {
-                    Log.d("liveDataValue", liveData.value.toString())
-                    val changePasswordEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, GenericMsgResponse::class.java)
-
-                        validationhelper.navigateToLogin()
-                }
-                catch (e: Exception){
-
-                }
+                sharedPrefManager.clear()
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
         }
     }

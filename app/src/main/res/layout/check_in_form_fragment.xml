@@ -28,7 +28,6 @@
             android:hint="@string/enter_customer_name"
             android:inputType="text" />
 
-
         <TextView
             style="@style/txtStyle"
             android:text="@string/account_no" />
@@ -39,8 +38,6 @@
             android:maxLength="24"
             android:hint="@string/enter_ac_name"
             android:inputType="number" />
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,10 +83,12 @@
                     android:dropDownVerticalOffset="60dp"
                     style="@style/spinner_style"
                     android:backgroundTint="@color/colorAccent"/>
+
                 <TextView
                     android:id="@+id/add_status"
                     android:hint=""
                     style="@style/customerInfoInputFields"/>
+
             </RelativeLayout>
 
 
@@ -110,7 +109,6 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,14 +123,12 @@
                 android:visibility="visible"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
-
+                android:orientation="vertical" >
 
                 <TextView
                     style="@style/txtStyle"
                     android:layout_height="wrap_content"
                     android:text="@string/follow_up_date" />
-
 
                 <TextView
                     android:id="@+id/date"
@@ -158,7 +154,6 @@
                     style="@style/customerInfoInputFields"
                     android:hint="@string/dummy_time" />
             </LinearLayout>
-
 
         </LinearLayout>
 

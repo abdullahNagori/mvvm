@@ -25,9 +25,9 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         userRepository.resetPasswordReq(resetPasswordModel)
     }
 
-    fun verifyPwdReq(verifyPassModel: VerifyPassModel, token: String){
+    fun verifyPwdReq(verifyPassModel: VerifyPassModel){
         userRepository.apiListener = apiListener
-        userRepository.verifyPasswordReq(verifyPassModel, token)
+        userRepository.verifyPasswordReq(verifyPassModel)
     }
 
     fun uerDetails(token: String){

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.pm.PackageManager
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -33,35 +34,22 @@ import com.example.abl.model.*
 import com.example.abl.utils.GsonFactory
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.item_checkbox.view.*
+import org.koin.android.ext.android.bind
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListener {
-
-
     lateinit var binding: CheckInFormFragmentBinding
+
     private lateinit var mCalender: Calendar
-    lateinit var customer: AddLeadResponseModel
+    lateinit var customer: DynamicLeadsItem
+    //lateinit var dynamicLeadsItem: DynamicLeadsItem
 
-    // private lateinit var visitStatus: CompanyVisitStatu
-    private var productDetailsFragment: ProductDialogFragment? = null
-    lateinit var visitLovList: ArrayList<CompanyVisitStatu>
     var visitStatusList: ArrayList<CompanyVisitStatu> = ArrayList<CompanyVisitStatu>()
-    private lateinit var selectedVisitList: ArrayList<CompanyVisitStatu>
-    lateinit var dynamicLeadsItem: DynamicLeadsItem
-    private var visitStatus: String? = null
-    private var visitName: String? = null
-    private var isStatusSelected = false
-    private var isProductSelected = false
-    lateinit var leadID: String
-    lateinit var customerID: String
-    lateinit var productID: String
-    lateinit var productName: String
-
+    var selectedVisitStatus: CompanyVisitStatu? = null
 
     var latitude = 0.0
     var longitude = 0.0
-
 
     companion object {
         const val CUS_ID = "customer_id"
@@ -81,28 +69,12 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         // Inflate the layout for this fragment
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
-        //customerID = arguments?.getString(CUS_ID).toString()
         getLov()
         getLocation()
-        GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString("customer"), AddLeadResponseModel::class.java).let {
-            it?.let {
-                binding.customerName.setText(it.first_name)
-                binding.contactNo.setText(it.mobile_phone_number)
-                //visitStatus = it.status
-                customerID = it.customer_id
-                leadID = it.lead_id
-                productID = it.record_id
-                productName = it.product_name
-            }
-        }
 
         arguments?.getParcelable<DynamicLeadsItem>(Constants.LEAD_DATA).let {
             it?.let { it1 -> setData(it1) }
         }
-
-//        binding.product.setOnClickListener {
-//            onClickItemSelected(productLovList)
-//        }
 
         binding.dateOfConversion.setOnClickListener {
             DatePickerDialog(
@@ -126,8 +98,6 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             showTimeDialog(requireContext(), binding.time)
         }
 
-     //   statusWiseViews()
-
         return binding.root
     }
 
@@ -138,10 +108,10 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     }
 
     private fun setData (data: DynamicLeadsItem){
-        binding.customerName.setText(data.first_name.toString())
+        customer = data
+
+        binding.customerName.setText(data.first_name)
         binding.contactNo.setText(data.mobile_phone_number)
-        visitStatus = data.status!!
-        customerID = data.customer_id!!
     }
 
     override fun closeDrawer() {
@@ -212,32 +182,39 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         if (!validationhelper.validateString(binding.customerName)) return
         if (!validationhelper.validateString(binding.accountNo)) return
         if (!validationhelper.validateString(binding.contactNo)) return
-        if (!validationhelper.validateString(binding.amount)) return
-        if (!isStatusSelected)
+
+        if (selectedVisitStatus == null)
             return Toast.makeText(requireContext(),getString(R.string.please_select_status),Toast.LENGTH_SHORT).show()
-        if (!isProductSelected)
-            return Toast.makeText(requireContext(),getString(R.string.please_select_product),Toast.LENGTH_SHORT).show()
 
-            addCheckin(
-                CheckinModel(
-                    binding.accountNo.text.toString(),
-                    binding.amount.text.toString(),
-                    binding.remarks.text.toString(),
-                    customerID.toString(),
-                    binding.dateOfConversion.text.toString(),
-                    binding.date.toString(),
-                    leadID,
-                    productID,
-                    productName,
-                    "visit",
-                    visitName.toString(),
-                    latitude.toString(),
-                    longitude.toString()
-                )
-            )
+        var dict = CheckinModel(binding.accountNo.text.toString(),
+            (selectedVisitStatus?.record_id)!!,
+            "visit",
+            binding.date.toString(),
+            binding.dateOfConversion.text.toString(),
+            customer.customer_id,
+            customer.customer_id,
+            "",
+            "",
+            "",
+            binding.remarks.text.toString(),
+            latitude.toString(),
+            longitude.toString())
 
+            addCheckin(dict)
+    }
 
+    private fun setCheckInViewWithStatus(status: String) {
+        binding.llDate.visibility = GONE
+        binding.llDateOfConversion.visibility = GONE
 
+        when (status.lowercase()) {
+            "followup" -> {
+                binding.llDate.visibility = VISIBLE
+            }
+            "qualified" -> {
+                binding.llDateOfConversion.visibility = VISIBLE
+            }
+        }
     }
 
     fun showTimeDialog(context: Context, displayView: TextView) {
@@ -268,7 +245,6 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         mTimePicker.show()
     }
 
-
     private fun getLov() {
         myDockActivity?.getUserViewModel()?.getLovs()
     }
@@ -278,13 +254,15 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         when (tag) {
             Constants.GET_LOVS -> {
                 try {
-                    Log.i("AddLead", liveData.value.toString())
-                    val lovResponse = GsonFactory.getConfiguredGson()
-                        ?.fromJson(liveData.value, LovResponse::class.java)
-                  ///  productLovList = lovResponse?.company_products as ArrayList<CompanyProduct>
+                    val lovResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LovResponse::class.java)
                     visitStatusList = lovResponse?.company_visit_status as ArrayList<CompanyVisitStatu>
-                    onClickItemSelected(visitStatusList)
-                    //binding.status.adapter = initiateListArrayAdapter(visitStatusList)
+                    val index = visitStatusList.indexOfFirst { it.record_id == customer.lead_status }
+                    if (index >= 0) {
+                        selectedVisitStatus = visitStatusList[index]
+                        selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
+                    }
+
+                    onClickItemSelected(visitStatusList, index)
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }
@@ -306,102 +284,23 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         }
     }
 
-
-    private fun statusWiseViews() {
-        binding.status.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                p0: AdapterView<*>?,
-                p1: View?,
-                p2: Int,
-                p3: Long
-            ) {
-                var vs = (binding.status.selectedItem)
-                when {
-                    vs.toString().equals("Select Status") -> {
-                        binding.llDateOfConversion.visibility = GONE
-                        binding.llDate.visibility = GONE //follow-up date
-                    }
-                    vs.toString().equals("QUALIFIED") -> {
-                        binding.llDateOfConversion.visibility = VISIBLE
-                        binding.llDate.visibility = GONE
-                        isStatusSelected = true
-                    }
-                    vs.toString().equals("INPROCESS") -> {
-                        binding.llDateOfConversion.visibility = GONE
-                        binding.llDate.visibility = GONE
-                        isStatusSelected = true
-                    }
-                    vs.toString().equals("CLOSED") -> {
-                        binding.llDateOfConversion.visibility = GONE
-                        binding.llDate.visibility = GONE
-                        isStatusSelected = true
-                    }
-                    vs.toString().equals("FOLLOWUP") -> {
-                        binding.llDateOfConversion.visibility = GONE
-                        binding.llDate.visibility = VISIBLE
-                        isStatusSelected = true
-
-                    }
-                    vs.toString().equals("OPEN") -> {
-                        binding.llDateOfConversion.visibility = GONE
-                        binding.llDate.visibility = VISIBLE
-                        isStatusSelected = true
-                    }
-                    vs.toString().equals("INPROCESS") -> {
-                        binding.llDateOfConversion.visibility = GONE
-                        binding.llDate.visibility = GONE
-                        isStatusSelected = true
-                    }
-                    vs.toString().equals("INTERESTED") -> {
-                        binding.llDateOfConversion.visibility = GONE
-                        binding.llDate.visibility = GONE
-                    }
-                    vs.toString().equals("NOT AVAILABLE") -> {
-                        binding.llDateOfConversion.visibility = GONE
-                        binding.llDate.visibility = GONE
-                    }
-                }
-
-                visitStatus = vs.toString()
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
-        }
-    }
-
-    private fun onClickItemSelected(lovList: List<CompanyVisitStatu>) {
+    private fun onClickItemSelected(lovList: List<CompanyVisitStatu>, selectedPosition: Int) {
         if (lovList.isNotEmpty()) {
-          //  if ((this::visitLovList.isInitialized)) {
                 if (lovList.size > 0) {
                     val adapter = CustomVisitAdapter(requireContext(), lovList)
                     binding.status.adapter = adapter
+                    binding.status.setSelection(selectedPosition)
                     binding.status.onItemSelectedListener =
                         object : AdapterView.OnItemSelectedListener {
                             override fun onNothingSelected(parent: AdapterView<*>?) {
                             }
 
-                            override fun onItemSelected(
-                                parent: AdapterView<*>?,
-                                view: View?,
-                                position: Int,
-                                id: Long
-                            ) {
-//                            sourceOfIncome = parent?.getItemAtPosition(position) as String
-//                            val selectedItemText: String =
-//                                productLovList[binding.productSpinner.selectedItemPosition].product_name
-                                visitName = lovList[position].name
-                               // productID = visitLovList[position].product_code
+                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                selectedVisitStatus = lovList[position]
+                                selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
                             }
                         }
                 }
-         //   }
-        else {
-                Log.i("Error4", "No data found $lovList")
-
-            }
         }
     }
 
@@ -434,23 +333,4 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
         }
     }
-
-//    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//        when (parent?.id) {
-//            R.id.status -> {
-//                visitStatus = parent.getItemAtPosition(position) as String
-//            }
-//            R.id.product_spinner -> {
-//                productName = parent.getItemAtPosition(position) as String
-//                productID = parent.getItemAtPosition(position) as String
-//                productID = selectedList[position].product_code
-//
-//            }
-//        }
-//    }
-//
-//    override fun onNothingSelected(parent: AdapterView<*>?) {
-//
-//    }
-
 }

@@ -67,7 +67,6 @@ class CustomerDetailsFragment : Fragment() {
     private fun initView(){
         binding = CustomerDetailsFragmentBinding.inflate(layoutInflater)
         dynamicLeadsItem = arguments?.getParcelable(Constants.LEAD_DATA)!!
-
     }
 
     private fun tabAnimation() {
