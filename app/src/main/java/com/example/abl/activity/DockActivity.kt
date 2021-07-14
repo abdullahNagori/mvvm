@@ -14,9 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.deepakkumardk.kontactpickerlib.KontactPicker
-import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
-import com.deepakkumardk.kontactpickerlib.model.SelectionMode
 import com.example.abl.R
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.BaseFragment

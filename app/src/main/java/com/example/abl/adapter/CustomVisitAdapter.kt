@@ -30,7 +30,7 @@ class CustomVisitAdapter(val context: Context, var listItemsTxt: List<CompanyVis
         // setting adapter item height programatically.
 
         val params = view.layoutParams
-        params.height = 100
+        params.height = 60
         view.layoutParams = params
 
         vh.label.text = listItemsTxt[position].name

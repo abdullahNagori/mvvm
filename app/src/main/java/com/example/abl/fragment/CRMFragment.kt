@@ -88,8 +88,7 @@ class CRMFragment : BaseDockFragment() {
     private fun setupViewPager(data: List<DynamicLeadsResponse>){
         binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager,data.size, data)
         binding.tabLayout.setupWithViewPager(binding.viewPager)
-     //    tabAnimation()
-
+        //    tabAnimation()
         data.forEachIndexed { index, element ->
             binding.tabLayout.getTabAt(index)?.text = element.section
         }
