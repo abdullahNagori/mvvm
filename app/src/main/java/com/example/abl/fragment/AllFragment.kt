@@ -78,10 +78,16 @@ class AllFragment : BaseDockFragment(), ClickListner {
 
     private fun initRecyclerView(){
         adapter = CustomerAdapter(requireContext(), this)
+      //  Log.i("xxCheck1", "null ${section?.data?.size}")
         section?.let {
-            adapter.setList(it.data)
-            adapter.notifyDataSetChanged()
-            binding.customers.adapter = adapter
+                adapter.setList(it.data)
+                adapter.notifyDataSetChanged()
+                binding.customers.adapter = adapter
+
+            for(i in it.data)
+            {
+                Log.i("xxCheck2", "${i}")
+            }
         }
     }
 

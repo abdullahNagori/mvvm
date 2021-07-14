@@ -69,6 +69,7 @@ object Constants {
     const val FAQ ="FAQ"
     const val RATE_SHEET ="Rate Sheet"
     const val CRM ="CRM"
+    const val MY_LEADS ="My Leads"
     var BTL ="BTL"
     const val OWN_LEAD ="Own Leads"
     const val FOLLOW_UP_MEETING_SCHEDULER ="Follow Up / Meeting Scheduler"

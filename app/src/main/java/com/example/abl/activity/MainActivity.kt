@@ -1,8 +1,11 @@
 package com.example.abl.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +17,7 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -52,6 +56,7 @@ import java.util.HashMap
 class MainActivity : DockActivity() {
 
 
+    lateinit var number: CustomEditText
     companion object{
 
         @SuppressLint("StaticFieldLeak")
@@ -86,6 +91,10 @@ class MainActivity : DockActivity() {
         name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
         initView()
         setGesture()
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this ,arrayOf(Manifest.permission.CALL_PHONE),1);
+        }
     }
 
     override fun showErrorMessage(message: String) {
@@ -227,7 +236,7 @@ class MainActivity : DockActivity() {
                 closeDrawer()
             }
 
-            Constants.CRM -> {
+            Constants.MY_LEADS -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_crm)
                 closeDrawer()
             }
@@ -313,7 +322,7 @@ class MainActivity : DockActivity() {
         salesManagement.add(Constants.VISIT_LOG)
 
         val leadManagement: MutableList<String> = ArrayList()
-        leadManagement.add(Constants.CRM)
+        leadManagement.add(Constants.MY_LEADS)
 
         listDataChild[listDataHeader[3]] = salesManagement
         listDataChild[listDataHeader[4]] = leadManagement
@@ -453,7 +462,7 @@ class MainActivity : DockActivity() {
         val dialog = AlertDialog.Builder(this).setCancelable(true).create()
         dialog.setView(dialogView)
 
-        val number = dialogView.findViewById<CustomEditText>(R.id.call)
+        number = dialogView.findViewById<CustomEditText>(R.id.call)
         contact?.let {
             number.setText(contact)
         }
@@ -484,20 +493,44 @@ class MainActivity : DockActivity() {
                 number.error= "invalid number!"
             }else {
                 dialog.dismiss()
-                val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:" + number.text)
-                val bundle = Bundle()
-                customers?.let {
-                    bundle.putParcelable(Constants.LEAD_DATA, customers)
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this ,arrayOf(Manifest.permission.CALL_PHONE),1);
                 }
-                bundle.putString(Constants.TYPE, Constants.CALL)
-                bundle.putString(Constants.CUSTOMER_TYPE, customerType)
-                bundle.putString("number", number.text.toString())
-                navigateToFragment(R.id.checkInFormFragment, bundle)
-                startActivity(intent)
+                else
+                {
+                    val intent = Intent(Intent.ACTION_CALL)
+                    intent.data = Uri.parse("tel:" + number.text)
+                    val bundle = Bundle()
+                    customers?.let {
+                        bundle.putParcelable(Constants.LEAD_DATA, customers)
+                    }
+                    bundle.putString(Constants.TYPE, Constants.CALL)
+                    bundle.putString(Constants.CUSTOMER_TYPE, customerType)
+                    bundle.putString("number", number.text.toString())
+                    navigateToFragment(R.id.addLeadFragment, bundle)
+                    startActivity(intent)
+                }
+
             }
         }
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == 3000) {
+            val list = KontactPicker.getSelectedKontacts(data) //ArrayList<MyContacts>
+            if (list!!.isNotEmpty()){
+                list?.get(0)?.contactNumber?.let {
+//                    val intent = Intent(Intent.ACTION_CALL)
+//                    intent.data = Uri.parse(it)
+                    number.setText(it)
+                }
+            }
+
+
+            //Log.i("xxNumber", list[0].)
+        }
     }
 }

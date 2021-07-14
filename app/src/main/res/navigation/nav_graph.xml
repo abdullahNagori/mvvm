@@ -75,6 +75,20 @@
     </fragment>
 
     <fragment
+        android:id="@+id/addLeadFragment"
+        android:name="com.example.abl.fragment.AddLeadFragment"
+        android:label="@string/add_lead"
+        tools:layout="@layout/add_fragment" >
+
+        <action
+            android:id="@+id/action_addLeadFrag_to_nav_home"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"
+            app:destination="@id/nav_home" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_visit"
         android:name="com.example.abl.fragment.AddLeadFragment"
         android:label="@string/add_lead"
@@ -135,7 +149,7 @@
     <fragment
     android:id="@+id/nav_crm"
     android:name="com.example.abl.fragment.CRMFragment"
-    android:label="@string/crm"
+    android:label="@string/my_leads"
     tools:layout="@layout/fragment_crm" />
 
 </navigation>

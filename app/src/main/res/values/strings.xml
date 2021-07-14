@@ -234,6 +234,7 @@
     <string name="occupation">Occupation</string>
     <string name="total_customers">Total Customers</string>
     <string name="crm">CRM</string>
+    <string name="my_leads">My Leads</string>
     <string name="select_month">Select Month</string>
     <string name="call_log">Call log</string>
     <string name="visit_log">Visit Log</string>
