@@ -43,8 +43,8 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
     private lateinit var mCalender: Calendar
     lateinit var customer: DynamicLeadsItem
-    //lateinit var dynamicLeadsItem: DynamicLeadsItem
-
+    lateinit var productLovList: ArrayList<CompanyProduct>
+    var selectedProduct: CompanyProduct? = null
     var visitStatusList: ArrayList<CompanyVisitStatu> = ArrayList<CompanyVisitStatu>()
     var selectedVisitStatus: CompanyVisitStatu? = null
 
@@ -206,8 +206,8 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             binding.dateOfConversion.text.toString(),
             customer.customer_id,
             customer.record_id,
-            "",
-            "",
+            (selectedProduct?.record_id)!!,
+            (selectedProduct?.product_name)!!,
             "",
             binding.remarks.text.toString(),
             latitude.toString(),
@@ -269,13 +269,15 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
                 try {
                     val lovResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LovResponse::class.java)
                     visitStatusList = lovResponse?.company_visit_status as ArrayList<CompanyVisitStatu>
+                    productLovList = lovResponse.company_products as ArrayList<CompanyProduct>
+
                     val index = visitStatusList.indexOfFirst { it.record_id == customer.lead_status }
                     if (index >= 0) {
                         selectedVisitStatus = visitStatusList[index]
                         selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
                     }
-
-                    onClickItemSelected(visitStatusList, index)
+                    onStatusSelected(visitStatusList, index)
+                    onProductSelected(productLovList)
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }
@@ -297,7 +299,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         }
     }
 
-    private fun onClickItemSelected(lovList: List<CompanyVisitStatu>, selectedPosition: Int) {
+    private fun onStatusSelected(lovList: List<CompanyVisitStatu>, selectedPosition: Int) {
         if (lovList.isNotEmpty()) {
                 if (lovList.size > 0) {
                     val adapter = CustomVisitAdapter(requireContext(), lovList)
@@ -307,13 +309,32 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
                         object : AdapterView.OnItemSelectedListener {
                             override fun onNothingSelected(parent: AdapterView<*>?) {
                             }
-
                             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                                 selectedVisitStatus = lovList[position]
                                 selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
                             }
                         }
                 }
+        }
+    }
+
+    private fun onProductSelected(lovList: List<CompanyProduct>) {
+        if (lovList.isNotEmpty()) {
+            if ((this::productLovList.isInitialized)) {
+                if (productLovList.size > 0) {
+                    val adapter = CustomArrayAdapter(requireContext(), lovList)
+                    binding.productSpinner.adapter = adapter
+                    binding.productSpinner.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onNothingSelected(parent: AdapterView<*>?) {}
+                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                selectedProduct = productLovList[position];
+                            }
+                        }
+                }
+            } else {
+                Log.i("Error4", "No data found $lovList")
+            }
         }
     }
 
