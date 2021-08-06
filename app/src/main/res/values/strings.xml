@@ -706,5 +706,6 @@
     <string name="create_new_event">create new event</string>
     <string name="event_desc">Event Description</string>
     <string name="add_event">Add Event</string>
+    <string name="lead">Lead</string>
 
 </resources>

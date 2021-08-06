@@ -29,7 +29,6 @@ class CRMFragment : BaseDockFragment() {
 
     lateinit var binding: FragmentCrmBinding
 
-
     // lateinit var list: List<DynamicLeadsItem>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -11,10 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/margin_small"
-        app:strokeColor="@color/colorAccent"
         android:theme="@style/Theme.MaterialComponents.Light"
-        app:strokeWidth="@dimen/_1sdp"
-        >
+        app:strokeWidth="@dimen/_1sdp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -34,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_20sdp"
             android:orientation="vertical">
 
             <TextView
@@ -68,13 +66,21 @@
                 />
 
             <Button
-                android:id="@+id/search_action"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:text="@string/search"
+                android:id="@+id/visit_lead"
+                style="@style/btnStyle"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_gravity="center"
-                />
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:text="Search" />
+<!--            <Button-->
+<!--                android:id="@+id/search_action"-->
+<!--                style="@style/btnStyle"-->
+<!--                android:layout_marginTop="@dimen/margin_normal"-->
+<!--                android:text="@string/search"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:background="@drawable/button_bg"-->
+<!--                android:layout_gravity="center"-->
+<!--                />-->
         </LinearLayout>
 
 

@@ -55,4 +55,10 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeChangePasswordFragment(): ChangePasswordFragment
+
+    @ContributesAndroidInjector
+    fun contributeCallLogsFragment(): CallLogsFragment
+
+    @ContributesAndroidInjector
+    fun contributeCompanyProvidedLeadFragment(): CompanyProvidedLeadFragment
 }

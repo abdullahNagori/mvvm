@@ -236,7 +236,7 @@ class MainActivity : DockActivity() {
                 closeDrawer()
             }
 
-            Constants.MY_LEADS -> {
+            Constants.OWN_LEAD -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_crm)
                 closeDrawer()
             }
@@ -251,6 +251,14 @@ class MainActivity : DockActivity() {
                 closeDrawer()
             }
 
+            Constants.COMPANY_PROVIDED_LEADS -> {
+                navigateToFragment(R.id.action_nav_home_to_company_provided_leads)
+                closeDrawer()
+            }
+            Constants.SALES_PIPELINE -> {
+                navigateToFragment(R.id.action_nav_home_to_company_provided_leads)
+                closeDrawer()
+            }
             Constants.NOTIFICATIONS -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_notification)
                 closeDrawer()
@@ -322,7 +330,9 @@ class MainActivity : DockActivity() {
         salesManagement.add(Constants.VISIT_LOG)
 
         val leadManagement: MutableList<String> = ArrayList()
-        leadManagement.add(Constants.MY_LEADS)
+        leadManagement.add(Constants.OWN_LEAD)
+        leadManagement.add(Constants.COMPANY_PROVIDED_LEADS)
+        leadManagement.add(Constants.SALES_PIPELINE)
 
         listDataChild[listDataHeader[3]] = salesManagement
         listDataChild[listDataHeader[4]] = leadManagement
