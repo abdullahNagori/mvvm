@@ -92,11 +92,16 @@ class ChangePasswordFragment : BaseDockFragment(){
             return
         }
 
-        changePassword(ChangePasswordModel("",
-            binding.edOldPassword.text.toString(),
+        changePassword(ChangePasswordModel(
+            sharedPrefManager.getUsername(),
             binding.edNewPassword.text.toString(),
-            binding.edConfirmPassword.text.toString()))
+            binding.edConfirmPassword.text.toString(),
+            binding.edOldPassword.text.toString(),
+           ))
+
     }
+
+
 
     private fun changePassword(changePasswordModel: ChangePasswordModel){
         myDockActivity?.getUserViewModel()?.changePassword(changePasswordModel)

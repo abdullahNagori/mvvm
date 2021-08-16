@@ -80,6 +80,7 @@ class LoginFragment : BaseDockFragment() {
                     if (routeResponseEnt?.two_factor == "yes") {
                         val bundle = Bundle()
                         bundle.putString("LOGIN_ID", binding.edUserName.text.toString())
+                        sharedPrefManager.setUsername(binding.edUserName.text.toString())
                         LoginActivity.navController.navigate(R.id.action_loginFragment_to_otpFragment, bundle)
                     } else {
                         if (routeResponseEnt?.token != null && (routeResponseEnt?.token)!!.isNotEmpty()) {

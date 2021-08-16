@@ -236,7 +236,7 @@ class MainActivity : DockActivity() {
                 closeDrawer()
             }
 
-            Constants.OWN_LEAD -> {
+            Constants.MY_LEADS -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_crm)
                 closeDrawer()
             }
@@ -330,7 +330,7 @@ class MainActivity : DockActivity() {
         salesManagement.add(Constants.VISIT_LOG)
 
         val leadManagement: MutableList<String> = ArrayList()
-        leadManagement.add(Constants.OWN_LEAD)
+        leadManagement.add(Constants.MY_LEADS)
         leadManagement.add(Constants.COMPANY_PROVIDED_LEADS)
         leadManagement.add(Constants.SALES_PIPELINE)
 
