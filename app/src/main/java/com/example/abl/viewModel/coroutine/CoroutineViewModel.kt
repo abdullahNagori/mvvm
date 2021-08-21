@@ -37,12 +37,7 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
                 val response = userRepository.getLovs()
                 withContext(Dispatchers.Main) {
                     data.postValue(WebResponse.Success(response))
-                    var gson = Gson()
-//                    var mMineUserEntity = gson?.fromJson(data, LovResponse::class.java)
-                   // val json = Gson().fromJson(data, LovResponse::class.java) as LovResponse
-                    var abc = fromJson(response.toString())
-                    Log.i("xxLovRes11", abc.toString())
-                //    sharedPrefManager.setLeadStatus(response.body!!.company_lead_status)
+
                     withContext(Dispatchers.IO) {
                         Log.i("xxLovRes2", response.toString())
                     }
@@ -71,10 +66,6 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
         val obj = JSONObject(json.string())
         val error = obj.getJSONObject("header").getString("message")
         return error.toString()
-    }
-
-    private fun fromJson(json:String):LovResponse{
-        return Gson().fromJson<LovResponse>(json, LovResponse::class.java)
     }
 
 }
