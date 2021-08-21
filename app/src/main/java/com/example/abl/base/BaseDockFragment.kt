@@ -77,27 +77,27 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
 
     override fun onStarted() {
        // myDockActivity?.onLoadingStarted()
-        myDockActivity?.showProgressIndicator()
+        //myDockActivity?.showProgressIndicator()
+    }
+
+    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
+        if (activity != null) (activity as DockActivity).showDialog(type,contact,dynamicLeadsItem)
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
-       // myDockActivity?.onLoadingFinished()
-        myDockActivity?.hideProgressIndicator()
+        myDockActivity?.onSuccessResponse(liveData, tag)
     }
 
     override fun onFailure(message: String, tag: String) {
-        myDockActivity?.hideProgressIndicator()
-        myDockActivity?.showErrorMessage(message)
+        myDockActivity?.onFailureResponse(message, tag)
     }
 
     override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
         myDockActivity?.hideProgressIndicator()
-
         if (code == 551) {
             sharedPrefManager.clear()
             startActivity(Intent(requireContext(), LoginActivity::class.java))
         } else if (code == 552) {
-            //myDockActivity?.showErrorMessage("")
             startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
         }
     }
@@ -125,9 +125,6 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
         }
     }
 
-    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
-        if (activity != null) (activity as DockActivity).showDialog(type,contact,dynamicLeadsItem)
-    }
     override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
         val adapter = ArrayAdapter(requireContext(), R.layout.item_spinner, list)
         adapter.setDropDownViewResource(R.layout.item_spinner)

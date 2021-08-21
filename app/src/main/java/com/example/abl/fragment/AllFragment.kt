@@ -16,6 +16,7 @@ import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentAllBinding
+import com.example.abl.model.CompanyLeadStatu
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.DynamicLeadsResponse
 import com.example.abl.utils.GsonFactory
@@ -27,15 +28,13 @@ import java.lang.reflect.Type
 import java.util.ArrayList
 
 class AllFragment : BaseDockFragment(), ClickListner {
-
     lateinit var binding: FragmentAllBinding
-
-    private lateinit var adapter: CustomerAdapter
-    private var section: DynamicLeadsResponse? = null
+    lateinit var adapter: CustomerAdapter
+    private var leadStatusData: CompanyLeadStatu? = null
 
     companion object {
-        const val ARG_NAME = "section_data"
-
+        //const val ARG_NAME = "section_data"
+        const val ARG_NAME = "lead_status"
         fun newInstance(content: String): AllFragment {
             val fragment = AllFragment()
             val args = Bundle()
@@ -50,10 +49,11 @@ class AllFragment : BaseDockFragment(), ClickListner {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        myDockActivity?.getUserViewModel()?.apiListener = this
         binding = FragmentAllBinding.inflate(layoutInflater)
-        section = GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString(ARG_NAME), DynamicLeadsResponse::class.java)
+        leadStatusData = GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString(ARG_NAME), CompanyLeadStatu::class.java)
         initRecyclerView()
-
+        setData()
         return binding.root
     }
 
@@ -79,15 +79,19 @@ class AllFragment : BaseDockFragment(), ClickListner {
 
     private fun initRecyclerView(){
         adapter = CustomerAdapter(requireContext(), this)
-      //  Log.i("xxCheck1", "null ${section?.data?.size}")
-        section?.let {
-                adapter.setList(it.data)
-                adapter.notifyDataSetChanged()
-                binding.customers.adapter = adapter
+        binding.customers.adapter = adapter
+    }
 
-            for(i in it.data)
-            {
-                Log.i("xxCheck2", "${i}")
+    private fun setData() {
+        val leads = sharedPrefManager.getLeadData()
+        if (leads != null) {
+            if (leadStatusData?.name.equals("all", true)) {
+                adapter.setList(leads)
+                adapter.notifyDataSetChanged()
+            } else {
+                val filterData = leads.filter { it.lead_status_name.equals(leadStatusData?.name, true) }
+                adapter.setList(filterData)
+                adapter.notifyDataSetChanged()
             }
         }
     }

@@ -30,7 +30,6 @@ open class BaseActivity : AppCompatActivity(), ProgressIndicator, BaseView {
             supportFragmentManager,
             BaseActivity::class.java.simpleName
         )
-
     }
 
     override fun hideProgressIndicator() {

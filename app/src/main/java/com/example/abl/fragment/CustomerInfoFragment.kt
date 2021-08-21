@@ -83,13 +83,13 @@ class CustomerInfoFragment : BaseDockFragment() {
     }
 
     private fun setData(data: DynamicLeadsItem) {
-        Log.d("xxData", data.toString())
+//        Log.d("xxData", data.toString())
         binding.accountTitle.text = data.first_name
         binding.branchCodeName.text = data.branch_name
         binding.accountType.text = data.type
-        Log.i("xxName", data.first_name)
-        Log.i("xxName", data.branch_name)
-        Log.i("xxName", data.type)
+//        Log.i("xxName", data.first_name)
+//        Log.i("xxName", data.branch_name)
+//        Log.i("xxName", data.type)
     }
 
     fun showDialog_new(customerType: String, contact: String?,customers: DynamicLeadsItem?) {

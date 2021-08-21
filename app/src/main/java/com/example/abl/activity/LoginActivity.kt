@@ -20,8 +20,6 @@ class LoginActivity : DockActivity() {
         lateinit var navController : NavController
     }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -33,50 +31,8 @@ class LoginActivity : DockActivity() {
         return R.id.container
     }
 
-    override fun showErrorMessage(message: String) {
-        Alerter.create(this)
-            .setTitle(getString(R.string.error))
-            .setText(message)
-            .setDuration(5000)
-            .setIcon(R.drawable.ic_close)
-            .setBackgroundColorRes(R.color.error_color)
-            .enableSwipeToDismiss()
-            .show()
-    }
-
-    override fun showSuccessMessage(message: String) {
-        Alerter.create(this)
-            .setTitle(getString(R.string.success))
-            .setText(message)
-            .setDuration(5000)
-            .setIcon(R.drawable.ic_close)
-            .setBackgroundColorRes(R.color.banner_green_color)
-            .enableSwipeToDismiss()
-            .show()
-    }
-
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         navController = findNavController(R.id.nav_host_login_fragment)
         return super.onSupportNavigateUp()
-    }
-
-    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun showPasswordchangingInstructions(text: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
-        TODO("Not yet implemented")
     }
 }

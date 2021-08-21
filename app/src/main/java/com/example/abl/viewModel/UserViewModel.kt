@@ -50,6 +50,11 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         userRepository.getDynamicLeads(token)
     }
 
+    fun getLeads(){
+        userRepository.apiListener = apiListener
+        userRepository.getLeads()
+    }
+
     fun addLead(customerDetail: CustomerDetail){
         userRepository.apiListener = apiListener
         userRepository.addLead(customerDetail)

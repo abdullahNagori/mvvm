@@ -53,5 +53,7 @@ data class DynamicLeadsItem(
     val user_code: String,
     val user_id: String,
     val user_name: String,
-    val lead_id: String
+    val lead_id: String,
+    val name: String,
+    val desc: String
 ):Parcelable

@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -40,22 +42,27 @@ import com.example.abl.adapter.ExpandableListAdapter
 import com.example.abl.base.BaseActivity
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
+import com.example.abl.model.CompanyProduct
 import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.LovResponse
 import com.example.abl.model.MarkAttendanceModel
-import com.example.abl.utils.CustomEditText
-import com.example.abl.utils.DrawableClickListener
-import com.example.abl.utils.SharedPrefKeyManager
-import com.example.abl.utils.SharedPrefManager
+import com.example.abl.repository.UserRepository
+import com.example.abl.utils.*
+import com.example.abl.viewModel.UserViewModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.tapadoo.alerter.Alerter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.lang.reflect.Array.get
+import java.lang.reflect.Type
 import java.nio.file.Paths.get
 import java.util.HashMap
 
 class MainActivity : DockActivity() {
-
-
     lateinit var number: CustomEditText
     companion object{
 
@@ -72,6 +79,11 @@ class MainActivity : DockActivity() {
     private lateinit var actionBarMenu: Menu
     private lateinit var switchAB: SwitchCompat
     private lateinit var sharedPreferences: SharedPreferences
+
+    private var x1 = 0f
+    private var x2 = 0f
+    val MIN_DISTANCE = 60
+
     override fun getDockFrameLayoutId(): Int {
         return R.id.container
     }
@@ -97,39 +109,9 @@ class MainActivity : DockActivity() {
         }
     }
 
-    override fun showErrorMessage(message: String) {
-        Alerter.create(this)
-            .setTitle(getString(R.string.error))
-            .setText(message)
-            .setDuration(5000)
-            .setIcon(R.drawable.ic_close)
-            .setBackgroundColorRes(R.color.error_color)
-            .enableSwipeToDismiss()
-            .show()
-    }
-
-    override fun showSuccessMessage(message: String) {
-        Alerter.create(this)
-            .setTitle(getString(R.string.success))
-            .setText(message)
-            .setDuration(5000)
-            .setIcon(R.drawable.ic_close)
-            .setBackgroundColorRes(R.color.banner_green_color)
-            .enableSwipeToDismiss()
-            .show()
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         navController = findNavController(R.id.nav_host_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
-        showDialog(type,null,dynamicLeadsItem)
-    }
-
-    override fun showPasswordchangingInstructions(text: String?) {
-        TODO("Not yet implemented")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -173,7 +155,6 @@ class MainActivity : DockActivity() {
 
         return super.onCreateOptionsMenu(menu)
     }
-
 
     private fun initView() {
         drawerLayout = binding.drawerLayout
@@ -255,10 +236,12 @@ class MainActivity : DockActivity() {
                 navigateToFragment(R.id.action_nav_home_to_company_provided_leads)
                 closeDrawer()
             }
+
             Constants.SALES_PIPELINE -> {
                 navigateToFragment(R.id.action_nav_home_to_company_provided_leads)
                 closeDrawer()
             }
+
             Constants.NOTIFICATIONS -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_notification)
                 closeDrawer()
@@ -376,9 +359,10 @@ class MainActivity : DockActivity() {
     private fun onCLickEvent(view: View) {
         showOrHide()
         when (view.id) {
-
             R.id.sync -> {
-                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show() }
+                getLov()
+                getLeads()
+            }
             R.id.upload -> {Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()}
             R.id.cold_calling ->  callLead()
             R.id.addLead -> {
@@ -426,9 +410,9 @@ class MainActivity : DockActivity() {
         )
     }
 
-    private var x1 = 0f
-    private var x2 = 0f
-    val MIN_DISTANCE = 60
+    private fun closeDrawer() {
+        drawer_layout.closeDrawer(GravityCompat.START)
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setGesture() {
@@ -449,20 +433,12 @@ class MainActivity : DockActivity() {
         }
     }
 
-    override fun closeDrawer() {
-        drawer_layout.closeDrawer(GravityCompat.START)
-    }
-
-    override fun navigateToFragment(@IdRes id: Int, args: Bundle?) {
+    private fun navigateToFragment(@IdRes id: Int, args: Bundle? = null) {
         if (args != null) {
             navController.navigate(id, args)
             return
         }
         navController.navigate(id)
-    }
-
-    override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
-        TODO("Not yet implemented")
     }
 
     fun showDialog_new(customerType: String, contact: String?,customers: DynamicLeadsItem?) {
@@ -541,6 +517,37 @@ class MainActivity : DockActivity() {
 
 
             //Log.i("xxNumber", list[0].)
+        }
+    }
+
+    private fun getLov() {
+        this.getUserViewModel().getLovs()
+    }
+
+    private fun getLeads() {
+        this.getUserViewModel()?.getLeads()
+    }
+
+    override fun onSuccessResponse(liveData: LiveData<String>, tag: String) {
+        super.onSuccessResponse(liveData, tag)
+        when (tag) {
+            Constants.GET_LOVS -> {
+                try {
+                    val lovResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LovResponse::class.java)
+                    sharedPrefManager.setLeadStatus(lovResponse!!.company_lead_status)
+                } catch (e: Exception) {
+                    Log.d("Exception", e.message.toString())
+                }
+            }
+            Constants.GET_LEADS -> {
+                try {
+                    val listType: Type = object : TypeToken<List<DynamicLeadsItem?>?>() {}.type
+                    val leads: List<DynamicLeadsItem> = Gson().fromJson<List<DynamicLeadsItem>>(liveData.value, listType)
+                    sharedPrefManager.setLeadData(leads)
+                } catch (e: Exception) {
+                    Log.d("Exception", e.message.toString())
+                }
+            }
         }
     }
 }

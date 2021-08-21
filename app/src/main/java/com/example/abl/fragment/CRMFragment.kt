@@ -14,6 +14,7 @@ import com.example.abl.adapter.DynamicViewPagerAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentCrmBinding
+import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.DynamicLeadsResponse
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
@@ -37,13 +38,13 @@ class CRMFragment : BaseDockFragment() {
         // Inflate the layout for this fragment
         myDockActivity?.getUserViewModel()?.apiListener = this
         binding = FragmentCrmBinding.inflate(layoutInflater)
-        getDynamicData("")
+        //getDynamicData("")
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //viewPager()
+        setupViewPager()
     }
 
     override fun closeDrawer() {
@@ -76,7 +77,7 @@ class CRMFragment : BaseDockFragment() {
                     val listType: Type = object : TypeToken<List<DynamicLeadsResponse?>?>() {}.type
                     val posts: List<DynamicLeadsResponse> =
                         gson.fromJson<List<DynamicLeadsResponse>>(liveData.value, listType)
-                    setupViewPager(posts)
+                    //setupViewPager(posts)
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }
@@ -84,45 +85,87 @@ class CRMFragment : BaseDockFragment() {
         }
     }
 
-    private fun setupViewPager(data: List<DynamicLeadsResponse>){
-        binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager,data.size, data)
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
-        //    tabAnimation()
-        data.forEachIndexed { index, element ->
-            binding.tabLayout.getTabAt(index)?.text = element.section
+    private fun setupViewPager() {
+        val leadStatusArray = sharedPrefManager.getLeadStatus()
+        if (leadStatusArray != null) {
+            binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager, leadStatusArray.size, leadStatusArray)
+            binding.tabLayout.setupWithViewPager(binding.viewPager)
+            leadStatusArray.forEachIndexed { index, element ->
+                binding.tabLayout.getTabAt(index)?.text = element.name
+            }
+
+            binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    //binding.viewPager.currentItem = p0!!.position
+                    if (tab == null)
+                        return
+                    val position = tab.position
+
+                    tab_layout.getTabAt(position)?.view?.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            context,
+                            R.anim.zoomin
+                        )
+                    )
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    if (tab == null)
+                        return
+                    val position = tab.position
+                    tab_layout.getTabAt(position)?.view?.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            context,
+                            R.anim.zoomout
+                        )
+                    )
+                }
+
+                override fun onTabReselected(p0: TabLayout.Tab?) {
+                }
+            })
         }
-
-        binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                //binding.viewPager.currentItem = p0!!.position
-                if (tab == null)
-                    return
-                val position = tab.position
-
-                tab_layout.getTabAt(position)?.view?.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        context,
-                        R.anim.zoomin
-                    )
-                )
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                if (tab == null)
-                    return
-                val position = tab.position
-                tab_layout.getTabAt(position)?.view?.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        context,
-                        R.anim.zoomout
-                    )
-                )
-            }
-
-            override fun onTabReselected(p0: TabLayout.Tab?) {
-            }
-        })
     }
+/*
+//    private fun setupViewPager(data: List<DynamicLeadsResponse>){
+//        binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager, data.size, data)
+//        binding.tabLayout.setupWithViewPager(binding.viewPager)
+//        data.forEachIndexed { index, element ->
+//            binding.tabLayout.getTabAt(index)?.text = element.section
+//        }
+//
+//        binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//                //binding.viewPager.currentItem = p0!!.position
+//                if (tab == null)
+//                    return
+//                val position = tab.position
+//
+//                tab_layout.getTabAt(position)?.view?.startAnimation(
+//                    AnimationUtils.loadAnimation(
+//                        context,
+//                        R.anim.zoomin
+//                    )
+//                )
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {
+//                if (tab == null)
+//                    return
+//                val position = tab.position
+//                tab_layout.getTabAt(position)?.view?.startAnimation(
+//                    AnimationUtils.loadAnimation(
+//                        context,
+//                        R.anim.zoomout
+//                    )
+//                )
+//            }
+//
+//            override fun onTabReselected(p0: TabLayout.Tab?) {
+//            }
+//        })
+//    }
+ */
 
     private fun tabAnimation() {
         binding.tabLayout.getTabAt(1)?.view?.startAnimation(

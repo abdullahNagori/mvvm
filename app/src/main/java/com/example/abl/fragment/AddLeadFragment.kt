@@ -142,6 +142,30 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         myDockActivity?.getUserViewModel()?.addLead(customerDetail)
     }
 
+    private fun onClickItemSelected(lovList: List<CompanyProduct>) {
+        if (lovList.isNotEmpty()) {
+            if ((this::productLovList.isInitialized)) {
+                if (productLovList.size > 0) {
+                    val adapter = CustomArrayAdapter(requireContext(), lovList)
+                    binding.productSpinner.adapter = adapter
+                    binding.productSpinner.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onNothingSelected(parent: AdapterView<*>?) {}
+                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                selectedProduct = productLovList[position];
+                            }
+                        }
+                }
+            } else {
+                Log.i("Error4", "No data found $lovList")
+            }
+        }
+    }
+
+    private fun getLov() {
+        myDockActivity?.getUserViewModel()?.getLovs()
+    }
+
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
         when (tag) {
@@ -169,35 +193,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                 }
             }
         }
-    }
-
-    private fun onClickItemSelected(lovList: List<CompanyProduct>) {
-        if (lovList.isNotEmpty()) {
-            if ((this::productLovList.isInitialized)) {
-                if (productLovList.size > 0) {
-                    val adapter = CustomArrayAdapter(requireContext(), lovList)
-                    binding.productSpinner.adapter = adapter
-                    binding.productSpinner.onItemSelectedListener =
-                        object : AdapterView.OnItemSelectedListener {
-                            override fun onNothingSelected(parent: AdapterView<*>?) {}
-                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                selectedProduct = productLovList[position];
-                            }
-                        }
-                }
-            } else {
-                Log.i("Error4", "No data found $lovList")
-            }
-        }
-    }
-
-    private fun getLov() {
-        myDockActivity?.getUserViewModel()?.getLovs()
-    }
-
-    override fun onFailure(message: String, tag: String) {
-        super.onFailure(message, tag)
-        myDockActivity?.showErrorMessage(message)
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
