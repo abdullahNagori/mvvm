@@ -6,6 +6,7 @@ import com.example.abl.keys.ViewModelKey
 import com.example.abl.viewModel.BaseViewModel
 import com.example.abl.viewModel.UserViewModel
 import com.example.abl.viewModel.ViewModelFactory
+import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -32,7 +33,10 @@ interface ViewModelModule {
     @ViewModelKey(UserViewModel::class)
     fun bindUserViewModel(userViewModel: UserViewModel): ViewModel
 
-
+    @Binds
+    @IntoMap
+    @ViewModelKey(CoroutineViewModel::class)
+    fun bindCoroutineViewModel(coroutineViewModel: CoroutineViewModel): ViewModel
 
 
 }

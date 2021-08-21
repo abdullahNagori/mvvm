@@ -1,6 +1,7 @@
 package com.example.abl.network
 
 import com.example.abl.model.*
+import com.example.abl.network.coroutine.CoroutineLOVResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -43,8 +44,8 @@ interface Api {
 
     //Get Lovs
     @GET("leads/getLovs")
-    fun getLovs(@Header("Authorization") token: String
-    ): Call<ResponseBody>
+   suspend fun getLovs(@Header("Authorization") token: String
+    ): CoroutineLOVResponse
 
     //Get Dynamic Data
     @GET("leads/getLeadsForDynamicData")
@@ -53,7 +54,7 @@ interface Api {
 
     //Get Leads
     @GET("leads/getLeads")
-    fun getLeads(@Header("Authorization") token: String
+   suspend fun getLeads(@Header("Authorization") token: String
     ): Call<ResponseBody>
 
     //Add Leads

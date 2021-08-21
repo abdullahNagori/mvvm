@@ -24,6 +24,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -46,9 +47,11 @@ import com.example.abl.model.CompanyProduct
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.LovResponse
 import com.example.abl.model.MarkAttendanceModel
+import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.repository.UserRepository
 import com.example.abl.utils.*
 import com.example.abl.viewModel.UserViewModel
+import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tapadoo.alerter.Alerter
@@ -79,6 +82,7 @@ class MainActivity : DockActivity() {
     private lateinit var actionBarMenu: Menu
     private lateinit var switchAB: SwitchCompat
     private lateinit var sharedPreferences: SharedPreferences
+    lateinit var viewModel: CoroutineViewModel
 
     private var x1 = 0f
     private var x2 = 0f
@@ -103,6 +107,7 @@ class MainActivity : DockActivity() {
         name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
         initView()
         setGesture()
+        viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this ,arrayOf(Manifest.permission.CALL_PHONE),1);
@@ -361,7 +366,7 @@ class MainActivity : DockActivity() {
         when (view.id) {
             R.id.sync -> {
                 getLov()
-                getLeads()
+              //  getLeads()
             }
             R.id.upload -> {Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()}
             R.id.cold_calling ->  callLead()
@@ -521,11 +526,33 @@ class MainActivity : DockActivity() {
     }
 
     private fun getLov() {
-        this.getUserViewModel().getLovs()
+//        GlobalScope.launch {
+//            getUserViewModel().getLovs()
+//        }
+
+        viewModel.fetchLOV().observe(this) {
+            when (it) {
+                WebResponse.Loading -> {
+                    showProgressIndicator()
+                }
+                is WebResponse.Success<*> -> {
+                    hideProgressIndicator()
+                    val response = it
+                    Log.i("xxResponseLov", response.toString())
+                }
+                is WebResponse.Error -> {
+                    hideProgressIndicator()
+                    // showBanner(it.exception, Constant.ERROR)
+                    //showBanner(getString(R.string.something_wrong), Constant.ERROR)
+                }
+            }
+        }
     }
 
     private fun getLeads() {
-        this.getUserViewModel()?.getLeads()
+        GlobalScope.launch {
+            getUserViewModel().getLeads()
+        }
     }
 
     override fun onSuccessResponse(liveData: LiveData<String>, tag: String) {
