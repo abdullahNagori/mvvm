@@ -2,6 +2,8 @@ package com.example.abl.components
 
 import android.content.Context
 import com.example.abl.network.Api
+import com.example.abl.room.DAOAccess
+import com.example.abl.room.RoomHelper
 import com.example.abl.utils.*
 import com.example.abl.utils.Schedulers.BaseScheduler
 import com.example.abl.utils.Schedulers.SchedulerProvider
@@ -32,6 +34,12 @@ class AppModule {
     @Singleton
     fun provideSharedPrefManager(context: Context): SharedPrefManager {
         return SharedPrefManager(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRoomHelper(daoAccess: DAOAccess): RoomHelper {
+        return RoomHelper(daoAccess)
     }
 
     @Provides

@@ -113,7 +113,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
     }
 
-    private fun setData (data: DynamicLeadsItem) {
+    private fun setData(data: DynamicLeadsItem) {
         customer = data
         binding.customerName.setText(data.first_name)
         binding.contactNo.setText(data.mobile_phone_number)
@@ -186,9 +186,9 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
     private fun auth() {
 
-        visitType = if (arguments?.get(Constants.TYPE) == null){
+        visitType = if (arguments?.get(Constants.TYPE) == null) {
             "visit"
-        } else{
+        } else {
             arguments?.get(Constants.TYPE).toString()
         }
 
@@ -196,24 +196,46 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         if (!validationhelper.validateString(binding.contactNo)) return
 
         if (selectedVisitStatus == null)
-            return Toast.makeText(requireContext(),getString(R.string.please_select_status),Toast.LENGTH_SHORT).show()
+            return Toast.makeText(
+                requireContext(),
+                getString(R.string.please_select_status),
+                Toast.LENGTH_SHORT
+            ).show()
 
-        Log.i("xxhello",visitType)
-        var dict = CheckinModel(binding.accountNo.text.toString(),
+//        var dict = CheckinModel(binding.accountNo.text.toString(),
+//            (selectedVisitStatus?.record_id)!!,
+//            visitType,
+//            binding.date.text.toString(),
+//            binding.dateOfConversion.text.toString(),
+//            customer.customer_id,
+//            customer.record_id,
+//            (selectedProduct?.record_id)!!,
+//            (selectedProduct?.product_name)!!,
+//            "",
+//            binding.remarks.text.toString(),
+//            latitude.toString(),
+//            longitude.toString())
+
+        var dict = CheckinModel(
+            "",
+            binding.accountNo.text.toString(),
             (selectedVisitStatus?.record_id)!!,
             visitType,
             binding.date.text.toString(),
             binding.dateOfConversion.text.toString(),
             customer.customer_id,
-            customer.record_id,
+            customer.lead_id,
             (selectedProduct?.record_id)!!,
             (selectedProduct?.product_name)!!,
-            "",
-            binding.remarks.text.toString(),
+            binding.amount.text.toString(),
+            binding.remarks.toString(),
             latitude.toString(),
-            longitude.toString())
+            longitude.toString(),
+            ""
+        )
 
-            addCheckin(dict)
+
+        addCheckin(dict)
     }
 
     private fun setCheckInViewWithStatus(status: String) {
@@ -267,11 +289,14 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         when (tag) {
             Constants.GET_LOVS -> {
                 try {
-                    val lovResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LovResponse::class.java)
-                    visitStatusList = lovResponse?.company_visit_status as ArrayList<CompanyVisitStatu>
+                    val lovResponse = GsonFactory.getConfiguredGson()
+                        ?.fromJson(liveData.value, LovResponse::class.java)
+                    visitStatusList =
+                        lovResponse?.company_visit_status as ArrayList<CompanyVisitStatu>
                     productLovList = lovResponse.company_products as ArrayList<CompanyProduct>
 
-                    val index = visitStatusList.indexOfFirst { it.record_id == customer.lead_status }
+                    val index =
+                        visitStatusList.indexOfFirst { it.record_id == customer.lead_status }
                     if (index >= 0) {
                         selectedVisitStatus = visitStatusList[index]
                         selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
@@ -301,20 +326,26 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
     private fun onStatusSelected(lovList: List<CompanyVisitStatu>, selectedPosition: Int) {
         if (lovList.isNotEmpty()) {
-                if (lovList.size > 0) {
-                    val adapter = CustomVisitAdapter(requireContext(), lovList)
-                    binding.status.adapter = adapter
-                    binding.status.setSelection(selectedPosition)
-                    binding.status.onItemSelectedListener =
-                        object : AdapterView.OnItemSelectedListener {
-                            override fun onNothingSelected(parent: AdapterView<*>?) {
-                            }
-                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                selectedVisitStatus = lovList[position]
-                                selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
-                            }
+            if (lovList.size > 0) {
+                val adapter = CustomVisitAdapter(requireContext(), lovList)
+                binding.status.adapter = adapter
+                binding.status.setSelection(selectedPosition)
+                binding.status.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
                         }
-                }
+
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            selectedVisitStatus = lovList[position]
+                            selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
+                        }
+                    }
+            }
         }
     }
 
@@ -327,7 +358,12 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
                     binding.productSpinner.onItemSelectedListener =
                         object : AdapterView.OnItemSelectedListener {
                             override fun onNothingSelected(parent: AdapterView<*>?) {}
-                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
                                 selectedProduct = productLovList[position];
                             }
                         }

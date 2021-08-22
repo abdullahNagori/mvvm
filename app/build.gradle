@@ -170,6 +170,14 @@ dependencies {
     //KontactList
     implementation 'com.github.deepakkumardk:KontactPicker:1.4.0'
 
+    // - - Room Persistence Library
+    def room_version = "2.2.5"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
 
 
 }

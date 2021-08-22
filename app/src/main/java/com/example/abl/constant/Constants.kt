@@ -22,6 +22,7 @@ object Constants {
     const val REPORT : String = "Reports"
     const val DASHBOARD : String = "Dashboard"
     const val TRAINING : String = "Training"
+    const val DATABASE_NAME : String = "Abl Database"
     const val LEADER_BOARD : String = "Leaderboard"
     //const val CALCULATOR : String = "Calculator"
     const val JOIN_VISIT : String = "Joint Visit"
