@@ -4,10 +4,16 @@ import androidx.lifecycle.MutableLiveData
 import com.example.abl.constant.Constants
 import com.example.abl.model.*
 import com.example.abl.network.Api
+import com.example.abl.network.coroutine.CoroutineLOVResponse
 import com.example.abl.utils.SharedPrefManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import java.lang.reflect.Type
 import javax.inject.Inject
 
-class UserRepository @Inject constructor(private val api: Api, private val sharedPrefManager: SharedPrefManager):BaseRepository()
+class UserRepository @Inject constructor(private val api: Api, private val sharedPrefManager: SharedPrefManager): BaseRepository()
 {
     fun login(loginModel: LoginModel): MutableLiveData<String> {
         return callApi(api.login(loginModel), Constants.LOGIN)
@@ -33,15 +39,20 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.markAttendance(markAttendanceModel, "Bearer " + sharedPrefManager.getToken()), Constants.MARK_ATTENDANCE)
     }
 
-    fun getLovs(): MutableLiveData<String> {
-        return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
+   suspend fun getLovs(): CoroutineLOVResponse {
+       // return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
+       return withContext(Dispatchers.IO) {
+           async {
+               api.getLovs("Bearer " + sharedPrefManager.getToken())
+           }
+       }.await()
     }
 
     fun getDynamicLeads(token: String): MutableLiveData<String> {
         return callApi(api.getLeadsForDynamicData("Bearer " + sharedPrefManager.getToken()), Constants.GET_DYNAMIC_LEADS)
     }
 
-    fun getLeads(): MutableLiveData<String> {
+    suspend fun getLeads(): MutableLiveData<String> {
         return callApi(api.getLeads("Bearer " + sharedPrefManager.getToken()), Constants.GET_LEADS)
     }
 

@@ -28,6 +28,8 @@ import com.example.abl.model.*
 import com.example.abl.utils.GsonFactory
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.add_fragment.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -163,7 +165,9 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun getLov() {
-        myDockActivity?.getUserViewModel()?.getLovs()
+        GlobalScope.launch {
+            myDockActivity?.getUserViewModel()?.getLovs()
+        }
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
