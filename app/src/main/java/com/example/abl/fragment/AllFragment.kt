@@ -53,6 +53,7 @@ class AllFragment : BaseDockFragment(), ClickListner {
         binding = FragmentAllBinding.inflate(layoutInflater)
         section = GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString(ARG_NAME), DynamicLeadsResponse::class.java)
         initRecyclerView()
+
         return binding.root
     }
 

@@ -9,6 +9,7 @@ import javax.inject.Inject
 class SharedPrefManager @Inject constructor(private val context: Context) {
     private val Key_Pref = "Key_Pref"
     private val TOKEN = "KEY_TOKEN"
+    private val USERNAME = "KEY_USERNAME"
     private val KEY_SHIFT_START = "KEY_SHIFT_START"
     private val KEY_USER_DETAILS = "KEY_USER_DETAILS"
 
@@ -19,6 +20,15 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
         editor.putString(TOKEN, token);
         editor.apply();
         return true;
+    }
+
+    fun setUsername(username: String){
+        editor.putString(USERNAME, username);
+        editor.apply();
+    }
+
+    fun getUsername(): String{
+        return sharedPreferences.getString(USERNAME,"")!!
     }
 
     fun getToken():String{

@@ -24,6 +24,10 @@
             app:destination="@id/nav_visit_logs" />
 
         <action
+            android:id="@+id/action_nav_home_to_company_provided_leads"
+            app:destination="@id/company_lead" />
+
+        <action
             android:id="@+id/action_nav_home_to_nav_crm"
             app:destination="@id/nav_crm" />
 
@@ -145,6 +149,12 @@
         android:name="com.example.abl.fragment.CalculatorFragment"
         android:label="@string/calculator"
         tools:layout="@layout/calculator_fragment" />
+
+    <fragment
+        android:id="@+id/company_lead"
+        android:name="com.example.abl.fragment.CompanyProvidedLeadFragment"
+        android:label="@string/lead"
+        tools:layout="@layout/company_provided_lead_fragment" />
 
     <fragment
     android:id="@+id/nav_crm"

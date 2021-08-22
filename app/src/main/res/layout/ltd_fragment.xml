@@ -57,7 +57,7 @@
             android:layout_toStartOf="@id/filter"
             android:visibility="visible"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_search" />
+            app:srcCompat="@drawable/ic_search_abl" />
 
         <include
             android:id="@+id/data_not_found"
