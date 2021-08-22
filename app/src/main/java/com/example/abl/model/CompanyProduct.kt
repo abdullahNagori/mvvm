@@ -1,5 +1,7 @@
 package com.example.abl.model
 
+import kotlinx.serialization.Serializable
+
 data class CompanyProduct(
     val category_name: String,
     val company_id: String,

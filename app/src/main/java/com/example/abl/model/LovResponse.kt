@@ -1,5 +1,7 @@
 package com.example.abl.model
 
+import kotlinx.serialization.Serializable
+
 data class LovResponse(
     val company_lead_source: List<CompanyLeadSource>,
     val company_lead_status: List<CompanyLeadStatu>,

@@ -39,7 +39,7 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.markAttendance(markAttendanceModel, "Bearer " + sharedPrefManager.getToken()), Constants.MARK_ATTENDANCE)
     }
 
-   suspend fun getLovs(): CoroutineLOVResponse {
+   suspend fun getLovs(): LovResponse {
        // return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
        return withContext(Dispatchers.IO) {
            async {
@@ -52,8 +52,12 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.getLeadsForDynamicData("Bearer " + sharedPrefManager.getToken()), Constants.GET_DYNAMIC_LEADS)
     }
 
-    suspend fun getLeads(): MutableLiveData<String> {
-        return callApi(api.getLeads("Bearer " + sharedPrefManager.getToken()), Constants.GET_LEADS)
+    suspend fun getLeads(): List<DynamicLeadsItem> {
+        return withContext(Dispatchers.IO) {
+            async {
+                api.getLeads("Bearer " + sharedPrefManager.getToken())
+            }
+        }.await()
     }
 
     fun addLead(customerDetail: CustomerDetail): MutableLiveData<String> {

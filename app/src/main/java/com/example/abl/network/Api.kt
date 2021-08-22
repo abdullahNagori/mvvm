@@ -45,7 +45,7 @@ interface Api {
     //Get Lovs
     @GET("leads/getLovs")
    suspend fun getLovs(@Header("Authorization") token: String
-    ): CoroutineLOVResponse
+    ): LovResponse
 
     //Get Dynamic Data
     @GET("leads/getLeadsForDynamicData")
@@ -55,7 +55,7 @@ interface Api {
     //Get Leads
     @GET("leads/getLeads")
    suspend fun getLeads(@Header("Authorization") token: String
-    ): Call<ResponseBody>
+    ): List<DynamicLeadsItem>
 
     //Add Leads
     @POST("leads/addLead")

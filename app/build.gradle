@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'com.google.secrets_gradle_plugin' version '0.5'
+    id 'kotlinx-serialization'
+
 }
 apply plugin: 'kotlin-kapt'
 
@@ -170,4 +172,6 @@ dependencies {
 
     //KontactList
     implementation 'com.github.deepakkumardk:KontactPicker:1.4.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
+
 }
