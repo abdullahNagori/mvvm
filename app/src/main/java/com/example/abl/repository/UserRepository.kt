@@ -43,7 +43,7 @@ class UserRepository @Inject constructor(private val api: Api, private val share
        // return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
        return withContext(Dispatchers.IO) {
            async {
-               api.getLovs("Bearer " + sharedPrefManager.getToken())
+               api.getLovs("Bearer " + "123")
            }
        }.await()
     }

@@ -548,8 +548,8 @@ class MainActivity : DockActivity() {
                 is WebResponse.Success<*> -> {
                     hideProgressIndicator()
 
-                    val responseLov = it.data as LovResponse
-                    sharedPrefManager.setLeadStatus(responseLov.company_lead_status)
+//                    val responseLov = it.data as LovResponse
+//                    sharedPrefManager.setLeadStatus(responseLov.company_lead_status)
 
                 }
                 is WebResponse.Error -> {
@@ -560,23 +560,23 @@ class MainActivity : DockActivity() {
             }
         }
 
-        viewModel.getLeads().observe(this) {
-            when (it) {
-                WebResponse.Loading -> {
-                    showProgressIndicator()
-                }
-                is WebResponse.Success<*> -> {
-                    hideProgressIndicator()
-                    val responseLeads = it.data as List<DynamicLeadsItem>
-                    sharedPrefManager.setLeadData(responseLeads)
-                }
-                is WebResponse.Error -> {
-                    hideProgressIndicator()
-                    // showBanner(it.exception, Constant.ERROR)
-                    //showBanner(getString(R.string.something_wrong), Constant.ERROR)
-                }
-            }
-        }
+//        viewModel.getLeads().observe(this) {
+//            when (it) {
+//                WebResponse.Loading -> {
+//                    showProgressIndicator()
+//                }
+//                is WebResponse.Success<*> -> {
+//                    hideProgressIndicator()
+//                    val responseLeads = it.data as List<DynamicLeadsItem>
+//                    sharedPrefManager.setLeadData(responseLeads)
+//                }
+//                is WebResponse.Error -> {
+//                    hideProgressIndicator()
+//                    // showBanner(it.exception, Constant.ERROR)
+//                    //showBanner(getString(R.string.something_wrong), Constant.ERROR)
+//                }
+//            }
+//        }
     }
 
 //    private fun getLeads() {
