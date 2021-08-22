@@ -8,6 +8,8 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -64,7 +66,8 @@ import kotlin.collections.setOf
 
 class MainActivity : DockActivity() {
     lateinit var number: CustomEditText
-    companion object{
+
+    companion object {
 
         @SuppressLint("StaticFieldLeak")
         private lateinit var unbinder: Unbinder
@@ -102,13 +105,18 @@ class MainActivity : DockActivity() {
         navController = findNavController(R.id.nav_host_main)
 
 
-        name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
+        name.text =
+            sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
         initView()
         setGesture()
         viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this ,arrayOf(Manifest.permission.CALL_PHONE),1);
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CALL_PHONE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1);
         }
     }
 
@@ -142,15 +150,15 @@ class MainActivity : DockActivity() {
 //        }
 
         switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
+            if (isChecked) {
 
                 Log.i("xxChecked", "check")
-            }else{
+            } else {
                 Log.i("xxChecked", "uncheck")
                 sharedPrefManager.setShiftStart(false)
                 startActivity(Intent(this, WelcomeActivity::class.java))
-            // LoginActivity.navController.navigate()
-           // Navigation.findNavController().navigate(R.id.nav_graph_actFirstActvity)
+                // LoginActivity.navController.navigate()
+                // Navigation.findNavController().navigate(R.id.nav_graph_actFirstActvity)
 
             }
 
@@ -211,7 +219,7 @@ class MainActivity : DockActivity() {
 
     private fun fragmentClickEvent(itemString: String?) {
 
-        when(itemString){
+        when (itemString) {
             Constants.DASHBOARD -> {
             }
 
@@ -295,13 +303,11 @@ class MainActivity : DockActivity() {
         listDataHeader.add(Constants.TRAINING) //7
 
 
-
         listDataHeader.add(Constants.LEADER_BOARD) //8
         listDataHeader.add(Constants.NOTIFICATIONS) //9
         listDataHeader.add(Constants.PASSWORD_CHANGE) //10
         listDataHeader.add(Constants.JOIN_VISIT) //11
         listDataHeader.add(Constants.LOGOUT) //12
-
 
 
         val listAdapter = ExpandableListAdapter(
@@ -333,8 +339,8 @@ class MainActivity : DockActivity() {
 
             Log.i("xxGroup", "child")
             val str = listDataChild[listDataHeader[groupPosition]]!![childPosition]
-                fragmentClickEvent(str)
-                closeDrawer()
+            fragmentClickEvent(str)
+            closeDrawer()
             false
         }
 
@@ -350,13 +356,13 @@ class MainActivity : DockActivity() {
     }
 
     fun dropDownMenu(view: View) {
-            showOrHide()
-            binding.appBarMain.sideMenu.sync.setOnClickListener(::onCLickEvent)
-            binding.appBarMain.sideMenu.upload.setOnClickListener(::onCLickEvent)
-            binding.appBarMain.sideMenu.coldCalling.setOnClickListener(::onCLickEvent)
-            binding.appBarMain.sideMenu.addLead.setOnClickListener(::onCLickEvent)
-            binding.appBarMain.sideMenu.followup.setOnClickListener(::onCLickEvent)
-            binding.appBarMain.sideMenu.close.setOnClickListener(::onCLickEvent)
+        showOrHide()
+        binding.appBarMain.sideMenu.sync.setOnClickListener(::onCLickEvent)
+        binding.appBarMain.sideMenu.upload.setOnClickListener(::onCLickEvent)
+        binding.appBarMain.sideMenu.coldCalling.setOnClickListener(::onCLickEvent)
+        binding.appBarMain.sideMenu.addLead.setOnClickListener(::onCLickEvent)
+        binding.appBarMain.sideMenu.followup.setOnClickListener(::onCLickEvent)
+        binding.appBarMain.sideMenu.close.setOnClickListener(::onCLickEvent)
     }
 
     private fun onCLickEvent(view: View) {
@@ -364,10 +370,12 @@ class MainActivity : DockActivity() {
         when (view.id) {
             R.id.sync -> {
                 getSyncData()
-              //getLeads()
+                //getLeads()
             }
-            R.id.upload -> {Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()}
-            R.id.cold_calling ->  callLead()
+            R.id.upload -> {
+                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+            }
+            R.id.cold_calling -> callLead()
             R.id.addLead -> {
                 val bundle = Bundle()
                 bundle.putString(Constants.TYPE, Constants.VISIT)
@@ -444,7 +452,7 @@ class MainActivity : DockActivity() {
         navController.navigate(id)
     }
 
-    fun showDialog_new(customerType: String, contact: String?,customers: DynamicLeadsItem?) {
+    fun showDialog_new(customerType: String, contact: String?, customers: DynamicLeadsItem?) {
 
         val factory = LayoutInflater.from(this)
         val dialogView: View = factory.inflate(R.layout.dialog_call, null)
@@ -463,7 +471,8 @@ class MainActivity : DockActivity() {
                         val item = KontactPickerItem().apply {
                             debugMode = true
                             selectionMode = SelectionMode.Single
-                            textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)
+                            textBgColor =
+                                ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)
                         }
                         KontactPicker().startPickerForResult(this@MainActivity, item, 3000)
                     }
@@ -478,15 +487,21 @@ class MainActivity : DockActivity() {
 
         btnCall.setOnClickListener {
 
-            if (number.text?.length?.compareTo(11)!! < 0){
-                number.error= "invalid number!"
-            }else {
+            if (number.text?.length?.compareTo(11)!! < 0) {
+                number.error = "invalid number!"
+            } else {
                 dialog.dismiss()
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this ,arrayOf(Manifest.permission.CALL_PHONE),1);
-                }
-                else
-                {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.CALL_PHONE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.CALL_PHONE),
+                        1
+                    );
+                } else {
                     val intent = Intent(Intent.ACTION_CALL)
                     intent.data = Uri.parse("tel:" + number.text)
                     val bundle = Bundle()
@@ -510,7 +525,7 @@ class MainActivity : DockActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 3000) {
             val list = KontactPicker.getSelectedKontacts(data) //ArrayList<MyContacts>
-            if (list!!.isNotEmpty()){
+            if (list!!.isNotEmpty()) {
                 list?.get(0)?.contactNumber?.let {
 //                    val intent = Intent(Intent.ACTION_CALL)
 //                    intent.data = Uri.parse(it)
@@ -534,6 +549,7 @@ class MainActivity : DockActivity() {
                     hideProgressIndicator()
                     val response = it.data as LovResponse
                     sharedPrefManager.setLeadStatus(response.company_lead_status)
+                    Log.i("xxLov", "Success")
                 }
                 is WebResponse.Error -> {
                     hideProgressIndicator()
@@ -543,24 +559,27 @@ class MainActivity : DockActivity() {
             }
         }
 
-        viewModel.getLeads().observe(this) {
-            when (it) {
-                WebResponse.Loading -> {
-                    showProgressIndicator()
-                }
-                is WebResponse.Success<*> -> {
-                    hideProgressIndicator()
-                    val response = it.data as List<DynamicLeadsItem>
-                    sharedPrefManager.setLeadData(response)
-                }
-                is WebResponse.Error -> {
-                    hideProgressIndicator()
-                    // showBanner(it.exception, Constant.ERROR)
-                    //showBanner(getString(R.string.something_wrong), Constant.ERROR)
+        Handler(Looper.getMainLooper()).postDelayed({
+            viewModel.getLeads().observe(this) {
+                when (it) {
+                    WebResponse.Loading -> {
+                        showProgressIndicator()
+                    }
+                    is WebResponse.Success<*> -> {
+                        hideProgressIndicator()
+                        val response = it.data as List<DynamicLeadsItem>
+                        sharedPrefManager.setLeadData(response)
+                        Log.i("xxLead", "Success")
+
+                    }
+                    is WebResponse.Error -> {
+                        hideProgressIndicator()
+                        // showBanner(it.exception, Constant.ERROR)
+                        //showBanner(getString(R.string.something_wrong), Constant.ERROR)
+                    }
                 }
             }
-        }
-
+        }, 1000)
     }
 
 //    private fun getLeads() {
@@ -574,7 +593,8 @@ class MainActivity : DockActivity() {
         when (tag) {
             Constants.GET_LOVS -> {
                 try {
-                    val lovResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LovResponse::class.java)
+                    val lovResponse = GsonFactory.getConfiguredGson()
+                        ?.fromJson(liveData.value, LovResponse::class.java)
                     sharedPrefManager.setLeadStatus(lovResponse!!.company_lead_status)
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
@@ -583,7 +603,8 @@ class MainActivity : DockActivity() {
             Constants.GET_LEADS -> {
                 try {
                     val listType: Type = object : TypeToken<List<DynamicLeadsItem?>?>() {}.type
-                    val leads: List<DynamicLeadsItem> = Gson().fromJson<List<DynamicLeadsItem>>(liveData.value, listType)
+                    val leads: List<DynamicLeadsItem> =
+                        Gson().fromJson<List<DynamicLeadsItem>>(liveData.value, listType)
                     sharedPrefManager.setLeadData(leads)
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
