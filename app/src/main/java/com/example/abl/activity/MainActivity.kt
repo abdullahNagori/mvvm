@@ -79,6 +79,7 @@ class MainActivity : DockActivity() {
     private lateinit var actionBarMenu: Menu
     private lateinit var switchAB: SwitchCompat
     private lateinit var sharedPreferences: SharedPreferences
+
     lateinit var viewModel: CoroutineViewModel
 
     private var x1 = 0f
