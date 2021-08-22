@@ -11,7 +11,8 @@ import com.example.abl.model.*
     DynamicLeadsItem::class,
     CheckinModel::class,
     CompanyProduct::class,
-    CompanyVisitStatu::class], version = 1, exportSchema = false)
+    CompanyVisitStatu::class,
+    CompanyLeadStatu::class], version = 2, exportSchema = false)
 abstract class ABLDatabase : RoomDatabase() {
 
     abstract fun leadDao(): DAOAccess

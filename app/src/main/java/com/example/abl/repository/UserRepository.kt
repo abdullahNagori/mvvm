@@ -5,6 +5,9 @@ import com.example.abl.constant.Constants
 import com.example.abl.model.*
 import com.example.abl.network.Api
 import com.example.abl.utils.SharedPrefManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(private val api: Api, private val sharedPrefManager: SharedPrefManager):BaseRepository()
@@ -33,8 +36,20 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.markAttendance(markAttendanceModel, "Bearer " + sharedPrefManager.getToken()), Constants.MARK_ATTENDANCE)
     }
 
-    fun getLovs(): MutableLiveData<String> {
-        return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
+   suspend fun getLovs(): LovResponse {
+        return withContext(Dispatchers.IO) {
+            async {
+                api.getLovs("Bearer " + sharedPrefManager.getToken())
+            }
+        }.await()
+    }
+
+    suspend fun getLeads(): List<DynamicLeadsItem> {
+        return withContext(Dispatchers.IO) {
+            async {
+                api.getLeads("Bearer " + sharedPrefManager.getToken())
+            }
+        }.await()
     }
 
     fun getDynamicLeads(token: String): MutableLiveData<String> {
@@ -57,4 +72,12 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.changePassword(changePasswordModel,"Bearer " + sharedPrefManager.getToken()), Constants.CHANGE_PASSWORD)
     }
 
+//    suspend fun getSuspendLov(): LovResponse {
+//        // return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
+//        return withContext(Dispatchers.IO) {
+//            async {
+//                api.getLovs("Bearer " + "123")
+//            }
+//        }.await()
+//    }
 }

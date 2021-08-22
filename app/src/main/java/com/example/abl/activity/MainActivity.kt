@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -42,10 +43,12 @@ import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.MarkAttendanceModel
+import com.example.abl.network.coroutines.WebResponse
 import com.example.abl.utils.CustomEditText
 import com.example.abl.utils.DrawableClickListener
 import com.example.abl.utils.SharedPrefKeyManager
 import com.example.abl.utils.SharedPrefManager
+import com.example.abl.viewModel.CoroutineViewModel
 import com.tapadoo.alerter.Alerter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -72,6 +75,7 @@ class MainActivity : DockActivity() {
     private lateinit var actionBarMenu: Menu
     private lateinit var switchAB: SwitchCompat
     private lateinit var sharedPreferences: SharedPreferences
+    lateinit var viewModel: CoroutineViewModel
     override fun getDockFrameLayoutId(): Int {
         return R.id.container
     }
@@ -91,6 +95,7 @@ class MainActivity : DockActivity() {
         name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
         initView()
         setGesture()
+        viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this ,arrayOf(Manifest.permission.CALL_PHONE),1);
@@ -373,12 +378,28 @@ class MainActivity : DockActivity() {
             binding.appBarMain.sideMenu.close.setOnClickListener(::onCLickEvent)
     }
 
+    private fun getSyncData() {
+        viewModel.getLOV().observe(this) {
+            when (it) {
+                WebResponse.Loading -> {
+                    showProgressIndicator()
+                }
+                is WebResponse.Success<*> -> {
+                    hideProgressIndicator()
+                }
+                is WebResponse.Error -> {
+                    hideProgressIndicator()
+                }
+            }
+        }
+    }
     private fun onCLickEvent(view: View) {
         showOrHide()
         when (view.id) {
 
             R.id.sync -> {
-                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show() }
+                getSyncData()
+            }
             R.id.upload -> {Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()}
             R.id.cold_calling ->  callLead()
             R.id.addLead -> {

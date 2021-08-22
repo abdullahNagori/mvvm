@@ -25,4 +25,7 @@ interface DAOAccess {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLovVisitStatus(visitStatus: ArrayList<CompanyVisitStatu>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertLeadStatus(leadStatus: List<CompanyLeadStatu>)
 }

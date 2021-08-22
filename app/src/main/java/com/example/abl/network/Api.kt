@@ -43,10 +43,15 @@ interface Api {
 
     //Get Lovs
     @GET("leads/getLovs")
-    fun getLovs(@Header("Authorization") token: String
-    ): Call<ResponseBody>
+   suspend fun getLovs(@Header("Authorization") token: String
+    ): LovResponse
 
-    //Get Lovs
+    //Get Leads
+    @GET("leads/getLeads")
+    suspend fun getLeads(@Header("Authorization") token: String
+    ): List<DynamicLeadsItem>
+
+    //Get Leads
     @GET("leads/getLeadsForDynamicData")
     fun getLeadsForDynamicData(@Header("Authorization") token: String
     ): Call<ResponseBody>
