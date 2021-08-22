@@ -547,9 +547,10 @@ class MainActivity : DockActivity() {
                 }
                 is WebResponse.Success<*> -> {
                     hideProgressIndicator()
-                    val response = it.data as LovResponse
-                    sharedPrefManager.setLeadStatus(response.company_lead_status)
-                    Log.i("xxLov", "Success")
+
+                    val responseLov = it.data as LovResponse
+                    sharedPrefManager.setLeadStatus(responseLov.company_lead_status)
+
                 }
                 is WebResponse.Error -> {
                     hideProgressIndicator()
@@ -559,27 +560,23 @@ class MainActivity : DockActivity() {
             }
         }
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            viewModel.getLeads().observe(this) {
-                when (it) {
-                    WebResponse.Loading -> {
-                        showProgressIndicator()
-                    }
-                    is WebResponse.Success<*> -> {
-                        hideProgressIndicator()
-                        val response = it.data as List<DynamicLeadsItem>
-                        sharedPrefManager.setLeadData(response)
-                        Log.i("xxLead", "Success")
-
-                    }
-                    is WebResponse.Error -> {
-                        hideProgressIndicator()
-                        // showBanner(it.exception, Constant.ERROR)
-                        //showBanner(getString(R.string.something_wrong), Constant.ERROR)
-                    }
+        viewModel.getLeads().observe(this) {
+            when (it) {
+                WebResponse.Loading -> {
+                    showProgressIndicator()
+                }
+                is WebResponse.Success<*> -> {
+                    hideProgressIndicator()
+                    val responseLeads = it.data as List<DynamicLeadsItem>
+                    sharedPrefManager.setLeadData(responseLeads)
+                }
+                is WebResponse.Error -> {
+                    hideProgressIndicator()
+                    // showBanner(it.exception, Constant.ERROR)
+                    //showBanner(getString(R.string.something_wrong), Constant.ERROR)
                 }
             }
-        }, 1000)
+        }
     }
 
 //    private fun getLeads() {
