@@ -1,7 +1,5 @@
 package com.example.abl.network.coroutine
 
-import com.google.gson.Gson
-
 open class WebResponse {
 
     object Loading : WebResponse()

@@ -8,7 +8,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -26,13 +25,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.deepakkumardk.kontactpickerlib.KontactPicker
@@ -40,30 +37,30 @@ import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
 import com.deepakkumardk.kontactpickerlib.model.SelectionMode
 import com.example.abl.R
 import com.example.abl.adapter.ExpandableListAdapter
-import com.example.abl.base.BaseActivity
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
-import com.example.abl.model.CompanyProduct
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.LovResponse
-import com.example.abl.model.MarkAttendanceModel
 import com.example.abl.network.coroutine.WebResponse
-import com.example.abl.repository.UserRepository
 import com.example.abl.utils.*
-import com.example.abl.viewModel.UserViewModel
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.tapadoo.alerter.Alerter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.lang.reflect.Array.get
+import kotlinx.serialization.json.Json
+import org.json.JSONObject
 import java.lang.reflect.Type
-import java.nio.file.Paths.get
-import java.util.HashMap
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.List
+import kotlin.collections.MutableList
+import kotlin.collections.isNotEmpty
+import kotlin.collections.set
+import kotlin.collections.setOf
+
 
 class MainActivity : DockActivity() {
     lateinit var number: CustomEditText
@@ -365,8 +362,8 @@ class MainActivity : DockActivity() {
         showOrHide()
         when (view.id) {
             R.id.sync -> {
-                getLov()
-              //  getLeads()
+                getSyncData()
+              //getLeads()
             }
             R.id.upload -> {Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()}
             R.id.cold_calling ->  callLead()
@@ -525,20 +522,17 @@ class MainActivity : DockActivity() {
         }
     }
 
-    private fun getLov() {
-//        GlobalScope.launch {
-//            getUserViewModel().getLovs()
-//        }
+    private fun getSyncData() {
 
-        viewModel.fetchLOV().observe(this) {
+        viewModel.getLOV().observe(this) {
             when (it) {
                 WebResponse.Loading -> {
                     showProgressIndicator()
                 }
                 is WebResponse.Success<*> -> {
                     hideProgressIndicator()
-                    val response = it
-                    Log.i("xxResponseLov", response.toString())
+                    val response = it.data as LovResponse
+                    sharedPrefManager.setLeadStatus(response.company_lead_status)
                 }
                 is WebResponse.Error -> {
                     hideProgressIndicator()
@@ -547,13 +541,32 @@ class MainActivity : DockActivity() {
                 }
             }
         }
+
+        viewModel.getLeads().observe(this) {
+            when (it) {
+                WebResponse.Loading -> {
+                    showProgressIndicator()
+                }
+                is WebResponse.Success<*> -> {
+                    hideProgressIndicator()
+                    val response = it.data as List<DynamicLeadsItem>
+                    sharedPrefManager.setLeadData(response)
+                }
+                is WebResponse.Error -> {
+                    hideProgressIndicator()
+                    // showBanner(it.exception, Constant.ERROR)
+                    //showBanner(getString(R.string.something_wrong), Constant.ERROR)
+                }
+            }
+        }
+
     }
 
-    private fun getLeads() {
-        GlobalScope.launch {
-            getUserViewModel().getLeads()
-        }
-    }
+//    private fun getLeads() {
+//        GlobalScope.launch {
+//            getUserViewModel().getLeads()
+//        }
+//    }
 
     override fun onSuccessResponse(liveData: LiveData<String>, tag: String) {
         super.onSuccessResponse(liveData, tag)

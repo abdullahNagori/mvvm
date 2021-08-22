@@ -28,18 +28,41 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
     @Inject
     lateinit var sharedPrefManager: SharedPrefManager
 
-    fun fetchLOV(): MutableLiveData<WebResponse> {
+    fun getLOV(): MutableLiveData<WebResponse> {
         val data = MutableLiveData<WebResponse>()
         data.postValue(WebResponse.Loading)
-
         scope.launch {
             try {
                 val response = userRepository.getLovs()
                 withContext(Dispatchers.Main) {
                     data.postValue(WebResponse.Success(response))
-
+                    Log.i("xxLovRes1", response.toString())
                     withContext(Dispatchers.IO) {
                         Log.i("xxLovRes2", response.toString())
+                    }
+                }
+            } catch (e: Exception){
+                withContext(Dispatchers.Main) {
+                    data.postValue(WebResponse.Error(getException(e)))
+                }
+            }
+        }
+        return data
+    }
+
+    fun getLeads(): MutableLiveData<WebResponse> {
+
+        val data = MutableLiveData<WebResponse>()
+        data.postValue(WebResponse.Loading)
+
+        scope.launch {
+            try {
+                val response = userRepository.getLeads()
+                withContext(Dispatchers.Main) {
+                    data.postValue(WebResponse.Success(response))
+                    Log.i("xxLeadRes1", response.toString())
+                    withContext(Dispatchers.IO) {
+                        Log.i("xxLeadRes2", response.toString())
                     }
                 }
             } catch (e: Exception){
