@@ -76,9 +76,6 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         getLov()
         getLocation()
 
-
-
-
         Log.i("xxCall", visitType)
         arguments?.getParcelable<DynamicLeadsItem>(Constants.LEAD_DATA).let {
             it?.let { it1 -> setData(it1) }
@@ -112,7 +109,6 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mCalender = Calendar.getInstance()
-
     }
 
     private fun setData (data: DynamicLeadsItem) {
@@ -206,11 +202,10 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             visitType,
             binding.date.text.toString(),
             binding.dateOfConversion.text.toString(),
-            customer.customer_id,
             customer.lead_id,
             (selectedProduct?.record_id)!!,
             (selectedProduct?.product_name)!!,
-            "",
+            binding.amount.text.toString(),
             binding.remarks.text.toString(),
             latitude.toString(),
             longitude.toString())

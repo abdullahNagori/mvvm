@@ -6,7 +6,6 @@ data class CheckinModel(
     val visit_type: String,
     val followup_date: String,
     val date_of_conv: String,
-    val customer_id: String,
     val lead_id: String,
     val product_id: String,
     val product_name: String,
