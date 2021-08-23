@@ -3,7 +3,6 @@ package com.example.abl.application
 import android.app.Application
 import android.icu.number.NumberFormatter.with
 import com.example.abl.BuildConfig
-import com.example.abl.utils.SharedPrefManager
 import com.facebook.stetho.Stetho
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

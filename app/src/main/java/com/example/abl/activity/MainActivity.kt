@@ -52,7 +52,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import org.json.JSONObject
 import java.lang.reflect.Type
 import java.util.*

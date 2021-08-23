@@ -9,6 +9,7 @@ import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.LovResponse
 import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.repository.UserRepository
+import com.example.abl.room.RoomHelper
 import com.example.abl.utils.GsonFactory
 import com.example.abl.utils.SharedPrefManager
 import com.google.gson.Gson
@@ -30,6 +31,9 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
     @Inject
     lateinit var sharedPrefManager: SharedPrefManager
 
+    @Inject
+    lateinit var roomHelper: RoomHelper
+
     fun getLOV(): MutableLiveData<WebResponse> {
         val data = MutableLiveData<WebResponse>()
       //  data.postValue(WebResponse.Loading)
@@ -39,7 +43,7 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
                     val callLov = async {  userRepository.getLovs()}
                     val callLeads = async {  userRepository.getLeads()}
 
-                    val leadResponse: List<DynamicLeadsItem>? = try {
+                    val leadResponse: ArrayList<DynamicLeadsItem>? = try {
                        // data.postValue(WebResponse.Success(responseLeads.await()))
                         callLeads.await()
                        } catch (ex: Exception) {
@@ -75,10 +79,13 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
         return data
     }
 
-    private fun processData(lovResponse: LovResponse, dynamicLeadsItem: List<DynamicLeadsItem>?) {
-        sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
+    private fun processData(lovResponse: LovResponse, dynamicLeadsItem: ArrayList<DynamicLeadsItem>?) {
+        roomHelper.deleteLeadStatus()
+        roomHelper.insertLeadStatus(lovResponse.company_lead_status)
+
         if (dynamicLeadsItem != null) {
-            sharedPrefManager.setLeadData(dynamicLeadsItem)
+            roomHelper.deleteLeadData()
+            roomHelper.insertLeadData(dynamicLeadsItem)
         }
     }
 

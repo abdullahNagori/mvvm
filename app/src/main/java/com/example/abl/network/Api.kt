@@ -55,7 +55,7 @@ interface Api {
     //Get Leads
     @GET("leads/getLeads")
    suspend fun getLeads(@Header("Authorization") token: String
-    ): List<DynamicLeadsItem>
+    ): ArrayList<DynamicLeadsItem>
 
     //Add Leads
     @POST("leads/addLead")

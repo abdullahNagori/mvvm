@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.example.abl.R
 import com.example.abl.activity.MainActivity
@@ -53,6 +54,17 @@ class AllFragment : BaseDockFragment(), ClickListner {
         binding = FragmentAllBinding.inflate(layoutInflater)
         leadStatusData = GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString(ARG_NAME), CompanyLeadStatu::class.java)
         initRecyclerView()
+
+        Toast.makeText(requireContext(),"this",Toast.LENGTH_LONG).show()
+        val leadStatus = roomHelper.getLeadsStatus()
+        val leadData = roomHelper.getLeadsData("all")
+        Log.i("xxLeadData", leadData.toString())
+//        for (i in leadStatus[1].name)
+//        {
+//            Log.i("xxName", i.toString())
+//        }
+
+
         setData()
         return binding.root
     }
@@ -84,6 +96,7 @@ class AllFragment : BaseDockFragment(), ClickListner {
 
     private fun setData() {
         val leads = sharedPrefManager.getLeadData()
+        //val leads = roomHelper.getLeads("leadStatusData")
         if (leads != null) {
             if (leadStatusData?.name.equals("all", true)) {
                 adapter.setList(leads)

@@ -115,7 +115,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         customer = data
         binding.customerName.setText(data.first_name)
         binding.contactNo.setText(data.mobile_phone_number)
-        visitType = data.type
+        visitType = data.type!!
     }
 
     override fun closeDrawer() {
@@ -202,7 +202,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             visitType,
             binding.date.text.toString(),
             binding.dateOfConversion.text.toString(),
-            customer.lead_id,
+            customer.lead_id!!,
             (selectedProduct?.record_id)!!,
             (selectedProduct?.product_name)!!,
             binding.amount.text.toString(),

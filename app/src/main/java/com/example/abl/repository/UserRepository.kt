@@ -43,7 +43,7 @@ class UserRepository @Inject constructor(private val api: Api, private val share
        // return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
        return withContext(Dispatchers.IO) {
            async {
-               api.getLovs("Bearer " + "123")
+               api.getLovs("Bearer " + sharedPrefManager.getToken())
            }
        }.await()
     }
@@ -52,7 +52,7 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.getLeadsForDynamicData("Bearer " + sharedPrefManager.getToken()), Constants.GET_DYNAMIC_LEADS)
     }
 
-    suspend fun getLeads(): List<DynamicLeadsItem> {
+    suspend fun getLeads(): ArrayList<DynamicLeadsItem> {
         return withContext(Dispatchers.IO) {
             async {
                 api.getLeads("Bearer " + sharedPrefManager.getToken())
