@@ -1,6 +1,16 @@
 package com.example.abl.model
 
+import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
+
+
+@Parcelize
+@Entity(foreignKeys = [ForeignKey(entity = DynamicLeadsItem::class, parentColumns = arrayOf("lead_id"), childColumns = arrayOf("childClassColumn"))])
 data class GetPreviousVisit(
+
     val amount: String,
     val comment: String,
     val created_at: String,
@@ -11,5 +21,10 @@ data class GetPreviousVisit(
     val visit_type: String,
     val visited_latitude: String,
     val visited_longitude: String,
-    val visited_time: String
-)
+    val visited_time: String,
+
+): Parcelable
+{
+    @PrimaryKey
+    var lead_id: String? = null
+}

@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 import javax.annotation.Nullable
 
 @Parcelize
@@ -80,6 +81,7 @@ data class DynamicLeadsItem(
     val status: String?,
     val transaction_id: String?,
     val type: String?,
+    val get_previous_visit: List<GetPreviousVisit>,
     val updated_at: String?,
     val user_code: String?,
     val user_id: String?,

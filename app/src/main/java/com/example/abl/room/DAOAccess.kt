@@ -15,8 +15,8 @@ interface DAOAccess {
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    fun insertCheckin(checkinModel: CheckinModel)
 //
-    @Query("SELECT * FROM Lead where lead_status_name = :leadStatus")
-    fun getLeadData(leadStatus: String) : List<DynamicLeadsItem>
+    @Query("SELECT * FROM Lead")
+    fun getLeadData() : List<DynamicLeadsItem>
 //
 //    @Query("SELECT * FROM Checkin")
 //    fun getCheckinData() : List<CheckinModel>
@@ -39,6 +39,8 @@ interface DAOAccess {
     @Query("SELECT * FROM LovLeadStatus")
     fun getLeadStatus() : List<CompanyLeadStatu>
 
+    @Query("SELECT * FROM getpreviousvisit WHERE id IS :ownerId")
+    fun getPreviousVisit(ownerId: String): List<GetPreviousVisit>
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    fun insertLeadData(leadData: List<DynamicLeadsItem>)
 

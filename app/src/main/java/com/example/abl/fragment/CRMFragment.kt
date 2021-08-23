@@ -86,11 +86,13 @@ class CRMFragment : BaseDockFragment() {
     }
 
     private fun setupViewPager() {
-        val leadStatusArray = sharedPrefManager.getLeadStatus()
-        if (leadStatusArray != null) {
-            binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager, leadStatusArray.size, leadStatusArray)
+       // val leadStatusArray = sharedPrefManager.getLeadStatus()
+        val leads = roomHelper.getLeadsStatus()
+        Log.i("xxLeads", leads.toString())
+        if (leads != null) {
+            binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager, leads.size, leads)
             binding.tabLayout.setupWithViewPager(binding.viewPager)
-            leadStatusArray.forEachIndexed { index, element ->
+            leads.forEachIndexed { index, element ->
                 binding.tabLayout.getTabAt(index)?.text = element.name
             }
 

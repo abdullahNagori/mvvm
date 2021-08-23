@@ -55,10 +55,10 @@ class AllFragment : BaseDockFragment(), ClickListner {
         leadStatusData = GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString(ARG_NAME), CompanyLeadStatu::class.java)
         initRecyclerView()
 
-        Toast.makeText(requireContext(),"this",Toast.LENGTH_LONG).show()
-        val leadStatus = roomHelper.getLeadsStatus()
-        val leadData = roomHelper.getLeadsData("all")
-        Log.i("xxLeadData", leadData.toString())
+//        Toast.makeText(requireContext(),"this",Toast.LENGTH_LONG).show()
+//        val leadStatus = roomHelper.getLeadsStatus()
+//        val leadData = roomHelper.getLeadsData("all")
+//        Log.i("xxLeadData", leadData.toString())
 //        for (i in leadStatus[1].name)
 //        {
 //            Log.i("xxName", i.toString())
@@ -96,13 +96,13 @@ class AllFragment : BaseDockFragment(), ClickListner {
 
     private fun setData() {
         val leads = sharedPrefManager.getLeadData()
-        //val leads = roomHelper.getLeads("leadStatusData")
-        if (leads != null) {
+        val leadData = roomHelper.getLeadsData()
+        if (leadData != null) {
             if (leadStatusData?.name.equals("all", true)) {
-                adapter.setList(leads)
+                adapter.setList(leadData)
                 adapter.notifyDataSetChanged()
             } else {
-                val filterData = leads.filter { it.lead_status_name.equals(leadStatusData?.name, true) }
+                val filterData = leadData.filter { it.lead_status_name.equals(leadStatusData?.name, true) }
                 adapter.setList(filterData)
                 adapter.notifyDataSetChanged()
             }

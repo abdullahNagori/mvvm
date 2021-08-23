@@ -505,7 +505,7 @@ class MainActivity : DockActivity() {
                     intent.data = Uri.parse("tel:" + number.text)
                     val bundle = Bundle()
                     customers?.let {
-                        bundle.putParcelable(Constants.LEAD_DATA, customers)
+                       // bundle.putParcelable(Constants.LEAD_DATA, customers)
                     }
                     bundle.putString(Constants.TYPE, Constants.CALL)
                     bundle.putString(Constants.CUSTOMER_TYPE, customerType)

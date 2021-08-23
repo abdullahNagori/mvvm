@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.abl.constant.Constants
 import com.example.abl.model.*
 
@@ -11,7 +12,8 @@ import com.example.abl.model.*
     DynamicLeadsItem::class,
     CompanyProduct::class,
     CompanyVisitStatu::class,
-    CompanyLeadStatu::class], version = 10, exportSchema = false)
+    CompanyLeadStatu::class], version = 12, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class ABLDatabase : RoomDatabase() {
 
     abstract fun leadDao(): DAOAccess

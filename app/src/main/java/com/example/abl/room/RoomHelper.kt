@@ -39,8 +39,8 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
         daoAccess.deleteLeadData()
     }
 
-    fun getLeadsData(leadStatus: String): List<CustomerDetail> {
-        return daoAccess.getLeadData(leadStatus) as List<CustomerDetail>
+    fun getLeadsData(): List<DynamicLeadsItem> {
+        return daoAccess.getLeadData() as List<DynamicLeadsItem>
     }
 
     fun getLeadsStatus(): List<CompanyLeadStatu> {
