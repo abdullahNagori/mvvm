@@ -36,7 +36,6 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
 
     fun getLOV(): MutableLiveData<WebResponse> {
         val data = MutableLiveData<WebResponse>()
-      //  data.postValue(WebResponse.Loading)
         viewModelScope.launch {
             supervisorScope {
                 try {
@@ -44,34 +43,19 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
                     val callLeads = async {  userRepository.getLeads()}
 
                     val leadResponse: ArrayList<DynamicLeadsItem>? = try {
-                       // data.postValue(WebResponse.Success(responseLeads.await()))
                         callLeads.await()
                        } catch (ex: Exception) {
                            null
                        }
 
                     val lovResponse: LovResponse? = try {
-                      //  data.postValue(WebResponse.Success(responseLov.await()))
                         callLov.await()
                        } catch (ex: Exception) {
                            null
                        }
 
                        processData(lovResponse!!, leadResponse)
-//
-//                    val response = userRepository.getLovs()
-//
-//                    withContext(Dispatchers.Main) {
-//                        data.postValue(WebResponse.Success(response))
-//                        Log.i("xxLeadRes1", response.toString())
-//                        withContext(Dispatchers.IO) {
-//                            Log.i("xxLeadRes2", response.toString())
-//                        }
-                 //   }
                 } catch (e: Exception) {
-//                    withContext(Dispatchers.Main) {
-//                        data.postValue(WebResponse.Error(getException(e)))
-//                    }
                     Log.i("Error", e.message.toString())
                 }
             }
@@ -80,9 +64,13 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
     }
 
     private fun processData(lovResponse: LovResponse, dynamicLeadsItem: ArrayList<DynamicLeadsItem>?) {
-        roomHelper.deleteLeadStatus()
-        roomHelper.insertLeadStatus(lovResponse.company_lead_status)
+        if (lovResponse != null) {
+            sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
+            sharedPrefManager.setCompanyProducts(lovResponse.company_products)
+            sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
+        }
 
+        // Set leads data in local DB
         if (dynamicLeadsItem != null) {
             roomHelper.deleteLeadData()
             roomHelper.insertLeadData(dynamicLeadsItem)
@@ -130,5 +118,4 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
         val error = obj.getJSONObject("header").getString("message")
         return error.toString()
     }
-
 }

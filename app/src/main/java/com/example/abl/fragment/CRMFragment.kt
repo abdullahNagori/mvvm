@@ -88,14 +88,14 @@ class CRMFragment : BaseDockFragment() {
     }
 
     private fun setupViewPager() {
-       // val leadStatusArray = sharedPrefManager.getLeadStatus()
-        val leads = roomHelper.getLeadsStatus()
-        Log.i("xxLeads", leads.toString())
+        val leadStatusArray = sharedPrefManager.getLeadStatus()
+        //val leads = roomHelper.getLeadsStatus()
+
         binding.viewPager.offscreenPageLimit = 30
-        if (leads != null) {
-            binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager, leads.size, leads)
+        if (leadStatusArray != null) {
+            binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager, leadStatusArray.size, leadStatusArray)
             binding.tabLayout.setupWithViewPager(binding.viewPager)
-            leads.forEachIndexed { index, element ->
+            leadStatusArray.forEachIndexed { index, element ->
                 binding.tabLayout.getTabAt(index)?.text = element.name
             }
 
@@ -131,46 +131,6 @@ class CRMFragment : BaseDockFragment() {
             })
         }
     }
-/*
-//    private fun setupViewPager(data: List<DynamicLeadsResponse>){
-//        binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager, data.size, data)
-//        binding.tabLayout.setupWithViewPager(binding.viewPager)
-//        data.forEachIndexed { index, element ->
-//            binding.tabLayout.getTabAt(index)?.text = element.section
-//        }
-//
-//        binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                //binding.viewPager.currentItem = p0!!.position
-//                if (tab == null)
-//                    return
-//                val position = tab.position
-//
-//                tab_layout.getTabAt(position)?.view?.startAnimation(
-//                    AnimationUtils.loadAnimation(
-//                        context,
-//                        R.anim.zoomin
-//                    )
-//                )
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//                if (tab == null)
-//                    return
-//                val position = tab.position
-//                tab_layout.getTabAt(position)?.view?.startAnimation(
-//                    AnimationUtils.loadAnimation(
-//                        context,
-//                        R.anim.zoomout
-//                    )
-//                )
-//            }
-//
-//            override fun onTabReselected(p0: TabLayout.Tab?) {
-//            }
-//        })
-//    }
- */
 
     private fun tabAnimation() {
         binding.tabLayout.getTabAt(1)?.view?.startAnimation(

@@ -2,10 +2,7 @@ package com.example.abl.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.abl.model.CompanyLeadStatu
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.DynamicLeadsResponse
-import com.example.abl.model.UserDetailsResponse
+import com.example.abl.model.*
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -19,7 +16,8 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
     private val KEY_SHIFT_START = "KEY_SHIFT_START"
     private val KEY_USER_DETAILS = "KEY_USER_DETAILS"
     private val KEY_LEAD_STATUS = "KEY_LEAD_STATUS"
-    private val KEY_LEAD_DATA = "KEY_LEAD_DATA"
+    private val KEY_COMPANY_PRODUCTS = "KEY_COMPANY_PRODUCTS"
+    private val KEY_VISIT_STATUS = "KEY_VISIT_STATUS"
 
     val sharedPreferences: SharedPreferences = context.getSharedPreferences(Key_Pref, Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
@@ -76,15 +74,27 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
         return GsonFactory.getConfiguredGson()?.fromJson(json, listType)
     }
 
-    fun setLeadData(data: List<DynamicLeadsItem>): Boolean {
-        editor.putString(KEY_LEAD_DATA, GsonFactory.getConfiguredGson()?.toJson(data))
+    fun setCompanyProducts(companyProducts: List<CompanyProduct>): Boolean {
+        editor.putString(KEY_COMPANY_PRODUCTS, GsonFactory.getConfiguredGson()?.toJson(companyProducts))
         editor.apply();
         return true;
     }
 
-    fun getLeadData():List<DynamicLeadsItem>? {
-        val json = sharedPreferences.getString(KEY_LEAD_DATA, "")
-        val listType: Type = object : TypeToken<List<DynamicLeadsItem>>() {}.type
+    fun getCompanyProducts():List<CompanyProduct>? {
+        val json = sharedPreferences.getString(KEY_COMPANY_PRODUCTS, "")
+        val listType: Type = object : TypeToken<List<CompanyProduct>>() {}.type
+        return GsonFactory.getConfiguredGson()?.fromJson(json, listType)
+    }
+
+    fun setVisitStatus(visitStatus: List<CompanyVisitStatu>): Boolean {
+        editor.putString(KEY_VISIT_STATUS, GsonFactory.getConfiguredGson()?.toJson(visitStatus))
+        editor.apply();
+        return true;
+    }
+
+    fun getVisitStatus():List<CompanyVisitStatu>? {
+        val json = sharedPreferences.getString(KEY_VISIT_STATUS, "")
+        val listType: Type = object : TypeToken<List<CompanyVisitStatu>>() {}.type
         return GsonFactory.getConfiguredGson()?.fromJson(json, listType)
     }
 

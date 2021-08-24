@@ -9,9 +9,8 @@ import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
-@Entity(tableName = "PreviousVisits",foreignKeys = [ForeignKey(entity = DynamicLeadsItem::class, parentColumns = arrayOf("lead_id"), childColumns = arrayOf("lead_id"))])
+@Entity(tableName = "PreviousVisits")
 data class GetPreviousVisit(
-
     @ColumnInfo(name = "amount")
     val amount: String,
     @ColumnInfo(name = "comment")

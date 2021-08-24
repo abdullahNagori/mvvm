@@ -24,10 +24,9 @@ class PreviousVisitFragment : BaseDockFragment(), ClickListner {
         fun newInstance() = PreviousVisitFragment()
     }
 
-    lateinit var dynamicLeadsItem: DynamicLeadsItem
     lateinit var binding: PreviousVisitFragmentBinding
-    //val dataList = ArrayList<PreviousVisit>()
     lateinit var adapter: PreviousVisitAdapter
+    lateinit var dynamicLeadsItem: DynamicLeadsItem
     lateinit var previousList: List<GetPreviousVisit>
 
     override fun onCreateView(
@@ -35,28 +34,21 @@ class PreviousVisitFragment : BaseDockFragment(), ClickListner {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         initView()
-
-     //   dummyData(binding.visit)
-
         return binding.root
     }
 
     private fun initView() {
         binding = PreviousVisitFragmentBinding.inflate(layoutInflater)
-
     }
 
     override fun onResume() {
         super.onResume()
         initRecyclerView()
-
     }
 
     private fun initRecyclerView(){
-
-        previousList = roomHelper.getPreviousVisit(arguments?.getString(Constants.LEAD_ID)!!)
+        previousList = dynamicLeadsItem.get_previous_visit
         adapter = PreviousVisitAdapter(requireContext(), this)
         adapter.setList(previousList)
         binding.previous.adapter = adapter
@@ -77,6 +69,5 @@ class PreviousVisitFragment : BaseDockFragment(), ClickListner {
     override fun <T> onClick(data: T, createNested: Boolean) {
 //        val logDetailsFragment = PreviousVisitDetailFragment()
 //        logDetailsFragment.show(childFragmentManager, "visits")
-
     }
 }

@@ -71,16 +71,24 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
-        getLov()
-        getLocation()
+        initView()
 
-        Log.i("xxCall", visitType)
         arguments?.getParcelable<DynamicLeadsItem>(Constants.LEAD_DATA).let {
-            it?.let { it1 -> setData(it1) }
+            it?.let { it1 ->
+                this.customer = it1
+                setData()
+                setProductSpinner()
+                setVisitStatusSpinner()
+            }
         }
 
+        binding.submit.setOnClickListener {
+            auth()
+        }
+        binding.time.setOnClickListener {
+            showTimeDialog(requireContext(), binding.time)
+        }
         binding.dateOfConversion.setOnClickListener {
             DatePickerDialog(
                 myDockActivity!!, R.style.DialogTheme, this, mCalender
@@ -95,13 +103,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             )
         }
 
-        binding.submit.setOnClickListener {
-            auth()
-        }
-
-        binding.time.setOnClickListener {
-            showTimeDialog(requireContext(), binding.time)
-        }
+        getLocation()
 
         return binding.root
     }
@@ -111,27 +113,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         mCalender = Calendar.getInstance()
     }
 
-    private fun setData (data: DynamicLeadsItem) {
-        customer = data
-        binding.customerName.setText(data.first_name)
-        binding.contactNo.setText(data.mobile_phone_number)
-        visitType = data.type!!
-    }
-
-    override fun closeDrawer() {
-
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
-
     private fun initView() {
-
         binding = CheckInFormFragmentBinding.inflate(layoutInflater)
         binding.date.setOnClickListener {
             DatePickerDialog(
@@ -155,7 +137,61 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
 
+    private fun setVisitStatusSpinner() {
+        val visitStatus = sharedPrefManager.getVisitStatus()
+
+        if (visitStatus != null) {
+            visitStatusList = visitStatus as ArrayList<CompanyVisitStatu>
+            val adapter = CustomVisitAdapter(requireContext(), visitStatusList)
+            binding.status.adapter = adapter
+            binding.status.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                    }
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        selectedVisitStatus = visitStatusList[position]
+                        selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
+                    }
+                }
+
+            val index = visitStatusList.indexOfFirst { it.record_id == customer.lead_status }
+            if (index >= 0) {
+                binding.status.setSelection(index)
+                selectedVisitStatus = visitStatusList[index]
+                selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
+            }
+        }
+    }
+
+    private fun setProductSpinner() {
+        val products = sharedPrefManager.getCompanyProducts()
+
+        if (products != null) {
+            productLovList = products as ArrayList<CompanyProduct>
+            val adapter = CustomArrayAdapter(requireContext(), productLovList)
+            binding.productSpinner.adapter = adapter
+            binding.productSpinner.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        selectedProduct = productLovList[position];
+                    }
+                }
+
+            val index = productLovList.indexOfFirst { it.record_id == customer.product_id }
+            if (index >= 0) {
+                binding.productSpinner.setSelection(index)
+                selectedProduct = productLovList[index];
+            }
+        }
+    }
+
+    private fun setData () {
+        binding.customerName.setText(customer.first_name)
+        binding.contactNo.setText(customer.mobile_phone_number)
+        //visitType = customer.type!!
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
@@ -255,33 +291,9 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         mTimePicker.show()
     }
 
-    private fun getLov() {
-        GlobalScope.launch {
-            myDockActivity?.getUserViewModel()?.getLovs()
-        }
-    }
-
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
         when (tag) {
-            Constants.GET_LOVS -> {
-                try {
-                    val lovResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LovResponse::class.java)
-                    visitStatusList = lovResponse?.company_visit_status as ArrayList<CompanyVisitStatu>
-                    productLovList = lovResponse.company_products as ArrayList<CompanyProduct>
-
-                    val index = visitStatusList.indexOfFirst { it.record_id == customer.lead_status }
-                    if (index >= 0) {
-                        selectedVisitStatus = visitStatusList[index]
-                        selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
-                    }
-                    onStatusSelected(visitStatusList, index)
-                    onProductSelected(productLovList)
-                } catch (e: Exception) {
-                    Log.d("Exception", e.message.toString())
-                }
-            }
-
             Constants.ADD_LEAD_CHECKIN -> {
                 try {
                     Log.i("AddLead", liveData.value.toString())
@@ -294,45 +306,6 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }
-            }
-        }
-    }
-
-    private fun onStatusSelected(lovList: List<CompanyVisitStatu>, selectedPosition: Int) {
-        if (lovList.isNotEmpty()) {
-                if (lovList.size > 0) {
-                    val adapter = CustomVisitAdapter(requireContext(), lovList)
-                    binding.status.adapter = adapter
-                    binding.status.setSelection(selectedPosition)
-                    binding.status.onItemSelectedListener =
-                        object : AdapterView.OnItemSelectedListener {
-                            override fun onNothingSelected(parent: AdapterView<*>?) {
-                            }
-                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                selectedVisitStatus = lovList[position]
-                                selectedVisitStatus?.name?.let { setCheckInViewWithStatus(it) }
-                            }
-                        }
-                }
-        }
-    }
-
-    private fun onProductSelected(lovList: List<CompanyProduct>) {
-        if (lovList.isNotEmpty()) {
-            if ((this::productLovList.isInitialized)) {
-                if (productLovList.size > 0) {
-                    val adapter = CustomArrayAdapter(requireContext(), lovList)
-                    binding.productSpinner.adapter = adapter
-                    binding.productSpinner.onItemSelectedListener =
-                        object : AdapterView.OnItemSelectedListener {
-                            override fun onNothingSelected(parent: AdapterView<*>?) {}
-                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                selectedProduct = productLovList[position];
-                            }
-                        }
-                }
-            } else {
-                Log.i("Error4", "No data found $lovList")
             }
         }
     }
@@ -366,4 +339,16 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
         }
     }
+
+    override fun closeDrawer() {
+    }
+
+    override fun navigateToFragment(id: Int, args: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setTitle(text: String) {
+        TODO("Not yet implemented")
+    }
+
 }

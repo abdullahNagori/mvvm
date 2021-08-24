@@ -538,7 +538,6 @@ class MainActivity : DockActivity() {
     }
 
     private fun getSyncData() {
-
         viewModel.getLOV().observe(this) {
             when (it) {
                 WebResponse.Loading -> {
@@ -546,64 +545,9 @@ class MainActivity : DockActivity() {
                 }
                 is WebResponse.Success<*> -> {
                     hideProgressIndicator()
-
-//                    val responseLov = it.data as LovResponse
-//                    sharedPrefManager.setLeadStatus(responseLov.company_lead_status)
-
                 }
                 is WebResponse.Error -> {
                     hideProgressIndicator()
-                    // showBanner(it.exception, Constant.ERROR)
-                    //showBanner(getString(R.string.something_wrong), Constant.ERROR)
-                }
-            }
-        }
-
-//        viewModel.getLeads().observe(this) {
-//            when (it) {
-//                WebResponse.Loading -> {
-//                    showProgressIndicator()
-//                }
-//                is WebResponse.Success<*> -> {
-//                    hideProgressIndicator()
-//                    val responseLeads = it.data as List<DynamicLeadsItem>
-//                    sharedPrefManager.setLeadData(responseLeads)
-//                }
-//                is WebResponse.Error -> {
-//                    hideProgressIndicator()
-//                    // showBanner(it.exception, Constant.ERROR)
-//                    //showBanner(getString(R.string.something_wrong), Constant.ERROR)
-//                }
-//            }
-//        }
-    }
-
-//    private fun getLeads() {
-//        GlobalScope.launch {
-//            getUserViewModel().getLeads()
-//        }
-//    }
-
-    override fun onSuccessResponse(liveData: LiveData<String>, tag: String) {
-        super.onSuccessResponse(liveData, tag)
-        when (tag) {
-            Constants.GET_LOVS -> {
-                try {
-                    val lovResponse = GsonFactory.getConfiguredGson()
-                        ?.fromJson(liveData.value, LovResponse::class.java)
-                    sharedPrefManager.setLeadStatus(lovResponse!!.company_lead_status)
-                } catch (e: Exception) {
-                    Log.d("Exception", e.message.toString())
-                }
-            }
-            Constants.GET_LEADS -> {
-                try {
-                    val listType: Type = object : TypeToken<List<DynamicLeadsItem?>?>() {}.type
-                    val leads: List<DynamicLeadsItem> =
-                        Gson().fromJson<List<DynamicLeadsItem>>(liveData.value, listType)
-                    sharedPrefManager.setLeadData(leads)
-                } catch (e: Exception) {
-                    Log.d("Exception", e.message.toString())
                 }
             }
         }

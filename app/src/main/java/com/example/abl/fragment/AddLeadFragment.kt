@@ -36,11 +36,12 @@ import java.util.*
 class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
     lateinit var binding: AddFragmentBinding
 
-    lateinit var productLovList: ArrayList<CompanyProduct>
     var selectedProduct: CompanyProduct? = null
     private var sourceOfIncome: String? = null
     private var gender: String? = null
     private var occupation: String? = null
+
+    lateinit var productLovList: ArrayList<CompanyProduct>
 
     //var selectedList: ArrayList<String>? = null
     var latitude = 0.0
@@ -57,45 +58,21 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         binding.occupation.onItemSelectedListener = this
         binding.sourceOfIncome.onItemSelectedListener = this
         binding.gender.onItemSelectedListener = this
-        getLocation()
-        getLov()
-
         binding.visitLead.setOnClickListener {
-            auth()
+            addLead()
         }
+
+        setProductSpinner()
+        getLocation()
 
         return binding.root
-    }
-
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        if (args != null) {
-            MainActivity.navController.navigate(id, args)
-            return
-        }
-        MainActivity.navController.navigate(id)
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
-//        val adapter = CustomArrayAdapter(requireContext(), R.layout.item_spinner, list)
-//        adapter.setDropDownViewResource(R.layout.item_spinner)
-//        return adapter
     }
 
     private fun initView() {
         binding = AddFragmentBinding.inflate(layoutInflater)
     }
 
-    private fun auth() {
-
+    private fun addLead() {
         if (!validationhelper.validateString(binding.customerName)) return
         if (!validationhelper.validateString(binding.contactNum)) return
         if (!validationhelper.validateString(binding.companyName)) return
@@ -107,25 +84,27 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
             return
         }
 
-        addLead(CustomerDetail(
-                binding.customerName.text.toString(),
-                binding.contactNum.text.toString(),
-                binding.companyName.text.toString(),
-                binding.address.text.toString(),
-                binding.cnic.text.toString(),
-                occupation.toString(),
-                sourceOfIncome.toString(),
-                binding.esIncome.text.toString(),
-                binding.age.text.toString(),
-                gender.toString(),
-                latitude.toString(),
-                longitude.toString(),
-                (selectedProduct?.record_id)!!,
-                (selectedProduct?.product_name)!!,
-                binding.amount.text.toString(),
-                "",
-                "",
-                ""))
+        val customerDetail = CustomerDetail(
+            binding.customerName.text.toString(),
+            binding.contactNum.text.toString(),
+            binding.companyName.text.toString(),
+            binding.address.text.toString(),
+            binding.cnic.text.toString(),
+            occupation.toString(),
+            sourceOfIncome.toString(),
+            binding.esIncome.text.toString(),
+            binding.age.text.toString(),
+            gender.toString(),
+            latitude.toString(),
+            longitude.toString(),
+            (selectedProduct?.record_id)!!,
+            (selectedProduct?.product_name)!!,
+            binding.amount.text.toString(),
+            "",
+            "",
+            "")
+
+        myDockActivity?.getUserViewModel()?.addLead(customerDetail)
     }
 
     private fun additionalViewVisibility() {
@@ -140,33 +119,19 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private fun addLead(customerDetail: CustomerDetail) {
-        myDockActivity?.getUserViewModel()?.addLead(customerDetail)
-    }
-
-    private fun onClickItemSelected(lovList: List<CompanyProduct>) {
-        if (lovList.isNotEmpty()) {
-            if ((this::productLovList.isInitialized)) {
-                if (productLovList.size > 0) {
-                    val adapter = CustomArrayAdapter(requireContext(), lovList)
-                    binding.productSpinner.adapter = adapter
-                    binding.productSpinner.onItemSelectedListener =
-                        object : AdapterView.OnItemSelectedListener {
-                            override fun onNothingSelected(parent: AdapterView<*>?) {}
-                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                selectedProduct = productLovList[position];
-                            }
-                        }
+    private fun setProductSpinner() {
+        val products = sharedPrefManager.getCompanyProducts()
+        if (products != null) {
+            productLovList = products as ArrayList<CompanyProduct>
+            val adapter = CustomArrayAdapter(requireContext(), productLovList)
+            binding.productSpinner.adapter = adapter
+            binding.productSpinner.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        selectedProduct = productLovList[position];
+                    }
                 }
-            } else {
-                Log.i("Error4", "No data found $lovList")
-            }
-        }
-    }
-
-    private fun getLov() {
-        GlobalScope.launch {
-            myDockActivity?.getUserViewModel()?.getLovs()
         }
     }
 
@@ -185,17 +150,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                     myDockActivity?.showErrorMessage("Something went wrong")
                 }
             }
-
-            Constants.GET_LOVS -> {
-                try {
-                    val lovResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LovResponse::class.java)
-                    productLovList = lovResponse?.company_products as ArrayList<CompanyProduct>
-                    onClickItemSelected(productLovList)
-                    //binding.status.adapter = initiateListArrayAdapter(visitStatusList)
-                } catch (e: Exception) {
-                    Log.d("Exception", e.message.toString())
-                }
-            }
         }
     }
 
@@ -211,10 +165,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                 sourceOfIncome = parent.getItemAtPosition(position) as String
             }
         }
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("Not yet implemented")
     }
 
     private fun getLocation() {
@@ -245,5 +195,32 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
             }
 
         }
+    }
+
+    override fun closeDrawer() {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToFragment(id: Int, args: Bundle?) {
+        if (args != null) {
+            MainActivity.navController.navigate(id, args)
+            return
+        }
+        MainActivity.navController.navigate(id)
+    }
+
+    override fun setTitle(text: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
+        TODO("Not yet implemented")
+//        val adapter = CustomArrayAdapter(requireContext(), R.layout.item_spinner, list)
+//        adapter.setDropDownViewResource(R.layout.item_spinner)
+//        return adapter
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 }
