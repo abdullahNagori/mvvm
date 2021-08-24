@@ -50,6 +50,11 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         userRepository.getDynamicLeads(token)
     }
 
+    fun getMarketingCollateral(){
+        userRepository.apiListener = apiListener
+        userRepository.getMarketingCollateral()
+    }
+
   suspend  fun getLeads(){
         userRepository.apiListener = apiListener
         userRepository.getLeads()

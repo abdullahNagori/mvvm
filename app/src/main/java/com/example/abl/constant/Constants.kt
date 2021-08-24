@@ -30,6 +30,7 @@ object Constants {
     const val NTB : String = "NTB"
     const val NETWORK_ERROR : String = "network error"
     const val TYPE  = "visit_type"
+    const val SUCCESS  = "Success"
     const val COLD_CALL : String = "coldcall"
     const val CALL : String = "call"
     const val CUSTOMER_TYPE  = "customer_type"

@@ -247,6 +247,10 @@ class MainActivity : DockActivity() {
                 closeDrawer()
             }
 
+            Constants.MARKETING_COLLATERAL -> {
+                navigateToFragment(R.id.action_nav_home_to_nav_marketing_collateral)
+                closeDrawer()
+            }
             Constants.SALES_PIPELINE -> {
                 navigateToFragment(R.id.action_nav_home_to_company_provided_leads)
                 closeDrawer()

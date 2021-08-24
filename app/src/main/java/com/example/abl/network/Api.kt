@@ -80,4 +80,9 @@ interface Api {
     fun changePassword(@Body changePasswordModel: ChangePasswordModel,
                        @Header("Authorization") token: String
     ): Call<ResponseBody>
+
+    //Get Marketing Collateral
+    @GET("marketingcollateral")
+    fun getmarketingcollateral(@Header("Authorization") token: String
+    ): Call<ResponseBody>
 }
