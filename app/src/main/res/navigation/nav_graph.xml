@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_add_lead"
             app:destination="@id/nav_visit" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_marketing_collateral"
+            app:destination="@id/nav_marketing" />
     </fragment>
 
     <fragment
@@ -57,6 +60,12 @@
             app:destination="@id/customerDetailsFragment" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_marketing"
+        android:name="com.example.abl.fragment.MarketingCollateralFragment"
+        android:label="Marketing Collateral"
+        tools:layout="@layout/marketing_collateral_fragment" />
 
     <fragment
         android:id="@+id/customerDetailsFragment"

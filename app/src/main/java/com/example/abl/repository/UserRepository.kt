@@ -76,4 +76,8 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return callApi(api.changePassword(changePasswordModel,"Bearer " + sharedPrefManager.getToken()), Constants.CHANGE_PASSWORD)
     }
 
+    fun getMarketingCollateral(): MutableLiveData<String> {
+        return callApi(api.getmarketingcollateral("Bearer " + sharedPrefManager.getToken()), Constants.MARKETING_COLLATERAL)
+    }
+
 }

@@ -64,4 +64,10 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributePreviousVisitFragment(): PreviousVisitFragment
+
+    @ContributesAndroidInjector
+    fun contributeMarketingCollateralFragment(): MarketingCollateralFragment
+
+    @ContributesAndroidInjector
+    fun contributeMarketingCollateralItemFragment(): MarketingCollateralItemFragment
 }
