@@ -12,6 +12,7 @@ import com.example.abl.base.ClickListner
 import com.example.abl.databinding.ItemCustomerBinding
 import com.example.abl.fragment.Customers
 import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.GetPreviousVisit
 
 class CustomerAdapter(val context: Context?, val listner: ClickListner) : RecyclerView.Adapter<CustomerAdapter.ViewHolder>() {
 

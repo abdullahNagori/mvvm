@@ -1,6 +1,8 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,9 +19,7 @@ import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentAllBinding
-import com.example.abl.model.CompanyLeadStatu
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.DynamicLeadsResponse
+import com.example.abl.model.*
 import com.example.abl.utils.GsonFactory
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -31,6 +31,7 @@ import java.util.ArrayList
 class AllFragment : BaseDockFragment(), ClickListner {
     lateinit var binding: FragmentAllBinding
     lateinit var adapter: CustomerAdapter
+    var leadData:List<DynamicLeadsItem>? = null
     private var leadStatusData: CompanyLeadStatu? = null
 
     companion object {
@@ -63,10 +64,12 @@ class AllFragment : BaseDockFragment(), ClickListner {
 //        {
 //            Log.i("xxName", i.toString())
 //        }
-
-
-        setData()
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Handler(Looper.getMainLooper()).postDelayed(Runnable {setData()},500)
     }
 
     override fun closeDrawer() {
@@ -95,15 +98,32 @@ class AllFragment : BaseDockFragment(), ClickListner {
     }
 
     private fun setData() {
-        val leads = sharedPrefManager.getLeadData()
-        val leadData = roomHelper.getLeadsData()
+      //  val leads = sharedPrefManager.getLeadData()
+        if(leadData==null){
+            leadData = roomHelper.getLeadsData()
+        }
+        var leadID: List<GetPreviousVisit>
+        if(leadStatusData?.name.equals("all", true)){
+            roomHelper.deletePreviousVisits()
+            Log.i("xxLeadData", leadData.toString())
+            for (item in leadData!!){
+                leadID = item.get_previous_visit
+                Log.i("xxLeadID", item.lead_id.toString())
+                Log.i("xxLeadPrevious", item.get_previous_visit.toString())
+                for (i in leadID){
+                    roomHelper.insertPreviousVisit(i)
+                    Log.i("xxPrevious", i.toString())
+                }
+            }
+        }
+
         if (leadData != null) {
             if (leadStatusData?.name.equals("all", true)) {
-                adapter.setList(leadData)
+                adapter.setList(leadData!!)
                 adapter.notifyDataSetChanged()
             } else {
-                val filterData = leadData.filter { it.lead_status_name.equals(leadStatusData?.name, true) }
-                adapter.setList(filterData)
+                val filterData = leadData?.filter { it.lead_status_name.equals(leadStatusData?.name, true) }
+                adapter.setList(filterData!!)
                 adapter.notifyDataSetChanged()
             }
         }

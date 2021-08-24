@@ -8,7 +8,7 @@ import com.example.abl.model.CompanyLeadStatu
 import com.example.abl.model.DynamicLeadsResponse
 import com.example.abl.utils.GsonFactory
 
-class DynamicViewPagerAdapter(fm: FragmentManager, numberOfTabs: Int, data: List<CompanyLeadStatu>): FragmentPagerAdapter(fm) {
+class DynamicViewPagerAdapter(fm: FragmentManager, numberOfTabs: Int, data: List<CompanyLeadStatu>): FragmentPagerAdapter(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     var fragment: Fragment? = null
     var noOfTabs: Int = numberOfTabs

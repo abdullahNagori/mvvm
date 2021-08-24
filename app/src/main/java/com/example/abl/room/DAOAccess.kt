@@ -39,8 +39,15 @@ interface DAOAccess {
     @Query("SELECT * FROM LovLeadStatus")
     fun getLeadStatus() : List<CompanyLeadStatu>
 
-    @Query("SELECT * FROM getpreviousvisit WHERE id IS :ownerId")
-    fun getPreviousVisit(ownerId: String): List<GetPreviousVisit>
+    @Query("SELECT * FROM PreviousVisits WHERE lead_id IS :lead_id")
+    fun getPreviousVisit(lead_id: String): List<GetPreviousVisit>
+
+    @Insert
+    fun insertPreviousVisit(previousVisit: GetPreviousVisit)
+
+    @Query("DELETE from PreviousVisits")
+    fun deletePreviousVisit()
+
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    fun insertLeadData(leadData: List<DynamicLeadsItem>)
 

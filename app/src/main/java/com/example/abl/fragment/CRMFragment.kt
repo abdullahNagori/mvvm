@@ -39,6 +39,8 @@ class CRMFragment : BaseDockFragment() {
         myDockActivity?.getUserViewModel()?.apiListener = this
         binding = FragmentCrmBinding.inflate(layoutInflater)
         //getDynamicData("")
+
+
         return binding.root
     }
 
@@ -89,6 +91,7 @@ class CRMFragment : BaseDockFragment() {
        // val leadStatusArray = sharedPrefManager.getLeadStatus()
         val leads = roomHelper.getLeadsStatus()
         Log.i("xxLeads", leads.toString())
+        binding.viewPager.offscreenPageLimit = 30
         if (leads != null) {
             binding.viewPager.adapter = DynamicViewPagerAdapter(childFragmentManager, leads.size, leads)
             binding.tabLayout.setupWithViewPager(binding.viewPager)

@@ -12,7 +12,8 @@ import com.example.abl.model.*
     DynamicLeadsItem::class,
     CompanyProduct::class,
     CompanyVisitStatu::class,
-    CompanyLeadStatu::class], version = 12, exportSchema = false)
+    CompanyLeadStatu::class,
+                     GetPreviousVisit::class], version = 20, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ABLDatabase : RoomDatabase() {
 

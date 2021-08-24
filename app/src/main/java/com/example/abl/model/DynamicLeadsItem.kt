@@ -1,6 +1,7 @@
 package com.example.abl.model
 
 import android.os.Parcelable
+import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -86,16 +87,18 @@ data class DynamicLeadsItem(
     val user_code: String?,
     val user_id: String?,
     val user_name: String?,
+    @NonNull
+    @PrimaryKey
     @ColumnInfo(name = "lead_id")
-    val lead_id: String?,
+    val lead_id: Int?,
     @ColumnInfo(name = "name")
     val name: String?,
     @ColumnInfo(name = "desc")
     val desc: String?
 ):Parcelable
 
-{
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "ID")
-    var Id: Int? = null
-}
+//{
+//    @PrimaryKey(autoGenerate = true)
+//    @ColumnInfo(name = "ID")
+//    var Id: Int? = null
+//}

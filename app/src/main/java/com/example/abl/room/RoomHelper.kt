@@ -1,5 +1,6 @@
 package com.example.abl.room
 
+import android.util.Log
 import com.example.abl.model.*
 import com.example.abl.repository.BaseRepository
 import com.example.abl.utils.GsonFactory
@@ -47,6 +48,18 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
         return daoAccess.getLeadStatus() as List<CompanyLeadStatu>
     }
 
+    fun getPreviousVisit(lead_id: String): List<GetPreviousVisit> {
+        return daoAccess.getPreviousVisit(lead_id) as List<GetPreviousVisit>
+    }
+
+    fun insertPreviousVisit(previousVisit: GetPreviousVisit) {
+         daoAccess.insertPreviousVisit(previousVisit)
+        Log.i("xxInsert", previousVisit.lead_id)
+    }
+
+    fun deletePreviousVisits() {
+        daoAccess.deletePreviousVisit()
+    }
 //    fun insertLeadData(leadData: List<DynamicLeadsItem>) {
 //        daoAccess.insertLeadData(leadData)
 //    }

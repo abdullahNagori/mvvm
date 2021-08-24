@@ -61,4 +61,7 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeCompanyProvidedLeadFragment(): CompanyProvidedLeadFragment
+
+    @ContributesAndroidInjector
+    fun contributePreviousVisitFragment(): PreviousVisitFragment
 }
