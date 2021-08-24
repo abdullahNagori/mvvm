@@ -20,6 +20,7 @@ object Constants {
     const val PORTFOLIO : String = "Portfolio"
     const val LEAD_MANAGEMENT : String = "Lead Management"
     const val SALES_MANAGEMENT : String = "Sales Management"
+    const val DATABASE_NAME : String = "Abl_Database"
     const val REPORT : String = "Reports"
     const val DASHBOARD : String = "Dashboard"
     const val TRAINING : String = "Training"
@@ -52,6 +53,8 @@ object Constants {
     const val MEETING_QR = "Meeting QR"
     const val UPDATE_LOCATION = "Update Location"
     const val LEAD_DATA = "lead_data"
+    const val LEAD_ID = "lead_id"
+    const val PREVIOUS_VISIT_DATA = "PREVIOUS_VISIT_DATA"
 
     const val SETTING : String = "Setting"
     const val BRANCH_DIR : String = "Branch Directory"

@@ -118,7 +118,11 @@ class CustomerDetailsFragment : Fragment() {
         productsFragment.dynamicLeadsItem = dynamicLeadsItem
 
         val previousVisitFragment = PreviousVisitFragment()
+
+        val bundle = Bundle()
+        bundle.putString(Constants.LEAD_ID, dynamicLeadsItem.lead_id.toString())
         previousVisitFragment.dynamicLeadsItem = dynamicLeadsItem
+        previousVisitFragment.arguments = bundle
 
         val calculatorFragment = CalculatorFragment()
         calculatorFragment.dynamicLeadsItem = dynamicLeadsItem
@@ -128,7 +132,6 @@ class CustomerDetailsFragment : Fragment() {
 
         val updateLocationFragment = UpdateLocationFragment()
         updateLocationFragment.dynamicLeadsItem = dynamicLeadsItem
-
         adapter.addFrag(customerInfoFragment, Constants.CUSTOMER_INFO)
         adapter.addFrag(productsFragment, Constants.PRODUCT)
         adapter.addFrag(previousVisitFragment, Constants.PREVIOUS_VISIT)

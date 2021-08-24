@@ -19,6 +19,7 @@ import com.example.abl.common.LoadingListener
 import com.example.abl.databinding.DialogPasswordInstructionBinding
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.network.ApiListener
+import com.example.abl.room.RoomHelper
 import com.example.abl.utils.DateTimeFormatter
 import com.example.abl.utils.SharedPrefManager
 import com.example.abl.utils.ValidationHelper
@@ -41,6 +42,9 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
 
     @Inject
     lateinit var sharedPrefManager: SharedPrefManager
+
+    @Inject
+    lateinit var roomHelper: RoomHelper
 
     @Inject
     lateinit var validationhelper: ValidationHelper

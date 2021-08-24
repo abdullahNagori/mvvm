@@ -9,6 +9,7 @@ import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.LovResponse
 import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.repository.UserRepository
+import com.example.abl.room.RoomHelper
 import com.example.abl.utils.GsonFactory
 import com.example.abl.utils.SharedPrefManager
 import com.google.gson.Gson
@@ -30,54 +31,61 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
     @Inject
     lateinit var sharedPrefManager: SharedPrefManager
 
+    @Inject
+    lateinit var roomHelper: RoomHelper
+
     fun getLOV(): MutableLiveData<WebResponse> {
         val data = MutableLiveData<WebResponse>()
       //  data.postValue(WebResponse.Loading)
         viewModelScope.launch {
             supervisorScope {
                 try {
-//                    val callLov = async {  userRepository.getLovs()}
-//                    val callLeads = async {  userRepository.getLeads()}
-//
-//                    val leadResponse: List<DynamicLeadsItem>? = try {
-//                       // data.postValue(WebResponse.Success(responseLeads.await()))
-//                        callLeads.await()
-//                       } catch (ex: Exception) {
-//                           null
-//                       }
-//
-//                    val lovResponse: LovResponse? = try {
-//                      //  data.postValue(WebResponse.Success(responseLov.await()))
-//                        callLov.await()
-//                       } catch (ex: Exception) {
-//                           null
-//                       }
-//
-//                       processData(lovResponse!!, leadResponse)
+                    val callLov = async {  userRepository.getLovs()}
+                    val callLeads = async {  userRepository.getLeads()}
 
-                    val response = userRepository.getLovs()
+                    val leadResponse: ArrayList<DynamicLeadsItem>? = try {
+                       // data.postValue(WebResponse.Success(responseLeads.await()))
+                        callLeads.await()
+                       } catch (ex: Exception) {
+                           null
+                       }
 
-                    withContext(Dispatchers.Main) {
-                        data.postValue(WebResponse.Success(response))
-                        Log.i("xxLeadRes1", response.toString())
-                        withContext(Dispatchers.IO) {
-                            Log.i("xxLeadRes2", response.toString())
-                        }
-                    }
+                    val lovResponse: LovResponse? = try {
+                      //  data.postValue(WebResponse.Success(responseLov.await()))
+                        callLov.await()
+                       } catch (ex: Exception) {
+                           null
+                       }
+
+                       processData(lovResponse!!, leadResponse)
+//
+//                    val response = userRepository.getLovs()
+//
+//                    withContext(Dispatchers.Main) {
+//                        data.postValue(WebResponse.Success(response))
+//                        Log.i("xxLeadRes1", response.toString())
+//                        withContext(Dispatchers.IO) {
+//                            Log.i("xxLeadRes2", response.toString())
+//                        }
+                 //   }
                 } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        data.postValue(WebResponse.Error(getException(e)))
-                    }
+//                    withContext(Dispatchers.Main) {
+//                        data.postValue(WebResponse.Error(getException(e)))
+//                    }
+                    Log.i("Error", e.message.toString())
                 }
             }
         }
         return data
     }
 
-    private fun processData(lovResponse: LovResponse, dynamicLeadsItem: List<DynamicLeadsItem>?) {
-        sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
+    private fun processData(lovResponse: LovResponse, dynamicLeadsItem: ArrayList<DynamicLeadsItem>?) {
+        roomHelper.deleteLeadStatus()
+        roomHelper.insertLeadStatus(lovResponse.company_lead_status)
+
         if (dynamicLeadsItem != null) {
-            sharedPrefManager.setLeadData(dynamicLeadsItem)
+            roomHelper.deleteLeadData()
+            roomHelper.insertLeadData(dynamicLeadsItem)
         }
     }
 
@@ -112,7 +120,7 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
         when (exception){
             is IOException -> message = Constants.NETWORK_ERROR
             is HttpException -> message = getErrorMessage((exception as HttpException).response()!!.errorBody()!!)
-            else -> message = exception.localizedMessage
+            else -> message = "Something went wrong"
         }
         return message
     }

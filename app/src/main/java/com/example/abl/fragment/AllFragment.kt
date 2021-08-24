@@ -1,6 +1,8 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.example.abl.R
 import com.example.abl.activity.MainActivity
@@ -16,9 +19,7 @@ import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentAllBinding
-import com.example.abl.model.CompanyLeadStatu
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.DynamicLeadsResponse
+import com.example.abl.model.*
 import com.example.abl.utils.GsonFactory
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -30,6 +31,7 @@ import java.util.ArrayList
 class AllFragment : BaseDockFragment(), ClickListner {
     lateinit var binding: FragmentAllBinding
     lateinit var adapter: CustomerAdapter
+    var leadData:List<DynamicLeadsItem>? = null
     private var leadStatusData: CompanyLeadStatu? = null
 
     companion object {
@@ -53,8 +55,21 @@ class AllFragment : BaseDockFragment(), ClickListner {
         binding = FragmentAllBinding.inflate(layoutInflater)
         leadStatusData = GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString(ARG_NAME), CompanyLeadStatu::class.java)
         initRecyclerView()
-        setData()
+
+//        Toast.makeText(requireContext(),"this",Toast.LENGTH_LONG).show()
+//        val leadStatus = roomHelper.getLeadsStatus()
+//        val leadData = roomHelper.getLeadsData("all")
+//        Log.i("xxLeadData", leadData.toString())
+//        for (i in leadStatus[1].name)
+//        {
+//            Log.i("xxName", i.toString())
+//        }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Handler(Looper.getMainLooper()).postDelayed(Runnable {setData()},500)
     }
 
     override fun closeDrawer() {
@@ -83,14 +98,32 @@ class AllFragment : BaseDockFragment(), ClickListner {
     }
 
     private fun setData() {
-        val leads = sharedPrefManager.getLeadData()
-        if (leads != null) {
+      //  val leads = sharedPrefManager.getLeadData()
+        if(leadData==null){
+            leadData = roomHelper.getLeadsData()
+        }
+        var leadID: List<GetPreviousVisit>
+        if(leadStatusData?.name.equals("all", true)){
+            roomHelper.deletePreviousVisits()
+            Log.i("xxLeadData", leadData.toString())
+            for (item in leadData!!){
+                leadID = item.get_previous_visit
+                Log.i("xxLeadID", item.lead_id.toString())
+                Log.i("xxLeadPrevious", item.get_previous_visit.toString())
+                for (i in leadID){
+                    roomHelper.insertPreviousVisit(i)
+                    Log.i("xxPrevious", i.toString())
+                }
+            }
+        }
+
+        if (leadData != null) {
             if (leadStatusData?.name.equals("all", true)) {
-                adapter.setList(leads)
+                adapter.setList(leadData!!)
                 adapter.notifyDataSetChanged()
             } else {
-                val filterData = leads.filter { it.lead_status_name.equals(leadStatusData?.name, true) }
-                adapter.setList(filterData)
+                val filterData = leadData?.filter { it.lead_status_name.equals(leadStatusData?.name, true) }
+                adapter.setList(filterData!!)
                 adapter.notifyDataSetChanged()
             }
         }

@@ -1,5 +1,7 @@
 package com.example.abl.model
 
+import androidx.room.Entity
+
 data class CheckinModel(
     val account_num: String,
     val visit_status: String,

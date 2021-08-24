@@ -6,13 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.abl.adapter.CustomerAdapter
+import com.example.abl.adapter.PreviousVisitAdapter
+import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.BaseFragment
 import com.example.abl.base.ClickListner
+import com.example.abl.constant.Constants
 import com.example.abl.databinding.PreviousVisitFragmentBinding
 import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.GetPreviousVisit
+import kotlinx.android.synthetic.main.notification_fragment.*
 
 
-class PreviousVisitFragment : BaseFragment(), ClickListner {
+class PreviousVisitFragment : BaseDockFragment(), ClickListner {
 
     companion object {
         fun newInstance() = PreviousVisitFragment()
@@ -21,7 +27,8 @@ class PreviousVisitFragment : BaseFragment(), ClickListner {
     lateinit var dynamicLeadsItem: DynamicLeadsItem
     lateinit var binding: PreviousVisitFragmentBinding
     //val dataList = ArrayList<PreviousVisit>()
-   // lateinit var adapter: PreviousVisitAdapter
+    lateinit var adapter: PreviousVisitAdapter
+    lateinit var previousList: List<GetPreviousVisit>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,41 +45,34 @@ class PreviousVisitFragment : BaseFragment(), ClickListner {
 
     private fun initView() {
         binding = PreviousVisitFragmentBinding.inflate(layoutInflater)
+
     }
 
-//    private fun dummyData(ltd: RecyclerView){
-//
-//        dataList.clear()
-//        val nameOne = "Visit"
-//        val numberOne = "2020-08-01"
-//        val accountOne = "Follow up"
-//        val leadStatusOne = "Uzair"
-//
-//        val nameTwo = "Call"
-//        val numberTwo = "2020-08-20"
-//        val accountTwo = "Follow up"
-//        val leadStatusTwo = "Abdullah"
-//
-//        val objectOne = PreviousVisit(nameOne, numberOne, accountOne, leadStatusOne)
-//        val objectTwo = PreviousVisit(nameTwo, numberTwo, accountTwo, leadStatusTwo)
-//        dataList.add(objectOne)
-//        dataList.add(objectTwo)
-//
-//        if (dataList.isEmpty())
-//        {
-//            Log.i("list", "null")
-//        }
-//        else
-//        {
-//            adapter = PreviousVisitAdapter(requireContext(), this)
-//            adapter.setList(dataList)
-//            adapter.notifyDataSetChanged()
-//            ltd.adapter = adapter
-//        }
-//
-//    }
+    override fun onResume() {
+        super.onResume()
+        initRecyclerView()
 
+    }
 
+    private fun initRecyclerView(){
+
+        previousList = roomHelper.getPreviousVisit(arguments?.getString(Constants.LEAD_ID)!!)
+        adapter = PreviousVisitAdapter(requireContext(), this)
+        adapter.setList(previousList)
+        binding.previous.adapter = adapter
+
+    }
+    override fun closeDrawer() {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToFragment(id: Int, args: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setTitle(text: String) {
+        TODO("Not yet implemented")
+    }
 
     override fun <T> onClick(data: T, createNested: Boolean) {
 //        val logDetailsFragment = PreviousVisitDetailFragment()
