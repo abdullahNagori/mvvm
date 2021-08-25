@@ -32,4 +32,16 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
          daoAccess.insertPreviousVisit(previousVisit)
         Log.i("xxInsert", previousVisit.lead_id)
     }
+
+    fun insertAddLead(dynamicLeadsItem: DynamicLeadsItem) {
+            daoAccess.insertAddLead(dynamicLeadsItem)
+     }
+
+    fun insertCheckIn(checkIn: CheckinModel) {
+        daoAccess.insertCheckIn(checkIn)
+    }
+
+    fun getCheckIn(): List<CheckinModel> {
+        return daoAccess.getCheckInData()
+    }
 }

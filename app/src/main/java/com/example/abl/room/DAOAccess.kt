@@ -11,15 +11,9 @@ interface DAOAccess {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLeadData(dynamicLeadsItem: ArrayList<DynamicLeadsItem>)
-//
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    fun insertCheckin(checkinModel: CheckinModel)
-//
+
     @Query("SELECT * FROM Lead")
     fun getLeadData() : List<DynamicLeadsItem>
-//
-//    @Query("SELECT * FROM Checkin")
-//    fun getCheckinData() : List<CheckinModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLovCompanyProduct(companyProduct: ArrayList<CompanyProduct>)
@@ -48,7 +42,13 @@ interface DAOAccess {
     @Query("DELETE from PreviousVisits")
     fun deletePreviousVisit()
 
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    fun insertLeadData(leadData: List<DynamicLeadsItem>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAddLead(leadData: DynamicLeadsItem)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCheckIn(checkinModel: CheckinModel)
+
+    @Query("SELECT * FROM Checkin")
+    fun getCheckInData() : List<CheckinModel>
 
 }

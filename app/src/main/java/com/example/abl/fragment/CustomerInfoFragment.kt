@@ -55,7 +55,7 @@ class CustomerInfoFragment : BaseDockFragment() {
 
         binding.checkin.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(Constants.LEAD_DATA, dynamicLeadsItem)
+            bundle.putParcelable(Constants.LOCAL_LEAD_DATA, dynamicLeadsItem)
             navigateToFragment(R.id.checkInFormFragment, bundle)
         }
 
@@ -83,13 +83,15 @@ class CustomerInfoFragment : BaseDockFragment() {
     }
 
     private fun setData(data: DynamicLeadsItem) {
-//        Log.d("xxData", data.toString())
         binding.accountTitle.text = data.first_name
-        binding.branchCodeName.text = data.branch_name
-        binding.accountType.text = data.type
-//        Log.i("xxName", data.first_name)
-//        Log.i("xxName", data.branch_name)
-//        Log.i("xxName", data.type)
+        binding.age.text = data.age
+        binding.name.text = data.name
+        binding.desc.text = data.desc
+        binding.address.text = data.address
+        binding.product.text = data.product_name
+        binding.jobTitle.text = data.job_title
+        binding.gender.text = data.gender
+        binding.leadStatus.text = data.lead_status_name
     }
 
     fun showDialog_new(customerType: String, contact: String?,customers: DynamicLeadsItem?) {

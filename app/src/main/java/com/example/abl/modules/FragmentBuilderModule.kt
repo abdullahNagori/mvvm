@@ -70,4 +70,7 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeMarketingCollateralItemFragment(): MarketingCollateralItemFragment
+
+    @ContributesAndroidInjector
+    fun contributeProductsFragment(): ProductsFragment
 }

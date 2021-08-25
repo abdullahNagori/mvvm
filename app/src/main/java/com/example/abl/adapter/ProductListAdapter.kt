@@ -8,41 +8,37 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
-import com.example.abl.databinding.ItemCustomerBinding
 import com.example.abl.databinding.ItemNotificationBinding
+import com.example.abl.databinding.ItemProductListAdapterBinding
 import com.example.abl.fragment.Customers
+import com.example.abl.model.CompanyProduct
 
-class NotificationAdapter(val context: Context?, val listner: ClickListner) : RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
+class ProductListAdapter (val context: Context?, val listner: ClickListner) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
 
-    private lateinit var customerList : ArrayList<Customers>
-    lateinit var view : ItemNotificationBinding
+    private lateinit var productList : ArrayList<CompanyProduct>
+    lateinit var view : ItemProductListAdapterBinding
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        fun bindItems(item: Customers) {
-
-            view.title.text = (item.customer_name ?: "N/A")
-            view.description.text = "Description : "+item.contact_number
-            view.date.text = "Date : "+ (item.account_num ?: "N/A")
-            //view.branch.text = "Branch : "+(item.branch ?: "N/A")
-            view.time.text = "Time : "+(item.lead_status ?: "N/A")
-
+        fun bindItems(item: CompanyProduct) {
+            view.name.text = item.product_name
         }
 
     }
 
-    fun setList(list: ArrayList<Customers>){
-        customerList = list
+
+    fun setList(list: ArrayList<CompanyProduct>){
+        productList = list
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        view = ItemNotificationBinding.inflate(LayoutInflater.from(context), parent, false)
+        view = ItemProductListAdapterBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(view.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item  = customerList[position]
+        val item  = productList[position]
         holder.bindItems(item)
 
         holder.itemView.setOnClickListener {
@@ -58,7 +54,7 @@ class NotificationAdapter(val context: Context?, val listner: ClickListner) : Re
 
     override fun getItemCount() : Int {
         return when {
-            ::customerList.isInitialized -> customerList.size
+            ::productList.isInitialized -> productList.size
             else -> 0
         }
     }

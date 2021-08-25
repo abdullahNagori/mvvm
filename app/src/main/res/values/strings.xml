@@ -707,5 +707,10 @@
     <string name="event_desc">Event Description</string>
     <string name="add_event">Add Event</string>
     <string name="lead">Lead</string>
+    <string name="lead_status">Lead Status</string>
+    <string name="male">Male</string>
+    <string name="call_center">Call Center</string>
+    <string name="job_title">Job Title</string>
+    <string name="developer">Developer</string>
 
 </resources>

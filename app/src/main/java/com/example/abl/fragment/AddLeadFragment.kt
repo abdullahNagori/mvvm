@@ -30,7 +30,9 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.add_fragment.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.security.Timestamp
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
@@ -38,14 +40,17 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
 
     var selectedProduct: CompanyProduct? = null
     private var sourceOfIncome: String? = null
-    private var gender: String? = null
+    private var gender: String = "male"
     private var occupation: String? = null
+    val random = (0..100).random()
+    val currentTimestamp = System.currentTimeMillis()
 
     lateinit var productLovList: ArrayList<CompanyProduct>
 
     //var selectedList: ArrayList<String>? = null
     var latitude = 0.0
     var longitude = 0.0
+    val previousVisit = ArrayList<GetPreviousVisit>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,27 +89,73 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
             return
         }
 
-        val customerDetail = CustomerDetail(
+        val dict = DynamicLeadsItem(
             binding.customerName.text.toString(),
-            binding.contactNum.text.toString(),
-            binding.companyName.text.toString(),
-            binding.address.text.toString(),
             binding.cnic.text.toString(),
+            binding.esIncome.text.toString(),
             occupation.toString(),
             sourceOfIncome.toString(),
-            binding.esIncome.text.toString(),
+            binding.address.text.toString(),
             binding.age.text.toString(),
+            binding.companyName.text.toString(),
             gender.toString(),
-            latitude.toString(),
-            longitude.toString(),
             (selectedProduct?.record_id)!!,
             (selectedProduct?.product_name)!!,
-            binding.amount.text.toString(),
+            binding.contactNum.text.toString(),
+            "2",
+            "inprocess",
+            longitude.toString(),
+            latitude.toString(),
+            "0",
+            currentTimestamp.toString(),
             "",
             "",
-            "")
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            previousVisit,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+        )
 
-        myDockActivity?.getUserViewModel()?.addLead(customerDetail)
+
+        roomHelper.insertAddLead(dict)
+        val bundle = Bundle()
+        bundle.putParcelable(Constants.LOCAL_LEAD_DATA, dict as Parcelable)
+        navigateToFragment(R.id.action_nav_visit_to_checkInFormFragment, bundle)
+        // myDockActivity?.getUserViewModel()?.addLead(customerDetail)
     }
 
     private fun additionalViewVisibility() {
@@ -128,7 +179,12 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
             binding.productSpinner.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
                     override fun onNothingSelected(parent: AdapterView<*>?) {}
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
                         selectedProduct = productLovList[position];
                     }
                 }
@@ -140,7 +196,8 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         when (tag) {
             Constants.ADD_LEAD -> {
                 try {
-                    val leadModel = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, DynamicLeadsItem::class.java)
+                    val leadModel = GsonFactory.getConfiguredGson()
+                        ?.fromJson(liveData.value, DynamicLeadsItem::class.java)
                     if (leadModel != null) {
                         val bundle = Bundle()
                         bundle.putParcelable(Constants.LEAD_DATA, leadModel as Parcelable)
