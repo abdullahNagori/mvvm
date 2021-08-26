@@ -56,4 +56,6 @@ interface DAOAccess {
         userLocation: UserLocation,
     )
 
+    @Query("SELECT * FROM UserLocation")
+    fun getUserLocation() : List<UserLocation>
 }

@@ -26,8 +26,9 @@ class PreviousVisitFragment : BaseDockFragment(), ClickListner {
 
     lateinit var binding: PreviousVisitFragmentBinding
     lateinit var adapter: PreviousVisitAdapter
-    lateinit var dynamicLeadsItem: DynamicLeadsItem
     lateinit var previousList: List<GetPreviousVisit>
+    lateinit var dynamicLeadsItem: DynamicLeadsItem
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

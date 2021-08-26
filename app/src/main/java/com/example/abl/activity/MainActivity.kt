@@ -116,13 +116,6 @@ class MainActivity : DockActivity() {
         setGesture()
         viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CALL_PHONE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1);
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -150,6 +143,10 @@ class MainActivity : DockActivity() {
         switchAB = item.actionView.findViewById(R.id.switchAB)
         sharedPreferences = this.getSharedPreferences("SharedPrefs", MODE_PRIVATE)
 
+        if (switchAB.isChecked){
+            Log.i("xxChecked", "check")
+            foregroundOnlyLocationService?.subscribeToLocationUpdates()
+        }
         switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
             } else {
@@ -268,6 +265,10 @@ class MainActivity : DockActivity() {
                 closeDrawer()
             }
 
+            Constants.TRACKING -> {
+                navigateToFragment(R.id.action_nav_home_to_nav_tracking)
+                closeDrawer()
+            }
             Constants.LOGOUT -> {
                 sharedPrefManager.logout()
                 foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
@@ -296,7 +297,8 @@ class MainActivity : DockActivity() {
         icons.add(R.drawable.ic_notification_drawer) //9
         icons.add(R.drawable.ic_forgot) //10
         icons.add(R.drawable.ic_joinvisit) //11
-        icons.add(R.drawable.ic_logout) //12
+        icons.add(R.drawable.ic_marketing) //12
+        icons.add(R.drawable.ic_logout) //13
 
 
         listDataHeader.add(Constants.DASHBOARD) //0
@@ -313,7 +315,8 @@ class MainActivity : DockActivity() {
         listDataHeader.add(Constants.NOTIFICATIONS) //9
         listDataHeader.add(Constants.PASSWORD_CHANGE) //10
         listDataHeader.add(Constants.JOIN_VISIT) //11
-        listDataHeader.add(Constants.LOGOUT) //12
+        listDataHeader.add(Constants.TRACKING) //12
+        listDataHeader.add(Constants.LOGOUT) //13
 
 
         val listAdapter = ExpandableListAdapter(
@@ -497,17 +500,6 @@ class MainActivity : DockActivity() {
                 number.error = "invalid number!"
             } else {
                 dialog.dismiss()
-                if (ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.CALL_PHONE
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(Manifest.permission.CALL_PHONE),
-                        1
-                    );
-                } else {
                     val intent = Intent(Intent.ACTION_CALL)
                     intent.data = Uri.parse("tel:" + number.text)
                     val bundle = Bundle()
@@ -519,8 +511,6 @@ class MainActivity : DockActivity() {
                     bundle.putString("number", number.text.toString())
                     navigateToFragment(R.id.addLeadFragment, bundle)
                     startActivity(intent)
-                }
-
             }
         }
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);

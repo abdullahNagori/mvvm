@@ -712,5 +712,6 @@
     <string name="call_center">Call Center</string>
     <string name="job_title">Job Title</string>
     <string name="developer">Developer</string>
+    <string name="tax_calculator">Tax Calculator</string>
 
 </resources>

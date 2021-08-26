@@ -23,10 +23,7 @@ import com.example.abl.model.UserLocation
 import com.example.abl.room.ABLDatabase
 import com.example.abl.room.RoomHelper
 import com.google.android.gms.location.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
@@ -196,9 +193,9 @@ class ForegroundOnlyLocationService : Service() {
 //        val locationArray = UserLocation(location.latitude.toString(), location.longitude.toString())
         // locationDevice.add(locationArray)
         Log.d(TAG, location.latitude.toString())
-        //   GlobalScope.launch {
+           GlobalScope.launch {
         insert(locationDevice)
-        //  }
+          }
 
 
         // Notify anyone listening for broadcasts about the new location.
@@ -212,9 +209,9 @@ class ForegroundOnlyLocationService : Service() {
 
     private fun insert(locationDevice: UserLocation) {
         Log.d(TAG, "xxDB")
-        CoroutineScope(Dispatchers.IO).launch {
+
             ablDatabase.leadDao().insertLocation(locationDevice)
-        }
+
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -293,9 +290,7 @@ class ForegroundOnlyLocationService : Service() {
         // ensure this Service can be promoted to a foreground service, i.e., the service needs to
         // be officially started (which we do here).
         startService(Intent(applicationContext, ForegroundOnlyLocationService::class.java))
-
         try {
-
 
             if (ActivityCompat.checkSelfPermission(
                     this,

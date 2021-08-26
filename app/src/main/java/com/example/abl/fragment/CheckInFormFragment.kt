@@ -1,6 +1,7 @@
 package com.example.abl.fragment
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -330,22 +331,8 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun getLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                1
-            )
-            return
-        } else {
             LocationServices.getFusedLocationProviderClient(requireContext()).lastLocation.addOnSuccessListener {
                 try {
                     if (it == null) {
@@ -355,8 +342,6 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
                     longitude = it.longitude
                 } catch (e: java.lang.Exception) {
                 }
-            }
-
         }
     }
 

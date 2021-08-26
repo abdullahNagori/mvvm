@@ -1,6 +1,7 @@
 package com.example.abl.fragment
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
@@ -224,22 +225,8 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun getLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                1
-            )
-            return
-        } else {
             LocationServices.getFusedLocationProviderClient(requireContext()).lastLocation.addOnSuccessListener {
                 try {
                     if (it == null) {
@@ -251,7 +238,7 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                 }
             }
 
-        }
+       // }
     }
 
     override fun closeDrawer() {

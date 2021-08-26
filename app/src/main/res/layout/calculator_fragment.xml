@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,32 +12,60 @@
     tools:context=".fragment.CalculatorFragment">
 
     <LinearLayout
-        android:id="@+id/housing"
-        style="@style/greenShadow">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <ImageView
-            style="@style/ImgGreen"
-            app:srcCompat="@drawable/ic_user_icon" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_margin="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/margin_small"
+            app:cardBackgroundColor="@color/colorPrimary"
+            android:theme="@style/Theme.MaterialComponents.Light"
+            app:cardElevation="@dimen/_7sdp"
+            app:strokeWidth="@dimen/_1sdp">
 
-        <TextView
-            style="@style/textGreen"
-            android:text="@string/housing_finance" />
 
+            <Button
+                android:id="@+id/tax_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Tax Savings"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_15sdp"
+                android:background="@android:color/transparent"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_margin="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/margin_small"
+            app:cardBackgroundColor="@color/colorPrimary"
+            android:theme="@style/Theme.MaterialComponents.Light"
+            app:cardElevation="@dimen/_7sdp"
+            app:strokeWidth="@dimen/_1sdp">
+
+
+            <Button
+                android:id="@+id/invest_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Investment Savings"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_15sdp"
+                android:background="@android:color/transparent"/>
+
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
-    <LinearLayout
-        style="@style/greenShadow"
-        android:id="@+id/apniCar"
-        android:layout_marginTop="@dimen/_15sdp">
 
-        <ImageView
-            style="@style/ImgGreen"
-            app:srcCompat="@drawable/ic_user_icon" />
-
-        <TextView
-            style="@style/textGreen"
-            android:text="@string/apni_car_lower" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

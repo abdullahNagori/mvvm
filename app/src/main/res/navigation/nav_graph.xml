@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_marketing_collateral"
             app:destination="@id/nav_marketing" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_tracking"
+            app:destination="@id/nav_tracking" />
     </fragment>
 
     <fragment
@@ -62,6 +65,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_tracking"
+        android:name="com.example.abl.fragment.UserTrackingFragment"
+        android:label="Tracking"
+        tools:layout="@layout/user_tracking_fragment" />
+
+    <fragment
         android:id="@+id/nav_marketing"
         android:name="com.example.abl.fragment.MarketingCollateralFragment"
         android:label="Marketing Collateral"
@@ -71,7 +80,19 @@
         android:id="@+id/customerDetailsFragment"
         android:name="com.example.abl.fragment.CustomerDetailsFragment"
         android:label="Customer Details"
-        tools:layout="@layout/customer_details_fragment" />
+        tools:layout="@layout/customer_details_fragment" >
+
+        <action
+            android:id="@+id/action_customerDetails_to_tax_calculator"
+            app:destination="@id/taxCalculatorFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/taxCalculatorFragment"
+        android:name="com.example.abl.fragment.TaxCalculatorFragment"
+        android:label="@string/tax_calculator"
+        tools:layout="@layout/check_in_form_fragment" />
+
 
     <fragment
         android:id="@+id/checkInFormFragment"

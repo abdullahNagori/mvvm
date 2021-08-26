@@ -61,6 +61,7 @@ object Constants {
     const val SETTING : String = "Setting"
     const val BRANCH_DIR : String = "Branch Directory"
     const val LOGOUT : String = "Logout"
+    const val TRACKING : String = "Tracking"
     const val TODO_LIST : String = "To-do List"
     const val CALL_LOG ="Call Log"
     const val VISIT_LOG ="Visit Log"

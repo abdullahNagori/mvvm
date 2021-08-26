@@ -183,4 +183,15 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
 
+    //run-time permissioins
+    implementation 'com.karumi:dexter:6.2.3'
+
+    //Google Map
+    implementation 'com.google.maps:google-maps-services:0.2.5'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.material:material:1.2.1'
+
+    // qr generator
+    implementation 'com.google.zxing:core:3.3.3'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0@aar'
 }

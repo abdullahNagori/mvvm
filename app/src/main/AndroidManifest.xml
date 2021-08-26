@@ -32,6 +32,10 @@
         </activity>
         <activity android:name=".activity.MainActivity"></activity>
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDLcz0kMX5XISsZKYfZcduPM3MQc0JOx7k" />
+
         <service
             android:name="com.example.abl.location.ForegroundOnlyLocationService"
             android:enabled="true"
