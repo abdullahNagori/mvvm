@@ -145,7 +145,9 @@ class MainActivity : DockActivity() {
 
         if (switchAB.isChecked){
             Log.i("xxChecked", "check")
-            foregroundOnlyLocationService?.subscribeToLocationUpdates()
+            Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                foregroundOnlyLocationService?.subscribeToLocationUpdates()
+            },2000)
         }
         switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {

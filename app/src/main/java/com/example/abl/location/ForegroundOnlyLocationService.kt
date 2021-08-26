@@ -124,42 +124,6 @@ class ForegroundOnlyLocationService : Service() {
                     // things a bit and just saving it as a local variable, as we only need it again
                     // if a Notification is created (when user navigates away from app).
 
-//                    if (Utils.verifyAvailableNetwork(context)) {
-//                        CoroutineScope(Dispatchers.IO).launch {
-//                            val list = repo.getLOGsUnSynced()
-//                            if (list.isNullOrEmpty())
-//                                return@launch
-//                            val data = Gson().toJson(
-//                                list,
-//                                object : TypeToken<ArrayList<Logs>>() {}.type
-//                            )
-//                            withContext(Dispatchers.Main) {
-//                                apiServices.CHECKINWITHOUTCR(
-//                                    PARAMETERS.CHECK_IN,
-//                                    SharedPrefManager.get(Constant.USER_ID)!!,
-//                                    data
-//                                ).enqueue(object : Callback<WebResponse> {
-//                                    override fun onResponse(
-//                                        call: Call<WebResponse>,
-//                                        response: Response<WebResponse>
-//                                    ) {
-//                                        Log.i(
-//                                            TAG,
-//                                            "onLocationResult: API HIT RESPONSE"
-//                                        )
-//                                        if (response.isSuccessful)
-//                                            CoroutineScope(Dispatchers.IO).launch {
-//                                                repo?.updateLOGsSynced()
-//                                            }
-//
-//                                    }
-//
-//                                    override fun onFailure(call: Call<WebResponse>, t: Throwable) {}
-//                                })
-//                            }
-//                        }
-//                    }
-
                     currentLocation = locationResult.lastLocation
                     onNewLocation(currentLocation)
 
@@ -374,7 +338,7 @@ class ForegroundOnlyLocationService : Service() {
             .setBigContentTitle(titleText)
 
         // 3. Set up main Intent/Pending Intents for notification.
-        val launchActivityIntent = Intent(this, DockActivity::class.java)
+        val launchActivityIntent = Intent(this, MainActivity::class.java)
 
         val cancelIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         cancelIntent.putExtra(EXTRA_CANCEL_LOCATION_TRACKING_FROM_NOTIFICATION, true)

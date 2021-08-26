@@ -28,6 +28,9 @@ class UserTrackingFragment : BaseDockFragment(), ClickListner {
         initView()
         initRecyclerView()
 
+        binding.pullToRefresh.setOnRefreshListener {
+            initRecyclerView()
+        }
         return binding.root
     }
 
