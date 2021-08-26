@@ -1,9 +1,11 @@
 package com.example.abl.activity
 
-import android.content.Context
-import android.content.Intent
+import android.content.*
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.IBinder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -14,10 +16,13 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.abl.R
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.BaseFragment
 import com.example.abl.constant.Constants
+import com.example.abl.location.ForegroundOnlyLocationService
+import com.example.abl.location.toText
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.network.ApiListener
 import com.example.abl.progress.ProgressDialog
@@ -54,9 +59,62 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
     private lateinit var progressBarDialog: ProgressDialog
     private lateinit var userViewModel: UserViewModel
 
+    private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
+    var foregroundOnlyLocationService: ForegroundOnlyLocationService? = null
+    private var mBound = false
+
+     val foregroundOnlyServiceConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            val binder = service as ForegroundOnlyLocationService.LocalBinder
+            foregroundOnlyLocationService = binder.service
+            mBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            foregroundOnlyLocationService = null
+            mBound = false
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
+        bindService(serviceIntent, foregroundOnlyServiceConnection, Context.BIND_AUTO_CREATE)
+
+    }
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            foregroundOnlyBroadcastReceiver!!,
+            IntentFilter(
+                ForegroundOnlyLocationService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
+            )
+        )
+
+    }
+
+    override fun onPause() {
+        //removeCallBacks()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+            foregroundOnlyBroadcastReceiver!!
+        )
+        super.onPause()
+    }
+
+    override fun onStop() {
+        if (mBound) {
+            unbindService(foregroundOnlyServiceConnection)
+            mBound = false
+        }
+        super.onStop()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModels()
+        foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
+
     }
 
     private fun initViewModels(){
@@ -160,5 +218,21 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
         }
     }
 
+    private fun logResultsToScreen(output: String) {
+        Log.i("Foreground", output)
+    }
+
+    private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent) {
+            val location = intent.getParcelableExtra<Location>(
+                ForegroundOnlyLocationService.EXTRA_LOCATION
+            )
+
+            if (location != null) {
+                logResultsToScreen("Foreground location: ${location.toText()}")
+            }
+        }
+    }
     //abstract fun navigateToFragment(@IdRes id: Int, args: Bundle? = null)
 }

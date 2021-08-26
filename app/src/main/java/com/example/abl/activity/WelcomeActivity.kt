@@ -1,8 +1,11 @@
 package com.example.abl.activity
 
-import android.content.Intent
+import android.annotation.SuppressLint
+import android.content.*
+import android.location.Location
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import android.view.View
@@ -11,11 +14,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.abl.R
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
 import com.example.abl.databinding.ActivityWelcomeBinding
 import com.example.abl.fragment.WelcomeFragment
+import com.example.abl.location.ForegroundOnlyLocationService
+import com.example.abl.location.toText
 import com.example.abl.model.*
 import com.example.abl.network.Api
 import com.example.abl.network.ApiListener
@@ -38,6 +44,11 @@ class WelcomeActivity : DockActivity() {
     lateinit var binding: ActivityWelcomeBinding
     private val viewModel by inject<UserViewModel>()
 
+    companion object {
+         @SuppressLint("StaticFieldLeak")
+         var foregroundOnlyLocationService: ForegroundOnlyLocationService? = null
+    }
+
     override fun getDockFrameLayoutId(): Int {
         return R.id.container
     }
@@ -47,11 +58,8 @@ class WelcomeActivity : DockActivity() {
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         SharedPrefKeyManager.with(this)
-        initFragment()
-    }
 
-    private fun initView(){
-        binding = ActivityWelcomeBinding.inflate(layoutInflater)
+        initFragment()
     }
 
     private fun initFragment() {
@@ -69,5 +77,25 @@ class WelcomeActivity : DockActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+    }
+    private fun logResultsToScreen(output: String) {
+        Log.i("Foreground", output)
+    }
+
+    /**
+     * Receiver for location broadcasts from [ForegroundOnlyLocationService].
+     */
+
+    private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent) {
+            val location = intent.getParcelableExtra<Location>(
+                ForegroundOnlyLocationService.EXTRA_LOCATION
+            )
+
+            if (location != null) {
+                logResultsToScreen("Foreground location: ${location.toText()}")
+            }
+        }
     }
 }

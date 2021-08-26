@@ -14,7 +14,8 @@ import com.example.abl.model.*
     CompanyVisitStatu::class,
     CompanyLeadStatu::class,
     GetPreviousVisit::class,
-    CheckinModel::class], version = 23, exportSchema = false)
+    CheckinModel::class,
+    UserLocation::class], version = 24, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ABLDatabase : RoomDatabase() {
 
@@ -39,6 +40,10 @@ abstract class ABLDatabase : RoomDatabase() {
 
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
             instance ?: buildDatabase(context).also { instance = it }
+        }
+
+        fun getInstance(activityContext: Context): ABLDatabase = instance ?: synchronized(this) {
+            instance ?: buildDatabase(activityContext.applicationContext).also { instance = it }
         }
     }
 }

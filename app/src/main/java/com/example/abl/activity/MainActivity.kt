@@ -3,12 +3,13 @@ package com.example.abl.activity
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import android.view.*
@@ -26,6 +27,7 @@ import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -41,13 +43,14 @@ import com.example.abl.R
 import com.example.abl.adapter.ExpandableListAdapter
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
+import com.example.abl.location.ForegroundOnlyLocationService
+import com.example.abl.location.toText
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.LovResponse
 import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.utils.*
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.GlobalScope
@@ -81,28 +84,31 @@ class MainActivity : DockActivity() {
     private lateinit var actionBarMenu: Menu
     private lateinit var switchAB: SwitchCompat
     private lateinit var sharedPreferences: SharedPreferences
-
     lateinit var viewModel: CoroutineViewModel
-
     private var x1 = 0f
     private var x2 = 0f
     val MIN_DISTANCE = 60
+
+
 
     override fun getDockFrameLayoutId(): Int {
         return R.id.container
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
 
+    // Monitors connection to the while-in-use service.
+
+
+
+
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         unbinder = ButterKnife.bind(this)
         setContentView(binding.root)
         navController = findNavController(R.id.nav_host_main)
-
 
         name.text =
             sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
@@ -144,18 +150,14 @@ class MainActivity : DockActivity() {
         switchAB = item.actionView.findViewById(R.id.switchAB)
         sharedPreferences = this.getSharedPreferences("SharedPrefs", MODE_PRIVATE)
 
-//        if (SharedPrefKeyManager.get<Boolean>(Constants.IS_SHIFT) == true) {
-//            switchAB.isChecked = true
-//        }
-
         switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-
-                Log.i("xxChecked", "check")
             } else {
                 Log.i("xxChecked", "uncheck")
                 sharedPrefManager.setShiftStart(false)
+             //   foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
                 startActivity(Intent(this, WelcomeActivity::class.java))
+                foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
                 // LoginActivity.navController.navigate()
                 // Navigation.findNavController().navigate(R.id.nav_graph_actFirstActvity)
 
@@ -268,6 +270,7 @@ class MainActivity : DockActivity() {
 
             Constants.LOGOUT -> {
                 sharedPrefManager.logout()
+                foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
                 closeDrawer()
@@ -556,4 +559,6 @@ class MainActivity : DockActivity() {
             }
         }
     }
+
+
 }

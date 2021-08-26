@@ -31,6 +31,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity"></activity>
+
+        <service
+            android:name="com.example.abl.location.ForegroundOnlyLocationService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location"/>
     </application>
 
 </manifest>

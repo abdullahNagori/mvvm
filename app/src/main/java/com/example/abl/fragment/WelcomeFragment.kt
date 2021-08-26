@@ -1,10 +1,12 @@
 package com.example.abl.fragment
 
 import android.Manifest
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,11 +17,15 @@ import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.abl.R
 import com.example.abl.activity.MainActivity
+import com.example.abl.activity.WelcomeActivity
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentWelcomeBinding
+import com.example.abl.location.ForegroundOnlyLocationService
+import com.example.abl.location.toText
 import com.example.abl.model.GenericMsgResponse
 import com.example.abl.model.MarkAttendanceModel
 import com.example.abl.model.ResetPwdReqResponse
@@ -33,6 +39,7 @@ class WelcomeFragment : BaseDockFragment() {
     lateinit var binding: FragmentWelcomeBinding
     var latitude = 0.0
     var longitude = 0.0
+
 
     companion object {
         fun newInstance(): WelcomeFragment {
@@ -56,13 +63,8 @@ class WelcomeFragment : BaseDockFragment() {
         getUserData()
 
         binding.fab.setOnClickListener {
-
             markAttendance("checkin", "23.45", "35.40")
-//            val welcomeIntent = Intent(context, MainActivity::class.java)
-//            welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-//            startActivity(welcomeIntent)
-//            activity?.finish()
-//            activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
+            (requireActivity() as WelcomeActivity).foregroundOnlyLocationService?.subscribeToLocationUpdates()
         }
 
         return binding.root
@@ -170,4 +172,11 @@ class WelcomeFragment : BaseDockFragment() {
             }
         }
     }
+
+
+
+    /**
+     * Receiver for location broadcasts from [ForegroundOnlyLocationService].
+     */
+
 }

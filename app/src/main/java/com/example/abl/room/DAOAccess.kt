@@ -51,4 +51,9 @@ interface DAOAccess {
     @Query("SELECT * FROM Checkin")
     fun getCheckInData() : List<CheckinModel>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)  // onConflict replace the the data when kuch bh happend in inserting
+    fun insertLocation(
+        userLocation: UserLocation,
+    )
+
 }
