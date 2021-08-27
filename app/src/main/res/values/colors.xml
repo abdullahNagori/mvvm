@@ -16,5 +16,7 @@
     <color name="red">#E91E1E</color>
     <color name="banner_green_color">#448C26</color>
     <color name="error_color">#ff0033</color>
+    <color name="darkGrey">#585858</color>
+
 
 </resources>

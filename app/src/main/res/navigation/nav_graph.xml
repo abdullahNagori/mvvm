@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_tracking"
             app:destination="@id/nav_tracking" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_training"
+            app:destination="@id/nav_training" />
     </fragment>
 
     <fragment
@@ -62,6 +65,64 @@
             android:id="@+id/action_portfolioFragment_to_customerDetailsFragment"
             app:destination="@id/customerDetailsFragment" />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_training"
+        android:name="com.example.abl.fragment.TrainingFragment"
+        android:label="Training"
+        tools:layout="@layout/training_fragment" >
+
+        <action
+            android:id="@+id/action_nav_training_to_nav_comprehensive"
+            app:destination="@id/nav_comprehensive" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_comprehensive"
+        android:name="com.example.abl.fragment.ComprehensiveTrainingFragment"
+        android:label="@string/comprehensive_training"
+        tools:layout="@layout/comprehensive_training_fragment" >
+
+        <action
+            android:id="@+id/action_nav_comprehensive_to_nav_training_quiz"
+            app:destination="@id/nav_training_quiz" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_training_quiz"
+        android:name="com.example.abl.fragment.TrainingQuizFragment"
+        android:label="@string/comprehensive_training"
+        tools:layout="@layout/training_quiz_fragment" >
+
+        <action
+            android:id="@+id/action_nav_training_quiz_to_nav_result_quiz"
+            app:destination="@id/nav_result_quiz" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_result_quiz"
+        android:name="com.example.abl.fragment.QuizResultFragment"
+        android:label="Training"
+        tools:layout="@layout/quiz_result_fragment" >
+
+        <action
+            android:id="@+id/action_nav_result_quiz_to_nav_answer"
+            app:destination="@id/nav_answer_quiz" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_answer_quiz"
+        android:name="com.example.abl.fragment.QuizAnswerDetailFragment"
+        android:label="@string/comprehensive_training"
+        tools:layout="@layout/quiz_answer_detail_fragment" >
+
+        <action
+            android:id="@+id/action_nav_answer_detail_to_nav_home"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"
+            app:destination="@id/nav_home" />
     </fragment>
 
     <fragment

@@ -92,4 +92,23 @@ interface FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeUserTrackingFragment(): UserTrackingFragment
+
+    @ContributesAndroidInjector
+    fun contributeComprehensiveTrainingFragment(): ComprehensiveTrainingFragment
+
+    @ContributesAndroidInjector
+    fun contributeTrainingFragment(): TrainingFragment
+
+    @ContributesAndroidInjector
+    fun contributeTrainingQuizFragment(): TrainingQuizFragment
+
+    @ContributesAndroidInjector
+    fun contributeTrainingQuizResultFragment(): TrainingQuizResultFragment
+
+    @ContributesAndroidInjector
+    fun contributeQuizResultFragment(): QuizResultFragment
+
+    @ContributesAndroidInjector
+    fun contributeQuizAnswerDetailFragment(): QuizAnswerDetailFragment
+
 }

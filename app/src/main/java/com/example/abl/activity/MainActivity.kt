@@ -267,6 +267,11 @@ class MainActivity : DockActivity() {
                 closeDrawer()
             }
 
+            Constants.TRAINING -> {
+                navigateToFragment(R.id.action_nav_home_to_nav_training)
+                closeDrawer()
+            }
+
             Constants.TRACKING -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_tracking)
                 closeDrawer()
