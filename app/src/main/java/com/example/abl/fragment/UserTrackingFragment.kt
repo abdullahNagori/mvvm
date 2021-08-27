@@ -30,6 +30,7 @@ class UserTrackingFragment : BaseDockFragment(), ClickListner {
 
         binding.pullToRefresh.setOnRefreshListener {
             initRecyclerView()
+            binding.pullToRefresh.isRefreshing = false
         }
         return binding.root
     }
