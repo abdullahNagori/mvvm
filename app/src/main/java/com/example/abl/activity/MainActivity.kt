@@ -16,7 +16,6 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -75,7 +74,6 @@ class MainActivity : DockActivity() {
     val MIN_DISTANCE = 60
 
 
-
     override fun getDockFrameLayoutId(): Int {
         return R.id.container
     }
@@ -88,12 +86,15 @@ class MainActivity : DockActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         unbinder = ButterKnife.bind(this)
         setContentView(binding.root)
+
         navController = findNavController(R.id.nav_host_main)
 
-        name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
+        name.text =
+            sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
 
         initView()
         setGesture()
+        sendUserTracking()
 
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
@@ -125,18 +126,18 @@ class MainActivity : DockActivity() {
         switchAB = item.actionView.findViewById(R.id.switchAB)
         sharedPreferences = this.getSharedPreferences("SharedPrefs", MODE_PRIVATE)
 
-        if (switchAB.isChecked){
+        if (switchAB.isChecked) {
             Log.i("xxChecked", "check")
             Handler(Looper.getMainLooper()).postDelayed(Runnable {
                 foregroundOnlyLocationService?.subscribeToLocationUpdates()
-            },120000)
+            }, 120000)
         }
         switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
             } else {
                 Log.i("xxChecked", "uncheck")
                 sharedPrefManager.setShiftStart(false)
-             //   foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
+                //   foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
                 // LoginActivity.navController.navigate()
@@ -320,12 +321,14 @@ class MainActivity : DockActivity() {
         salesManagement.add(Constants.VISIT_LOG)
 
         val leadManagement: MutableList<String> = ArrayList()
-        leadManagement.add(Constants.MY_LEADS)
-        leadManagement.add(Constants.COMPANY_PROVIDED_LEADS)
-        leadManagement.add(Constants.SALES_PIPELINE)
+
+        sharedPrefManager.getLeadSource()?.forEachIndexed { index, element ->
+            leadManagement.add(element.desc)
+        }
+
 
         listDataChild[listDataHeader[3]] = salesManagement
-        listDataChild[listDataHeader[4]] = leadManagement
+        listDataChild[listDataHeader[sharedPrefManager.getLeadSource()!!.size]] = leadManagement
 
 
         // setting list adapter
@@ -371,8 +374,7 @@ class MainActivity : DockActivity() {
                 //getLeads()
             }
             R.id.upload -> {
-                sendUserTracking()
-                //Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
             }
             R.id.cold_calling -> callLead()
             R.id.addLead -> {
@@ -490,17 +492,17 @@ class MainActivity : DockActivity() {
                 number.error = "invalid number!"
             } else {
                 dialog.dismiss()
-                    val intent = Intent(Intent.ACTION_CALL)
-                    intent.data = Uri.parse("tel:" + number.text)
-                    val bundle = Bundle()
-                    customers?.let {
-                       // bundle.putParcelable(Constants.LEAD_DATA, customers)
-                    }
-                    bundle.putString(Constants.TYPE, Constants.CALL)
-                    bundle.putString(Constants.CUSTOMER_TYPE, customerType)
-                    bundle.putString("number", number.text.toString())
-                    navigateToFragment(R.id.addLeadFragment, bundle)
-                    startActivity(intent)
+                val intent = Intent(Intent.ACTION_CALL)
+                intent.data = Uri.parse("tel:" + number.text)
+                val bundle = Bundle()
+                customers?.let {
+                    // bundle.putParcelable(Constants.LEAD_DATA, customers)
+                }
+                bundle.putString(Constants.TYPE, Constants.CALL)
+                bundle.putString(Constants.CUSTOMER_TYPE, customerType)
+                bundle.putString("number", number.text.toString())
+                navigateToFragment(R.id.addLeadFragment, bundle)
+                startActivity(intent)
             }
         }
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
@@ -550,26 +552,34 @@ class MainActivity : DockActivity() {
 
         try {
 
-            val uploadWorkRequest = OneTimeWorkRequestBuilder<LocationWorker>().build()
-            WorkManager.getInstance().enqueue(uploadWorkRequest)
+            // One time request only
+//            val uploadWorkRequest = OneTimeWorkRequestBuilder<LocationWorker>().build()
+//            WorkManager.getInstance().enqueue(uploadWorkRequest)
 
-//            val periodicSyncDataWork = PeriodicWorkRequest.Builder(LocationWorker::class.java, 30, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
-//                .addTag(Constants.SYNC_LOCATION)
-//                .setConstraints(constraints)
-//                .setBackoffCriteria(
-//                    BackoffPolicy.LINEAR,
-//                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-//                    TimeUnit.MILLISECONDS
-//                )
-//                .build()
-//            workManager.enqueueUniquePeriodicWork(
-//                Constants.SYNC_UPLOADED,
-//                ExistingPeriodicWorkPolicy.KEEP,
-//                periodicSyncDataWork
-//            )
-        }catch (e: Exception){
+            // Periodic Request
+            val periodicSyncDataWork = PeriodicWorkRequest.Builder(
+                LocationWorker::class.java,
+                30,
+                TimeUnit.MINUTES,
+                15,
+                TimeUnit.MINUTES
+            )
+                .addTag(Constants.SYNC_LOCATION)
+                .setConstraints(constraints)
+                .setBackoffCriteria(
+                    BackoffPolicy.LINEAR,
+                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                    TimeUnit.MILLISECONDS
+                )
+                .build()
+            workManager.enqueueUniquePeriodicWork(
+                Constants.SYNC_UPLOADED,
+                ExistingPeriodicWorkPolicy.KEEP,
+                periodicSyncDataWork
+            )
+        } catch (e: Exception) {
             Log.i("WorkerException", e.message.toString())
         }
-
     }
+
 }

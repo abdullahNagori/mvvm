@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.Worker
 import com.example.abl.constant.Constants
 import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.DynamicLeadsResponse
 import com.example.abl.model.LovResponse
 import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.repository.UserRepository
@@ -65,11 +66,11 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
     }
 
     private fun processData(lovResponse: LovResponse, dynamicLeadsItem: ArrayList<DynamicLeadsItem>?) {
-        if (lovResponse != null) {
-            sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
-            sharedPrefManager.setCompanyProducts(lovResponse.company_products)
-            sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
-        }
+
+        sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
+        sharedPrefManager.setCompanyProducts(lovResponse.company_products)
+        sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
+        sharedPrefManager.setLeadSource(lovResponse.company_lead_source)
 
         // Set leads data in local DB
         if (dynamicLeadsItem != null) {

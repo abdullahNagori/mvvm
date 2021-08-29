@@ -29,7 +29,6 @@ class LocationWorker @Inject constructor(
     var apiListener: ApiListener? = null
 
     override fun doWork(): Result {
-        //simulate slow work
         Log.i(TAG, "Fetching Data from Remote host")
         return try {
             val userList = daoAccess.getUserLocation()
@@ -37,7 +36,7 @@ class LocationWorker @Inject constructor(
             val call = userRepository.uploadUserLocation(userList)
 
             if (call.value == "Successful") {
-                daoAccess.deleteUserLocation()
+                   daoAccess.deleteUserLocation()
                 Result.success()
             } else {
                 Result.retry()

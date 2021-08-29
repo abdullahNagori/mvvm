@@ -20,6 +20,8 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
     private val KEY_LEAD_STATUS = "KEY_LEAD_STATUS"
     private val KEY_COMPANY_PRODUCTS = "KEY_COMPANY_PRODUCTS"
     private val KEY_VISIT_STATUS = "KEY_VISIT_STATUS"
+    private val KEY_LEAD_SOURCE = "KEY_LEAD_SOURCE"
+
     var location: Location = Location(LocationManager.GPS_PROVIDER)
 
     val sharedPreferences: SharedPreferences = context.getSharedPreferences(Key_Pref, Context.MODE_PRIVATE)
@@ -93,6 +95,18 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
         editor.putString(KEY_VISIT_STATUS, GsonFactory.getConfiguredGson()?.toJson(visitStatus))
         editor.apply();
         return true;
+    }
+
+    fun setLeadSource(leadSource: List<CompanyLeadSource>): Boolean {
+        editor.putString(KEY_LEAD_SOURCE, GsonFactory.getConfiguredGson()?.toJson(leadSource))
+        editor.apply();
+        return true;
+    }
+
+    fun getLeadSource():List<CompanyLeadSource>? {
+        val json = sharedPreferences.getString(KEY_LEAD_SOURCE, "")
+        val listType: Type = object : TypeToken<List<CompanyLeadSource>>() {}.type
+        return GsonFactory.getConfiguredGson()?.fromJson(json, listType)
     }
 
     fun getVisitStatus():List<CompanyVisitStatu>? {

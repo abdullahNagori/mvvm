@@ -14,8 +14,10 @@ import retrofit2.Call
 import java.lang.reflect.Type
 import javax.inject.Inject
 
-class UserRepository @Inject constructor(private val api: Api, private val sharedPrefManager: SharedPrefManager): BaseRepository()
-{
+class UserRepository @Inject constructor(
+    private val api: Api,
+    private val sharedPrefManager: SharedPrefManager
+) : BaseRepository() {
     fun login(loginModel: LoginModel): MutableLiveData<String> {
         return callApi(api.login(loginModel), Constants.LOGIN)
     }
@@ -29,28 +31,47 @@ class UserRepository @Inject constructor(private val api: Api, private val share
     }
 
     fun verifyPasswordReq(verifyPassModel: VerifyPassModel): MutableLiveData<String> {
-        return callApi(api.verifyPassword(verifyPassModel, "Bearer " + sharedPrefManager.getToken()), Constants.VERIFY_PWD_REQ)
+        return callApi(
+            api.verifyPassword(
+                verifyPassModel,
+                "Bearer " + sharedPrefManager.getToken()
+            ), Constants.VERIFY_PWD_REQ
+        )
     }
 
     fun getUserDetails(token: String): MutableLiveData<String> {
-        return callApi(api.getUserDetails("Bearer " + sharedPrefManager.getToken()), Constants.USER_DETAIL)
+        return callApi(
+            api.getUserDetails("Bearer " + sharedPrefManager.getToken()),
+            Constants.USER_DETAIL
+        )
     }
 
-    fun markAttendance(markAttendanceModel: MarkAttendanceModel, token: String): MutableLiveData<String> {
-        return callApi(api.markAttendance(markAttendanceModel, "Bearer " + sharedPrefManager.getToken()), Constants.MARK_ATTENDANCE)
+    fun markAttendance(
+        markAttendanceModel: MarkAttendanceModel,
+        token: String
+    ): MutableLiveData<String> {
+        return callApi(
+            api.markAttendance(
+                markAttendanceModel,
+                "Bearer " + sharedPrefManager.getToken()
+            ), Constants.MARK_ATTENDANCE
+        )
     }
 
-   suspend fun getLovs(): LovResponse {
-       // return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
-       return withContext(Dispatchers.IO) {
-           async {
-               api.getLovs("Bearer " + sharedPrefManager.getToken())
-           }
-       }.await()
+    suspend fun getLovs(): LovResponse {
+        // return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
+        return withContext(Dispatchers.IO) {
+            async {
+                api.getLovs("Bearer " + sharedPrefManager.getToken())
+            }
+        }.await()
     }
 
     fun getDynamicLeads(token: String): MutableLiveData<String> {
-        return callApi(api.getLeadsForDynamicData("Bearer " + sharedPrefManager.getToken()), Constants.GET_DYNAMIC_LEADS)
+        return callApi(
+            api.getLeadsForDynamicData("Bearer " + sharedPrefManager.getToken()),
+            Constants.GET_DYNAMIC_LEADS
+        )
     }
 
     suspend fun getLeads(): ArrayList<DynamicLeadsItem> {
@@ -61,32 +82,50 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         }.await()
     }
 
-     fun uploadUserLocation(userLocation: List<UserLocation>): MutableLiveData<String> {
-//        return withContext(Dispatchers.IO) {
-//            async {
-                 return callApi(api.userLocation(userLocation,"Bearer " + sharedPrefManager.getToken()), Constants.UPDATE_LOCATION)
-//            }
-//        }.await()
+    fun uploadUserLocation(userLocation: List<UserLocation>): MutableLiveData<String> {
+
+        return callApi(
+            api.userLocation(userLocation, "Bearer " + sharedPrefManager.getToken()),
+            Constants.UPDATE_LOCATION
+        )
+
     }
 
     fun addLead(customerDetail: CustomerDetail): MutableLiveData<String> {
-        return callApi(api.addLead(customerDetail, "Bearer " + sharedPrefManager.getToken()), Constants.ADD_LEAD)
+        return callApi(
+            api.addLead(customerDetail, "Bearer " + sharedPrefManager.getToken()),
+            Constants.ADD_LEAD
+        )
     }
 
     fun addLeadCheckin(checkinModel: CheckinModel): MutableLiveData<String> {
-        return callApi(api.addLeadCheckin(checkinModel, "Bearer " + sharedPrefManager.getToken()), Constants.ADD_LEAD_CHECKIN)
+        return callApi(
+            api.addLeadCheckin(checkinModel, "Bearer " + sharedPrefManager.getToken()),
+            Constants.ADD_LEAD_CHECKIN
+        )
     }
 
     fun getDashboard(): MutableLiveData<String> {
-        return callApi(api.getDashboard( "Bearer " + sharedPrefManager.getToken()), Constants.DASHBOARD_COUNT)
+        return callApi(
+            api.getDashboard("Bearer " + sharedPrefManager.getToken()),
+            Constants.DASHBOARD_COUNT
+        )
     }
 
     fun changePassword(changePasswordModel: ChangePasswordModel): MutableLiveData<String> {
-        return callApi(api.changePassword(changePasswordModel,"Bearer " + sharedPrefManager.getToken()), Constants.CHANGE_PASSWORD)
+        return callApi(
+            api.changePassword(
+                changePasswordModel,
+                "Bearer " + sharedPrefManager.getToken()
+            ), Constants.CHANGE_PASSWORD
+        )
     }
 
     fun getMarketingCollateral(): MutableLiveData<String> {
-        return callApi(api.getmarketingcollateral("Bearer " + sharedPrefManager.getToken()), Constants.MARKETING_COLLATERAL)
+        return callApi(
+            api.getmarketingcollateral("Bearer " + sharedPrefManager.getToken()),
+            Constants.MARKETING_COLLATERAL
+        )
     }
 
 }

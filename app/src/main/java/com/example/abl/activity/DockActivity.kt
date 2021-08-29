@@ -36,6 +36,7 @@ import com.example.abl.viewModel.UserViewModel
 import com.tapadoo.alerter.Alerter
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.dialog_call.*
+import java.util.*
 import javax.inject.Inject
 
 
@@ -202,6 +203,10 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
     open fun onFailureResponse(message: String, tag: String) {
         this.hideProgressIndicator()
         this.showErrorMessage(message)
+    }
+
+    fun <T : Iterable<*>?> nullGuard (item: T?): T {
+        return (item ?: Collections.EMPTY_LIST) as T
     }
 
     override fun showProgressIndicator() {
