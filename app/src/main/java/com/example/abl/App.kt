@@ -15,14 +15,13 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class App: Application(), HasAndroidInjector {
+class App: Application(), HasAndroidInjector, Configuration.Provider {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
     private lateinit var appComponent: AppComponent
 
-
-
-    @Inject lateinit var workerConfiguration: Configuration
+    @Inject
+    lateinit var workerConfiguration: Configuration
 
     override fun onCreate() {
         super.onCreate()
@@ -48,5 +47,8 @@ class App: Application(), HasAndroidInjector {
 //            .setWorkerFactory(myWorkerFactory)
 //            .build()
 
+    override fun getWorkManagerConfiguration(): Configuration {
+        return workerConfiguration
+    }
 
 }

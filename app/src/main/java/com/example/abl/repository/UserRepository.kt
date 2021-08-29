@@ -61,12 +61,12 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         }.await()
     }
 
-    suspend fun uploadUserLocation(userLocation: List<UserLocation>): Call<ResponseBody> {
-        return withContext(Dispatchers.IO) {
-            async {
-                api.userLocation(userLocation,"Bearer " + sharedPrefManager.getToken())
-            }
-        }.await()
+     fun uploadUserLocation(userLocation: List<UserLocation>): MutableLiveData<String> {
+//        return withContext(Dispatchers.IO) {
+//            async {
+                 return callApi(api.userLocation(userLocation,"Bearer " + sharedPrefManager.getToken()), Constants.UPDATE_LOCATION)
+//            }
+//        }.await()
     }
 
     fun addLead(customerDetail: CustomerDetail): MutableLiveData<String> {

@@ -1,14 +1,15 @@
 package com.example.abl.utils.Schedulers
 
-import android.R
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.work.CoroutineWorker
+import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.abl.model.UserLocation
+import com.example.abl.network.ApiListener
 import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.DAOAccess
@@ -23,19 +24,19 @@ class LocationWorker @Inject constructor(
     private val daoAccess: DAOAccess,
     var appContext: Context,
     var workerParams: WorkerParameters
-) : CoroutineWorker(appContext, workerParams) {
+) : Worker(appContext, workerParams) {
 
-    override suspend fun doWork(): Result {
+    var apiListener: ApiListener? = null
+
+    override fun doWork(): Result {
         //simulate slow work
-        // WorkerUtils.makeStatusNotification("Fetching Data", applicationContext);
         Log.i(TAG, "Fetching Data from Remote host")
-         //WorkerUtils.sleep()
         return try {
             val userList = daoAccess.getUserLocation()
-
+            userRepository.apiListener = apiListener
             val call = userRepository.uploadUserLocation(userList)
 
-            if (call.isExecuted) {
+            if (call.value == "Successful") {
                 daoAccess.deleteUserLocation()
                 Result.success()
             } else {
@@ -55,9 +56,5 @@ class LocationWorker @Inject constructor(
     companion object {
         private val TAG = "LocationWorker"
     }
-//
-//    init {
-//        bookService = App.get().getBookService()
-//        bookDao = App.get().getBookDao()
-//    }
+
 }

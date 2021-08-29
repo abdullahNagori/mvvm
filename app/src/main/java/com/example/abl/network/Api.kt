@@ -86,7 +86,7 @@ interface Api {
     fun getmarketingcollateral(@Header("Authorization") token: String
     ): Call<ResponseBody>
 
-    //Get Marketing Collateral
+    //Upload UserTracking
     @GET("auth/userTracking")
-   suspend fun userLocation(@Body customerDetail: List<UserLocation>, @Header("Authorization") token: String): Call<ResponseBody>
+    fun userLocation(@Body customerDetail: List<UserLocation>, @Header("Authorization") token: String): Call<ResponseBody>
 }

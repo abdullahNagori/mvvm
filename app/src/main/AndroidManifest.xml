@@ -43,10 +43,10 @@
             android:exported="false"
             android:foregroundServiceType="location"/>
 
-<!--        <provider-->
-<!--            android:name="androidx.work.impl.WorkManagerInitializer"-->
-<!--            android:authorities="com.example.abl.workmanager-init"-->
-<!--            tools:node="remove" />-->
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="com.example.abl.utils.Schedulers.LocationWorker.workmanager-init"
+            tools:node="remove" />
     </application>
 
 </manifest>

@@ -2,14 +2,16 @@ package com.example.abl.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.location.Location
+import android.location.LocationManager
 import com.example.abl.model.*
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import javax.inject.Inject
 
+
 class SharedPrefManager @Inject constructor(private val context: Context) {
+
     private val Key_Pref = "Key_Pref"
     private val TOKEN = "KEY_TOKEN"
     private val USERNAME = "KEY_USERNAME"
@@ -18,6 +20,7 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
     private val KEY_LEAD_STATUS = "KEY_LEAD_STATUS"
     private val KEY_COMPANY_PRODUCTS = "KEY_COMPANY_PRODUCTS"
     private val KEY_VISIT_STATUS = "KEY_VISIT_STATUS"
+    var location: Location = Location(LocationManager.GPS_PROVIDER)
 
     val sharedPreferences: SharedPreferences = context.getSharedPreferences(Key_Pref, Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()

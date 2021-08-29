@@ -127,7 +127,6 @@ class WelcomeFragment : BaseDockFragment() {
             return
         } else {
             LocationServices.getFusedLocationProviderClient(requireContext()).lastLocation.addOnSuccessListener {
-
                 try {
                     if(it==null){
                         getLocation()
