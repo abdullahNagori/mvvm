@@ -94,7 +94,7 @@ class MainActivity : DockActivity() {
 
         initView()
         setGesture()
-        sendUserTracking()
+
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 
@@ -371,7 +371,8 @@ class MainActivity : DockActivity() {
                 //getLeads()
             }
             R.id.upload -> {
-                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+                sendUserTracking()
+                //Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
             }
             R.id.cold_calling -> callLead()
             R.id.addLead -> {
@@ -548,20 +549,24 @@ class MainActivity : DockActivity() {
             .build()
 
         try {
-            val periodicSyncDataWork = PeriodicWorkRequest.Builder(LocationWorker::class.java, 30, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
-                .addTag(Constants.SYNC_LOCATION)
-                .setConstraints(constraints)
-                .setBackoffCriteria(
-                    BackoffPolicy.LINEAR,
-                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                    TimeUnit.MILLISECONDS
-                )
-                .build()
-            workManager.enqueueUniquePeriodicWork(
-                Constants.SYNC_UPLOADED,
-                ExistingPeriodicWorkPolicy.KEEP,
-                periodicSyncDataWork
-            )
+
+            val uploadWorkRequest = OneTimeWorkRequestBuilder<LocationWorker>().build()
+            WorkManager.getInstance().enqueue(uploadWorkRequest)
+
+//            val periodicSyncDataWork = PeriodicWorkRequest.Builder(LocationWorker::class.java, 30, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
+//                .addTag(Constants.SYNC_LOCATION)
+//                .setConstraints(constraints)
+//                .setBackoffCriteria(
+//                    BackoffPolicy.LINEAR,
+//                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+//                    TimeUnit.MILLISECONDS
+//                )
+//                .build()
+//            workManager.enqueueUniquePeriodicWork(
+//                Constants.SYNC_UPLOADED,
+//                ExistingPeriodicWorkPolicy.KEEP,
+//                periodicSyncDataWork
+//            )
         }catch (e: Exception){
             Log.i("WorkerException", e.message.toString())
         }
