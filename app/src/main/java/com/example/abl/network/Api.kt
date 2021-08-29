@@ -87,6 +87,8 @@ interface Api {
     ): Call<ResponseBody>
 
     //Upload UserTracking
-    @GET("auth/userTracking")
-    fun userLocation(@Body customerDetail: List<UserLocation>, @Header("Authorization") token: String): Call<ResponseBody>
+    @POST("auth/userTracking")
+    fun userLocation(@Body customerDetail: List<UserLocation>,
+                     @Header("Authorization") token: String):
+            Call<ResponseBody>
 }
