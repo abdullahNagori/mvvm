@@ -47,9 +47,7 @@ class ForegroundOnlyLocationService : Service() {
     private val localBinder = LocalBinder()
     private var mLocation: Location? = null
     private var repo: RoomHelper? = null
-    //  private lateinit var apiServices: ApiServices
     private lateinit var context: Context
-    // private lateinit var daoAccess: DAOAccess
     private lateinit var ablDatabase: ABLDatabase
     private lateinit var notificationManager: NotificationManager
 
@@ -155,17 +153,13 @@ class ForegroundOnlyLocationService : Service() {
 
 //        val locationDevice = ArrayList<UserLocation>()
 //        val locationArray = UserLocation(location.latitude.toString(), location.longitude.toString())
-        // locationDevice.add(locationArray)
+//        locationDevice.add(locationArray)
         Log.d(TAG, location.latitude.toString())
-           GlobalScope.launch {
-        insert(locationDevice)
-          }
-
+        GlobalScope.launch {
+            insert(locationDevice)
+        }
 
         // Notify anyone listening for broadcasts about the new location.
-//        val intent = Intent(LocationUpdatesService.ACTION_BROADCAST)
-//        intent.putExtra(LocationUpdatesService.EXTRA_LOCATION, location)
-//        LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
         val intent = Intent(ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST)
         intent.putExtra(EXTRA_LOCATION, currentLocation)
         LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
@@ -174,7 +168,7 @@ class ForegroundOnlyLocationService : Service() {
     private fun insert(locationDevice: UserLocation) {
         Log.d(TAG, "xxDB")
 
-            ablDatabase.leadDao().insertLocation(locationDevice)
+        ablDatabase.leadDao().insertLocation(locationDevice)
 
     }
 
@@ -263,8 +257,8 @@ class ForegroundOnlyLocationService : Service() {
                     this,
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
-            ) {
-
+            )
+            {
                 return
             }
             fusedLocationProviderClient.requestLocationUpdates(
@@ -365,7 +359,8 @@ class ForegroundOnlyLocationService : Service() {
             .setOngoing(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .addAction(
-                com.example.abl.R.mipmap.ic_launcher_abl, getString(com.example.abl.R.string.launch_activity),
+                com.example.abl.R.mipmap.ic_launcher_abl,
+                getString(com.example.abl.R.string.launch_activity),
                 activityPendingIntent
             )
             .addAction(

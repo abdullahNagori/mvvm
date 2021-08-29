@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
+import retrofit2.Call
 import java.lang.reflect.Type
 import javax.inject.Inject
 
@@ -56,6 +57,14 @@ class UserRepository @Inject constructor(private val api: Api, private val share
         return withContext(Dispatchers.IO) {
             async {
                 api.getLeads("Bearer " + sharedPrefManager.getToken())
+            }
+        }.await()
+    }
+
+    suspend fun uploadUserLocation(userLocation: List<UserLocation>): Call<ResponseBody> {
+        return withContext(Dispatchers.IO) {
+            async {
+                api.userLocation(userLocation,"Bearer " + sharedPrefManager.getToken())
             }
         }.await()
     }

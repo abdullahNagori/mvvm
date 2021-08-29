@@ -1,15 +1,11 @@
 package com.example.abl.activity
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
-import android.content.pm.PackageManager
-import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import android.view.*
@@ -20,20 +16,19 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
+import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.*
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.deepakkumardk.kontactpickerlib.KontactPicker
@@ -43,27 +38,17 @@ import com.example.abl.R
 import com.example.abl.adapter.ExpandableListAdapter
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
-import com.example.abl.location.ForegroundOnlyLocationService
-import com.example.abl.location.toText
 import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.LovResponse
 import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.utils.*
+import com.example.abl.utils.Schedulers.LocationWorker
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.json.JSONObject
-import java.lang.reflect.Type
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
-import kotlin.collections.List
-import kotlin.collections.MutableList
-import kotlin.collections.isNotEmpty
 import kotlin.collections.set
-import kotlin.collections.setOf
 
 
 class MainActivity : DockActivity() {
@@ -97,11 +82,6 @@ class MainActivity : DockActivity() {
 
 
     // Monitors connection to the while-in-use service.
-
-
-
-
-
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,10 +90,12 @@ class MainActivity : DockActivity() {
         setContentView(binding.root)
         navController = findNavController(R.id.nav_host_main)
 
-        name.text =
-            sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
+        name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
+
         initView()
         setGesture()
+        sendUserTracking()
+
         viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 
     }
@@ -558,4 +540,31 @@ class MainActivity : DockActivity() {
     }
 
 
+    fun sendUserTracking() {
+
+        val workManager = WorkManager.getInstance(application)
+        val constraints: androidx.work.Constraints = androidx.work.Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        try {
+            val periodicSyncDataWork = PeriodicWorkRequest.Builder(LocationWorker::class.java, 30, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
+                .addTag(Constants.SYNC_LOCATION)
+                .setConstraints(constraints)
+                .setBackoffCriteria(
+                    BackoffPolicy.LINEAR,
+                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                    TimeUnit.MILLISECONDS
+                )
+                .build()
+            workManager.enqueueUniquePeriodicWork(
+                Constants.SYNC_UPLOADED,
+                ExistingPeriodicWorkPolicy.KEEP,
+                periodicSyncDataWork
+            )
+        }catch (e: Exception){
+            Log.i("WorkerException", e.message.toString())
+        }
+
+    }
 }

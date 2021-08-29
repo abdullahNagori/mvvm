@@ -1,11 +1,13 @@
 package com.example.abl.components
 
 import android.content.Context
+import androidx.work.Configuration
 import com.example.abl.network.Api
 import com.example.abl.room.DAOAccess
 import com.example.abl.room.RoomHelper
 import com.example.abl.utils.*
 import com.example.abl.utils.Schedulers.BaseScheduler
+import com.example.abl.utils.Schedulers.IoschedWorkerFactory
 import com.example.abl.utils.Schedulers.SchedulerProvider
 import dagger.Module
 import dagger.Provides
@@ -65,5 +67,16 @@ class AppModule {
     @Singleton
     fun provideDateTimeFormatter(context: Context): DateTimeFormatter {
         return DateTimeFormatter(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideWorkManagerConfiguration(
+        ioschedWorkerFactory: IoschedWorkerFactory
+    ): Configuration {
+        return Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.DEBUG)
+            .setWorkerFactory(ioschedWorkerFactory)
+            .build()
     }
 }

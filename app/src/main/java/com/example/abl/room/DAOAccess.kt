@@ -58,4 +58,7 @@ interface DAOAccess {
 
     @Query("SELECT * FROM UserLocation")
     fun getUserLocation() : List<UserLocation>
+
+    @Query("DELETE from UserLocation")
+    fun deleteUserLocation()
 }

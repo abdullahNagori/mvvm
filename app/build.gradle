@@ -194,4 +194,9 @@ dependencies {
     // qr generator
     implementation 'com.google.zxing:core:3.3.3'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0@aar'
+
+    //Work Manager
+    def work_version = "2.5.0"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
 }

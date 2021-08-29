@@ -2,6 +2,7 @@ package com.example.abl.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "UserLocation")
@@ -20,5 +21,5 @@ data class UserLocation (
 {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var Id: Int? = null
+    var Id: Int = 0
 }

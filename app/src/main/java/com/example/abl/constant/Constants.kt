@@ -81,6 +81,8 @@ object Constants {
     const val MY_LEADS ="My Leads"
     var BTL ="BTL"
     const val OWN_LEAD ="Own Leads"
+    const val SYNC_LOCATION ="sync_location"
+    const val SYNC_UPLOADED ="sync_uploaded"
     const val COMPANY_PROVIDED_LEADS ="Company Provided Leads"
     const val SALES_PIPELINE ="Sales Pipeline"
     const val FOLLOW_UP_MEETING_SCHEDULER ="Follow Up / Meeting Scheduler"
