@@ -68,21 +68,6 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
         return data
     }
 
-    private fun processData(
-        lovResponse: LovResponse,
-        dynamicLeadsItem: ArrayList<DynamicLeadsItem>?
-    ) {
-        sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
-        sharedPrefManager.setCompanyProducts(lovResponse.company_products)
-        sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
-        sharedPrefManager.setLeadSource(lovResponse.company_lead_source)
-
-        // Set leads data in local DB
-        if (dynamicLeadsItem != null) {
-            roomHelper.deleteLeadData()
-            roomHelper.insertLeadData(dynamicLeadsItem)
-        }
-    }
 
 
     fun getLeads(): MutableLiveData<WebResponse> {

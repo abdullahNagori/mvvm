@@ -4,11 +4,8 @@ import android.os.Parcelable
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
-import javax.annotation.Nullable
 
 @Parcelize
 @Entity(tableName = "Lead")
@@ -50,6 +47,7 @@ data class DynamicLeadsItem(
     val latitude: String?,
     @ColumnInfo(name = "lead_id")
     val lead_id: String?,
+    @NonNull
     @ColumnInfo(name = "local_lead_id")
     val local_lead_id: String?,
     @ColumnInfo(name = "marital_status")
@@ -116,4 +114,28 @@ data class DynamicLeadsItem(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "ID")
     var Id: Int? = null
+
+    fun getCustomerDetail(): CustomerDetail {
+        return CustomerDetail(
+            first_name.toString(),
+            mobile_phone_number.toString(),
+            company_name.toString(),
+            address.toString(),
+            cnic.toString(),
+            occupation.toString(),
+            source_of_income.toString(),
+            es_income.toString(),
+            age.toString(),
+            gender.toString(),
+            latitude.toString(),
+            longitude.toString(),
+            product_id.toString(),
+            product_name.toString(),
+            "",
+            lead_status.toString(),
+            follow_up_date.toString(),
+            comment.toString(),
+        )
+    }
 }
+

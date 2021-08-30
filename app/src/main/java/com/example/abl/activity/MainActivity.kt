@@ -40,9 +40,9 @@ import com.example.abl.databinding.ActivityMainBinding
 import com.example.abl.model.CompanyLeadSource
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.LovResponse
-import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.utils.*
-import com.example.abl.utils.Schedulers.LocationWorker
+import com.example.abl.utils.Schedulers.LocationWorkManager.LocationWorker
+import com.example.abl.utils.Schedulers.UploadWorkManager.UploadWorker
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -399,7 +399,8 @@ class MainActivity : DockActivity() {
                 //getLeads()
             }
             R.id.upload -> {
-                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+                sendLeadData()
+                //Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
             }
             R.id.cold_calling -> callLead()
             R.id.addLead -> {
@@ -612,8 +613,29 @@ class MainActivity : DockActivity() {
                 periodicSyncDataWork
             )
         } catch (e: Exception) {
-            Log.i("WorkerException", e.message.toString())
+            Log.i("LocationWorkerException", e.message.toString())
         }
     }
 
+
+    private fun sendLeadData() {
+        try {
+            val workManager = WorkManager.getInstance(application)
+
+            val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadWorker>().build()
+//          WorkManager.getInstance().enqueue(uploadWorkRequest)
+
+            workManager.getWorkInfoByIdLiveData(uploadWorkRequest.id).observe(this, androidx.lifecycle.Observer {
+                    workInfo: WorkInfo? ->
+                if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
+                    val progress = workInfo.outputData
+                    val value = progress.getInt("progress", 0)
+                }
+            })
+
+
+        } catch (e: Exception) {
+            Log.i("UploadWorkerLocation", e.message.toString())
+        }
+    }
 }

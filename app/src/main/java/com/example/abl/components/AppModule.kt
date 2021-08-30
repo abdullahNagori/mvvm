@@ -7,7 +7,7 @@ import com.example.abl.room.DAOAccess
 import com.example.abl.room.RoomHelper
 import com.example.abl.utils.*
 import com.example.abl.utils.Schedulers.BaseScheduler
-import com.example.abl.utils.Schedulers.IoschedWorkerFactory
+import com.example.abl.utils.Schedulers.LocationWorkManager.IoschedWorkerFactory
 import com.example.abl.utils.Schedulers.SchedulerProvider
 import dagger.Module
 import dagger.Provides

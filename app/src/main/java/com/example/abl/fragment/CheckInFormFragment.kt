@@ -254,7 +254,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             binding.date.text.toString(),
             binding.dateOfConversion.text.toString(),
             customer.customer_id.toString(),
-            "0",
+            if (customer.lead_id != "0") customer.lead_id.toString() else customer.local_lead_id.toString(),
             (selectedProduct?.record_id)!!,
             (selectedProduct?.product_name)!!,
             binding.amount.text.toString(),

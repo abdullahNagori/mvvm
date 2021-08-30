@@ -1,4 +1,4 @@
-package com.example.abl.utils.Schedulers
+package com.example.abl.utils.Schedulers.LocationWorkManager
 
 import androidx.work.DelegatingWorkerFactory
 import com.example.abl.repository.UserRepository

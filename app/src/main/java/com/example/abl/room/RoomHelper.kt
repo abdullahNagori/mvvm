@@ -17,7 +17,7 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
     }
 
     fun getLeadsData(): List<DynamicLeadsItem> {
-        return daoAccess.getLeadData() as List<DynamicLeadsItem>
+        return daoAccess.getUnSyncLeadData() as List<DynamicLeadsItem>
     }
 
     fun getLeadsStatus(): List<CompanyLeadStatu> {

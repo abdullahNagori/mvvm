@@ -1,22 +1,14 @@
-package com.example.abl.utils.Schedulers
+package com.example.abl.utils.Schedulers.LocationWorkManager
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.work.CoroutineWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.example.abl.model.UserLocation
+import com.example.abl.model.GenericMsgResponse
 import com.example.abl.network.ApiListener
-import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.DAOAccess
-import com.example.abl.viewModel.UserViewModel
-import retrofit2.Call
-import retrofit2.Response
-import java.util.*
+import com.example.abl.utils.GsonFactory
 import javax.inject.Inject
 
 class LocationWorker @Inject constructor(
@@ -32,10 +24,11 @@ class LocationWorker @Inject constructor(
         Log.i(TAG, "Fetching Data from Remote host")
         return try {
             val userList = daoAccess.getUserLocation()
-            userRepository.apiListener = apiListener
+            //userRepository.apiListener = apiListener
             val call = userRepository.uploadUserLocation(userList)
+            val response = GsonFactory.getConfiguredGson()?.fromJson(call.value, GenericMsgResponse::class.java)
 
-            if (call.value == "Successful") {
+            if (response?.message == "Successful") {
                    daoAccess.deleteUserLocation()
                 Result.success()
             } else {

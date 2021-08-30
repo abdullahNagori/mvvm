@@ -114,7 +114,6 @@ class AllFragment : BaseDockFragment(), ClickListner {
 //                adapter.notifyDataSetChanged()
 //            } else {
                // val filterData = leadData?.filter { it.lead_status_name.equals(leadStatusData?.record_id, true) }
-
                // val filterData = leadData?.filter { it.lead_status_name.equals(leadSourceData?.record_id, true) }
                 adapter.setList(list)
                 adapter.notifyDataSetChanged()
