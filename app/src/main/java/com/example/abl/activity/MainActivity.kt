@@ -37,7 +37,9 @@ import com.example.abl.R
 import com.example.abl.adapter.ExpandableListAdapter
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
+import com.example.abl.model.CompanyLeadSource
 import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.LovResponse
 import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.utils.*
 import com.example.abl.utils.Schedulers.LocationWorker
@@ -47,6 +49,7 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.collections.set
 
 
@@ -69,9 +72,12 @@ class MainActivity : DockActivity() {
     private lateinit var switchAB: SwitchCompat
     private lateinit var sharedPreferences: SharedPreferences
     lateinit var viewModel: CoroutineViewModel
+    lateinit var listDataChild: HashMap<String, List<String>>
+    lateinit var listDataHeader: ArrayList<String>
     private var x1 = 0f
     private var x2 = 0f
     val MIN_DISTANCE = 60
+    val childLeadMap: HashMap<String, String> = HashMap()
 
 
     override fun getDockFrameLayoutId(): Int {
@@ -200,19 +206,26 @@ class MainActivity : DockActivity() {
         })
     }
 
-    private fun fragmentClickEvent(itemString: String?) {
+    private fun fragmentClickEvent(itemString: String?, sourceID: String) {
 
         when (itemString) {
             Constants.DASHBOARD -> {
             }
-
             Constants.PORTFOLIO -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_profile)
                 closeDrawer()
             }
 
             Constants.MY_LEADS -> {
-                navigateToFragment(R.id.action_nav_home_to_nav_crm)
+                val bundle = Bundle()
+                bundle.putString("flag", "BTL")
+                navigateToFragment(R.id.action_nav_home_to_nav_crm, bundle)
+                closeDrawer()
+            }
+            "leadManagement" -> {
+                val bundle = Bundle()
+                bundle.putString(Constants.SOURCE_REC_ID,sourceID)
+                navigateToFragment(R.id.action_nav_home_to_nav_crm,bundle)
                 closeDrawer()
             }
 
@@ -271,8 +284,8 @@ class MainActivity : DockActivity() {
 
     private fun prepareSideMenu() {
 
-        val listDataHeader = ArrayList<String>()
-        val listDataChild = HashMap<String, List<String>>()
+        listDataHeader = ArrayList<String>()
+        listDataChild = HashMap<String, List<String>>()
         val icons = ArrayList<Int>()
 
         icons.add(R.drawable.ic_dashboard) //0
@@ -319,17 +332,8 @@ class MainActivity : DockActivity() {
         val salesManagement: MutableList<String> = ArrayList()
         salesManagement.add(Constants.CALL_LOG)
         salesManagement.add(Constants.VISIT_LOG)
-
-        val leadManagement: MutableList<String> = ArrayList()
-
-        sharedPrefManager.getLeadSource()?.forEachIndexed { index, element ->
-            leadManagement.add(element.desc)
-        }
-
-
         listDataChild[listDataHeader[3]] = salesManagement
-        listDataChild[listDataHeader[sharedPrefManager.getLeadSource()!!.size]] = leadManagement
-
+        leadManagementNode()
 
         // setting list adapter
         binding.sideLayout.lvExp.setAdapter(listAdapter)
@@ -338,18 +342,39 @@ class MainActivity : DockActivity() {
         // Listview on child click listener
         binding.sideLayout.lvExp.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
 
-            Log.i("xxGroup", "child")
-            val str = listDataChild[listDataHeader[groupPosition]]!![childPosition]
-            fragmentClickEvent(str)
+            Log.i("xxGroup1", "child")
+            var str = listDataChild[listDataHeader[groupPosition]]!![childPosition]
+            var sourceRecID = ""
+            if (groupPosition == 4) {
+                sourceRecID = childLeadMap[str].toString()
+                str = sourceRecID
+                fragmentClickEvent("leadManagement", str)
+            } else {
+                fragmentClickEvent(str, "")
+            }
             closeDrawer()
             false
         }
 
 
         binding.sideLayout.lvExp.setOnGroupExpandListener { groupPosition: Int ->
-            Log.i("xxGroup", "group")
-            fragmentClickEvent(listDataHeader[groupPosition])
+            Log.i("xxGroup2", groupPosition.toString())
+
+            fragmentClickEvent(listDataHeader[groupPosition], "")
         }
+    }
+
+    private fun leadManagementNode() {
+        val leadManagement: List<CompanyLeadSource> =
+            sharedPrefManager.getLeadSource() ?: emptyList()
+        val itemList = ArrayList<String>()
+        //itemList.add(Constants.MY_LEADS)
+        for (i in leadManagement) {
+            itemList.add(i.desc)
+            childLeadMap[i.desc] = i.record_id
+        }
+        listDataChild[listDataHeader[4]] = itemList
+
     }
 
     private fun callLead() {
@@ -520,30 +545,39 @@ class MainActivity : DockActivity() {
                     number.setText(it)
                 }
             }
-
-
             //Log.i("xxNumber", list[0].)
         }
     }
 
     private fun getSyncData() {
         viewModel.getLOV().observe(this) {
-            when (it) {
-                WebResponse.Loading -> {
-                    showProgressIndicator()
-                }
-                is WebResponse.Success<*> -> {
-                    hideProgressIndicator()
-                }
-                is WebResponse.Error -> {
-                    hideProgressIndicator()
-                }
+            Log.e("", it.toString())
+            if (it.dynamicList?.size != 0) {
+                processData(it.lovResponse, it.dynamicList)
+
             }
         }
     }
 
 
-    fun sendUserTracking() {
+    private fun processData(
+        lovResponse: LovResponse,
+        dynamicLeadsItem: ArrayList<DynamicLeadsItem>?
+    ) {
+        sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
+        sharedPrefManager.setCompanyProducts(lovResponse.company_products)
+        sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
+        sharedPrefManager.setLeadSource(lovResponse.company_lead_source)
+
+        // Set leads data in local DB
+        if (dynamicLeadsItem != null) {
+            roomHelper.deleteLeadData()
+            roomHelper.insertLeadData(dynamicLeadsItem)
+        }
+        leadManagementNode()
+    }
+
+    private fun sendUserTracking() {
 
         val workManager = WorkManager.getInstance(application)
         val constraints: androidx.work.Constraints = androidx.work.Constraints.Builder()

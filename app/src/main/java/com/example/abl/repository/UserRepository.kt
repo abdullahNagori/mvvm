@@ -59,12 +59,7 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun getLovs(): LovResponse {
-        // return callApi(api.getLovs("Bearer " + sharedPrefManager.getToken()), Constants.GET_LOVS)
-        return withContext(Dispatchers.IO) {
-            async {
-                api.getLovs("Bearer " + sharedPrefManager.getToken())
-            }
-        }.await()
+        return api.getLovs("Bearer " + sharedPrefManager.getToken())
     }
 
     fun getDynamicLeads(token: String): MutableLiveData<String> {
@@ -83,7 +78,6 @@ class UserRepository @Inject constructor(
     }
 
     fun uploadUserLocation(userLocation: List<UserLocation>): MutableLiveData<String> {
-
         return callApi(
             api.userLocation(userLocation, "Bearer " + sharedPrefManager.getToken()),
             Constants.UPDATE_LOCATION

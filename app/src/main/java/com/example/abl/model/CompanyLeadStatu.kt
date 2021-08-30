@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
 @Entity(tableName = "LovLeadStatus")
-data class CompanyLeadStatu(
+data class  CompanyLeadStatu(
     @ColumnInfo(name = "company_id")
     val company_id: String,
     @ColumnInfo(name = "created_at")

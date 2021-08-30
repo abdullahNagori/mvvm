@@ -40,11 +40,6 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         userRepository.markAttendance(markAttendanceModel, token)
     }
 
-    suspend fun getLovs(){
-        userRepository.apiListener = apiListener
-        userRepository.getLovs()
-    }
-
     fun getDynamicLeads(token: String){
         userRepository.apiListener = apiListener
         userRepository.getDynamicLeads(token)

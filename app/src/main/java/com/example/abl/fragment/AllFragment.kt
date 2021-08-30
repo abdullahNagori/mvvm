@@ -24,6 +24,10 @@ import com.example.abl.utils.GsonFactory
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_all.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 import java.io.Serializable
 import java.lang.reflect.Type
 import java.util.ArrayList
@@ -33,14 +37,16 @@ class AllFragment : BaseDockFragment(), ClickListner {
     lateinit var adapter: CustomerAdapter
     var leadData:List<DynamicLeadsItem>? = null
     private var leadStatusData: CompanyLeadStatu? = null
+    private var leadSourceData: CompanyLeadSource? = null
+    var sourceList = listOf<DynamicLeadsItem>()
+    var statusList = listOf<DynamicLeadsItem>()
 
     companion object {
         //const val ARG_NAME = "section_data"
-        const val ARG_NAME = "lead_status"
         fun newInstance(content: String): AllFragment {
             val fragment = AllFragment()
             val args = Bundle()
-            args.putString(ARG_NAME, content)
+            args.putString(Constants.ARG_NAME, content)
             fragment.arguments = args
             return fragment
         }
@@ -53,15 +59,26 @@ class AllFragment : BaseDockFragment(), ClickListner {
         // Inflate the layout for this fragment
         myDockActivity?.getUserViewModel()?.apiListener = this
         binding = FragmentAllBinding.inflate(layoutInflater)
-        leadStatusData = GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString(ARG_NAME), CompanyLeadStatu::class.java)
-        initRecyclerView()
+//        leadStatusData = GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString(Constants.ARG_NAME), CompanyLeadStatu::class.java)
 
+        Log.i("xxLeadSource", arguments?.getString(Constants.SOURCE_REC_ID).toString())
+        initRecyclerView()
+        CoroutineScope(Dispatchers.Main).launch {
+            leadData = roomHelper.getLeadsData()
+            sourceList = leadData?.filter { it.source.equals(arguments?.getString(Constants.SOURCE_REC_ID),true) }!!
+        }.invokeOnCompletion {
+            if(arguments?.getString(Constants.ARG_NAME)!! == "all") {
+               setData(sourceList)
+             }else{
+                statusList = sourceList.filter { it.lead_status_name.equals(arguments?.getString(Constants.ARG_NAME), true) }
+                setData(statusList)
+            }
+        }
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        Handler(Looper.getMainLooper()).postDelayed(Runnable {setData()},500)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun closeDrawer() {
@@ -89,20 +106,20 @@ class AllFragment : BaseDockFragment(), ClickListner {
         binding.customers.adapter = adapter
     }
 
-    private fun setData() {
-        leadData = roomHelper.getLeadsData()
+    private fun setData(list: List<DynamicLeadsItem>) {
 
         if (leadData != null) {
-            if (leadStatusData?.name.equals("all", true)) {
-                adapter.setList(leadData!!)
-                adapter.notifyDataSetChanged()
-            } else {
-                val filterData = leadData?.filter { it.lead_status_name.equals(leadStatusData?.name, true) }
-                adapter.setList(filterData!!)
+//            if (leadStatusData?.name.equals("all", true)) {
+//                adapter.setList(leadData!!)
+//                adapter.notifyDataSetChanged()
+//            } else {
+               // val filterData = leadData?.filter { it.lead_status_name.equals(leadStatusData?.record_id, true) }
+
+               // val filterData = leadData?.filter { it.lead_status_name.equals(leadSourceData?.record_id, true) }
+                adapter.setList(list)
                 adapter.notifyDataSetChanged()
             }
         }
-    }
 
     override fun <T> onClick(data: T, createNested: Boolean) {
         val bundle = Bundle()
