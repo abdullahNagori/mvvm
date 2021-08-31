@@ -1,15 +1,15 @@
 package com.example.abl.viewModel.coroutine
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.Worker
 import com.example.abl.constant.Constants
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.DynamicLeadsResponse
-import com.example.abl.model.LovResponse
-import com.example.abl.model.SyncModel
+import com.example.abl.model.*
 import com.example.abl.network.coroutine.WebResponse
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.RoomHelper
@@ -22,6 +22,8 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
 import java.lang.Exception
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class CoroutineViewModel @Inject constructor(private val userRepository: UserRepository) :
@@ -38,13 +40,30 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
     @Inject
     lateinit var roomHelper: RoomHelper
 
+
+    @SuppressLint("NewApi")
     fun getLOV(): MutableLiveData<SyncModel> {
         val data = MutableLiveData<SyncModel>()
         viewModelScope.launch {
             supervisorScope {
                 try {
+
+                    val currentDate = LocalDate.now()
+                    val formatters = DateTimeFormatter.ofPattern("dd-MM-uuuu")
+                    val fromDate: String = currentDate.format(formatters)
+                    val toDate: String = currentDate.minusMonths(1).toString().format(formatters)
+
                     val callLov = async { userRepository.getLovs() }
                     val callLeads = async { userRepository.getLeads() }
+                    val callVisits = async {
+                        userRepository.getVisitCalls(
+                            VisitsCallModel(
+                                "all",
+                                fromDate,
+                                toDate
+                            )
+                        )
+                    }
 
                     val leadResponse: ArrayList<DynamicLeadsItem>? = try {
                         callLeads.await()
@@ -57,8 +76,15 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
                     } catch (ex: Exception) {
                         null
                     }
-                    if (lovResponse != null){
-                        data.value = SyncModel(leadResponse, lovResponse)
+
+                    val visitCallResponse: ArrayList<VisitsCallResponseItem>? = try {
+                        callVisits.await()
+                    } catch (ex: Exception) {
+                        null
+                    }
+
+                    if (lovResponse != null && visitCallResponse != null) {
+                        data.value = SyncModel(leadResponse, lovResponse, visitCallResponse)
                     }
                 } catch (e: Exception) {
                     Log.i("Error", e.message.toString())
@@ -67,7 +93,6 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
         }
         return data
     }
-
 
 
     fun getLeads(): MutableLiveData<WebResponse> {

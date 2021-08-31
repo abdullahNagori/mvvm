@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,8 +12,8 @@ import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.annotation.IdRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -46,6 +47,9 @@ import com.example.abl.utils.Schedulers.UploadWorkManager.UploadWorker
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -86,7 +90,8 @@ class MainActivity : DockActivity() {
 
 
     // Monitors connection to the while-in-use service.
-    @SuppressLint("SetTextI18n")
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -101,7 +106,6 @@ class MainActivity : DockActivity() {
         initView()
         setGesture()
         sendUserTracking()
-
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 

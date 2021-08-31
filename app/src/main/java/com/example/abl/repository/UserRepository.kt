@@ -70,11 +70,11 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun getLeads(): ArrayList<DynamicLeadsItem> {
-        return withContext(Dispatchers.IO) {
-            async {
-                api.getLeads("Bearer " + sharedPrefManager.getToken())
-            }
-        }.await()
+        return api.getLeads("Bearer " + sharedPrefManager.getToken())
+    }
+
+    suspend fun getVisitCalls(visitsCallModel: VisitsCallModel): ArrayList<VisitsCallResponseItem> {
+        return api.getVisitsCalls(visitsCallModel,"Bearer " + sharedPrefManager.getToken())
     }
 
     fun uploadUserLocation(userLocation: List<UserLocation>): MutableLiveData<String> {

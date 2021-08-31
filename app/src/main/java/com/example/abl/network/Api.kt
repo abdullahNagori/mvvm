@@ -102,4 +102,11 @@ interface Api {
         @Body customerDetail: List<UserLocation>,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
+
+    //Get Visits Calls
+    @POST("leads/getVisitsCalls")
+    fun getVisitsCalls(
+        @Body visitsCallModel: VisitsCallModel,
+        @Header("Authorization") token: String
+    ): ArrayList<VisitsCallResponseItem>
 }
