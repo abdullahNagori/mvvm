@@ -60,10 +60,10 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
 //        userRepository.addLead(customerDetail)
 //    }
 
-    fun addLeadCheckin(checkinModel: CheckinModel){
-        userRepository.apiListener = apiListener
-        userRepository.addLeadCheckin(checkinModel)
-    }
+//    fun addLeadCheckin(checkinModel: CheckinModel){
+//        userRepository.apiListener = apiListener
+//        userRepository.addLeadCheckin(checkinModel)
+//    }
 
     fun getDashBoard() {
         userRepository.apiListener = apiListener

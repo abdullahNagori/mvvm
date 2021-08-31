@@ -50,7 +50,6 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     var selectedProduct: CompanyProduct? = null
     var visitStatusList: ArrayList<CompanyVisitStatu> = ArrayList<CompanyVisitStatu>()
     var selectedVisitStatus: CompanyVisitStatu? = null
-    val currentTimestamp = System.currentTimeMillis()
     var visitType: String = "visit"
 
     var latitude = 0.0
@@ -224,9 +223,9 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         )
     }
 
-    private fun addCheckin(checkinModel: CheckinModel) {
-        myDockActivity?.getUserViewModel()?.addLeadCheckin(checkinModel)
-    }
+//    private fun addCheckin(checkinModel: CheckinModel) {
+//        myDockActivity?.getUserViewModel()?.addLeadCheckin(checkinModel)
+//    }
 
     private fun auth() {
 
@@ -261,7 +260,8 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             binding.remarks.text.toString(),
             latitude.toString(),
             longitude.toString(),
-            currentTimestamp.toString()
+            System.currentTimeMillis().toString(),
+            "false"
         )
 
         roomHelper.insertCheckIn(dict)

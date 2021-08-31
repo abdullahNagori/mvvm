@@ -85,15 +85,12 @@ class UserRepository @Inject constructor(
 
     }
 
-    fun addLead(customerDetail: CustomerDetail): MutableLiveData<String> {
-        return callApi(api.addLead(customerDetail, "Bearer " + sharedPrefManager.getToken()), Constants.ADD_LEAD)
+   fun addLead(customerDetail: CustomerDetail): Call<DynamicLeadsItem> {
+        return api.addLead(customerDetail, "Bearer " + sharedPrefManager.getToken())
     }
 
-    fun addLeadCheckin(checkinModel: CheckinModel): MutableLiveData<String> {
-        return callApi(
-            api.addLeadCheckin(checkinModel, "Bearer " + sharedPrefManager.getToken()),
-            Constants.ADD_LEAD_CHECKIN
-        )
+    fun addLeadCheckin(checkinModel: CheckinModel): Call<GenericMsgResponse> {
+        return api.addLeadCheckin(checkinModel, "Bearer " + sharedPrefManager.getToken())
     }
 
     fun getDashboard(): MutableLiveData<String> {

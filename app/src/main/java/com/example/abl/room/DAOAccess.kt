@@ -15,6 +15,9 @@ interface DAOAccess {
     @Query("SELECT * FROM Lead where lead_id = '0'")
     fun getUnSyncLeadData() : List<DynamicLeadsItem>
 
+    @Query("SELECT * FROM Lead ")
+    fun getAllLeadData() : List<DynamicLeadsItem>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLovCompanyProduct(companyProduct: ArrayList<CompanyProduct>)
 
@@ -48,8 +51,8 @@ interface DAOAccess {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCheckIn(checkinModel: CheckinModel)
 
-    @Query("SELECT * FROM Checkin")
-    fun getCheckInData() : List<CheckinModel>
+    @Query("SELECT * FROM Checkin WHERE is_synced = :is_synced")
+    fun getUnSyncedCheckInData(is_synced: String) : List<CheckinModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)  // onConflict replace the the data when kuch bh happend in inserting
     fun insertLocation(
@@ -67,4 +70,7 @@ interface DAOAccess {
 
     @Query("update Checkin set lead_id = :leadID where lead_id = :localLeadId")
     fun updateCheckInLeadStatus(leadID: String, localLeadId: String)
+
+    @Query("update Checkin set is_synced= 'true' where lead_id = :leadID")
+    fun uploadCheckInData(leadID: String)
 }

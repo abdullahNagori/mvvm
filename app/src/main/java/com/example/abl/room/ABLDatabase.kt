@@ -15,7 +15,7 @@ import com.example.abl.model.*
     CompanyLeadStatu::class,
     GetPreviousVisit::class,
     CheckinModel::class,
-    UserLocation::class], version = 25, exportSchema = false)
+    UserLocation::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ABLDatabase : RoomDatabase() {
 

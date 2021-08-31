@@ -67,7 +67,7 @@ interface Api {
     fun addLead(
         @Body customerDetail: CustomerDetail,
         @Header("Authorization") token: String
-    ): Call<ResponseBody>
+    ): Call<DynamicLeadsItem>
 
 
     //Add Lead Checkin
@@ -75,7 +75,7 @@ interface Api {
     fun addLeadCheckin(
         @Body checkinModel: CheckinModel,
         @Header("Authorization") token: String
-    ): Call<ResponseBody>
+    ): Call<GenericMsgResponse>
 
     //Add Lead Checkin
     @GET("leads/getDashboard")

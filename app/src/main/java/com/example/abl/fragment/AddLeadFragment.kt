@@ -44,7 +44,7 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
     private var gender: String = "male"
     private var occupation: String? = null
     val random = (0..100).random()
-    val currentTimestamp = System.currentTimeMillis()
+
 
     lateinit var productLovList: ArrayList<CompanyProduct>
 
@@ -108,7 +108,7 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
             longitude.toString(),
             latitude.toString(),
             "0",
-            currentTimestamp.toString(),
+            System.currentTimeMillis().toString(),
             "",
             "",
             "",

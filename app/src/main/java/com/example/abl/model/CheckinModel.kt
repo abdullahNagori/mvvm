@@ -35,11 +35,33 @@ data class CheckinModel(
     @ColumnInfo(name = "visited_longitude")
     val visited_longitude: String,
     @ColumnInfo(name = "visited_time")
-    val visited_time: String
-)
-
-{
+    val visited_time: String,
+    @ColumnInfo(name = "is_synced")
+    val is_synced: String
+) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var Id: Int? = null
+
+
+    fun getCheckInData(): CheckinModel {
+        return CheckinModel(
+            "",
+            account_num,
+            visit_status,
+            visit_type,
+            followup_date,
+            date_of_conv,
+            customer_id,
+            lead_id,
+            product_id,
+            product_name,
+            amount,
+            comment,
+            visited_latitude,
+            visited_longitude,
+            "",
+            ""
+        )
+    }
 }

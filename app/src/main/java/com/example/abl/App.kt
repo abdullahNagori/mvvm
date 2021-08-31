@@ -26,21 +26,11 @@ class App: Application(), HasAndroidInjector, Configuration.Provider {
         appComponent.inject(this)
         AppInjector.init(this)
 
-//        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-//            "MyUniqueWorkName",
-//            ExistingPeriodicWorkPolicy.KEEP,
-//            LocationWorker)
     }
 
     override fun androidInjector(): AndroidInjector<Any> {
         return dispatchingAndroidInjector
     }
-
-//    override fun getWorkManagerConfiguration() =
-//        Configuration.Builder()
-//            .setMinimumLoggingLevel(android.util.Log.DEBUG)
-//            .setWorkerFactory(myWorkerFactory)
-//            .build()
 
     override fun getWorkManagerConfiguration(): Configuration {
         return workerConfiguration
