@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -555,13 +556,21 @@ class MainActivity : DockActivity() {
     }
 
     private fun getSyncData() {
-
-        viewModel.getLOV().observe(this) {
-            Log.e("", it.toString())
-            if (it.dynamicList?.size != 0) {
-                processData(it.lovResponse, it.dynamicList, it.visitCallResponse!!)
+        var unSyncLead = roomHelper.checkUnSyncLeadData()
+        var  unSyncCheckIn = roomHelper.checkUnSyncCheckInData()
+        if ( unSyncCheckIn.isNotEmpty() && unSyncLead.isNotEmpty())
+        {
+            showErrorMessage(getString(R.string.un_synced_msg))
+        }
+        else {
+            viewModel.getLOV().observe(this) {
+                Log.e("", it.toString())
+                if (it.dynamicList?.size != 0) {
+                    processData(it.lovResponse, it.dynamicList, it.visitCallResponse!!)
+                }
             }
         }
+
     }
 
 
@@ -579,6 +588,7 @@ class MainActivity : DockActivity() {
         if (dynamicLeadsItem != null) {
             roomHelper.deleteLeadData()
             roomHelper.insertLeadData(dynamicLeadsItem)
+            roomHelper.deleteCheckInData()
             roomHelper.insertVisitCallData(visitsCallResponseItem)
         }
         leadManagementNode()

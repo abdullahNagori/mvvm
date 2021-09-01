@@ -108,6 +108,8 @@ data class DynamicLeadsItem(
     val near_by_location: String?,
     val branch_code: String?,
     val branch_name: String?,
+    @ColumnInfo(name = "is_synced")
+    val is_synced: String?
     ):Parcelable
 
 {

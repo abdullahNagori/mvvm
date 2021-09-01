@@ -18,6 +18,7 @@
     <string name="address">Address *</string>
     <string name="addresswdout_asterik">Address </string>
     <string name="user_name">PLease Enter Login ID </string>
+    <string name="un_synced_msg">PLease upload data first </string>
     <string name="enter_address">Enter Address</string>
     <string name="additional_information">Additional Information</string>
     <string name="cnic">CNIC</string>

@@ -52,4 +52,16 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
     fun getUserLocation(): List<UserLocation> {
         return daoAccess.getUserLocation()
     }
+
+    fun deleteCheckInData(){
+         daoAccess.deleteCheckInData()
+    }
+
+    fun checkUnSyncLeadData(): List<DynamicLeadsItem> {
+        return daoAccess.checkUnSyncedLeadData()
+    }
+
+    fun checkUnSyncCheckInData(): List<CheckinModel> {
+        return daoAccess.checkUnSyncedCheckInData()
+    }
 }

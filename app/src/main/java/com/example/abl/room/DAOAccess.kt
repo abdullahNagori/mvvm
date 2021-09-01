@@ -76,4 +76,13 @@ interface DAOAccess {
 
     @Query("update Checkin set is_synced= 'true' where lead_id = :leadID")
     fun uploadCheckInData(leadID: String)
+
+    @Query("DELETE from Checkin")
+    fun deleteCheckInData()
+
+    @Query("SELECT * FROM Checkin WHERE is_synced = 'false'")
+    fun checkUnSyncedCheckInData() : List<CheckinModel>
+
+    @Query("SELECT * FROM Lead WHERE is_synced = 'false'")
+    fun checkUnSyncedLeadData() : List<DynamicLeadsItem>
 }
