@@ -36,7 +36,7 @@ class UploadWorker @Inject constructor(
                 val response = callLead.execute()
                 // val response = GsonFactory.getConfiguredGson() ?.fromJson(dynamicLeadsItem.body().toString(), DynamicLeadsItem::class.java)
                 if (response.body()?.lead_id != null) {
-                    daoAccess.updateLeadStatus(
+                    daoAccess.updateLeadData(
                         response.body()?.lead_id.toString(),
                         it.local_lead_id.toString()
                     )
@@ -57,13 +57,14 @@ class UploadWorker @Inject constructor(
                     CoroutineScope(Dispatchers.IO).launch {
                         val response =  callCheckIn.execute()
                         if (response.body()?.message == "successful") {
-                            daoAccess.uploadCheckInData(it.lead_id!!)
+                            daoAccess.updateCheckInStatus(it.lead_id!!)
+                            daoAccess.updateLeadStatus(it.lead_id)
                             Result.success()
                         } else {
                             Result.retry()
                         }
                     }
-                }, 2000)
+                }, 5000)
             }
             Result.success()
 
@@ -78,7 +79,7 @@ class UploadWorker @Inject constructor(
     }
 
     companion object {
-        private val TAG = "LocationWorker"
+        private val TAG = "UploadWorker"
     }
 
 }

@@ -50,18 +50,20 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
             supervisorScope {
                 try {
 
-                    val currentDate = LocalDate.now()
-                    val formatters = DateTimeFormatter.ofPattern("uuuu-MM-dd")
-                    val fromDate: String = currentDate.format(formatters)
-                    val toDate: String = currentDate.minusMonths(1).toString().format(formatters)
+//                    val currentDate = LocalDate.now()
+//                    val formatters = DateTimeFormatter.ofPattern("uuuu-MM-dd")
+//                    val fromDate: String = currentDate.format(formatters)
+//                    val toDate: String = currentDate.minusMonths(1).toString().format(formatters)
 
+                    val toDate = LocalDate.now()
+                    val fromDate = toDate.minusMonths(1)
                     val callLov = async { userRepository.getLovs() }
                     val callLeads = async { userRepository.getLeads() }
                     val visitCall = async { userRepository.getVisitCalls(
                         VisitsCallModel(
                             "all",
-                            "2021-01-01",
-                            "2021-09-01"
+                            toDate.toString(),
+                            fromDate.toString()
                         )
                     ).execute() }
 

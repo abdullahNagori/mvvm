@@ -45,10 +45,6 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
         daoAccess.insertVisiCallData(checkIn)
     }
 
-//    fun getCheckIn(): List<CheckinModel> {
-//        return daoAccess.getCheckInData()
-//    }
-
     fun getUserLocation(): List<UserLocation> {
         return daoAccess.getUserLocation()
     }
@@ -63,5 +59,13 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
 
     fun checkUnSyncCheckInData(): List<CheckinModel> {
         return daoAccess.checkUnSyncedCheckInData()
+    }
+
+    fun getCheckInCallData(visitType: String): List<CheckinModel> {
+        return daoAccess.getCheckInCall(visitType)
+    }
+
+    fun getCheckInVisitData(visitType: String): List<CheckinModel> {
+        return daoAccess.getCheckInVisit(visitType)
     }
 }

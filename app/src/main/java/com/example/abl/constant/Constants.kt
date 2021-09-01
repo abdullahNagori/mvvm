@@ -33,6 +33,7 @@ object Constants {
     const val NETWORK_ERROR : String = "network error"
     const val TYPE  = "visit_type"
     const val SUCCESS  = "Success"
+    const val LOGS_DETAILS  = "logs_detail"
     const val COLD_CALL : String = "coldcall"
     const val CALL : String = "call"
     const val SOURCE_REC_ID : String = "record_id"

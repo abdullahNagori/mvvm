@@ -584,7 +584,7 @@ class MainActivity : DockActivity() {
         sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
         sharedPrefManager.setLeadSource(lovResponse.company_lead_source)
 
-        // Set leads data in local DB
+        // Set leads and CheckIn data in local DB
         if (dynamicLeadsItem != null) {
             roomHelper.deleteLeadData()
             roomHelper.insertLeadData(dynamicLeadsItem)
