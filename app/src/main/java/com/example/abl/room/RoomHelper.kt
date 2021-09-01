@@ -41,6 +41,10 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
         daoAccess.insertCheckIn(checkIn)
     }
 
+    fun insertVisitCallData(checkIn: List<CheckinModel>) {
+        daoAccess.insertVisiCallData(checkIn)
+    }
+
 //    fun getCheckIn(): List<CheckinModel> {
 //        return daoAccess.getCheckInData()
 //    }

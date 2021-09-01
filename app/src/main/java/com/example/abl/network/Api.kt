@@ -108,5 +108,5 @@ interface Api {
     fun getVisitsCalls(
         @Body visitsCallModel: VisitsCallModel,
         @Header("Authorization") token: String
-    ): ArrayList<VisitsCallResponseItem>
+    ): Call<ArrayList<CheckinModel>>
 }

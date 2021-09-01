@@ -261,7 +261,10 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             latitude.toString(),
             longitude.toString(),
             System.currentTimeMillis().toString(),
-            "false"
+            "false",
+            "",
+            "",
+            ""
         )
 
         roomHelper.insertCheckIn(dict)

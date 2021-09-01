@@ -73,7 +73,7 @@ class UserRepository @Inject constructor(
         return api.getLeads("Bearer " + sharedPrefManager.getToken())
     }
 
-    suspend fun getVisitCalls(visitsCallModel: VisitsCallModel): ArrayList<VisitsCallResponseItem> {
+    suspend fun getVisitCalls(visitsCallModel: VisitsCallModel): Call<ArrayList<CheckinModel>> {
         return api.getVisitsCalls(visitsCallModel,"Bearer " + sharedPrefManager.getToken())
     }
 

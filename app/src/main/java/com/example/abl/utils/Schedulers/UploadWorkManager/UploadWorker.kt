@@ -57,7 +57,7 @@ class UploadWorker @Inject constructor(
                     CoroutineScope(Dispatchers.IO).launch {
                         val response =  callCheckIn.execute()
                         if (response.body()?.message == "successful") {
-                            daoAccess.uploadCheckInData(it.lead_id)
+                            daoAccess.uploadCheckInData(it.lead_id!!)
                             Result.success()
                         } else {
                             Result.retry()

@@ -7,38 +7,45 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "Checkin")
 data class CheckinModel(
     @ColumnInfo(name = "customer_name")
-    val customer_name: String,
+    val customer_name: String?,
     @ColumnInfo(name = "account_num")
-    val account_num: String,
+    val account_num: String?,
     @ColumnInfo(name = "visit_status")
-    val visit_status: String,
+    val visit_status: String?,
     @ColumnInfo(name = "visit_type")
-    val visit_type: String,
+    val visit_type: String?,
     @ColumnInfo(name = "followup_date")
-    val followup_date: String,
+    val followup_date: String?,
     @ColumnInfo(name = "date_of_conv")
-    val date_of_conv: String,
+    val date_of_conv: String?,
     @ColumnInfo(name = "customer_id")
-    val customer_id: String,
+    val customer_id: String?,
     @ColumnInfo(name = "lead_id")
-    val lead_id: String,
+    val lead_id: String?,
     @ColumnInfo(name = "product_id")
-    val product_id: String,
+    val product_id: String?,
     @ColumnInfo(name = "product_name")
-    val product_name: String,
+    val product_name: String?,
     @ColumnInfo(name = "amount")
-    val amount: String,
+    val amount: String?,
     @ColumnInfo(name = "comment")
-    val comment: String,
+    val comment: String?,
     @ColumnInfo(name = "visited_latitude")
-    val visited_latitude: String,
+    val visited_latitude: String?,
     @ColumnInfo(name = "visited_longitude")
-    val visited_longitude: String,
+    val visited_longitude: String?,
     @ColumnInfo(name = "visited_time")
-    val visited_time: String,
+    val visited_time: String?,
     @ColumnInfo(name = "is_synced")
-    val is_synced: String
-) {
+    val is_synced: String?,
+    @ColumnInfo(name = "mobile_phone_number")
+    val mobile_phone_number: String?,
+    @ColumnInfo(name = "user_name")
+    val user_name: String?,
+    @ColumnInfo(name = "visit_date_time")
+    val visit_date_time: String?
+
+    ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var Id: Int? = null
@@ -60,6 +67,9 @@ data class CheckinModel(
             comment,
             visited_latitude,
             visited_longitude,
+            "",
+            "",
+            "",
             "",
             ""
         )

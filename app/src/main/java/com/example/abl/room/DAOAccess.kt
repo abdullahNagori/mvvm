@@ -51,6 +51,9 @@ interface DAOAccess {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCheckIn(checkinModel: CheckinModel)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertVisiCallData(checkinModel: List<CheckinModel>)
+
     @Query("SELECT * FROM Checkin WHERE is_synced = :is_synced")
     fun getUnSyncedCheckInData(is_synced: String) : List<CheckinModel>
 

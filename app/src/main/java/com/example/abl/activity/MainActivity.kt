@@ -38,15 +38,15 @@ import com.example.abl.R
 import com.example.abl.adapter.ExpandableListAdapter
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
-import com.example.abl.model.CompanyLeadSource
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.LovResponse
+import com.example.abl.model.*
 import com.example.abl.utils.*
 import com.example.abl.utils.Schedulers.LocationWorkManager.LocationWorker
 import com.example.abl.utils.Schedulers.UploadWorkManager.UploadWorker
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import okhttp3.ResponseBody
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -555,11 +555,11 @@ class MainActivity : DockActivity() {
     }
 
     private fun getSyncData() {
+
         viewModel.getLOV().observe(this) {
             Log.e("", it.toString())
             if (it.dynamicList?.size != 0) {
-                processData(it.lovResponse, it.dynamicList)
-
+                processData(it.lovResponse, it.dynamicList, it.visitCallResponse!!)
             }
         }
     }
@@ -567,7 +567,8 @@ class MainActivity : DockActivity() {
 
     private fun processData(
         lovResponse: LovResponse,
-        dynamicLeadsItem: ArrayList<DynamicLeadsItem>?
+        dynamicLeadsItem: ArrayList<DynamicLeadsItem>?,
+    visitsCallResponseItem:List<CheckinModel>
     ) {
         sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
         sharedPrefManager.setCompanyProducts(lovResponse.company_products)
@@ -578,6 +579,7 @@ class MainActivity : DockActivity() {
         if (dynamicLeadsItem != null) {
             roomHelper.deleteLeadData()
             roomHelper.insertLeadData(dynamicLeadsItem)
+            roomHelper.insertVisitCallData(visitsCallResponseItem)
         }
         leadManagementNode()
     }
