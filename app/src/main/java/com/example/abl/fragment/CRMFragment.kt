@@ -79,8 +79,7 @@ class CRMFragment : BaseDockFragment() {
                     Log.d("liveDataValue", liveData.value.toString())
                     val gson = Gson()
                     val listType: Type = object : TypeToken<List<DynamicLeadsResponse?>?>() {}.type
-                    val posts: List<DynamicLeadsResponse> =
-                        gson.fromJson<List<DynamicLeadsResponse>>(liveData.value, listType)
+                    val posts: List<DynamicLeadsResponse> = gson.fromJson<List<DynamicLeadsResponse>>(liveData.value, listType)
                     //setupViewPager(posts)
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())

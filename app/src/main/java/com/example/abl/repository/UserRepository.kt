@@ -73,8 +73,12 @@ class UserRepository @Inject constructor(
         return api.getLeads("Bearer " + sharedPrefManager.getToken())
     }
 
-     fun getTrainings(): Call<ArrayList<Training>> {
-        return api.getTrainings("Bearer " + sharedPrefManager.getToken())
+     fun getTrainings(): MutableLiveData<String> {
+        return callApi(api.getTrainings("Bearer " + sharedPrefManager.getToken()),Constants.TRAINING)
+    }
+
+    fun getTrainings(): MutableLiveData<String> {
+        return callApi(api.getTrainings("Bearer " + sharedPrefManager.getToken()),Constants.TRAINING)
     }
 
      fun getVisitCalls(visitsCallModel: VisitsCallModel): Call<ArrayList<CheckinModel>> {

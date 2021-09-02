@@ -1,6 +1,5 @@
 package com.example.abl.modules
 
-import androidx.room.Update
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.fragment.*
 import dagger.Module
@@ -94,7 +93,7 @@ interface FragmentBuilderModule {
     fun contributeUserTrackingFragment(): UserTrackingFragment
 
     @ContributesAndroidInjector
-    fun contributeComprehensiveTrainingFragment(): ComprehensiveTrainingFragment
+    fun contributeComprehensiveTrainingFragment(): MaterialTrainingFragment
 
     @ContributesAndroidInjector
     fun contributeTrainingFragment(): TrainingFragment

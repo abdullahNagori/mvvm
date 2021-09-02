@@ -33,7 +33,6 @@ class CallLogDetailFragment : BaseDialogFragment() {
             }
         }
 
-
         return binding.root
     }
 

@@ -81,7 +81,7 @@
 
     <fragment
         android:id="@+id/nav_comprehensive"
-        android:name="com.example.abl.fragment.ComprehensiveTrainingFragment"
+        android:name="com.example.abl.fragment.MaterialTrainingFragment"
         android:label="@string/comprehensive_training"
         tools:layout="@layout/comprehensive_training_fragment" >
 

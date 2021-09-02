@@ -578,8 +578,7 @@ class MainActivity : DockActivity() {
     private fun processData(
         lovResponse: LovResponse,
         dynamicLeadsItem: ArrayList<DynamicLeadsItem>?,
-    visitsCallResponseItem:ArrayList<CheckinModel>
-    ) {
+        visitsCallResponseItem:ArrayList<CheckinModel>) {
         sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
         sharedPrefManager.setCompanyProducts(lovResponse.company_products)
         sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)

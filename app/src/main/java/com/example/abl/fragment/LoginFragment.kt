@@ -76,14 +76,14 @@ class LoginFragment : BaseDockFragment() {
         when (tag) {
             Constants.LOGIN -> {
                 try {
-                    val routeResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LoginResponse::class.java)
-                    if (routeResponseEnt?.two_factor == "yes") {
+                    val loginResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, LoginResponse::class.java)
+                    if (loginResponseEnt?.two_factor == "yes") {
                         val bundle = Bundle()
                         bundle.putString("LOGIN_ID", binding.edUserName.text.toString())
                         sharedPrefManager.setUsername(binding.edUserName.text.toString())
                         LoginActivity.navController.navigate(R.id.action_loginFragment_to_otpFragment, bundle)
                     } else {
-                        if (routeResponseEnt?.token != null && (routeResponseEnt?.token)!!.isNotEmpty()) {
+                        if (loginResponseEnt?.token != null && (loginResponseEnt?.token)!!.isNotEmpty()) {
                             LoginActivity.navController.navigate(R.id.action_loginFragment_to_welcomeFragment)
                         } else {
                             myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))

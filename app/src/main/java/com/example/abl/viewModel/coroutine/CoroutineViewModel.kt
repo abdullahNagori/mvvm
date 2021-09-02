@@ -65,8 +65,6 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
                                 )
                         ).execute()
                     }
-                    val callTraining = async { userRepository.getTrainings().execute()}
-
                     val leadResponse: ArrayList<DynamicLeadsItem>? = try {
                         callLeads.await()
                     } catch (ex: Exception) {
@@ -85,23 +83,15 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
                         null
                     }
 
-                    val trainingResponse: Response<ArrayList<Training>>? = try {
-                        callTraining.await()
-                    } catch (ex: Exception) {
-                        null
-                    }
-
                     if (lovResponse != null) {
-                        if (trainingResponse != null) {
                             data.postValue(
                                 SyncModel(
                                     leadResponse,
                                     lovResponse,
-                                    visitCallResponse?.body(),
-                                    trainingResponse.body()
+                                    visitCallResponse?.body()
                                 )
                             )
-                        }
+
                     }
                 } catch (e: Exception) {
                     Log.i("Error", e.message.toString())

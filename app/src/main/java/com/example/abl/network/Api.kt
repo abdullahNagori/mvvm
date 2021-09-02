@@ -114,5 +114,12 @@ interface Api {
     @POST("training/getTrainings")
     fun getTrainings(
         @Header("Authorization") token: String
-    ): Call<ArrayList<Training>>
+    ): Call<ResponseBody>
+
+    //Get Trainings
+    @POST("training/getQuizes")
+    fun getQuizes(
+        @Body trainingID: String,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
 }

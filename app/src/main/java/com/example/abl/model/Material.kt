@@ -1,5 +1,9 @@
 package com.example.abl.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Material(
     val created_at: String,
     val description: String,
@@ -10,4 +14,5 @@ data class Material(
     val title: String,
     val training_id: String,
     val updated_at: String
-)
+
+): Parcelable

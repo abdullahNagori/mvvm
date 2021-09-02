@@ -95,6 +95,7 @@ interface DAOAccess {
     @Query("DELETE from PreviousVisits")
     fun deletePreviousVisit()
 
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertVisiCallData(checkinModel: List<CheckinModel>)
 
@@ -110,6 +111,5 @@ interface DAOAccess {
 
     @Query("DELETE from UserLocation")
     fun deleteUserLocation()
-
 
 }

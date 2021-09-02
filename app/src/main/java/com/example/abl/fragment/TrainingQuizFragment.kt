@@ -48,10 +48,9 @@ class TrainingQuizFragment : BaseDockFragment() {
 
     private fun initView() {
         binding = TrainingQuizFragmentBinding.inflate(layoutInflater)
-        quizadapter = QuizFormAdapter(requireContext())
+        quizadapter = QuizFormAdapter()
         binding.viewPager.adapter = quizadapter
         binding.viewPager.addOnPageChangeListener(onPageChangeListener)
-
         binding.btnNext.setOnClickListener {
             binding.viewPager.currentItem = mCurrentPage + 1
         }

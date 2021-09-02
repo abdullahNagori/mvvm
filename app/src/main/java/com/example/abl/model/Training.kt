@@ -1,5 +1,9 @@
 package com.example.abl.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Training(
     val attendance: String,
     val company_id: String,
@@ -17,4 +21,5 @@ data class Training(
     val training_type: String,
     val user_id: String,
     val venue: String
-)
+
+): Parcelable

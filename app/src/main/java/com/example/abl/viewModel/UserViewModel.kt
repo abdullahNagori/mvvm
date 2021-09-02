@@ -74,4 +74,9 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         userRepository.apiListener = apiListener
         userRepository.changePassword(changePasswordModel)
     }
+
+    fun getTrainings() {
+        userRepository.apiListener = apiListener
+        userRepository.getTrainings()
+    }
 }

@@ -25,10 +25,8 @@ data class DynamicLeadsItem(
     val address: String?,
     @ColumnInfo(name = "age")
     val age: String?,
-
     @ColumnInfo(name = "company_name")
     val company_name: String?,
-
     @ColumnInfo(name = "gender")
     val gender: String?,
     @ColumnInfo(name = "product_id")

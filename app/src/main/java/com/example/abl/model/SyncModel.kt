@@ -8,5 +8,4 @@ data class SyncModel(
     var dynamicList: ArrayList<DynamicLeadsItem>?,
     var lovResponse: LovResponse,
     var visitCallResponse: ArrayList<CheckinModel>?,
-    var trainingResponse: ArrayList<Training>?,
 )
