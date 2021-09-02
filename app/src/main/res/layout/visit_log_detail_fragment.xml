@@ -84,7 +84,7 @@
                         android:text="@string/account_no" />
 
                     <TextView
-                        android:id="@+id/contact_num"
+                        android:id="@+id/account_num"
                         style="@style/customerInfoInputFields"
                         android:hint="@string/dummy_account_no"
                         android:inputType="number" />
@@ -100,7 +100,7 @@
                         android:text="@string/contact_no" />
 
                     <TextView
-                        android:id="@+id/amount"
+                        android:id="@+id/contact_num"
                         style="@style/customerInfoInputFields"
                         android:hint="@string/dummy_number"
                         android:inputType="number" />
@@ -285,8 +285,10 @@
 
             <TextView
                 style="@style/txtStyle"
+                android:visibility="gone"
                 android:text="@string/follow_up_date" />
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"
                 android:orientation="horizontal"

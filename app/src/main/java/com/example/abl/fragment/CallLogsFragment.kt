@@ -28,7 +28,7 @@ class CallLogsFragment : BaseDockFragment(), ClickListner {
     ): View? {
         // Inflate the layout for this fragment
 
-        logList = roomHelper.getCheckInCallData("call")
+        logList = roomHelper.getCheckInCallData(Constants.CALL)
         initView()
         initRecyclerView()
 
@@ -73,7 +73,7 @@ class CallLogsFragment : BaseDockFragment(), ClickListner {
 
         val logDetailsFragment = CallLogDetailFragment()
         val bundle = Bundle()
-        bundle.putParcelable(Constants.LOGS_DETAILS, data as Parcelable)
+        bundle.putParcelable(Constants.CALL_LOGS_DETAILS, data as Parcelable)
         logDetailsFragment.arguments = bundle
         logDetailsFragment.show(childFragmentManager, "visits")
     }

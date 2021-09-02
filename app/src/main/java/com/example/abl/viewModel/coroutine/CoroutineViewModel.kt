@@ -50,22 +50,22 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
             supervisorScope {
                 try {
 
-//                    val currentDate = LocalDate.now()
-//                    val formatters = DateTimeFormatter.ofPattern("uuuu-MM-dd")
-//                    val fromDate: String = currentDate.format(formatters)
-//                    val toDate: String = currentDate.minusMonths(1).toString().format(formatters)
-
                     val toDate = LocalDate.now()
                     val fromDate = toDate.minusMonths(1)
+
                     val callLov = async { userRepository.getLovs() }
                     val callLeads = async { userRepository.getLeads() }
-                    val visitCall = async { userRepository.getVisitCalls(
-                        VisitsCallModel(
-                            "all",
-                            toDate.toString(),
-                            fromDate.toString()
-                        )
-                    ).execute() }
+                    val visitCall = async {
+                        userRepository.getVisitCalls(
+                            VisitsCallModel(
+                                "all",
+                                fromDate.toString(),
+                                toDate.toString(),
+
+                                )
+                        ).execute()
+                    }
+                    val callTraining = async { userRepository.getTrainings().execute()}
 
                     val leadResponse: ArrayList<DynamicLeadsItem>? = try {
                         callLeads.await()
@@ -78,13 +78,30 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
                     } catch (ex: Exception) {
                         null
                     }
+
                     val visitCallResponse: Response<ArrayList<CheckinModel>>? = try {
                         visitCall.await()
                     } catch (ex: Exception) {
                         null
                     }
+
+                    val trainingResponse: Response<ArrayList<Training>>? = try {
+                        callTraining.await()
+                    } catch (ex: Exception) {
+                        null
+                    }
+
                     if (lovResponse != null) {
-                        data.postValue(SyncModel(leadResponse, lovResponse, visitCallResponse?.body()))
+                        if (trainingResponse != null) {
+                            data.postValue(
+                                SyncModel(
+                                    leadResponse,
+                                    lovResponse,
+                                    visitCallResponse?.body(),
+                                    trainingResponse.body()
+                                )
+                            )
+                        }
                     }
                 } catch (e: Exception) {
                     Log.i("Error", e.message.toString())

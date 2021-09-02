@@ -566,6 +566,7 @@ class MainActivity : DockActivity() {
             viewModel.getLOV().observe(this) {
                 Log.e("", it.toString())
                 if (it.dynamicList?.size != 0) {
+                    //val leadModel = GsonFactory.getConfiguredGson()?.fromJson(it.visitCallResponse.toString(), CheckinModel::class.java)
                     processData(it.lovResponse, it.dynamicList, it.visitCallResponse!!)
                 }
             }
@@ -577,7 +578,7 @@ class MainActivity : DockActivity() {
     private fun processData(
         lovResponse: LovResponse,
         dynamicLeadsItem: ArrayList<DynamicLeadsItem>?,
-    visitsCallResponseItem:List<CheckinModel>
+    visitsCallResponseItem:ArrayList<CheckinModel>
     ) {
         sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
         sharedPrefManager.setCompanyProducts(lovResponse.company_products)

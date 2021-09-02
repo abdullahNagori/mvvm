@@ -92,6 +92,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:id="@+id/visited_by"
+                android:text="Abdullah Nagori"
                 android:textColor="@color/colorPrimary"
                 android:textAlignment="center"
                 android:layout_height="wrap_content"/>

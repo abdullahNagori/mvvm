@@ -109,4 +109,10 @@ interface Api {
         @Body visitsCallModel: VisitsCallModel,
         @Header("Authorization") token: String
     ): Call<ArrayList<CheckinModel>>
+
+    //Get Trainings
+    @POST("training/getTrainings")
+    fun getTrainings(
+        @Header("Authorization") token: String
+    ): Call<ArrayList<Training>>
 }

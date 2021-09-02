@@ -1,18 +1,22 @@
 package com.example.abl.utils.Schedulers.UploadWorkManager
 
+import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
+import androidx.work.CoroutineWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.abl.network.ApiListener
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.DAOAccess
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class UploadWorker @Inject constructor(
@@ -20,21 +24,20 @@ class UploadWorker @Inject constructor(
     private val daoAccess: DAOAccess,
     var appContext: Context,
     var workerParams: WorkerParameters
-) : Worker(appContext, workerParams) {
+) : CoroutineWorker(appContext, workerParams) {
 
     var apiListener: ApiListener? = null
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         Log.i(TAG, "Fetching Data from Remote host")
         return try {
 
+
             val leadData = daoAccess.getUnSyncLeadData()
-            val checkInData = daoAccess.getUnSyncedCheckInData("false")
 
             leadData.forEach {
                 val callLead = userRepository.addLead(it.getCustomerDetail())
                 val response = callLead.execute()
-                // val response = GsonFactory.getConfiguredGson() ?.fromJson(dynamicLeadsItem.body().toString(), DynamicLeadsItem::class.java)
                 if (response.body()?.lead_id != null) {
                     daoAccess.updateLeadData(
                         response.body()?.lead_id.toString(),
@@ -49,11 +52,10 @@ class UploadWorker @Inject constructor(
                     Result.retry()
                 }
             }
-
-            checkInData.forEach {
-                Handler(Looper.getMainLooper()).postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
+                val checkInData = daoAccess.getUnSyncedCheckInData("false")
+                checkInData.forEach {
                     val callCheckIn = userRepository.addLeadCheckin(it.getCheckInData())
-                    // val response = GsonFactory.getConfiguredGson() ?.fromJson(dynamicLeadsItem.body().toString(), DynamicLeadsItem::class.java)
                     CoroutineScope(Dispatchers.IO).launch {
                         val response =  callCheckIn.execute()
                         if (response.body()?.message == "successful") {
@@ -64,8 +66,11 @@ class UploadWorker @Inject constructor(
                             Result.retry()
                         }
                     }
-                }, 5000)
-            }
+                }
+                // val response = GsonFactory.getConfiguredGson() ?.fromJson(dynamicLeadsItem.body().toString(), DynamicLeadsItem::class.java)
+
+            }, 5000)
+
             Result.success()
 
         } catch (e: Throwable) {
