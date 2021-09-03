@@ -79,4 +79,14 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         userRepository.apiListener = apiListener
         userRepository.getTrainings()
     }
+
+    fun getQuiz(getQuizModel: GetQuizModel) {
+        userRepository.apiListener = apiListener
+        userRepository.getQuizes(getQuizModel)
+    }
+
+    fun submitQuiz(submitQuizModel: SubmitQuizModel) {
+        userRepository.apiListener = apiListener
+        userRepository.submitQuiz(submitQuizModel)
+    }
 }

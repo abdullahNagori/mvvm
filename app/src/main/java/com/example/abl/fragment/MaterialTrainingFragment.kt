@@ -32,11 +32,12 @@ import com.example.abl.model.Training
 import kotlinx.android.synthetic.main.marketing_collateral_item_fragment.*
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MaterialTrainingFragment : BaseDockFragment(), ClickListner {
 
     lateinit var binding: ComprehensiveTrainingFragmentBinding
-    var materialList: List<Material>? = null
+    var materialList: ArrayList<Material>? = null
     lateinit var adapter: MaterialAdapter
 
     override fun onCreateView(
@@ -48,7 +49,7 @@ class MaterialTrainingFragment : BaseDockFragment(), ClickListner {
 
 
         arguments?.getParcelable<Training>(Constants.TRAINING_DETAILS).let {
-            materialList = it?.materials
+            materialList = it?.materials as ArrayList<Material>?
            initRecyclerView(materialList)
        }
 
@@ -57,7 +58,7 @@ class MaterialTrainingFragment : BaseDockFragment(), ClickListner {
 
         binding.attemptQuiz.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(Constants.MATERIAL_LIST, materialList as Parcelable)
+            bundle.putParcelableArrayList(Constants.MATERIAL_LIST, materialList)
             navigateToFragment(R.id.action_nav_comprehensive_to_nav_training_quiz, bundle)
         }
 

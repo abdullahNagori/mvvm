@@ -119,7 +119,14 @@ interface Api {
     //Get Trainings
     @POST("training/getQuizes")
     fun getQuizes(
-        @Body trainingID: String,
+        @Body getQuizModel: GetQuizModel,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    //Get Trainings
+    @POST("training/submitQuiz")
+    fun submitQuiz(
+        @Body submitQuizModel: SubmitQuizModel,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 }

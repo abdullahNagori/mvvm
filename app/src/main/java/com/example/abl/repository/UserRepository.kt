@@ -77,8 +77,12 @@ class UserRepository @Inject constructor(
         return callApi(api.getTrainings("Bearer " + sharedPrefManager.getToken()),Constants.TRAINING)
     }
 
-    fun getQuizes(trainingID: String): MutableLiveData<String> {
-        return callApi(api.getQuizes(trainingID,"Bearer " + sharedPrefManager.getToken()),Constants.TRAINING)
+    fun getQuizes(getQuizModel: GetQuizModel): MutableLiveData<String> {
+        return callApi(api.getQuizes(getQuizModel,"Bearer " + sharedPrefManager.getToken()),Constants.MATERIAL)
+    }
+
+    fun submitQuiz(submitQuizModel: SubmitQuizModel): MutableLiveData<String> {
+        return callApi(api.submitQuiz(submitQuizModel,"Bearer " + sharedPrefManager.getToken()),Constants.SUBMIT_QUIZ)
     }
 
      fun getVisitCalls(visitsCallModel: VisitsCallModel): Call<ArrayList<CheckinModel>> {
