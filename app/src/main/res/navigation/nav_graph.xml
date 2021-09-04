@@ -82,7 +82,7 @@
     <fragment
         android:id="@+id/nav_comprehensive"
         android:name="com.example.abl.fragment.MaterialTrainingFragment"
-        android:label="@string/comprehensive_training"
+        android:label="Material"
         tools:layout="@layout/comprehensive_training_fragment" >
 
         <action
@@ -93,7 +93,7 @@
     <fragment
         android:id="@+id/nav_training_quiz"
         android:name="com.example.abl.fragment.TrainingQuizFragment"
-        android:label="@string/comprehensive_training"
+        android:label="Quiz"
         tools:layout="@layout/training_quiz_fragment" >
 
         <action

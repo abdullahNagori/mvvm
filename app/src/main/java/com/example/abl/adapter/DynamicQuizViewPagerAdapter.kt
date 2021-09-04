@@ -18,10 +18,6 @@ class DynamicQuizViewPagerAdapter(val fragmentActivity: TrainingQuizFragment, nu
     var noOfTabs: Int = numberOfTabs
     var data: QuizResponse = data
 
-//    override fun getItem(position: Int): Fragment {
-//        return QuizFragment.newInstance(GsonFactory.getConfiguredGson()?.toJson(data.quiz[0].questions[position])!!)
-//    }
-
     override fun getItemCount(): Int {
         return noOfTabs
     }

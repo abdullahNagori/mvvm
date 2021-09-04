@@ -13,7 +13,9 @@ import com.example.abl.R
 import com.example.abl.activity.MainActivity
 import com.example.abl.adapter.DynamicQuizViewPagerAdapter
 import com.example.abl.adapter.QuizFormAdapter
+import com.example.abl.adapter.QuizOptionsAdapter
 import com.example.abl.base.BaseDockFragment
+import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.TrainingFragmentBinding
 import com.example.abl.databinding.TrainingQuizFragmentBinding
@@ -21,6 +23,7 @@ import com.example.abl.model.*
 import com.google.gson.reflect.TypeToken
 import com.example.abl.utils.GsonFactory
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.item_checkbox.view.*
 import kotlinx.android.synthetic.main.item_checkbox_option.view.*
 import kotlinx.android.synthetic.main.training_quiz_fragment.*
 import org.koin.android.ext.android.bind
@@ -33,6 +36,7 @@ class TrainingQuizFragment : BaseDockFragment() {
     lateinit var quizadapter: QuizFormAdapter
     lateinit var trainingID: String
     val submitQuizModel= SubmitQuizModel("", ArrayList<QuizDetailItem>())
+    var isChecked = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +45,6 @@ class TrainingQuizFragment : BaseDockFragment() {
         // Inflate the layout for this fragment
         myDockActivity?.getUserViewModel()?.apiListener = this
         initView()
-
         arguments?.getParcelableArrayList<Material>(Constants.MATERIAL_LIST).let {
             trainingID = it?.get(0)?.training_id.toString()
         }
@@ -76,8 +79,12 @@ class TrainingQuizFragment : BaseDockFragment() {
 //        binding.viewPager.adapter = quizadapter
 //        binding.viewPager.addOnPageChangeListener(onPageChangeListener)
         binding.btnNext.setOnClickListener {
-            if(btn_next.text.toString()=="Next"){
+            if(btn_next.text.toString()=="Next" && isChecked){
                 binding.viewPager.currentItem+=1
+                isChecked = false
+            }
+            else {
+                myDockActivity?.showErrorMessage(getString(R.string.error_checkbox))
             }
         }
     }
@@ -109,12 +116,11 @@ class TrainingQuizFragment : BaseDockFragment() {
 
             Constants.SUBMIT_QUIZ -> {
                 val submitQuizResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, GenericMsgResponse::class.java)
-                if (submitQuizResponseEnt?.message?.lowercase()?.contains("success")!!){
+                if (submitQuizResponseEnt?.message?.toLowerCase()?.contains("success")!!){
                     navigateToFragment(R.id.action_nav_training_quiz_to_nav_result_quiz)
                 }
             }
         }
-
     }
 
     private fun setupViewPager(data: QuizResponse) {
@@ -131,7 +137,13 @@ class TrainingQuizFragment : BaseDockFragment() {
             {
                 binding.btnNext.text = "Finish"
                 binding.btnNext.setOnClickListener {
-                    submitQuizData(submitQuizModel)
+                    if (isChecked) {
+                        submitQuizData(submitQuizModel)
+                    }
+                    else{
+                        myDockActivity?.showErrorMessage(getString(R.string.error_checkbox))
+                        isChecked = false
+                    }
                 }
             }
         }
@@ -144,5 +156,4 @@ class TrainingQuizFragment : BaseDockFragment() {
         submitQuizModel.quiz_id = quizId
         submitQuizModel.quiz_details.add(QuizDetailItem(questionId,answer))
     }
-
 }

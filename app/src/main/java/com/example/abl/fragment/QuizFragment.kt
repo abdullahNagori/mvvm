@@ -85,6 +85,7 @@ class QuizFragment : BaseDockFragment(), ClickListner {
             }else if((data as Option).option == it.optionOne.text){
                 it.optionOne.isChecked = true
             }
+            trainingQuizFragment.isChecked = it.optionOne.isChecked
         }
         trainingQuizFragment.setSubmissionRequest(question!!.quiz_id,question!!.record_id,question!!.correct_ans)
     }

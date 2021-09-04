@@ -160,6 +160,7 @@
     <string name="error_empty_pass">PLease Provide Password</string>
     <string name="enter_otp">PLease Enter OTP</string>
     <string name="error_invalid_id">Invalid Email</string>
+    <string name="error_checkbox">Please select answer</string>
     <string name="error">Error</string>
     <string name="success">Success</string>
     <string name="error_password_length">Password Must be 8 Character</string>
