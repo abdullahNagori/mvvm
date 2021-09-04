@@ -36,6 +36,7 @@ class CallLogsFragment : BaseDockFragment(), ClickListner {
             showCustomerDialog()
         }
 
+        binding.txtTotalCustomers.text = logList.size.toString()
         binding.filter.setOnClickListener {
             showHideFilter()
         }

@@ -39,6 +39,8 @@ class VisitLogsFragment : BaseDockFragment(), ClickListner {
         initView()
         initRecyclerView()
 
+        binding.totalCustomers.text = logList.size.toString()
+
         return binding.root
     }
 
