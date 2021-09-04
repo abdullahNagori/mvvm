@@ -45,6 +45,7 @@ import com.example.abl.utils.Schedulers.LocationWorkManager.LocationWorker
 import com.example.abl.utils.Schedulers.UploadWorkManager.UploadWorker
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_menu_shortcut.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -403,7 +404,7 @@ class MainActivity : DockActivity() {
             R.id.cold_calling -> callLead()
             R.id.addLead -> {
                 val bundle = Bundle()
-                bundle.putString(Constants.TYPE, Constants.VISIT)
+                bundle.putString(Constants.VISIT_TYPE, Constants.VISIT)
                 navigateToFragment(R.id.nav_visit)
             }
             R.id.followup -> {
@@ -522,7 +523,7 @@ class MainActivity : DockActivity() {
                 customers?.let {
                     // bundle.putParcelable(Constants.LEAD_DATA, customers)
                 }
-                bundle.putString(Constants.TYPE, Constants.CALL)
+                bundle.putString(Constants.VISIT_TYPE, Constants.CALL)
                 bundle.putString(Constants.CUSTOMER_TYPE, customerType)
                 bundle.putString("number", number.text.toString())
                 navigateToFragment(R.id.addLeadFragment, bundle)
@@ -549,22 +550,19 @@ class MainActivity : DockActivity() {
     }
 
     private fun getSyncData() {
-        var unSyncLead = roomHelper.checkUnSyncLeadData()
-        var  unSyncCheckIn = roomHelper.checkUnSyncCheckInData()
-        if ( unSyncCheckIn.isNotEmpty() && unSyncLead.isNotEmpty())
-        {
+        if ( roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData().isNotEmpty()) {
             showErrorMessage(getString(R.string.un_synced_msg))
         }
         else {
+            this.showProgressIndicator()
             viewModel.getLOV().observe(this) {
-                Log.e("", it.toString())
+                this.hideProgressIndicator()
                 if (it.dynamicList?.size != 0) {
                     //val leadModel = GsonFactory.getConfiguredGson()?.fromJson(it.visitCallResponse.toString(), CheckinModel::class.java)
                     processData(it.lovResponse, it.dynamicList, it.visitCallResponse!!)
                 }
             }
         }
-
     }
 
     private fun processData(
@@ -628,19 +626,20 @@ class MainActivity : DockActivity() {
 
     private fun sendLeadData() {
         try {
-
             val workManager = WorkManager.getInstance(application)
-            val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadWorker>().build()
+            val uploadDataConstraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+            val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadWorker>()
+                .setConstraints(uploadDataConstraints)
+                .build()
+
+            this.showProgressIndicator()
+
             workManager.enqueue(uploadWorkRequest)
 
-//            workManager.getWorkInfoByIdLiveData(uploadWorkRequest.id).observe(this, androidx.lifecycle.Observer {
-//                    workInfo: WorkInfo? ->
-//                if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
-//                    val progress = workInfo.outputData
-//                    val value = progress.getInt("progress", 0)
-//                }
-//            })
-
+            workManager.getWorkInfoByIdLiveData(uploadWorkRequest.id).observe(this, androidx.lifecycle.Observer { workInfo ->
+                this.hideProgressIndicator()
+                this.showSuccessMessage("Data uploaded successfully")
+            })
 
         } catch (e: Exception) {
             Log.i("UploadWorkerLocation", e.message.toString())

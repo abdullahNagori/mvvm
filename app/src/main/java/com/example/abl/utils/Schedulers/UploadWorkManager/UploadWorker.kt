@@ -32,9 +32,7 @@ class UploadWorker @Inject constructor(
         Log.i(TAG, "Fetching Data from Remote host")
         return try {
 
-
             val leadData = daoAccess.getUnSyncLeadData()
-
             leadData.forEach {
                 val callLead = userRepository.addLead(it.getCustomerDetail())
                 val response = callLead.execute()
@@ -52,6 +50,7 @@ class UploadWorker @Inject constructor(
                     Result.retry()
                 }
             }
+
             Handler(Looper.getMainLooper()).postDelayed({
                 val checkInData = daoAccess.getUnSyncedCheckInData("false")
                 checkInData.forEach {
