@@ -229,11 +229,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
     private fun auth() {
 
-        visitType = if (arguments?.get(Constants.TYPE) == null) {
-            "visit"
-        } else {
-            arguments?.get(Constants.TYPE).toString()
-        }
+        visitType = arguments?.getString(Constants.VISIT_TYPE) ?: Constants.VISIT
 
         if (!validationhelper.validateString(binding.customerName)) return
         if (!validationhelper.validateString(binding.contactNo)) return

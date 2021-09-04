@@ -31,7 +31,7 @@ object Constants {
     const val JOIN_VISIT : String = "Joint Visit"
     const val NTB : String = "NTB"
     const val NETWORK_ERROR : String = "network error"
-    const val TYPE  = "visit_type"
+    const val VISIT_TYPE  = "visit_type"
     const val SUCCESS  = "Success"
     const val CALL_LOGS_DETAILS  = "call_logs_detail"
     const val TRAINING_DETAILS  = "training_details"
