@@ -142,7 +142,7 @@ class CustomerInfoFragment : BaseDockFragment() {
                     bundle.putString(Constants.TYPE, Constants.CALL)
                     bundle.putString(Constants.CUSTOMER_TYPE, customerType)
                     bundle.putString("number", number.text.toString())
-                    navigateToFragment(R.id.addLeadFragment, bundle)
+                    navigateToFragment(R.id.checkInFormFragment, bundle)
                     startActivity(intent)
 
             }

@@ -87,7 +87,9 @@
 
         <action
             android:id="@+id/action_nav_comprehensive_to_nav_training_quiz"
-            app:destination="@id/nav_training_quiz" />
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"
+            app:destination="@+id/nav_training_quiz" />
     </fragment>
 
     <fragment
@@ -98,6 +100,8 @@
 
         <action
             android:id="@+id/action_nav_training_quiz_to_nav_result_quiz"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"
             app:destination="@id/nav_result_quiz" />
     </fragment>
 
@@ -108,8 +112,13 @@
         tools:layout="@layout/quiz_result_fragment" >
 
         <action
-            android:id="@+id/action_nav_result_quiz_to_nav_answer"
-            app:destination="@id/nav_answer_quiz" />
+            android:id="@+id/action_result_quiz_to_nav_home"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"
+            app:destination="@id/nav_home" />
+<!--        <action-->
+<!--            android:id="@+id/action_nav_result_quiz_to_nav_answer"-->
+<!--            app:destination="@id/nav_answer_quiz" />-->
     </fragment>
 
     <fragment

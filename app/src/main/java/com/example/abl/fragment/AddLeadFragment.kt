@@ -40,9 +40,9 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
     lateinit var binding: AddFragmentBinding
 
     var selectedProduct: CompanyProduct? = null
-    private var sourceOfIncome: String? = null
+//    private var sourceOfIncome: String? = null
     private var gender: String = "male"
-    private var occupation: String? = null
+//    private var occupation: String? = null
     val random = (0..100).random()
 
 
@@ -61,8 +61,8 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
         additionalViewVisibility()
-        binding.occupation.onItemSelectedListener = this
-        binding.sourceOfIncome.onItemSelectedListener = this
+//        binding.occupation.onItemSelectedListener = this
+//        binding.sourceOfIncome.onItemSelectedListener = this
         binding.gender.onItemSelectedListener = this
         binding.visitLead.setOnClickListener {
             addLead()
@@ -94,8 +94,8 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
             binding.customerName.text.toString(),
             binding.cnic.text.toString(),
             binding.esIncome.text.toString(),
-            occupation.toString(),
-            sourceOfIncome.toString(),
+            binding.occupation.text.toString(),
+            binding.sourceOfIncome.text.toString(),
             binding.address.text.toString(),
             binding.age.text.toString(),
             binding.companyName.text.toString(),
@@ -214,15 +214,15 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (parent?.id) {
-            R.id.occupation -> {
-                occupation = parent.getItemAtPosition(position) as String
-            }
+//            R.id.occupation -> {
+//                occupation = parent.getItemAtPosition(position) as String
+//            }
             R.id.gender -> {
                 gender = parent.getItemAtPosition(position) as String
             }
-            R.id.source_of_income -> {
-                sourceOfIncome = parent.getItemAtPosition(position) as String
-            }
+//            R.id.source_of_income -> {
+//                sourceOfIncome = parent.getItemAtPosition(position) as String
+//            }
         }
     }
 

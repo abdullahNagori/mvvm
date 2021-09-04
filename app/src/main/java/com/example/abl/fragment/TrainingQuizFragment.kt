@@ -1,6 +1,7 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -35,6 +36,8 @@ class TrainingQuizFragment : BaseDockFragment() {
     lateinit var binding: TrainingQuizFragmentBinding
     lateinit var quizadapter: QuizFormAdapter
     lateinit var trainingID: String
+    lateinit var questionsList: ArrayList<Question>
+    var quizDetail = ArrayList<QuizDetailItem>()
     val submitQuizModel= SubmitQuizModel("", ArrayList<QuizDetailItem>())
     var isChecked = false
 
@@ -79,7 +82,7 @@ class TrainingQuizFragment : BaseDockFragment() {
 //        binding.viewPager.adapter = quizadapter
 //        binding.viewPager.addOnPageChangeListener(onPageChangeListener)
         binding.btnNext.setOnClickListener {
-            if(btn_next.text.toString()=="Next" && isChecked){
+            if(btn_next.text.toString() =="Next" && isChecked){
                 binding.viewPager.currentItem+=1
                 isChecked = false
             }
@@ -106,8 +109,7 @@ class TrainingQuizFragment : BaseDockFragment() {
                     val gson = Gson()
                     val listType: Type = object : TypeToken<QuizResponse?>() {}.type
                     val posts: QuizResponse = gson.fromJson<QuizResponse>(liveData.value, listType)
-                    Log.i("xxQuiz", posts.toString())
-
+                    questionsList = posts.quiz[0].questions as ArrayList<Question>
                     setupViewPager(posts)
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
@@ -117,7 +119,10 @@ class TrainingQuizFragment : BaseDockFragment() {
             Constants.SUBMIT_QUIZ -> {
                 val submitQuizResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, GenericMsgResponse::class.java)
                 if (submitQuizResponseEnt?.message?.toLowerCase()?.contains("success")!!){
-                    navigateToFragment(R.id.action_nav_training_quiz_to_nav_result_quiz)
+                    val bundle = Bundle()
+                    bundle.putParcelableArrayList(Constants.QUESTION_LIST, questionsList)
+                    bundle.putParcelable(Constants.SUBMIT_QUIZ, submitQuizModel as Parcelable)
+                    navigateToFragment(R.id.action_nav_training_quiz_to_nav_result_quiz, bundle)
                 }
             }
         }
@@ -137,13 +142,13 @@ class TrainingQuizFragment : BaseDockFragment() {
             {
                 binding.btnNext.text = "Finish"
                 binding.btnNext.setOnClickListener {
-                    if (isChecked) {
-                        submitQuizData(submitQuizModel)
-                    }
-                    else{
-                        myDockActivity?.showErrorMessage(getString(R.string.error_checkbox))
-                        isChecked = false
-                    }
+//                    if (isChecked) {
+//                        submitQuizData(submitQuizModel)
+//                    }
+//                    else{
+//                        myDockActivity?.showErrorMessage(getString(R.string.error_checkbox))
+//                    }
+                    submitQuizData(submitQuizModel)
                 }
             }
         }

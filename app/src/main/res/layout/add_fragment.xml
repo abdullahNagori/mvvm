@@ -138,7 +138,7 @@
             android:id="@+id/ll_additional_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             android:orientation="vertical">
 
             <TextView
@@ -157,35 +157,24 @@
                 style="@style/txtStyle"
                 android:text="@string/occupation" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:background="@drawable/bg_holo_black"
-                android:layout_height="wrap_content">
-
-                <Spinner
-                    android:id="@+id/occupation"
-                    style="@style/spinnerStyle"
-                    android:entries="@array/occupation" />
-
-            </RelativeLayout>
+            <EditText
+                android:id="@+id/occupation"
+                style="@style/borderStyle"
+                android:hint="@string/enter_occupation"
+                android:maxLength="13"
+                android:inputType="number" />
 
 
             <TextView
                 style="@style/txtStyle"
                 android:text="@string/source_of_income" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:background="@drawable/bg_holo_black"
-                android:layout_height="wrap_content">
-
-
-                <Spinner
-                    android:id="@+id/source_of_income"
-                    style="@style/spinnerStyle"
-                    android:entries="@array/source_of_income" />
-
-            </RelativeLayout>
+            <EditText
+                android:id="@+id/source_of_income"
+                style="@style/borderStyle"
+                android:hint="@string/enter_source_of_income"
+                android:maxLength="13"
+                android:inputType="number" />
 
 
 

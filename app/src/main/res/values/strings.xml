@@ -716,5 +716,7 @@
     <string name="developer">Developer</string>
     <string name="tax_calculator">Tax Calculator</string>
     <string name="comprehensive_training">Comprehensive Training</string>
+    <string name="enter_occupation">Enter Occupation</string>
+    <string name="enter_source_of_income">Enter Source of Income</string>
 
 </resources>

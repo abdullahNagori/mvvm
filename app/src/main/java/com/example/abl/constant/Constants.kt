@@ -39,6 +39,7 @@ object Constants {
     const val MATERIAL  = "material"
     const val SUBMIT_QUIZ  = "submit_quiz"
     const val QUIZ_DATA  = "quiz_data"
+    const val QUESTION_LIST  = "question_list"
     const val QUIZ_ID  = "quiz_id"
     const val QUIZ_DETAILS  = "quiz_details"
     const val VISITS_LOGS_DETAILS  = "call_logs_detail"

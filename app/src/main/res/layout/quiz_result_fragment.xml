@@ -37,6 +37,7 @@
                 android:textSize="@dimen/_17sdp"
                 android:textColor="@color/darkGrey"/>
             <TextView
+                android:id="@+id/total_questions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="10"
@@ -55,9 +56,10 @@
                 android:textSize="@dimen/_17sdp"
                 android:textColor="@color/darkGrey"/>
             <TextView
+                android:id="@+id/correct_answers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="08"
+                android:text="02"
                 android:textStyle="bold"
                 android:textAlignment="center"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -73,9 +75,10 @@
                 android:textSize="@dimen/_17sdp"
                 android:textColor="@color/darkGrey"/>
             <TextView
+                android:id="@+id/incorrect_answers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="02"
+                android:text="01"
                 android:textStyle="bold"
                 android:textAlignment="center"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -122,11 +125,26 @@
 
     </ScrollView>
 
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/btn_viewAnswer"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:text="View Answers"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textSize="@dimen/_15sdp"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:background="@drawable/btn_background"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:layout_marginRight="20dp"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        />-->
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_viewAnswer"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="View Answers"
+        android:text="Done"
         android:textAllCaps="false"
         android:textSize="@dimen/_15sdp"
         android:textColor="@color/white"
@@ -136,5 +154,4 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         />
-
 </RelativeLayout>
