@@ -16,8 +16,8 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
         daoAccess.deleteLeadData()
     }
 
-    fun getLeadsData(): List<DynamicLeadsItem> {
-        return daoAccess.getAllLeadData() as List<DynamicLeadsItem>
+    fun getLeadsData(source: String): List<DynamicLeadsItem> {
+        return daoAccess.getLeadData(source)
     }
 
     fun getLeadsStatus(): List<CompanyLeadStatu> {
@@ -30,11 +30,10 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
 
     fun insertPreviousVisit(previousVisit: GetPreviousVisit) {
          daoAccess.insertPreviousVisit(previousVisit)
-        Log.i("xxInsert", previousVisit.lead_id)
     }
 
     fun insertAddLead(dynamicLeadsItem: DynamicLeadsItem) {
-            daoAccess.insertAddLead(dynamicLeadsItem)
+        daoAccess.insertAddLead(dynamicLeadsItem)
      }
 
     fun insertCheckIn(checkIn: CheckinModel) {

@@ -29,9 +29,10 @@ import java.util.ArrayList
 class CRMFragment : BaseDockFragment() {
 
     lateinit var binding: FragmentCrmBinding
-    lateinit var sourceID: String
     lateinit var adapter: DynamicViewPagerAdapter
+    lateinit var leadSourceId: String
     // lateinit var list: List<DynamicLeadsItem>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,10 +40,7 @@ class CRMFragment : BaseDockFragment() {
         // Inflate the layout for this fragment
         myDockActivity?.getUserViewModel()?.apiListener = this
         binding = FragmentCrmBinding.inflate(layoutInflater)
-        //getDynamicData("")
-        sourceID = arguments?.getString(Constants.SOURCE_REC_ID).toString()
-
-
+        leadSourceId = arguments?.getString(Constants.LEAD_SOURCE_ID).toString()
         return binding.root
     }
 
@@ -90,48 +88,15 @@ class CRMFragment : BaseDockFragment() {
 
     private fun setupViewPager() {
         val leadStatusArray = sharedPrefManager.getLeadStatus()
-        //val leads = roomHelper.getLeadsStatus()
-
         binding.viewPager.offscreenPageLimit = 10
         if (leadStatusArray != null) {
-            adapter = DynamicViewPagerAdapter(childFragmentManager, leadStatusArray.size, leadStatusArray)
-            adapter.setSourceID(sourceID)
+            adapter = DynamicViewPagerAdapter(childFragmentManager, leadStatusArray.size, leadStatusArray, leadSourceId)
             binding.viewPager.adapter = adapter
             binding.tabLayout.setupWithViewPager(binding.viewPager)
+
             leadStatusArray.forEachIndexed { index, element ->
                 binding.tabLayout.getTabAt(index)?.text = element.name
             }
-
-//            binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-//                override fun onTabSelected(tab: TabLayout.Tab?) {
-//                    //binding.viewPager.currentItem = p0!!.position
-//                    if (tab == null)
-//                        return
-//                    val position = tab.position
-//
-//                    tab_layout.getTabAt(position)?.view?.startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            context,
-//                            R.anim.zoomin
-//                        )
-//                    )
-//                }
-//
-//                override fun onTabUnselected(tab: TabLayout.Tab?) {
-//                    if (tab == null)
-//                        return
-//                    val position = tab.position
-//                    tab_layout.getTabAt(position)?.view?.startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            context,
-//                            R.anim.zoomout
-//                        )
-//                    )
-//                }
-//
-//                override fun onTabReselected(p0: TabLayout.Tab?) {
-//                }
-//            })
         }
     }
 

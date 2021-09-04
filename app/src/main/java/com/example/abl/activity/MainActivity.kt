@@ -82,13 +82,13 @@ class MainActivity : DockActivity() {
     private var x1 = 0f
     private var x2 = 0f
     val MIN_DISTANCE = 60
-    val childLeadMap: HashMap<String, String> = HashMap()
+    //val childLeadMap: HashMap<String, String> = HashMap()
 
+    private var companyLeadSource: List<CompanyLeadSource> = emptyList()
 
     override fun getDockFrameLayoutId(): Int {
         return R.id.container
     }
-
 
     // Monitors connection to the while-in-use service.
     @RequiresApi(Build.VERSION_CODES.O)
@@ -211,11 +211,13 @@ class MainActivity : DockActivity() {
         })
     }
 
-    private fun fragmentClickEvent(itemString: String?, sourceID: String) {
-
+    private fun fragmentClickEvent(itemString: String) {
         when (itemString) {
+
             Constants.DASHBOARD -> {
+                closeDrawer()
             }
+
             Constants.PORTFOLIO -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_profile)
                 closeDrawer()
@@ -225,12 +227,6 @@ class MainActivity : DockActivity() {
                 val bundle = Bundle()
                 bundle.putString("flag", "BTL")
                 navigateToFragment(R.id.action_nav_home_to_nav_crm, bundle)
-                closeDrawer()
-            }
-            "leadManagement" -> {
-                val bundle = Bundle()
-                bundle.putString(Constants.SOURCE_REC_ID,sourceID)
-                navigateToFragment(R.id.action_nav_home_to_nav_crm,bundle)
                 closeDrawer()
             }
 
@@ -253,6 +249,7 @@ class MainActivity : DockActivity() {
                 navigateToFragment(R.id.action_nav_home_to_nav_marketing_collateral)
                 closeDrawer()
             }
+
             Constants.SALES_PIPELINE -> {
                 navigateToFragment(R.id.action_nav_home_to_company_provided_leads)
                 closeDrawer()
@@ -277,6 +274,7 @@ class MainActivity : DockActivity() {
                 navigateToFragment(R.id.action_nav_home_to_nav_tracking)
                 closeDrawer()
             }
+
             Constants.LOGOUT -> {
                 sharedPrefManager.logout()
                 foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
@@ -308,7 +306,6 @@ class MainActivity : DockActivity() {
         icons.add(R.drawable.ic_marketing) //12
         icons.add(R.drawable.ic_logout) //13
 
-
         listDataHeader.add(Constants.DASHBOARD) //0
         listDataHeader.add(Constants.PORTFOLIO) //1
         listDataHeader.add(Constants.REPORT) //2
@@ -317,15 +314,12 @@ class MainActivity : DockActivity() {
         listDataHeader.add(Constants.MARKETING_COLLATERAL) //5
         listDataHeader.add(Constants.CALCULATOR) //6
         listDataHeader.add(Constants.TRAINING) //7
-
-
         listDataHeader.add(Constants.LEADER_BOARD) //8
         listDataHeader.add(Constants.NOTIFICATIONS) //9
         listDataHeader.add(Constants.PASSWORD_CHANGE) //10
         listDataHeader.add(Constants.JOIN_VISIT) //11
         listDataHeader.add(Constants.TRACKING) //12
         listDataHeader.add(Constants.LOGOUT) //13
-
 
         val listAdapter = ExpandableListAdapter(
             this,
@@ -334,52 +328,51 @@ class MainActivity : DockActivity() {
             icons
         )
 
+        // Sales management child nodes
         val salesManagement: MutableList<String> = ArrayList()
         salesManagement.add(Constants.CALL_LOG)
         salesManagement.add(Constants.VISIT_LOG)
         listDataChild[listDataHeader[3]] = salesManagement
-        leadManagementNode()
+
+        // Lead management child nodes
+        setLeadManagementChildNodes()
 
         // setting list adapter
         binding.sideLayout.lvExp.setAdapter(listAdapter)
 
-
         // Listview on child click listener
         binding.sideLayout.lvExp.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
-
-            Log.i("xxGroup1", "child")
             var str = listDataChild[listDataHeader[groupPosition]]!![childPosition]
-            var sourceRecID = ""
             if (groupPosition == 4) {
-                sourceRecID = childLeadMap[str].toString()
-                str = sourceRecID
-                fragmentClickEvent("leadManagement", str)
+                val bundle = Bundle()
+                bundle.putString(Constants.LEAD_SOURCE_ID, companyLeadSource[childPosition].record_id)
+                navigateToFragment(R.id.action_nav_home_to_nav_crm, bundle)
+                closeDrawer()
             } else {
-                fragmentClickEvent(str, "")
+                fragmentClickEvent(str)
             }
-            closeDrawer()
             false
         }
 
-
+        // Listview parent node click listener
         binding.sideLayout.lvExp.setOnGroupExpandListener { groupPosition: Int ->
-            Log.i("xxGroup2", groupPosition.toString())
-
-            fragmentClickEvent(listDataHeader[groupPosition], "")
+            fragmentClickEvent(listDataHeader[groupPosition])
         }
     }
 
-    private fun leadManagementNode() {
-        val leadManagement: List<CompanyLeadSource> =
-            sharedPrefManager.getLeadSource() ?: emptyList()
+    private fun setLeadManagementChildNodes() {
+//        val leadManagement: List<CompanyLeadSource> =
+//            sharedPrefManager.getLeadSource() ?: emptyList()
+
+        companyLeadSource = sharedPrefManager.getLeadSource() ?: emptyList()
         val itemList = ArrayList<String>()
         //itemList.add(Constants.MY_LEADS)
-        for (i in leadManagement) {
-            itemList.add(i.desc)
-            childLeadMap[i.desc] = i.record_id
-        }
-        listDataChild[listDataHeader[4]] = itemList
+//        for (i in companyLeadSource) {
+//            itemList.add(i.desc)
+//            //childLeadMap[i.desc] = i.record_id
+//        }
 
+        listDataChild[listDataHeader[4]] = companyLeadSource.map { it.desc }
     }
 
     private fun callLead() {
@@ -574,7 +567,6 @@ class MainActivity : DockActivity() {
 
     }
 
-
     private fun processData(
         lovResponse: LovResponse,
         dynamicLeadsItem: ArrayList<DynamicLeadsItem>?,
@@ -591,7 +583,8 @@ class MainActivity : DockActivity() {
             roomHelper.deleteCheckInData()
             roomHelper.insertVisitCallData(visitsCallResponseItem)
         }
-        leadManagementNode()
+
+        //setLeadManagementChildNodes()
     }
 
     private fun sendUserTracking() {
@@ -632,7 +625,6 @@ class MainActivity : DockActivity() {
             Log.i("LocationWorkerException", e.message.toString())
         }
     }
-
 
     private fun sendLeadData() {
         try {

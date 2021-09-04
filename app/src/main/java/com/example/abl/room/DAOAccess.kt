@@ -23,6 +23,9 @@ interface DAOAccess {
     @Query("SELECT * FROM Lead ")
     fun getAllLeadData(): List<DynamicLeadsItem>
 
+    @Query("SELECT * FROM Lead where source = :source")
+    fun getLeadData(source: String): List<DynamicLeadsItem>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLeadStatus(leadStatus: List<CompanyLeadStatu>)
 
@@ -46,7 +49,6 @@ interface DAOAccess {
 
 
     /** CheckIn Query */
-
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCheckIn(checkinModel: CheckinModel)
@@ -85,7 +87,6 @@ interface DAOAccess {
 
     /** Previous Visits Query */
 
-
     @Query("SELECT * FROM PreviousVisits WHERE lead_id IS :lead_id")
     fun getPreviousVisit(lead_id: String): List<GetPreviousVisit>
 
@@ -95,13 +96,11 @@ interface DAOAccess {
     @Query("DELETE from PreviousVisits")
     fun deletePreviousVisit()
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertVisiCallData(checkinModel: List<CheckinModel>)
 
 
     /** Location Service Query */
-
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLocation( userLocation: UserLocation)

@@ -1,17 +1,11 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.os.Parcelable
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.lifecycle.LiveData
 import com.example.abl.R
 import com.example.abl.activity.MainActivity
 import com.example.abl.adapter.CustomerAdapter
@@ -20,37 +14,14 @@ import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentAllBinding
 import com.example.abl.model.*
-import com.example.abl.utils.GsonFactory
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.fragment_all.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
-import java.io.Serializable
-import java.lang.reflect.Type
-import java.util.ArrayList
 
 class AllFragment : BaseDockFragment(), ClickListner {
     lateinit var binding: FragmentAllBinding
     lateinit var adapter: CustomerAdapter
-    var leadData:List<DynamicLeadsItem>? = null
-    private var leadStatusData: CompanyLeadStatu? = null
-    private var leadSourceData: CompanyLeadSource? = null
-    var sourceList = listOf<DynamicLeadsItem>()
-    var statusList = listOf<DynamicLeadsItem>()
 
-    companion object {
-        //const val ARG_NAME = "section_data"
-        fun newInstance(content: String): AllFragment {
-            val fragment = AllFragment()
-            val args = Bundle()
-            args.putString(Constants.ARG_NAME, content)
-            fragment.arguments = args
-            return fragment
-        }
-    }
+    var leadSourceId: String? = null
+    var leadStatusName: String? = null
+    var dataSource:List<DynamicLeadsItem> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,26 +30,16 @@ class AllFragment : BaseDockFragment(), ClickListner {
         // Inflate the layout for this fragment
         myDockActivity?.getUserViewModel()?.apiListener = this
         binding = FragmentAllBinding.inflate(layoutInflater)
-//        leadStatusData = GsonFactory.getConfiguredGson()?.fromJson(arguments?.getString(Constants.ARG_NAME), CompanyLeadStatu::class.java)
-
-        Log.i("xxLeadSource", arguments?.getString(Constants.SOURCE_REC_ID).toString())
+        leadSourceId = arguments?.getString(Constants.LEAD_SOURCE_ID)
+        leadStatusName = arguments?.getString(Constants.LEAD_STATUS_NAME)
         initRecyclerView()
-        CoroutineScope(Dispatchers.Main).launch {
-            leadData = roomHelper.getLeadsData()
-            sourceList = leadData?.filter { it.source.equals(arguments?.getString(Constants.SOURCE_REC_ID),true) }!!
-        }.invokeOnCompletion {
-            if(arguments?.getString(Constants.ARG_NAME)!! == "all") {
-               setData(sourceList)
-             }else{
-                statusList = sourceList.filter { it.lead_status_name.equals(arguments?.getString(Constants.ARG_NAME), true) }
-                setData(statusList)
-            }
-        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setData()
     }
 
     override fun closeDrawer() {
@@ -106,23 +67,23 @@ class AllFragment : BaseDockFragment(), ClickListner {
         binding.customers.adapter = adapter
     }
 
-    private fun setData(list: List<DynamicLeadsItem>) {
+    private fun setData() {
+        val leadData = roomHelper.getLeadsData(leadSourceId!!)
 
-        if (leadData != null) {
-//            if (leadStatusData?.name.equals("all", true)) {
-//                adapter.setList(leadData!!)
-//                adapter.notifyDataSetChanged()
-//            } else {
-               // val filterData = leadData?.filter { it.lead_status_name.equals(leadStatusData?.record_id, true) }
-               // val filterData = leadData?.filter { it.lead_status_name.equals(leadSourceData?.record_id, true) }
-                adapter.setList(list)
-                adapter.notifyDataSetChanged()
-            }
+        if (leadStatusName.equals("all", true)) {
+            this.dataSource = leadData
+            adapter.setList(dataSource)
+            adapter.notifyDataSetChanged()
+        } else {
+            this.dataSource = leadData.filter { it.lead_status_name.equals(leadStatusName, true) }
+            adapter.setList(dataSource)
+            adapter.notifyDataSetChanged()
         }
+    }
 
     override fun <T> onClick(data: T, createNested: Boolean) {
         val bundle = Bundle()
-        bundle.putParcelable(Constants.LEAD_DATA,data as Parcelable)
+        bundle.putParcelable(Constants.LEAD_DATA, data as Parcelable)
         navigateToFragment(R.id.customerDetailsFragment,bundle)
     }
 }
