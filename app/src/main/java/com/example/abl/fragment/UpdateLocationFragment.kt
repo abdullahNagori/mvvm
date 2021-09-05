@@ -175,10 +175,7 @@ class UpdateLocationFragment : BaseDockFragment(), OnMapReadyCallback {
                         val latlng = lastKnownLocation
                             ?.latitude?.let { it1 ->
                                 lastKnownLocation.longitude.let { it2 ->
-                                    LatLng(
-                                        it1,
-                                        it2
-                                    )
+                                    LatLng(it1, it2)
                                 }
                             }
                         if (lastKnownLocation != null) {

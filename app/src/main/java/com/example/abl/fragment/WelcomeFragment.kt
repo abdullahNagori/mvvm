@@ -1,6 +1,7 @@
 package com.example.abl.fragment
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.PackageManager
 import android.location.Location
@@ -36,8 +37,8 @@ import com.google.android.gms.location.LocationServices
 
 class WelcomeFragment : BaseDockFragment() {
     lateinit var binding: FragmentWelcomeBinding
-    var latitude = 0.0
-    var longitude = 0.0
+    var latitude = ""
+    var longitude = ""
 
     companion object {
         fun newInstance(): WelcomeFragment {
@@ -48,6 +49,7 @@ class WelcomeFragment : BaseDockFragment() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,8 +58,12 @@ class WelcomeFragment : BaseDockFragment() {
         SharedPrefKeyManager.with(requireContext())
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
+
+//        latitude = myDockActivity?.latitude!!
+//        longitude = myDockActivity?.longitude!!
+
         binding.fab.setOnClickListener {
-            markAttendance("checkin", "23.45", "35.40")
+            markAttendance("checkin", myDockActivity?.latitude!!, myDockActivity?.longitude!!)
             (requireActivity() as WelcomeActivity).foregroundOnlyLocationService?.subscribeToLocationUpdates()
         }
 
