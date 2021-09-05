@@ -23,7 +23,7 @@ interface DAOAccess {
     @Query("SELECT * FROM Lead ")
     fun getAllLeadData(): List<DynamicLeadsItem>
 
-    @Query("SELECT * FROM Lead where source = :source")
+    @Query("SELECT * FROM Lead where source = :source or lead_id = 0")
     fun getLeadData(source: String): List<DynamicLeadsItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

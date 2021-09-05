@@ -81,7 +81,7 @@ class ChangePasswordFragment : BaseDockFragment(){
            ))
 
     }
-    
+
     private fun changePassword(changePasswordModel: ChangePasswordModel){
         myDockActivity?.getUserViewModel()?.changePassword(changePasswordModel)
     }
