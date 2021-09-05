@@ -611,20 +611,24 @@ class MainActivity : DockActivity() {
     private fun sendLeadData() {
         try {
             val workManager = WorkManager.getInstance(application)
+
             val uploadDataConstraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+
             val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadWorker>()
                 .setConstraints(uploadDataConstraints)
                 .build()
 
             this.showProgressIndicator()
 
-            workManager.enqueue(uploadWorkRequest)
+            //workManager.enqueue(uploadWorkRequest)
+            workManager.beginWith(uploadWorkRequest)
+                .enqueue()
 
             workManager.getWorkInfoByIdLiveData(uploadWorkRequest.id).observe(this, androidx.lifecycle.Observer { workInfo ->
-                this.hideProgressIndicator()
-                this.showSuccessMessage("Data uploaded successfully")
+                if (workInfo.state.isFinished) {
+                    this.hideProgressIndicator()
+                }
             })
-
         } catch (e: Exception) {
             Log.i("UploadWorkerLocation", e.message.toString())
         }

@@ -33,41 +33,45 @@ class UploadWorker @Inject constructor(
         return try {
 
             val leadData = daoAccess.getUnSyncLeadData()
-            leadData.forEach {
-                val callLead = userRepository.addLead(it.getCustomerDetail())
-                val response = callLead.execute()
-                if (response.body()?.lead_id != null) {
-                    daoAccess.updateLeadData(
-                        response.body()?.lead_id.toString(),
-                        it.local_lead_id.toString()
-                    )
-                    daoAccess.updateCheckInLeadStatus(
-                        response.body()?.lead_id.toString(),
-                        it.local_lead_id.toString()
-                    )
-                    Result.success()
-                } else {
-                    Result.retry()
+
+            if (leadData.isNotEmpty()) {
+                leadData.forEach {
+                    val callLead = userRepository.addLead(it.getCustomerDetail())
+                    val response = callLead.execute()
+                    if (response.body()?.lead_id != null) {
+                        daoAccess.updateLeadData(
+                            response.body()?.lead_id.toString(),
+                            it.local_lead_id.toString()
+                        )
+                        daoAccess.updateCheckInLeadStatus(
+                            response.body()?.lead_id.toString(),
+                            it.local_lead_id.toString()
+                        )
+                        Result.success()
+                    } else {
+                        Result.retry()
+                    }
                 }
             }
 
             Handler(Looper.getMainLooper()).postDelayed({
                 val checkInData = daoAccess.getUnSyncedCheckInData("false")
-                checkInData.forEach {
-                    val callCheckIn = userRepository.addLeadCheckin(it.getCheckInData())
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val response =  callCheckIn.execute()
-                        if (response.body()?.message == "successful") {
-                            daoAccess.updateCheckInStatus(it.lead_id!!)
-                            daoAccess.updateLeadStatus(it.lead_id)
-                            Result.success()
-                        } else {
-                            Result.retry()
+
+                if (checkInData.isNotEmpty()) {
+                    checkInData.forEach {
+                        val callCheckIn = userRepository.addLeadCheckin(it.getCheckInData())
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val response =  callCheckIn.execute()
+                            if (response.body()?.message == "successful") {
+                                daoAccess.updateCheckInStatus(it.lead_id!!)
+                                daoAccess.updateLeadStatus(it.lead_id)
+                                Result.success()
+                            } else {
+                                Result.retry()
+                            }
                         }
                     }
                 }
-                // val response = GsonFactory.getConfiguredGson() ?.fromJson(dynamicLeadsItem.body().toString(), DynamicLeadsItem::class.java)
-
             }, 5000)
 
             Result.success()
@@ -85,5 +89,4 @@ class UploadWorker @Inject constructor(
     companion object {
         private val TAG = "UploadWorker"
     }
-
 }

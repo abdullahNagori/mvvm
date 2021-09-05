@@ -19,19 +19,17 @@ class VisitsLogsAdapter (val context: Context?, val onclick: ClickListner) : Rec
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(item: CheckinModel) {
-            view.type.text = (item.visit_type ?: "N/A")
-            view.date.text = (item.visit_date_time ?: "N/A")
-            view.status.text =  (item.visit_status ?: "N/A")
-            view.visitedBy.text = (item.user_name ?: "N/A")
+            view.type.text = item.visit_type ?: "-"
+            view.date.text = item.visit_date_time ?: "-"
+            view.status.text =  item.visit_status ?: "-"
+            view.visitedBy.text = item.customer_name ?: "-"
         }
     }
-
 
     fun setList(list: List<CheckinModel>) {
         callList = list
         notifyDataSetChanged()
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = ItemPreviousBinding.inflate(LayoutInflater.from(context), parent, false)

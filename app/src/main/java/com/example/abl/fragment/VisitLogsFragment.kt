@@ -20,7 +20,6 @@ import com.example.abl.model.CheckinModel
 
 class VisitLogsFragment : BaseDockFragment(), ClickListner {
 
-
     companion object {
         fun newInstance() = PreviousVisitFragment()
     }
@@ -29,19 +28,39 @@ class VisitLogsFragment : BaseDockFragment(), ClickListner {
     lateinit var logList: List<CheckinModel>
     lateinit var adapter: VisitsLogsAdapter
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        logList = roomHelper.getCheckInCallData(Constants.VISIT)
         initView()
         initRecyclerView()
-
-        binding.totalCustomers.text = logList.size.toString()
+        setData()
 
         return binding.root
+    }
+
+    private fun initView() {
+        binding = VisitLogsFragmentBinding.inflate(layoutInflater)
+    }
+
+    private fun initRecyclerView(){
+        adapter = VisitsLogsAdapter(requireContext(), this)
+        binding.visit.adapter = adapter
+    }
+
+    private fun setData() {
+        logList = roomHelper.getCheckInCallData(Constants.VISIT)
+        binding.totalCustomers.text = logList.size.toString()
+        adapter.setList(logList)
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun <T> onClick(data: T, createNested: Boolean) {
+        val bundle = Bundle()
+        val logDetailsFragment = VisitLogDetailFragment()
+        bundle.putParcelable(Constants.VISITS_LOGS_DETAILS, data as Parcelable)
+        logDetailsFragment.show(childFragmentManager, "visits")
     }
 
     override fun closeDrawer() {
@@ -56,22 +75,4 @@ class VisitLogsFragment : BaseDockFragment(), ClickListner {
         TODO("Not yet implemented")
     }
 
-    private fun initView() {
-        binding = VisitLogsFragmentBinding.inflate(layoutInflater)
-    }
-    private fun initRecyclerView(){
-        adapter = VisitsLogsAdapter(requireContext(), this)
-        adapter.setList(logList)
-        binding.visit.adapter = adapter
-    }
-
-
-
-    override fun <T> onClick(data: T, createNested: Boolean) {
-        val bundle = Bundle()
-        val logDetailsFragment = VisitLogDetailFragment()
-        bundle.putParcelable(Constants.VISITS_LOGS_DETAILS, data as Parcelable)
-        logDetailsFragment.show(childFragmentManager, "visits")
-
-    }
 }

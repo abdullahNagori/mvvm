@@ -121,13 +121,11 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
                     .get(Calendar.YEAR), mCalender.get(Calendar.MONTH),
                 mCalender.get(Calendar.DAY_OF_MONTH)
             ).show()
-            binding.date.setTextColor(
-                ContextCompat.getColor(
+            binding.date.setTextColor(ContextCompat.getColor(
                     myDockActivity!!,
                     R.color.colorAccent
                 )
             )
-
         }
 
         val callback: OnBackPressedCallback =
@@ -223,13 +221,10 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
         )
     }
 
-//    private fun addCheckin(checkinModel: CheckinModel) {
-//        myDockActivity?.getUserViewModel()?.addLeadCheckin(checkinModel)
-//    }
-
     private fun auth() {
-
         visitType = arguments?.getString(Constants.VISIT_TYPE) ?: Constants.VISIT
+
+        val currentDate = SimpleDateFormat(Constants.DATE_FORMAT_1, Locale.ENGLISH).format(Date())
 
         if (!validationhelper.validateString(binding.customerName)) return
         if (!validationhelper.validateString(binding.contactNo)) return
@@ -260,13 +255,11 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             "false",
             "",
             "",
-            ""
+            currentDate
         )
 
         roomHelper.insertCheckIn(dict)
         MainActivity.navController.navigate(R.id.action_checkInFormFragment_to_nav_home)
-
-
     }
 
     private fun setCheckInViewWithStatus(status: String) {
