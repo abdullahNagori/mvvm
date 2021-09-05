@@ -68,4 +68,15 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
         return daoAccess.getCheckInVisit(visitType)
     }
 
+    fun insertDashboardCount(dashboardResponse: DashboardResponse) {
+         daoAccess.insertDashBoardCount(dashboardResponse)
+    }
+
+    fun deleteDashboardCount(){
+        daoAccess.deleteDashBoardCount()
+    }
+
+    fun getDashboardCount(): DashboardResponse{
+        return daoAccess.getDashBoardCount()
+    }
 }

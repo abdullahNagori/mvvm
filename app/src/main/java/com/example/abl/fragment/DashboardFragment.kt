@@ -38,6 +38,7 @@ class DashboardFragment : BaseDockFragment() {
     private lateinit var todayCall: String
     private lateinit var todayVisit: String
     private lateinit var todayFollowup: String
+    var dashboardCount: DashboardResponse? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,9 +46,13 @@ class DashboardFragment : BaseDockFragment() {
     ): View? {
         // Inflate the layout for this fragment
 
+
         init()
         myDockActivity?.getUserViewModel()?.apiListener = this
-        getDashBoardCount()
+        //getDashBoardCount()
+
+
+
         setAnim()
         val labels = monthList()
         initChart(binding, labels)
@@ -81,6 +86,20 @@ class DashboardFragment : BaseDockFragment() {
         val currentDate = sdf.format(Date())
         binding.shiftStart.text = "Shift Started At $currentDate"
         //System.out.println(" C DATE is  "+currentDate)
+
+        dashboardCount = roomHelper.getDashboardCount()
+
+        if (dashboardCount != null) {
+
+            todayCall = dashboardCount?.today_calls!!
+            todayVisit = dashboardCount?.today_visits!!
+            todayFollowup = dashboardCount?.today_followups!!
+
+            binding.todayCall.text = todayCall
+            binding.todayVisit.text = todayVisit
+            binding.todaysFollowUp.text = todayFollowup
+        }
+
     }
 
     private fun initChart(binding: FragmentDashboardBinding, months: List<String>?) {
@@ -281,9 +300,9 @@ class DashboardFragment : BaseDockFragment() {
         )
     }
 
-    private fun getDashBoardCount(){
-        myDockActivity?.getUserViewModel()?.getDashBoard()
-    }
+//    private fun getDashBoardCount(){
+//        myDockActivity?.getUserViewModel()?.getDashBoard()
+//    }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
@@ -298,9 +317,7 @@ class DashboardFragment : BaseDockFragment() {
                 Log.i("xxcall",verifyPassResponseEnt?.today_calls.toString())
                 Log.i("xxvisit",verifyPassResponseEnt?.today_visits.toString())
                 Log.i("xxfollowup",verifyPassResponseEnt?.today_followups.toString())
-                binding.todayCall.text = todayCall
-                binding.todayVisit.text = todayVisit
-                binding.todaysFollowUp.text = todayFollowup
+
             }
         }
     }

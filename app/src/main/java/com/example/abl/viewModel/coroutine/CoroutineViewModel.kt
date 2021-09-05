@@ -65,6 +65,8 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
                                 )
                         ).execute()
                     }
+                    val dashboardCount = async { userRepository.getDashboard().execute() }
+
                     val leadResponse: ArrayList<DynamicLeadsItem>? = try {
                         callLeads.await()
                     } catch (ex: Exception) {
@@ -83,12 +85,19 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
                         null
                     }
 
+                    val dashboardCallResponse: Response<DashboardResponse>? = try {
+                        dashboardCount.await()
+                    } catch (ex: Exception) {
+                        null
+                    }
+
                     if (lovResponse != null) {
                             data.postValue(
                                 SyncModel(
                                     leadResponse,
                                     lovResponse,
-                                    visitCallResponse?.body()
+                                    visitCallResponse?.body(),
+                                    dashboardCallResponse?.body()
                                 )
                             )
 

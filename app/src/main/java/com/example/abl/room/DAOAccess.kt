@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.abl.model.*
+import com.google.android.gms.maps.model.Dash
 import io.reactivex.Flowable
 
 @Dao
@@ -111,4 +112,13 @@ interface DAOAccess {
     @Query("DELETE from UserLocation")
     fun deleteUserLocation()
 
+
+    @Query("DELETE from DashboardCount")
+    fun deleteDashBoardCount()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertDashBoardCount(dashboardResponse: DashboardResponse)
+
+    @Query("SELECT * FROM DashboardCount")
+    fun getDashBoardCount(): DashboardResponse
 }

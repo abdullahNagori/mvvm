@@ -539,8 +539,8 @@ class MainActivity : DockActivity() {
             this.showProgressIndicator()
             viewModel.getLOV().observe(this) {
                 this.hideProgressIndicator()
-                if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
-                    processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
+                if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty() && it.dashboardCountResponse != null) {
+                    processData(it.lovResponse, it.dynamicList, it.visitCallResponse, it.dashboardCountResponse!!)
                 } else {
                     this.showErrorMessage("Failed to sync data. Please try again")
                 }
@@ -548,7 +548,8 @@ class MainActivity : DockActivity() {
         }
     }
 
-    private fun processData(lovResponse: LovResponse, dynamicLeadsItem: ArrayList<DynamicLeadsItem>?, visitsCallResponseItem:ArrayList<CheckinModel>?) {
+    private fun processData(lovResponse: LovResponse, dynamicLeadsItem: ArrayList<DynamicLeadsItem>?, visitsCallResponseItem:ArrayList<CheckinModel>?,
+    dashboardResponse: DashboardResponse?) {
         sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
         sharedPrefManager.setCompanyProducts(lovResponse.company_products)
         sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
@@ -565,6 +566,14 @@ class MainActivity : DockActivity() {
             roomHelper.deleteCheckInData()
             roomHelper.insertVisitCallData(visitsCallResponseItem)
         }
+
+        // Set dashboard count data in local DB
+        if (dashboardResponse != null) {
+            roomHelper.deleteDashboardCount()
+            roomHelper.insertDashboardCount(dashboardResponse)
+        }
+
+
 
         prepareSideMenu()
     }

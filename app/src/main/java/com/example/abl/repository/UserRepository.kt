@@ -105,11 +105,9 @@ class UserRepository @Inject constructor(
         return api.addLeadCheckin(checkinModel, "Bearer " + sharedPrefManager.getToken())
     }
 
-    fun getDashboard(): MutableLiveData<String> {
-        return callApi(
-            api.getDashboard("Bearer " + sharedPrefManager.getToken()),
-            Constants.DASHBOARD_COUNT
-        )
+    fun getDashboard(): Call<DashboardResponse> {
+        return api.getDashboard("Bearer " + sharedPrefManager.getToken())
+
     }
 
     fun changePassword(changePasswordModel: ChangePasswordModel): MutableLiveData<String> {
