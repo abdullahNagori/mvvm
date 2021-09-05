@@ -10,8 +10,8 @@ import com.example.abl.model.DynamicLeadsItem
 import com.tapadoo.alerter.Alerter
 
 class ChangePasswordActivity : DockActivity() {
-
     lateinit var binding: ActivityChangePasswordBinding
+
     override fun getDockFrameLayoutId(): Int {
         return R.id.container
     }

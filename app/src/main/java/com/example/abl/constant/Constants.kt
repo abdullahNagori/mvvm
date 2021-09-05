@@ -45,7 +45,7 @@ object Constants {
     const val VISITS_LOGS_DETAILS  = "call_logs_detail"
     const val COLD_CALL : String = "coldcall"
     const val CALL : String = "call"
-    const val LEAD_SOURCE_ID : String = "lead_source_id"
+    const val LEAD_SOURCE_DATA : String = "lead_source_data"
     const val CUSTOMER_TYPE  = "customer_type"
     const val CUSTOMER_DATA = "customer_data"
     const val IS_SHIFT : String = "is_Shift"

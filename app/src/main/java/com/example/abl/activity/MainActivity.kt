@@ -183,7 +183,6 @@ class MainActivity : DockActivity() {
         animateNavigationDrawer(drawerLayout)
 
         prepareSideMenu()
-
     }
 
     private fun animateNavigationDrawer(drawerLayout: DrawerLayout) {
@@ -221,13 +220,6 @@ class MainActivity : DockActivity() {
 
             Constants.PORTFOLIO -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_profile)
-                closeDrawer()
-            }
-
-            Constants.MY_LEADS -> {
-                val bundle = Bundle()
-                bundle.putString("flag", "BTL")
-                navigateToFragment(R.id.action_nav_home_to_nav_crm, bundle)
                 closeDrawer()
             }
 
@@ -346,7 +338,7 @@ class MainActivity : DockActivity() {
             var str = listDataChild[listDataHeader[groupPosition]]!![childPosition]
             if (groupPosition == 4) {
                 val bundle = Bundle()
-                bundle.putString(Constants.LEAD_SOURCE_ID, companyLeadSource[childPosition].record_id)
+                bundle.putString(Constants.LEAD_SOURCE_DATA, GsonFactory.getConfiguredGson()?.toJson(companyLeadSource[childPosition]))
                 navigateToFragment(R.id.action_nav_home_to_nav_crm, bundle)
                 closeDrawer()
             } else {
@@ -362,18 +354,8 @@ class MainActivity : DockActivity() {
     }
 
     private fun setLeadManagementChildNodes() {
-//        val leadManagement: List<CompanyLeadSource> =
-//            sharedPrefManager.getLeadSource() ?: emptyList()
-
         companyLeadSource = sharedPrefManager.getLeadSource() ?: emptyList()
-        val itemList = ArrayList<String>()
-        //itemList.add(Constants.MY_LEADS)
-//        for (i in companyLeadSource) {
-//            itemList.add(i.desc)
-//            //childLeadMap[i.desc] = i.record_id
-//        }
-
-        listDataChild[listDataHeader[4]] = companyLeadSource.map { it.desc }
+        listDataChild[listDataHeader[4]] = companyLeadSource.map { it.name }
     }
 
     private fun callLead() {
@@ -557,32 +539,34 @@ class MainActivity : DockActivity() {
             this.showProgressIndicator()
             viewModel.getLOV().observe(this) {
                 this.hideProgressIndicator()
-                if (it.dynamicList?.size != 0) {
-                    //val leadModel = GsonFactory.getConfiguredGson()?.fromJson(it.visitCallResponse.toString(), CheckinModel::class.java)
-                    processData(it.lovResponse, it.dynamicList, it.visitCallResponse!!)
+                if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
+                    processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
+                } else {
+                    this.showErrorMessage("Failed to sync data. Please try again")
                 }
             }
         }
     }
 
-    private fun processData(
-        lovResponse: LovResponse,
-        dynamicLeadsItem: ArrayList<DynamicLeadsItem>?,
-        visitsCallResponseItem:ArrayList<CheckinModel>) {
+    private fun processData(lovResponse: LovResponse, dynamicLeadsItem: ArrayList<DynamicLeadsItem>?, visitsCallResponseItem:ArrayList<CheckinModel>?) {
         sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
         sharedPrefManager.setCompanyProducts(lovResponse.company_products)
         sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
         sharedPrefManager.setLeadSource(lovResponse.company_lead_source)
 
-        // Set leads and CheckIn data in local DB
+        // Set leads data in local DB
         if (dynamicLeadsItem != null) {
             roomHelper.deleteLeadData()
             roomHelper.insertLeadData(dynamicLeadsItem)
+        }
+
+        // Set checkIn data in local DB
+        if (visitsCallResponseItem != null) {
             roomHelper.deleteCheckInData()
             roomHelper.insertVisitCallData(visitsCallResponseItem)
         }
 
-        //setLeadManagementChildNodes()
+        prepareSideMenu()
     }
 
     private fun sendUserTracking() {

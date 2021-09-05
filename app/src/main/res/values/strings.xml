@@ -17,7 +17,7 @@
     <string name="enter_company_name">Enter Company Name</string>
     <string name="address">Address *</string>
     <string name="addresswdout_asterik">Address </string>
-    <string name="user_name">PLease Enter Login ID </string>
+    <string name="error_login_id">PLease Enter Login ID </string>
     <string name="un_synced_msg">PLease upload data first </string>
     <string name="enter_address">Enter Address</string>
     <string name="additional_information">Additional Information</string>
@@ -237,6 +237,7 @@
     <string name="total_customers">Total Customers</string>
     <string name="crm">CRM</string>
     <string name="my_leads">My Leads</string>
+    <string name="lead_management">Lead Management</string>
     <string name="select_month">Select Month</string>
     <string name="call_log">Call log</string>
     <string name="visit_log">Visit Log</string>

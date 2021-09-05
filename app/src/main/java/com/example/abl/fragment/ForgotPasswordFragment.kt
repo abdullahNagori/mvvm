@@ -28,7 +28,7 @@ class ForgotPasswordFragment : BaseDockFragment() {
         // Inflate the layout for this fragment
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
-        binding.btnGenOtp.setOnClickListener { onCLickEvent()}
+        binding.btnGenOtp.setOnClickListener { onGenerateOTPCLickEvent() }
         return binding.root
     }
 
@@ -36,21 +36,23 @@ class ForgotPasswordFragment : BaseDockFragment() {
         binding = FragmentForgotPasswordBinding.inflate(layoutInflater)
     }
 
-    private fun onCLickEvent() {
+    private fun onGenerateOTPCLickEvent() {
         if (binding.edForgotUserName.text.toString().isEmpty()) {
-            showBanner(getString(R.string.user_name), Constants.ERROR)
-        } else {
-           // LoginActivity.navController.navigate(R.id.action_forgotPassFragment_to_OTPVerificationFragment)
-            resetPwdReq(binding.edForgotUserName.text.toString())
+            myDockActivity?.showErrorMessage(getString(R.string.error_login_id))
+            return
         }
+
+        resetPwdReq(binding.edForgotUserName.text.toString())
     }
 
     private fun resetPwdReq(loginID: String){
+        myDockActivity?.showProgressIndicator()
         myDockActivity?.getUserViewModel()?.resetPwdReq(ResetPasswordModel(loginID))
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
+        myDockActivity?.hideProgressIndicator()
         when (tag) {
             Constants.RESET_PWD_REQ -> {
                 try {
@@ -68,6 +70,11 @@ class ForgotPasswordFragment : BaseDockFragment() {
                 }
             }
         }
+    }
+
+    override fun onFailure(message: String, tag: String) {
+        super.onFailure(message, tag)
+        myDockActivity?.hideProgressIndicator()
     }
 
     override fun closeDrawer() {

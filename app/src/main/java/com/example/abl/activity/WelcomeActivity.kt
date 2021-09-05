@@ -40,9 +40,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class WelcomeActivity : DockActivity() {
-
     lateinit var binding: ActivityWelcomeBinding
-    private val viewModel by inject<UserViewModel>()
 
     companion object {
          @SuppressLint("StaticFieldLeak")
@@ -58,7 +56,6 @@ class WelcomeActivity : DockActivity() {
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         SharedPrefKeyManager.with(this)
-
         initFragment()
     }
 
@@ -66,18 +63,11 @@ class WelcomeActivity : DockActivity() {
         replaceDockableFragmentWithoutBackStack(WelcomeFragment())
     }
 
-    fun getUserData(){
-     //   getUserViewModel().uerDetails("Bearer "+sharedPrefManager.getToken())
-
-    }
-    fun markAttendance(type: String, lat: String, lng: String){
-        getUserViewModel().markAttendance(MarkAttendanceModel(type,lat,lng),"Bearer "+sharedPrefManager.getToken())
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
     }
+
     private fun logResultsToScreen(output: String) {
         Log.i("Foreground", output)
     }
@@ -85,9 +75,7 @@ class WelcomeActivity : DockActivity() {
     /**
      * Receiver for location broadcasts from [ForegroundOnlyLocationService].
      */
-
     private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
-
         override fun onReceive(context: Context, intent: Intent) {
             val location = intent.getParcelableExtra<Location>(
                 ForegroundOnlyLocationService.EXTRA_LOCATION

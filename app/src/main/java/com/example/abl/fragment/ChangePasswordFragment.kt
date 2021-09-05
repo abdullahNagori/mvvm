@@ -28,8 +28,6 @@ import java.util.regex.Pattern
 import javax.inject.Inject
 
 class ChangePasswordFragment : BaseDockFragment(){
-
-
     lateinit var binding: FragmentChangePasswordBinding
 
     override fun onCreateView(
@@ -45,23 +43,6 @@ class ChangePasswordFragment : BaseDockFragment(){
         }
 
         return binding.root
-    }
-
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun showBanner(text: String, type: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-
     }
 
     private fun auth() {
@@ -100,9 +81,7 @@ class ChangePasswordFragment : BaseDockFragment(){
            ))
 
     }
-
-
-
+    
     private fun changePassword(changePasswordModel: ChangePasswordModel){
         myDockActivity?.getUserViewModel()?.changePassword(changePasswordModel)
     }
@@ -121,5 +100,22 @@ class ChangePasswordFragment : BaseDockFragment(){
         val regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+_=;*])(?=\\S+$).{4,}$"
         val p = Pattern.compile(regex)
         return p.matcher(str).matches()
+    }
+
+    override fun closeDrawer() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showBanner(text: String, type: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToFragment(id: Int, args: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setTitle(text: String) {
+        TODO("Not yet implemented")
+
     }
 }

@@ -14,8 +14,10 @@ import com.example.abl.adapter.DynamicViewPagerAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentCrmBinding
+import com.example.abl.model.CompanyLeadSource
 import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.model.DynamicLeadsResponse
+import com.example.abl.utils.GsonFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -27,11 +29,9 @@ import java.util.ArrayList
 
 
 class CRMFragment : BaseDockFragment() {
-
     lateinit var binding: FragmentCrmBinding
     lateinit var adapter: DynamicViewPagerAdapter
-    lateinit var leadSourceId: String
-    // lateinit var list: List<DynamicLeadsItem>
+    lateinit var leadSourceData: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,29 +40,18 @@ class CRMFragment : BaseDockFragment() {
         // Inflate the layout for this fragment
         myDockActivity?.getUserViewModel()?.apiListener = this
         binding = FragmentCrmBinding.inflate(layoutInflater)
-        leadSourceId = arguments?.getString(Constants.LEAD_SOURCE_ID).toString()
+        leadSourceData = arguments?.getString(Constants.LEAD_SOURCE_DATA).toString()
+
+        // Set navigation title
+        val leadSource = GsonFactory.getConfiguredGson()?.fromJson(leadSourceData, CompanyLeadSource::class.java)
+        myDockActivity?.supportActionBar?.title = leadSource?.name ?: getString(R.string.lead_management)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
-    }
-
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
     }
 
     private fun getDynamicData(token: String){
@@ -90,7 +79,7 @@ class CRMFragment : BaseDockFragment() {
         val leadStatusArray = sharedPrefManager.getLeadStatus()
         binding.viewPager.offscreenPageLimit = 10
         if (leadStatusArray != null) {
-            adapter = DynamicViewPagerAdapter(childFragmentManager, leadStatusArray.size, leadStatusArray, leadSourceId)
+            adapter = DynamicViewPagerAdapter(childFragmentManager, leadStatusArray.size, leadStatusArray, leadSourceData)
             binding.viewPager.adapter = adapter
             binding.tabLayout.setupWithViewPager(binding.viewPager)
 
@@ -113,5 +102,21 @@ class CRMFragment : BaseDockFragment() {
                 R.anim.zoomout
             )
         )
+    }
+
+    override fun closeDrawer() {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToFragment(id: Int, args: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setTitle(text: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
+        TODO("Not yet implemented")
     }
 }

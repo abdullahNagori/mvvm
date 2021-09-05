@@ -68,11 +68,13 @@ class LoginFragment : BaseDockFragment() {
     private fun loginUser() {
         email = binding.edUserName.text.toString()
         password = binding.edPassword.text.toString()
+        myDockActivity?.showProgressIndicator()
         myDockActivity?.getUserViewModel()?.login(LoginModel(email, password))
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
+        myDockActivity?.hideProgressIndicator()
         when (tag) {
             Constants.LOGIN -> {
                 try {
@@ -98,6 +100,7 @@ class LoginFragment : BaseDockFragment() {
 
     override fun onFailure(message: String, tag: String) {
         super.onFailure(message, tag)
+        myDockActivity?.hideProgressIndicator()
         if (tag == Constants.LOGIN) {
             Log.i("xxError", "Error")
         }

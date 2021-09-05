@@ -14,13 +14,14 @@ import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentAllBinding
 import com.example.abl.model.*
+import com.example.abl.utils.GsonFactory
 
 class AllFragment : BaseDockFragment(), ClickListner {
     lateinit var binding: FragmentAllBinding
     lateinit var adapter: CustomerAdapter
 
-    var leadSourceId: String? = null
     var leadStatusName: String? = null
+    var leadSource: CompanyLeadSource? = null
     var dataSource:List<DynamicLeadsItem> = emptyList()
 
     override fun onCreateView(
@@ -30,8 +31,12 @@ class AllFragment : BaseDockFragment(), ClickListner {
         // Inflate the layout for this fragment
         myDockActivity?.getUserViewModel()?.apiListener = this
         binding = FragmentAllBinding.inflate(layoutInflater)
-        leadSourceId = arguments?.getString(Constants.LEAD_SOURCE_ID)
+
         leadStatusName = arguments?.getString(Constants.LEAD_STATUS_NAME)
+
+        val leadSourceJSON = arguments?.getString(Constants.LEAD_SOURCE_DATA)
+        leadSource = GsonFactory.getConfiguredGson()?.fromJson(leadSourceJSON, CompanyLeadSource::class.java)
+
         initRecyclerView()
 
         return binding.root
@@ -68,7 +73,7 @@ class AllFragment : BaseDockFragment(), ClickListner {
     }
 
     private fun setData() {
-        val leadData = roomHelper.getLeadsData(leadSourceId!!)
+        val leadData = roomHelper.getLeadsData(leadSource?.record_id ?: "0")
 
         if (leadStatusName.equals("all", true)) {
             this.dataSource = leadData

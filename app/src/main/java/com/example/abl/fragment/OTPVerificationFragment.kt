@@ -42,7 +42,7 @@ class OTPVerificationFragment : BaseDockFragment() {
         myDockActivity?.getUserViewModel()?.apiListener = this
         loginID = arguments?.getString("LOGIN_ID", "" ).toString()
         isResetPassword = arguments?.getBoolean("RESET_PASSWORD") == true
-        binding.btnVerify.setOnClickListener { onClick() }
+        binding.btnVerify.setOnClickListener { onVerifyClickEvent() }
         return binding.root
     }
 
@@ -65,16 +65,14 @@ class OTPVerificationFragment : BaseDockFragment() {
         })
     }
 
-    private fun onClick() {
-
-        if (isPinnFilled)
-        {
+    private fun onVerifyClickEvent() {
+        if (isPinnFilled) {
             verifyOTP(pin)
         }
-
     }
 
     private fun verifyOTP(otp: String){
+        myDockActivity?.showProgressIndicator()
         myDockActivity?.getUserViewModel()?.verifyOtp(OtpModel(loginID,otp))
     }
 
@@ -82,9 +80,7 @@ class OTPVerificationFragment : BaseDockFragment() {
         super.onSuccess(liveData, tag)
         when (tag) {
             Constants.VERIFY_OTP -> {
-                try
-                {
-                    Log.d("liveDataValue", liveData.value.toString())
+                try {
                     val otpResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, OtpResponse::class.java)
                         if (otpResponseEnt?.verify == "yes") {
                             if (!otpResponseEnt.token.isNullOrBlank()) {
@@ -97,8 +93,7 @@ class OTPVerificationFragment : BaseDockFragment() {
                             } else {
                                 myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
                             }
-                        }
-                        else {
+                        } else {
                             myDockActivity?.showErrorMessage(getString(R.string.verification_failed))
                         }
                 }
