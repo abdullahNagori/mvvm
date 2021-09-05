@@ -63,7 +63,11 @@ class WelcomeFragment : BaseDockFragment() {
 //        longitude = myDockActivity?.longitude!!
 
         binding.fab.setOnClickListener {
-            markAttendance("checkin", myDockActivity?.latitude!!, myDockActivity?.longitude!!)
+            if (myDockActivity?.latitude != null && myDockActivity?.longitude != null) {
+                myDockActivity?.showErrorMessage("Location not found")
+            }
+
+            markAttendance("checkin", myDockActivity?.latitude ?: "0", myDockActivity?.longitude ?: "0")
             (requireActivity() as WelcomeActivity).foregroundOnlyLocationService?.subscribeToLocationUpdates()
         }
 

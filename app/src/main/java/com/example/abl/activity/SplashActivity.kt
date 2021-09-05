@@ -63,7 +63,6 @@ class SplashActivity : AppCompatActivity() {
 
 
     private fun nextView() {
-
         val sharedPrefManager = SharedPrefManager(this)
 
         if (sharedPrefManager.getToken().isNotEmpty()) {
@@ -75,7 +74,6 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             }
-
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()

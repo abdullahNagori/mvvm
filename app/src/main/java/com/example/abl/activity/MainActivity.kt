@@ -98,8 +98,7 @@ class MainActivity : DockActivity() {
 
         navController = findNavController(R.id.nav_host_main)
 
-        name.text =
-            sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
+        name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
 
         initView()
         setGesture()
@@ -629,9 +628,9 @@ class MainActivity : DockActivity() {
 
             this.showProgressIndicator()
 
-
             workManager.beginWith(uploadLeadWorkRequest)
-                .then(uploadCheckInWorkRequest).enqueue()
+                .then(uploadCheckInWorkRequest)
+                .enqueue()
 
 
             val workQuery = WorkQuery.Builder
