@@ -22,8 +22,6 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
     private val KEY_VISIT_STATUS = "KEY_VISIT_STATUS"
     private val KEY_LEAD_SOURCE = "KEY_LEAD_SOURCE"
 
-    var location: Location = Location(LocationManager.GPS_PROVIDER)
-
     val sharedPreferences: SharedPreferences = context.getSharedPreferences(Key_Pref, Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
 

@@ -239,7 +239,6 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
                 }
             }
 
-       // }
     }
 
     override fun closeDrawer() {

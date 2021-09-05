@@ -268,6 +268,11 @@ class MainActivity : DockActivity() {
                 closeDrawer()
             }
 
+            Constants.PASSWORD_CHANGE -> {
+                navigateToFragment(R.id.action_nav_home_to_nav_change_password)
+                closeDrawer()
+            }
+
             Constants.LOGOUT -> {
                 sharedPrefManager.logout()
                 foregroundOnlyLocationService?.unsubscribeToLocationUpdates()

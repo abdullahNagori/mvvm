@@ -1,38 +1,30 @@
 package com.example.abl.activity
 
+import android.annotation.SuppressLint
 import android.content.*
 import android.location.Location
-import android.net.Uri
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageButton
-import androidx.annotation.IdRes
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.abl.R
 import com.example.abl.base.BaseDockFragment
-import com.example.abl.base.BaseFragment
-import com.example.abl.constant.Constants
 import com.example.abl.location.ForegroundOnlyLocationService
 import com.example.abl.location.toText
 import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.network.ApiListener
 import com.example.abl.progress.ProgressDialog
 import com.example.abl.progress.ProgressIndicator
 import com.example.abl.room.RoomHelper
-import com.example.abl.utils.CustomEditText
-import com.example.abl.utils.DrawableClickListener
-import com.example.abl.utils.DrawableClickListener.DrawablePosition
 import com.example.abl.utils.SharedPrefManager
 import com.example.abl.viewModel.UserViewModel
+import com.google.android.gms.location.LocationServices
 import com.tapadoo.alerter.Alerter
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.dialog_call.*
@@ -57,6 +49,13 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
     @Inject
     lateinit var roomHelper: RoomHelper
 
+    var location: Location = Location(LocationManager.GPS_PROVIDER)
+
+     var latitude: String? = null
+     var longitude: String? = null
+
+    var locationManager: LocationManager? = null
+
     private lateinit var progressBarDialog: ProgressDialog
     private lateinit var userViewModel: UserViewModel
 
@@ -64,7 +63,7 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
     var foregroundOnlyLocationService: ForegroundOnlyLocationService? = null
     private var mBound = false
 
-     val foregroundOnlyServiceConnection = object : ServiceConnection {
+    val foregroundOnlyServiceConnection = object : ServiceConnection {
 
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val binder = service as ForegroundOnlyLocationService.LocalBinder
@@ -111,10 +110,13 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
         }
         super.onStop()
     }
+
+    @SuppressLint("LongLogTag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModels()
         foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
+        getLocation()
 
     }
 
@@ -239,5 +241,20 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
             }
         }
     }
-    //abstract fun navigateToFragment(@IdRes id: Int, args: Bundle? = null)
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        LocationServices.getFusedLocationProviderClient(this).lastLocation.addOnSuccessListener {
+            try {
+                if (it == null) {
+                    getLocation()
+                }
+                latitude = it.latitude.toString()
+                longitude = it.longitude.toString()
+                Log.i("CurrentLocation", "Your Location: \nLatitude: $latitude\nLongitude: $longitude")
+            } catch (e: java.lang.Exception) {
+            }
+        }
+
+    }
 }

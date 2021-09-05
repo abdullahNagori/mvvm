@@ -53,7 +53,16 @@
         <action
             android:id="@+id/action_nav_home_to_nav_training"
             app:destination="@id/nav_training" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_change_password"
+            app:destination="@id/nav_change_pass" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_change_pass"
+        android:name="com.example.abl.fragment.ChangePasswordFragment"
+        android:label="@string/change_password"
+        tools:layout="@layout/fragment_change_password"/>
 
     <fragment
         android:id="@+id/nav_profile"
@@ -201,7 +210,7 @@
         <action
             android:id="@+id/action_nav_visit_to_checkInFormFragment"
             app:launchSingleTop="true"
-            app:popUpTo="@+id/checkInFormFragment"
+            app:popUpTo="@+id/nav_home"
             app:popUpToInclusive="true"
             app:destination="@id/checkInFormFragment" />
 
