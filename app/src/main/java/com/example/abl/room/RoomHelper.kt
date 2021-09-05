@@ -6,7 +6,7 @@ import com.example.abl.repository.BaseRepository
 import com.example.abl.utils.GsonFactory
 import javax.inject.Inject
 
-class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRepository() {
+class RoomHelper @Inject constructor(private val daoAccess: DAOAccess, private val ablDatabase: ABLDatabase) : BaseRepository() {
 
     fun insertLeadData(dynamicLeadsItem: ArrayList<DynamicLeadsItem>) {
         daoAccess.insertLeadData(dynamicLeadsItem)
@@ -76,7 +76,23 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess) : BaseRep
         daoAccess.deleteDashBoardCount()
     }
 
-    fun getDashboardCount(): DashboardResponse{
-        return daoAccess.getDashBoardCount()
+    fun getVisitLogsCount(): String {
+        return daoAccess.getVisitLogsCount()
     }
+
+    fun getCallLogsCount(): String {
+        return daoAccess.getCallLogsCount()
+    }
+
+    fun getFollowupCount(): String {
+        return daoAccess.getFollowupCount()
+    }
+
+    fun clearDB() {
+        ablDatabase.clearAllTables()
+    }
+
+//    fun getDashboardCount(): DashboardResponse{
+//        return daoAccess.getDashBoardCount()
+//    }
 }

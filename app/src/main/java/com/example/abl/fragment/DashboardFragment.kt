@@ -49,7 +49,7 @@ class DashboardFragment : BaseDockFragment() {
 
         init()
         myDockActivity?.getUserViewModel()?.apiListener = this
-        getDashBoardCount()
+    //    getDashBoardCount()
 
 
 
@@ -299,6 +299,14 @@ class DashboardFragment : BaseDockFragment() {
                 R.anim.righttoleft
             )
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding.todayCall.text = roomHelper.getCallLogsCount()
+        binding.todayVisit.text = roomHelper.getVisitLogsCount()
+        binding.todaysFollowUp.text = roomHelper.getFollowupCount()
     }
 
     private fun getDashBoardCount() {

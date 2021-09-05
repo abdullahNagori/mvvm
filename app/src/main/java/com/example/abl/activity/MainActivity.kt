@@ -270,6 +270,7 @@ class MainActivity : DockActivity() {
 
             Constants.LOGOUT -> {
                 sharedPrefManager.logout()
+                roomHelper.clearDB()
                 foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()

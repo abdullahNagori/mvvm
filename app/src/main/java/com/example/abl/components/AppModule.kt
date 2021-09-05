@@ -3,6 +3,7 @@ package com.example.abl.components
 import android.content.Context
 import androidx.work.Configuration
 import com.example.abl.network.Api
+import com.example.abl.room.ABLDatabase
 import com.example.abl.room.DAOAccess
 import com.example.abl.room.RoomHelper
 import com.example.abl.utils.*
@@ -40,8 +41,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRoomHelper(daoAccess: DAOAccess): RoomHelper {
-        return RoomHelper(daoAccess)
+    fun provideRoomHelper(daoAccess: DAOAccess, ablDatabase: ABLDatabase): RoomHelper {
+        return RoomHelper(daoAccess, ablDatabase)
     }
 
     @Provides

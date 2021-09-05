@@ -76,7 +76,7 @@ class ForegroundOnlyLocationService : Service() {
 //        apiServices = Client.SERVICE_INSTANCE
 //        daoAccess = DAOAccess
         ablDatabase = ABLDatabase.getInstance(context)
-        repo = RoomHelper(ablDatabase.leadDao())
+        repo = RoomHelper(ablDatabase.leadDao(), ablDatabase)
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)

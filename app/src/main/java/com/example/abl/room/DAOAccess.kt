@@ -119,6 +119,12 @@ interface DAOAccess {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertDashBoardCount(dashboardResponse: DashboardResponse)
 
-    @Query("SELECT * FROM DashboardCount")
-    fun getDashBoardCount(): DashboardResponse
+    @Query("SELECT count(*) from Checkin where visit_type = 'visit'")
+    fun getVisitLogsCount(): String
+
+    @Query("SELECT count(*) from Checkin where visit_type = 'call'")
+    fun getCallLogsCount(): String
+
+    @Query("SELECT count(*) from Lead where lead_status_name = 'followup'")
+    fun getFollowupCount(): String
 }

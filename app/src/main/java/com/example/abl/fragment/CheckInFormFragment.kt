@@ -83,6 +83,15 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             }
         }
 
+        arguments?.getParcelable<DynamicLeadsItem>(Constants.LEAD_DATA).let {
+            it?.let { it1 ->
+                this.customer = it1
+                setData()
+                setProductSpinner()
+                setVisitStatusSpinner()
+            }
+        }
+
         binding.submit.setOnClickListener {
             auth()
         }
@@ -121,7 +130,8 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
                     .get(Calendar.YEAR), mCalender.get(Calendar.MONTH),
                 mCalender.get(Calendar.DAY_OF_MONTH)
             ).show()
-            binding.date.setTextColor(ContextCompat.getColor(
+            binding.date.setTextColor(
+                ContextCompat.getColor(
                     myDockActivity!!,
                     R.color.colorAccent
                 )
@@ -325,15 +335,15 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
-            LocationServices.getFusedLocationProviderClient(requireContext()).lastLocation.addOnSuccessListener {
-                try {
-                    if (it == null) {
-                        getLocation()
-                    }
-                    latitude = it.latitude
-                    longitude = it.longitude
-                } catch (e: java.lang.Exception) {
+        LocationServices.getFusedLocationProviderClient(requireContext()).lastLocation.addOnSuccessListener {
+            try {
+                if (it == null) {
+                    getLocation()
                 }
+                latitude = it.latitude
+                longitude = it.longitude
+            } catch (e: java.lang.Exception) {
+            }
         }
     }
 
