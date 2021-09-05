@@ -6,7 +6,8 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.DAOAccess
-import com.example.abl.utils.Schedulers.UploadWorkManager.UploadWorker
+import com.example.abl.utils.Schedulers.UploadCheckInWorkManager.UploadCheckInWorker
+import com.example.abl.utils.Schedulers.UploadLeadWorkManager.UploadLeadWorker
 import javax.inject.Inject
 
 class LocationWorkerFactory @Inject constructor(
@@ -22,7 +23,8 @@ class LocationWorkerFactory @Inject constructor(
 
         return when (workerClassName) {
             LocationWorker::class.java.name -> LocationWorker(userRepository, daoAccess, appContext, workerParameters)
-            UploadWorker::class.java.name -> UploadWorker(userRepository, daoAccess, appContext, workerParameters)
+            UploadLeadWorker::class.java.name -> UploadLeadWorker(userRepository, daoAccess, appContext, workerParameters)
+            UploadCheckInWorker::class.java.name -> UploadCheckInWorker(userRepository, daoAccess, appContext, workerParameters)
             else ->
                 // Return null, so that the base class can delegate to the default WorkerFactory.
                 null

@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -42,16 +41,12 @@ import com.example.abl.databinding.ActivityMainBinding
 import com.example.abl.model.*
 import com.example.abl.utils.*
 import com.example.abl.utils.Schedulers.LocationWorkManager.LocationWorker
-import com.example.abl.utils.Schedulers.UploadWorkManager.UploadWorker
+import com.example.abl.utils.Schedulers.UploadCheckInWorkManager.UploadCheckInWorker
+import com.example.abl.utils.Schedulers.UploadLeadWorkManager.UploadLeadWorker
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_menu_shortcut.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import okhttp3.ResponseBody
-import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -615,25 +610,33 @@ class MainActivity : DockActivity() {
 
     private fun sendLeadData() {
         try {
-            val workManager = WorkManager.getInstance(application)
-
+            val workManager = WorkManager.getInstance(applicationContext)
             val uploadDataConstraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
 
-            val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadWorker>()
+            val uploadLeadWorkRequest = OneTimeWorkRequestBuilder<UploadLeadWorker>()
                 .setConstraints(uploadDataConstraints)
                 .build()
-
+            val uploadCheckInWorkRequest = OneTimeWorkRequestBuilder<UploadCheckInWorker>()
+                .setConstraints(uploadDataConstraints)
+                .build()
             this.showProgressIndicator()
 
-            //workManager.enqueue(uploadWorkRequest)
-            workManager.beginWith(uploadWorkRequest)
-                .enqueue()
 
-            workManager.getWorkInfoByIdLiveData(uploadWorkRequest.id).observe(this, androidx.lifecycle.Observer { workInfo ->
+            workManager.beginWith(uploadLeadWorkRequest)
+                .then(uploadCheckInWorkRequest).enqueue()
+
+            workManager.getWorkInfoByIdLiveData(uploadLeadWorkRequest.id).observe(this, androidx.lifecycle.Observer { workInfo ->
                 if (workInfo.state.isFinished) {
                     this.hideProgressIndicator()
                 }
             })
+
+            workManager.getWorkInfoByIdLiveData(uploadCheckInWorkRequest.id).observe(this, androidx.lifecycle.Observer { workInfo ->
+                if (workInfo.state.isFinished) {
+                    this.hideProgressIndicator()
+                }
+            })
+
         } catch (e: Exception) {
             Log.i("UploadWorkerLocation", e.message.toString())
         }

@@ -1,25 +1,18 @@
-package com.example.abl.utils.Schedulers.UploadWorkManager
+package com.example.abl.utils.Schedulers.UploadLeadWorkManager
 
-import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
 import androidx.work.CoroutineWorker
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.abl.network.ApiListener
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.DAOAccess
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class UploadWorker @Inject constructor(
+class UploadLeadWorker @Inject constructor(
     private val userRepository: UserRepository,
     private val daoAccess: DAOAccess,
     var appContext: Context,
@@ -53,26 +46,25 @@ class UploadWorker @Inject constructor(
                     }
                 }
             }
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                val checkInData = daoAccess.getUnSyncedCheckInData("false")
-
-                if (checkInData.isNotEmpty()) {
-                    checkInData.forEach {
-                        val callCheckIn = userRepository.addLeadCheckin(it.getCheckInData())
-                        CoroutineScope(Dispatchers.IO).launch {
-                            val response =  callCheckIn.execute()
-                            if (response.body()?.message == "successful") {
-                                daoAccess.updateCheckInStatus(it.lead_id!!)
-                                daoAccess.updateLeadStatus(it.lead_id)
-                                Result.success()
-                            } else {
-                                Result.retry()
-                            }
-                        }
-                    }
-                }
-            }, 5000)
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                val checkInData = daoAccess.getUnSyncedCheckInData("false")
+//
+//                if (checkInData.isNotEmpty()) {
+//                    checkInData.forEach {
+//                        val callCheckIn = userRepository.addLeadCheckin(it.getCheckInData())
+//                        CoroutineScope(Dispatchers.IO).launch {
+//                            val response =  callCheckIn.execute()
+//                            if (response.body()?.message == "successful") {
+//                                daoAccess.updateCheckInStatus(it.lead_id!!)
+//                                daoAccess.updateLeadStatus(it.lead_id)
+//                                Result.success()
+//                            } else {
+//                                Result.retry()
+//                            }
+//                        }
+//                    }
+//                }
+//            }, 5000)
 
             Result.success()
 
