@@ -114,7 +114,7 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
             "",
             "",
             "",
-            "",
+            "0",
             "",
             "",
             "",
