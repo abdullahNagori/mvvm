@@ -38,14 +38,16 @@ class AllFragment : BaseDockFragment(), ClickListner {
         leadSource = GsonFactory.getConfiguredGson()?.fromJson(leadSourceJSON, CompanyLeadSource::class.java)
 
         initRecyclerView()
+        setData()
+
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setData()
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        setData()
+//    }
 
     override fun closeDrawer() {
         TODO("Not yet implemented")
