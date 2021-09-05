@@ -1,10 +1,12 @@
 package com.example.abl.utils.Schedulers.UploadCheckInWorkManager
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.DAOAccess
+import com.example.abl.utils.Schedulers.UploadLeadWorkManager.UploadLeadWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,15 +18,21 @@ class UploadCheckInWorker @Inject constructor(
     var appContext: Context,
     var workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    override suspend fun doWork(): Result {
-        val checkInData = daoAccess.getUnSyncedCheckInData("false")
 
-        if (checkInData.isNotEmpty()) {
-            checkInData.forEach {
-                val callCheckIn = userRepository.addLeadCheckin(it.getCheckInData())
-                CoroutineScope(Dispatchers.IO).launch {
-                    val response = callCheckIn.execute()
-                    if (response.body()?.message == "successful") {
+    companion object {
+        private const val TAG = "UploadCheckInWorker"
+    }
+
+    override suspend fun doWork(): Result {
+
+        return try {
+            Log.i(TAG, "Fetching Data from Remote host")
+
+            val checkInData = daoAccess.getUnSyncedCheckInData("false")
+            if (checkInData.isNotEmpty()) {
+                checkInData.forEach {
+                    val response = userRepository.addLeadCheckin(it.getCheckInData()).execute()
+                    if (response.body() != null) {
                         daoAccess.updateCheckInStatus(it.lead_id!!)
                         daoAccess.updateLeadStatus(it.lead_id)
                         Result.success()
@@ -33,11 +41,18 @@ class UploadCheckInWorker @Inject constructor(
                     }
                 }
             }
+
+            return Result.success()
+
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            // Technically WorkManager will return Result.failure()
+            // but it's best to be explicit about it.
+            // Thus if there were errors, we're return FAILURE
+            Log.e(TAG, "Error fetching data", e)
+            Result.failure()
         }
-        return Result.success()
     }
-
-
 }
 
 

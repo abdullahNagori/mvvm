@@ -97,8 +97,7 @@ class MainActivity : DockActivity() {
 
         navController = findNavController(R.id.nav_host_main)
 
-        name.text =
-            sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
+        name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
 
         initView()
         setGesture()
@@ -630,9 +629,9 @@ class MainActivity : DockActivity() {
                 .build()
             this.showProgressIndicator()
 
-
             workManager.beginWith(uploadLeadWorkRequest)
-                .then(uploadCheckInWorkRequest).enqueue()
+                .then(uploadCheckInWorkRequest)
+                .enqueue()
 
             workManager.getWorkInfoByIdLiveData(uploadLeadWorkRequest.id).observe(this, androidx.lifecycle.Observer { workInfo ->
                 if (workInfo.state.isFinished) {
