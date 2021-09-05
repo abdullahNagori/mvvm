@@ -7,6 +7,5 @@ import retrofit2.Response
 data class SyncModel(
     var dynamicList: ArrayList<DynamicLeadsItem>?,
     var lovResponse: LovResponse,
-    var visitCallResponse: ArrayList<CheckinModel>?,
-    var dashboardCountResponse: DashboardResponse?
+    var visitCallResponse: ArrayList<CheckinModel>?
 )

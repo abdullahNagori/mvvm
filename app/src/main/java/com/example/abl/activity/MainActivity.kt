@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -539,8 +540,8 @@ class MainActivity : DockActivity() {
             this.showProgressIndicator()
             viewModel.getLOV().observe(this) {
                 this.hideProgressIndicator()
-                if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty() && it.dashboardCountResponse != null) {
-                    processData(it.lovResponse, it.dynamicList, it.visitCallResponse, it.dashboardCountResponse!!)
+                if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
+                    processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
                 } else {
                     this.showErrorMessage("Failed to sync data. Please try again")
                 }
@@ -548,8 +549,7 @@ class MainActivity : DockActivity() {
         }
     }
 
-    private fun processData(lovResponse: LovResponse, dynamicLeadsItem: ArrayList<DynamicLeadsItem>?, visitsCallResponseItem:ArrayList<CheckinModel>?,
-    dashboardResponse: DashboardResponse?) {
+    private fun processData(lovResponse: LovResponse, dynamicLeadsItem: ArrayList<DynamicLeadsItem>?, visitsCallResponseItem:ArrayList<CheckinModel>?) {
         sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
         sharedPrefManager.setCompanyProducts(lovResponse.company_products)
         sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
@@ -567,11 +567,6 @@ class MainActivity : DockActivity() {
             roomHelper.insertVisitCallData(visitsCallResponseItem)
         }
 
-        // Set dashboard count data in local DB
-        if (dashboardResponse != null) {
-            roomHelper.deleteDashboardCount()
-            roomHelper.insertDashboardCount(dashboardResponse)
-        }
 
 
 
@@ -623,28 +618,35 @@ class MainActivity : DockActivity() {
             val uploadDataConstraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
 
             val uploadLeadWorkRequest = OneTimeWorkRequestBuilder<UploadLeadWorker>()
+                .addTag("leadWorker")
                 .setConstraints(uploadDataConstraints)
                 .build()
+
             val uploadCheckInWorkRequest = OneTimeWorkRequestBuilder<UploadCheckInWorker>()
+                .addTag("checkInWorker")
                 .setConstraints(uploadDataConstraints)
                 .build()
+
             this.showProgressIndicator()
 
 
             workManager.beginWith(uploadLeadWorkRequest)
                 .then(uploadCheckInWorkRequest).enqueue()
 
-            workManager.getWorkInfoByIdLiveData(uploadLeadWorkRequest.id).observe(this, androidx.lifecycle.Observer { workInfo ->
-                if (workInfo.state.isFinished) {
-                    this.hideProgressIndicator()
-                }
-            })
 
-            workManager.getWorkInfoByIdLiveData(uploadCheckInWorkRequest.id).observe(this, androidx.lifecycle.Observer { workInfo ->
-                if (workInfo.state.isFinished) {
-                    this.hideProgressIndicator()
+            val workQuery = WorkQuery.Builder
+                .fromTags(listOf("leadWorker", "checkInWorker"))
+                .addStates(listOf(WorkInfo.State.SUCCEEDED, WorkInfo.State.FAILED))
+                .build()
+            // 2
+            workManager.getWorkInfosLiveData(workQuery).observe(this) { workInfos ->
+                if (workInfos.size > 1) {
+                    if (workInfos[0].state.isFinished && workInfos[1].state.isFinished) {
+                        this.hideProgressIndicator()
+                    }
                 }
-            })
+            }
+
 
         } catch (e: Exception) {
             Log.i("UploadWorkerLocation", e.message.toString())

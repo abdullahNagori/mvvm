@@ -38,7 +38,7 @@ class DashboardFragment : BaseDockFragment() {
     private lateinit var todayCall: String
     private lateinit var todayVisit: String
     private lateinit var todayFollowup: String
-    var dashboardCount: DashboardResponse? = null
+//    var dashboardCount: DashboardResponse? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +49,7 @@ class DashboardFragment : BaseDockFragment() {
 
         init()
         myDockActivity?.getUserViewModel()?.apiListener = this
-        //getDashBoardCount()
+        getDashBoardCount()
 
 
 
@@ -76,29 +76,30 @@ class DashboardFragment : BaseDockFragment() {
         TODO("Not yet implemented")
     }
 
-    private fun init(){
+    private fun init() {
         binding = FragmentDashboardBinding.inflate(layoutInflater)
         binding.barchart.description.isEnabled = false
         binding.barchart.setMaxVisibleValueCount(60)
-        binding.name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
+        binding.name.text =
+            sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
 
         val sdf = SimpleDateFormat("hh:mm:ss dd/M/yyyy")
         val currentDate = sdf.format(Date())
         binding.shiftStart.text = "Shift Started At $currentDate"
         //System.out.println(" C DATE is  "+currentDate)
 
-        dashboardCount = roomHelper.getDashboardCount()
+//        dashboardCount = roomHelper.getDashboardCount()
 
-        if (dashboardCount != null) {
-
-            todayCall = dashboardCount?.today_calls!!
-            todayVisit = dashboardCount?.today_visits!!
-            todayFollowup = dashboardCount?.today_followups!!
-
-            binding.todayCall.text = todayCall
-            binding.todayVisit.text = todayVisit
-            binding.todaysFollowUp.text = todayFollowup
-        }
+//        if (dashboardCount != null) {
+//
+//            todayCall = dashboardCount?.today_calls!!
+//            todayVisit = dashboardCount?.today_visits!!
+//            todayFollowup = dashboardCount?.today_followups!!
+//
+//            binding.todayCall.text = todayCall
+//            binding.todayVisit.text = todayVisit
+//            binding.todaysFollowUp.text = todayFollowup
+//        }
 
     }
 
@@ -300,24 +301,25 @@ class DashboardFragment : BaseDockFragment() {
         )
     }
 
-//    private fun getDashBoardCount(){
-//        myDockActivity?.getUserViewModel()?.getDashBoard()
-//    }
+    private fun getDashBoardCount() {
+        myDockActivity?.getUserViewModel()?.getDashBoard()
+    }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)
-        when(tag){
-            Constants.DASHBOARD_COUNT ->{
+        when (tag) {
+            Constants.DASHBOARD_COUNT -> {
                 Log.i("DashboardCount", liveData.value.toString())
-                val verifyPassResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, DashboardResponse::class.java)
+                val verifyPassResponseEnt = GsonFactory.getConfiguredGson()
+                    ?.fromJson(liveData.value, DashboardResponse::class.java)
                 todayCall = verifyPassResponseEnt?.today_calls.toString()
                 todayFollowup = verifyPassResponseEnt?.today_followups.toString()
                 todayVisit = verifyPassResponseEnt?.today_visits.toString()
 
-                Log.i("xxcall",verifyPassResponseEnt?.today_calls.toString())
-                Log.i("xxvisit",verifyPassResponseEnt?.today_visits.toString())
-                Log.i("xxfollowup",verifyPassResponseEnt?.today_followups.toString())
 
+                binding.todayCall.text = todayCall
+                binding.todayVisit.text = todayVisit
+                binding.todaysFollowUp.text = todayFollowup
             }
         }
     }
