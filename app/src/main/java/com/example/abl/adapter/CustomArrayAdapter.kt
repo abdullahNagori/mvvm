@@ -34,7 +34,7 @@ class CustomArrayAdapter(val context: Context, var listItemsTxt: List<CompanyPro
         // setting adapter item height programatically.
 
         val params = view.layoutParams
-        params.height = 100
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT
         view.layoutParams = params
 
         vh.label.text = listItemsTxt[position].product_name
