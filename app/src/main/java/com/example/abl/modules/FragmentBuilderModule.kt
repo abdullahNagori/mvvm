@@ -116,4 +116,7 @@ interface FragmentBuilderModule {
     @ContributesAndroidInjector
     fun contributeQuizFragment(): QuizFragment
 
+    @ContributesAndroidInjector
+    fun contributeFollowupFragment(): FollowupFragment
+
 }

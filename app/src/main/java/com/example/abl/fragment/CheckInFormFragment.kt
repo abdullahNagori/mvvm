@@ -50,7 +50,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     var selectedProduct: CompanyProduct? = null
     var visitStatusList: ArrayList<CompanyVisitStatu> = ArrayList<CompanyVisitStatu>()
     var selectedVisitStatus: CompanyVisitStatu? = null
-    var visitType: String = "visit"
+    var visitType: String = ""
 
     var latitude = 0.0
     var longitude = 0.0
@@ -83,14 +83,14 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             }
         }
 
-        arguments?.getParcelable<DynamicLeadsItem>(Constants.LEAD_DATA).let {
-            it?.let { it1 ->
-                this.customer = it1
-                setData()
-                setProductSpinner()
-                setVisitStatusSpinner()
-            }
-        }
+//        arguments?.getParcelable<DynamicLeadsItem>(Constants.LEAD_DATA).let {
+//            it?.let { it1 ->
+//                this.customer = it1
+//                setData()
+//                setProductSpinner()
+//                setVisitStatusSpinner()
+//            }
+//        }
 
         binding.submit.setOnClickListener {
             auth()
@@ -208,7 +208,14 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     private fun setData() {
         binding.customerName.setText(customer.first_name)
         binding.contactNo.setText(customer.mobile_phone_number)
-        //visitType = customer.type!!
+        if (binding.customerName.text.isNotEmpty() && binding.contactNo.text.isNotEmpty())
+        {
+            binding.contactNo.isFocusable = false
+            binding.contactNo.isClickable = false
+
+            binding.customerName.isFocusable = false
+            binding.customerName.isClickable = false
+        }
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

@@ -26,15 +26,15 @@
         </activity>
         <activity
             android:name=".activity.WelcomeActivity"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SplashActivity"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="portrait">
 
         </activity>
 

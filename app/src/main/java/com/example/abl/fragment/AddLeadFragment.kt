@@ -7,6 +7,7 @@ import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
@@ -15,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LiveData
@@ -52,7 +54,10 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
     var latitude = 0.0
     var longitude = 0.0
     val previousVisit = ArrayList<GetPreviousVisit>()
+    var visitType: String = ""
+    var customerNumber: String = ""
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,8 +79,17 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         return binding.root
     }
 
+
     private fun initView() {
         binding = AddFragmentBinding.inflate(layoutInflater)
+        customerNumber = arguments?.getString(Constants.CUSTOMER_NUMBER) ?: ""
+        if (customerNumber.isNotEmpty()){
+            binding.contactNum.setText(customerNumber)
+            binding.contactNum.isFocusable = false
+            binding.contactNum.isClickable = false
+        }
+
+
     }
 
     private fun addLead() {
@@ -153,9 +167,12 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         )
 
 
+        visitType = arguments?.getString(Constants.VISIT_TYPE).toString()
         roomHelper.insertAddLead(dict)
+
         val bundle = Bundle()
         bundle.putParcelable(Constants.LOCAL_LEAD_DATA, dict as Parcelable)
+        bundle.putString(Constants.VISIT_TYPE, visitType)
         navigateToFragment(R.id.action_nav_visit_to_checkInFormFragment, bundle)
         // myDockActivity?.getUserViewModel()?.addLead(customerDetail)
     }

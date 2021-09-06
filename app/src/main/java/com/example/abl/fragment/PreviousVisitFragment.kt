@@ -50,6 +50,7 @@ class PreviousVisitFragment : BaseDockFragment(), ClickListner {
 
     private fun initRecyclerView(){
         previousList = dynamicLeadsItem.get_previous_visit
+        binding.totalCustomers.text = previousList.size.toString()
         adapter = PreviousVisitAdapter(requireContext(), this)
         adapter.setList(previousList)
         binding.previous.adapter = adapter

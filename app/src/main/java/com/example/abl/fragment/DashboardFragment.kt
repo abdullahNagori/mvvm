@@ -51,8 +51,6 @@ class DashboardFragment : BaseDockFragment() {
         myDockActivity?.getUserViewModel()?.apiListener = this
     //    getDashBoardCount()
 
-
-
         setAnim()
         val labels = monthList()
         initChart(binding, labels)
@@ -65,7 +63,11 @@ class DashboardFragment : BaseDockFragment() {
     }
 
     override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
+        if (args != null) {
+            MainActivity.navController.navigate(id, args)
+            return
+        }
+        MainActivity.navController.navigate(id)
     }
 
     override fun setTitle(text: String) {
@@ -86,20 +88,17 @@ class DashboardFragment : BaseDockFragment() {
         val sdf = SimpleDateFormat("hh:mm:ss dd/M/yyyy")
         val currentDate = sdf.format(Date())
         binding.shiftStart.text = "Shift Started At $currentDate"
-        //System.out.println(" C DATE is  "+currentDate)
 
-//        dashboardCount = roomHelper.getDashboardCount()
+        binding.llTodaysCall.setOnClickListener {
+            navigateToFragment(R.id.action_nav_home_to_call_logs)
+        }
+        binding.llTodaysVisit.setOnClickListener {
+            navigateToFragment(R.id.action_nav_home_to_visit_logs)
+        }
+        binding.llFollowup.setOnClickListener {
+            navigateToFragment(R.id.action_nav_home_to_followup)
 
-//        if (dashboardCount != null) {
-//
-//            todayCall = dashboardCount?.today_calls!!
-//            todayVisit = dashboardCount?.today_visits!!
-//            todayFollowup = dashboardCount?.today_followups!!
-//
-//            binding.todayCall.text = todayCall
-//            binding.todayVisit.text = todayVisit
-//            binding.todaysFollowUp.text = todayFollowup
-//        }
+        }
 
     }
 
@@ -303,7 +302,6 @@ class DashboardFragment : BaseDockFragment() {
 
     override fun onResume() {
         super.onResume()
-
         binding.todayCall.text = roomHelper.getCallLogsCount()
         binding.todayVisit.text = roomHelper.getVisitLogsCount()
         binding.todaysFollowUp.text = roomHelper.getFollowupCount()
@@ -323,7 +321,6 @@ class DashboardFragment : BaseDockFragment() {
                 todayCall = verifyPassResponseEnt?.today_calls.toString()
                 todayFollowup = verifyPassResponseEnt?.today_followups.toString()
                 todayVisit = verifyPassResponseEnt?.today_visits.toString()
-
 
                 binding.todayCall.text = todayCall
                 binding.todayVisit.text = todayVisit

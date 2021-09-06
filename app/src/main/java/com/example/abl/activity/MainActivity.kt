@@ -136,7 +136,7 @@ class MainActivity : DockActivity() {
         if (switchAB.isChecked) {
             Log.i("xxChecked", "check")
             Handler(Looper.getMainLooper()).postDelayed(Runnable {
-                foregroundOnlyLocationService?.subscribeToLocationUpdates()
+              //  foregroundOnlyLocationService?.subscribeToLocationUpdates()
             }, 120000)
         }
         switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -146,7 +146,7 @@ class MainActivity : DockActivity() {
                 sharedPrefManager.setShiftStart(false)
                 //   foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
                 startActivity(Intent(this, WelcomeActivity::class.java))
-                foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
+             //   foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
                 // LoginActivity.navController.navigate()
                 // Navigation.findNavController().navigate(R.id.nav_graph_actFirstActvity)
 
@@ -271,7 +271,7 @@ class MainActivity : DockActivity() {
             Constants.LOGOUT -> {
                 sharedPrefManager.logout()
                 roomHelper.clearDB()
-                foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
+               // foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
                 closeDrawer()
@@ -504,12 +504,13 @@ class MainActivity : DockActivity() {
                 intent.data = Uri.parse("tel:" + number.text)
                 val bundle = Bundle()
                 customers?.let {
-                    // bundle.putParcelable(Constants.LEAD_DATA, customers)
+                   //  bundle.putParcelable(Constants.LOCAL_LEAD_DATA, customers)
                 }
                 bundle.putString(Constants.VISIT_TYPE, Constants.CALL)
                 bundle.putString(Constants.CUSTOMER_TYPE, customerType)
+                bundle.putString(Constants.CUSTOMER_NUMBER, number.text.toString())
                 bundle.putString("number", number.text.toString())
-                navigateToFragment(R.id.addLeadFragment, bundle)
+                navigateToFragment(R.id.nav_visit, bundle)
                 startActivity(intent)
             }
         }

@@ -48,7 +48,7 @@
             layout="@layout/data_not_found" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ltd"
+            android:id="@+id/followup_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/heading"

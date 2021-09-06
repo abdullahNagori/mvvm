@@ -137,7 +137,7 @@ class CustomerInfoFragment : BaseDockFragment() {
                     intent.data = Uri.parse("tel:" + number.text)
                     val bundle = Bundle()
                     customers?.let {
-                        bundle.putParcelable(Constants.LEAD_DATA, customers)
+                        bundle.putParcelable(Constants.LOCAL_LEAD_DATA, customers)
                     }
                     bundle.putString(Constants.VISIT_TYPE, Constants.CALL)
                     bundle.putString(Constants.CUSTOMER_TYPE, customerType)

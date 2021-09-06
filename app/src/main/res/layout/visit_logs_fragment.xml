@@ -44,6 +44,6 @@
         android:layout_marginTop="@dimen/_5sdp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_previous" />
+        tools:listitem="@layout/item_visits_log" />
 
 </RelativeLayout>

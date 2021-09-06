@@ -113,6 +113,9 @@ interface DAOAccess {
     fun deleteUserLocation()
 
 
+    /** Dashboard Count Query */
+
+
     @Query("DELETE from DashboardCount")
     fun deleteDashBoardCount()
 
@@ -127,4 +130,12 @@ interface DAOAccess {
 
     @Query("SELECT count(*) from Lead where lead_status_name = 'followup'")
     fun getFollowupCount(): String
+
+
+    /** Dashboard Count Query */
+
+
+    @Query("SELECT * FROM Lead where lead_status_name = 'followup'")
+    fun getFollowupData(): List<DynamicLeadsItem>
+
 }

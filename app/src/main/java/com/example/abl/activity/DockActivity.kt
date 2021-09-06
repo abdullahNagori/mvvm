@@ -51,8 +51,8 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
 
     var location: Location = Location(LocationManager.GPS_PROVIDER)
 
-     var latitude: String? = null
-     var longitude: String? = null
+     var latitude: String? = ""
+     var longitude: String? = ""
 
     var locationManager: LocationManager? = null
 

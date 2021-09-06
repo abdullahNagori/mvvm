@@ -20,6 +20,7 @@
         android:paddingRight="@dimen/_8sdp"
         android:textAlignment="center"
         android:textColor="@color/black"
+        android:maxLength="11"
         android:background="@drawable/bg_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

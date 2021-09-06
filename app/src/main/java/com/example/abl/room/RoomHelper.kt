@@ -88,6 +88,10 @@ class RoomHelper @Inject constructor(private val daoAccess: DAOAccess, private v
         return daoAccess.getFollowupCount()
     }
 
+    fun getFollowupData(): List<DynamicLeadsItem> {
+        return daoAccess.getFollowupData()
+    }
+
     fun clearDB() {
         ablDatabase.clearAllTables()
     }

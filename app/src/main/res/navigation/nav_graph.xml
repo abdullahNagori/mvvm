@@ -20,6 +20,10 @@
             app:destination="@id/nav_call_logs" />
 
         <action
+            android:id="@+id/action_nav_home_to_followup"
+            app:destination="@id/nav_followup_fragment" />
+
+        <action
             android:id="@+id/action_nav_home_to_visit_logs"
             app:destination="@id/nav_visit_logs" />
 
@@ -75,6 +79,12 @@
             app:destination="@id/customerDetailsFragment" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_followup_fragment"
+        android:name="com.example.abl.fragment.FollowupFragment"
+        android:label="Followup"
+        tools:layout="@layout/followup_fragment" />
 
     <fragment
         android:id="@+id/nav_training"
@@ -194,10 +204,10 @@
         tools:layout="@layout/add_fragment" >
 
         <action
-            android:id="@+id/action_addLeadFrag_to_nav_home"
+            android:id="@+id/action_checkInFormFragment_to_nav_home"
             app:popUpTo="@id/nav_home"
             app:popUpToInclusive="true"
-            app:destination="@id/nav_home" />
+            app:destination="@id/checkInFormFragment" />
 
     </fragment>
 

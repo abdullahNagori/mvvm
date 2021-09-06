@@ -10,19 +10,20 @@ import com.example.abl.R
 import com.example.abl.base.ClickListner
 import com.example.abl.databinding.ItemCallLogsBinding
 import com.example.abl.databinding.ItemPreviousBinding
+import com.example.abl.databinding.ItemVisitsLogBinding
 import com.example.abl.model.CheckinModel
 
 class VisitsLogsAdapter (val context: Context?, val onclick: ClickListner) : RecyclerView.Adapter<VisitsLogsAdapter.ViewHolder>() {
 
     lateinit var callList : List<CheckinModel>
-    lateinit var view: ItemPreviousBinding
+    lateinit var view: ItemVisitsLogBinding
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(item: CheckinModel) {
-            view.type.text = item.visit_type ?: "-"
-            view.date.text = item.visit_date_time ?: "-"
+            view.customerType.text = "Visit Type: ${item.visit_type}" ?: "-"
+            view.time.text = item.visit_date_time ?: "-"
             view.status.text =  item.visit_status ?: "-"
-            view.visitedBy.text = item.customer_name ?: "-"
+            view.visitBy.text = item.customer_name ?: "-"
         }
     }
 
@@ -32,7 +33,7 @@ class VisitsLogsAdapter (val context: Context?, val onclick: ClickListner) : Rec
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        view = ItemPreviousBinding.inflate(LayoutInflater.from(context), parent, false)
+        view = ItemVisitsLogBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(view.root)
     }
 
