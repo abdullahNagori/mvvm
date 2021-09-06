@@ -300,6 +300,7 @@
     <string name="lipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
     <string name="text_heading_2">Who can open GEM Account?</string>
     <string name="change_password">Change Password</string>
+    <string name="change_password_successfuly">Password changed Successfully</string>
     <string name="branch_detail">Branch Detail</string>
     <string name="check_in">Check in</string>
     <string name="log_details">Log Details</string>

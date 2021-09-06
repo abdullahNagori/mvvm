@@ -18,6 +18,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.abl.R
 import com.example.abl.activity.MainActivity
@@ -27,12 +28,10 @@ import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentWelcomeBinding
 import com.example.abl.location.ForegroundOnlyLocationService
 import com.example.abl.location.toText
-import com.example.abl.model.GenericMsgResponse
-import com.example.abl.model.MarkAttendanceModel
-import com.example.abl.model.ResetPwdReqResponse
-import com.example.abl.model.UserDetailsResponse
+import com.example.abl.model.*
 import com.example.abl.utils.GsonFactory
 import com.example.abl.utils.SharedPrefKeyManager
+import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import com.google.android.gms.location.LocationServices
 
 class WelcomeFragment : BaseDockFragment() {
@@ -49,12 +48,16 @@ class WelcomeFragment : BaseDockFragment() {
         }
     }
 
+    lateinit var viewModel: CoroutineViewModel
+
+
     @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
         SharedPrefKeyManager.with(requireContext())
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
@@ -110,13 +113,9 @@ class WelcomeFragment : BaseDockFragment() {
 
             Constants.MARK_ATTENDANCE -> {
                 try {
-                    //val attendanceResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, GenericMsgResponse::class.java)
-                    sharedPrefManager.setShiftStart(true)
-                    val welcomeIntent = Intent(context, MainActivity::class.java)
-                    welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    startActivity(welcomeIntent)
-                    activity?.finish()
-                    activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
+
+                    getSyncData()
+
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }
@@ -147,5 +146,51 @@ class WelcomeFragment : BaseDockFragment() {
 
     override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
         TODO("Not yet implemented")
+    }
+
+    private fun getSyncData() {
+        if ( roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData().isNotEmpty()) {
+            myDockActivity?.showErrorMessage(getString(R.string.un_synced_msg))
+        }
+        else {
+            myDockActivity?.showProgressIndicator()
+            viewModel.getLOV().observe(this) {
+                myDockActivity?.hideProgressIndicator()
+                if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
+                    processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
+                    utilHelper.showToast("Sync Successfully")
+                    markAttendanceIntent()
+                } else {
+                    utilHelper.showToast("Failed to sync data. Please try again")
+                    markAttendanceIntent()
+                }
+            }
+        }
+    }
+
+    private fun processData(lovResponse: LovResponse, dynamicLeadsItem: ArrayList<DynamicLeadsItem>?, visitsCallResponseItem:ArrayList<CheckinModel>?) {
+        sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
+        sharedPrefManager.setCompanyProducts(lovResponse.company_products)
+        sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
+        sharedPrefManager.setLeadSource(lovResponse.company_lead_source)
+        // Set leads data in local DB
+        if (dynamicLeadsItem != null) {
+            roomHelper.deleteLeadData()
+            roomHelper.insertLeadData(dynamicLeadsItem)
+        }
+        // Set checkIn data in local DB
+        if (visitsCallResponseItem != null) {
+            roomHelper.deleteCheckInData()
+            roomHelper.insertVisitCallData(visitsCallResponseItem)
+        }
+    }
+
+    private fun markAttendanceIntent() {
+        sharedPrefManager.setShiftStart(true)
+        val welcomeIntent = Intent(context, MainActivity::class.java)
+        welcomeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(welcomeIntent)
+        activity?.finish()
+        activity?.overridePendingTransition(R.anim.bottomtotop, R.anim.toptobottom)
     }
 }

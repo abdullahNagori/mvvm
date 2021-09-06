@@ -49,13 +49,13 @@ class CustomerInfoFragment : BaseDockFragment() {
         setData(dynamicLeadsItem)
 
         binding.call.setOnClickListener {
-           // callDialog(dynamicLeadsItem.type.toString(),dynamicLeadsItem.mobile_phone_number,dynamicLeadsItem)
-            showDialog_new(dynamicLeadsItem.type.toString(),dynamicLeadsItem.mobile_phone_number,dynamicLeadsItem)
+            coldCallDialog(dynamicLeadsItem.type.toString(),dynamicLeadsItem.mobile_phone_number,dynamicLeadsItem)
         }
 
         binding.checkin.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(Constants.LOCAL_LEAD_DATA, dynamicLeadsItem)
+            bundle.putString(Constants.VISIT_TYPE, Constants.VISIT)
             navigateToFragment(R.id.checkInFormFragment, bundle)
         }
 
@@ -94,7 +94,7 @@ class CustomerInfoFragment : BaseDockFragment() {
         binding.leadStatus.text = data.lead_status_name
     }
 
-    fun showDialog_new(customerType: String, contact: String?,customers: DynamicLeadsItem?) {
+    fun coldCallDialog(customerType: String, contact: String?,customers: DynamicLeadsItem?) {
 
         val factory = LayoutInflater.from(requireContext())
         val dialogView: View = factory.inflate(R.layout.dialog_call, null)

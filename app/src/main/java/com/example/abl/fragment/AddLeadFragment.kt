@@ -54,7 +54,7 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
     var latitude = 0.0
     var longitude = 0.0
     val previousVisit = ArrayList<GetPreviousVisit>()
-    var visitType: String = ""
+    var visitType: String = "visit"
     var customerNumber: String = ""
 
     @RequiresApi(Build.VERSION_CODES.O)

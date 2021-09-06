@@ -96,11 +96,11 @@ class MaterialTrainingFragment : BaseDockFragment(), ClickListner {
         when {
             else -> {
                 showBanner("Please wait", Constants.SUCCESS)
-                if (item.title == "document"){
-                    item.title?.let { openWebBrowser(it) }
-                }else {
-                    DownloadFiles(requireContext(), webView, item.material_url)
-                }
+         //       if (item.title == "document"){
+                    item.material_url.let { openWebBrowser(it) }
+//                }else {
+//                    DownloadFiles(requireContext(), webView, item.material_url)
+//                }
             }
         }
     }

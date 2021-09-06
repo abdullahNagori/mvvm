@@ -79,7 +79,6 @@ class ChangePasswordFragment : BaseDockFragment(){
             binding.edConfirmPassword.text.toString(),
             binding.edOldPassword.text.toString(),
            ))
-
     }
 
     private fun changePassword(changePasswordModel: ChangePasswordModel){
@@ -92,11 +91,12 @@ class ChangePasswordFragment : BaseDockFragment(){
             Constants.CHANGE_PASSWORD -> {
                 sharedPrefManager.clear()
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
+                utilHelper.showToast(getString(R.string.change_password_successfuly))
             }
         }
     }
 
-    fun isValidPassword(str: String): Boolean {
+    private fun isValidPassword(str: String): Boolean {
         val regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+_=;*])(?=\\S+$).{4,}$"
         val p = Pattern.compile(regex)
         return p.matcher(str).matches()

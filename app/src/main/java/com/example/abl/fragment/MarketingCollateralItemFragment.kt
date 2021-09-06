@@ -114,11 +114,13 @@ class MarketingCollateralItemFragment : BaseDockFragment(), ClickListner {
                 showBanner("Please wait", Constants.SUCCESS)
                 // DownloadFiles(requireContext(), webView, item.link)
 
-                if (item.file_type.toString() == "document"){
-                    item.file_path?.let { openWebBrowser(it) }
-                }else {
-                    DownloadFiles(requireContext(), webView, item.file_path)
-                }
+             //   if (item.file_type.toString() == "document"){
+                    item.file_path?.let {
+                        openWebBrowser(it)
+                   }
+//                }else {
+//                    DownloadFiles(requireContext(), webView, item.file_path)
+//                }
                 //downloadFIle(item.link)
             }
         }

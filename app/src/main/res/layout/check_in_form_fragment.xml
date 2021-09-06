@@ -179,12 +179,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:backgroundTint="@color/colorAccent"
+                    android:backgroundTint="@color/white"
                     android:gravity="center_vertical" />
 
                 <TextView
                     android:id="@+id/product"
-                    style="@style/customerInfoInputFields"/>
+                    style="@style/customerInfoInputFieldsProduct"/>
 
 
             </RelativeLayout>

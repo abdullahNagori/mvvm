@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -21,7 +22,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -269,12 +269,8 @@ class MainActivity : DockActivity() {
             }
 
             Constants.LOGOUT -> {
-                sharedPrefManager.logout()
-                roomHelper.clearDB()
-               // foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
                 closeDrawer()
+                showLogoutAlert()
             }
         }
     }
@@ -359,9 +355,9 @@ class MainActivity : DockActivity() {
         listDataChild[listDataHeader[4]] = companyLeadSource.map { it.name }
     }
 
-    private fun callLead() {
-        showDialog_new(Constants.NTB, null, null)
-    }
+//    private fun callLead() {
+//        showDialog_new(Constants.NTB, null, null)
+//    }
 
     fun dropDownMenu(view: View) {
         showOrHide()
@@ -384,11 +380,11 @@ class MainActivity : DockActivity() {
                 sendLeadData()
                 //Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
             }
-            R.id.cold_calling -> callLead()
+            R.id.cold_calling -> coldCallDialog(Constants.NTB, null, null)
             R.id.addLead -> {
                 val bundle = Bundle()
                 bundle.putString(Constants.VISIT_TYPE, Constants.VISIT)
-                navigateToFragment(R.id.nav_visit)
+                navigateToFragment(R.id.nav_visit, bundle)
             }
             R.id.followup -> {
                 navigateToFragment(R.id.followup_fragment)
@@ -461,7 +457,7 @@ class MainActivity : DockActivity() {
         navController.navigate(id)
     }
 
-    fun showDialog_new(customerType: String, contact: String?, customers: DynamicLeadsItem?) {
+    fun coldCallDialog(customerType: String, contact: String?, customers: DynamicLeadsItem?) {
 
         val factory = LayoutInflater.from(this)
         val dialogView: View = factory.inflate(R.layout.dialog_call, null)
@@ -543,6 +539,7 @@ class MainActivity : DockActivity() {
                 this.hideProgressIndicator()
                 if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
                     processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
+                    showToast("Sync Successfully")
                 } else {
                     this.showErrorMessage("Failed to sync data. Please try again")
                 }
@@ -567,9 +564,6 @@ class MainActivity : DockActivity() {
             roomHelper.deleteCheckInData()
             roomHelper.insertVisitCallData(visitsCallResponseItem)
         }
-
-
-
 
         prepareSideMenu()
     }
@@ -643,14 +637,34 @@ class MainActivity : DockActivity() {
             workManager.getWorkInfosLiveData(workQuery).observe(this) { workInfos ->
                 if (workInfos.size > 1) {
                     if (workInfos[0].state.isFinished && workInfos[1].state.isFinished) {
+                        showSuccessMessage("Upload Data successfully")
                         this.hideProgressIndicator()
+                        getSyncData()
                     }
                 }
             }
 
-
         } catch (e: Exception) {
             Log.i("UploadWorkerLocation", e.message.toString())
         }
+    }
+
+    fun showLogoutAlert() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Logout")
+        alertDialog.setMessage("Do you want to Logout?")
+        alertDialog.setPositiveButton(
+            "Yes"
+        ) { dialog, which ->
+            sharedPrefManager.logout()
+            roomHelper.clearDB()
+            // foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+        alertDialog.setNegativeButton(
+            "No"
+        ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
+        alertDialog.show()
     }
 }

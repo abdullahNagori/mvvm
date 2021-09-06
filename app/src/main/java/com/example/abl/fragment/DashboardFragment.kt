@@ -45,8 +45,6 @@ class DashboardFragment : BaseDockFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
-
         init()
         myDockActivity?.getUserViewModel()?.apiListener = this
     //    getDashBoardCount()
@@ -97,9 +95,10 @@ class DashboardFragment : BaseDockFragment() {
         }
         binding.llFollowup.setOnClickListener {
             navigateToFragment(R.id.action_nav_home_to_followup)
-
         }
-
+        binding.todayCall.text = roomHelper.getCallLogsCount()
+        binding.todayVisit.text = roomHelper.getVisitLogsCount()
+        binding.todaysFollowUp.text = roomHelper.getFollowupCount()
     }
 
     private fun initChart(binding: FragmentDashboardBinding, months: List<String>?) {

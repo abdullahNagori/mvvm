@@ -29,7 +29,6 @@ import com.example.abl.adapter.CustomVisitAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
-import com.example.abl.databinding.AddFragmentBinding
 import com.example.abl.databinding.CheckInFormFragmentBinding
 import com.example.abl.model.*
 import com.example.abl.utils.GsonFactory
@@ -50,7 +49,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     var selectedProduct: CompanyProduct? = null
     var visitStatusList: ArrayList<CompanyVisitStatu> = ArrayList<CompanyVisitStatu>()
     var selectedVisitStatus: CompanyVisitStatu? = null
-    var visitType: String = ""
+    var visitType: String = "visit"
 
     var latitude = 0.0
     var longitude = 0.0
@@ -239,6 +238,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     }
 
     private fun auth() {
+
         visitType = arguments?.getString(Constants.VISIT_TYPE) ?: Constants.VISIT
 
         val currentDate = SimpleDateFormat(Constants.DATE_FORMAT_1, Locale.ENGLISH).format(Date())

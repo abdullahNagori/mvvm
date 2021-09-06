@@ -22,11 +22,16 @@ import java.util.*
 import javax.inject.Inject
 
 class UtilHelper @Inject constructor(private val context: Context) {
+
     @SuppressLint("HardwareIds")
     fun getDeviceId(): String {
         return Settings.Secure.getString(
             context.contentResolver,
             Settings.Secure.ANDROID_ID
         )
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }

@@ -242,6 +242,9 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
         }
     }
 
+    fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
     @SuppressLint("MissingPermission")
     private fun getLocation() {
         LocationServices.getFusedLocationProviderClient(this).lastLocation.addOnSuccessListener {

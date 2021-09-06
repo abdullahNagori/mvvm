@@ -25,6 +25,7 @@ import com.example.abl.network.ApiListener
 import com.example.abl.room.RoomHelper
 import com.example.abl.utils.DateTimeFormatter
 import com.example.abl.utils.SharedPrefManager
+import com.example.abl.utils.UtilHelper
 import com.example.abl.utils.ValidationHelper
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.android.support.DaggerFragment
@@ -38,6 +39,7 @@ import javax.inject.Inject
 
 abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
     protected var myDockActivity: DockActivity? = null
+
     private var isLoading = false
 
     @Inject
@@ -54,6 +56,9 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
 
     @Inject
     lateinit var dateTimeFormatter: DateTimeFormatter
+
+    @Inject
+    lateinit var utilHelper: UtilHelper
 
     private lateinit var apiListener: ApiListener
 
