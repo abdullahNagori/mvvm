@@ -97,15 +97,12 @@ class MainActivity : DockActivity() {
         setContentView(binding.root)
 
         navController = findNavController(R.id.nav_host_main)
-
-        name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
-
-        initView()
-        setGesture()
-        sendUserTracking()
-
         viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 
+        initView()
+        setData()
+        setGesture()
+        //sendUserTracking()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -177,7 +174,12 @@ class MainActivity : DockActivity() {
         binding.navView.setupWithNavController(navController)
         animateNavigationDrawer(drawerLayout)
 
+        getSyncData()
         prepareSideMenu()
+    }
+
+    private fun setData() {
+        name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
     }
 
     private fun animateNavigationDrawer(drawerLayout: DrawerLayout) {
@@ -355,10 +357,6 @@ class MainActivity : DockActivity() {
         listDataChild[listDataHeader[4]] = companyLeadSource.map { it.name }
     }
 
-//    private fun callLead() {
-//        showDialog_new(Constants.NTB, null, null)
-//    }
-
     fun dropDownMenu(view: View) {
         showOrHide()
         binding.appBarMain.sideMenu.sync.setOnClickListener(::onCLickEvent)
@@ -529,18 +527,31 @@ class MainActivity : DockActivity() {
         }
     }
 
-    private fun getSyncData() {
+    private fun getSyncData(isShowMessage:Boolean? = true) {
+        if (!internetHelper.isNetworkAvailable()) {
+            showToast("Internet is not available")
+            return
+        }
+
         if ( roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData().isNotEmpty()) {
             showErrorMessage(getString(R.string.un_synced_msg))
+            return
         }
-        else {
+
+        if (isShowMessage == true) {
             this.showProgressIndicator()
-            viewModel.getLOV().observe(this) {
-                this.hideProgressIndicator()
-                if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
-                    processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
-                    showToast("Sync Successfully")
-                } else {
+        }
+
+        viewModel.getLOV().observe(this) {
+            this.hideProgressIndicator()
+
+            if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
+                processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
+                if (isShowMessage == true) {
+                    this.showSuccessMessage("Data synced successfully")
+                }
+            } else {
+                if (isShowMessage == true) {
                     this.showErrorMessage("Failed to sync data. Please try again")
                 }
             }
@@ -569,7 +580,6 @@ class MainActivity : DockActivity() {
     }
 
     private fun sendUserTracking() {
-
         val workManager = WorkManager.getInstance(application)
         val constraints: androidx.work.Constraints = androidx.work.Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -629,18 +639,13 @@ class MainActivity : DockActivity() {
                 .enqueue()
 
 
-            val workQuery = WorkQuery.Builder
-                .fromTags(listOf("leadWorker", "checkInWorker"))
-                .addStates(listOf(WorkInfo.State.SUCCEEDED, WorkInfo.State.FAILED))
-                .build()
-            // 2
-            workManager.getWorkInfosLiveData(workQuery).observe(this) { workInfos ->
-                if (workInfos.size > 1) {
-                    if (workInfos[0].state.isFinished && workInfos[1].state.isFinished) {
-                        showSuccessMessage("Upload Data successfully")
-                        this.hideProgressIndicator()
-                        getSyncData()
-                    }
+            workManager.getWorkInfoByIdLiveData(uploadCheckInWorkRequest.id).observe(this) { workInfo ->
+                if (workInfo.state.isFinished) {
+                    this.hideProgressIndicator()
+                    showSuccessMessage("Data uploaded successfully")
+                    Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                        getSyncData(isShowMessage = false)
+                    }, 1000)
                 }
             }
 

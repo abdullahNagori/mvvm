@@ -59,6 +59,7 @@ class TrainingFragment : BaseDockFragment(), ClickListner {
     }
 
     private fun getTraining() {
+        myDockActivity?.showProgressIndicator()
         myDockActivity?.getUserViewModel()?.getTrainings()
     }
 

@@ -57,6 +57,7 @@ class MarketingCollateralFragment : BaseDockFragment() {
     }
 
     private fun getMarketingCollateral() {
+        myDockActivity?.showProgressIndicator()
         myDockActivity?.getUserViewModel()?.getMarketingCollateral()
     }
 

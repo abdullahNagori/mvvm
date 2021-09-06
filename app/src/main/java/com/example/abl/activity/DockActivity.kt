@@ -22,6 +22,7 @@ import com.example.abl.model.DynamicLeadsItem
 import com.example.abl.progress.ProgressDialog
 import com.example.abl.progress.ProgressIndicator
 import com.example.abl.room.RoomHelper
+import com.example.abl.utils.InternetHelper
 import com.example.abl.utils.SharedPrefManager
 import com.example.abl.viewModel.UserViewModel
 import com.google.android.gms.location.LocationServices
@@ -45,9 +46,10 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject
     lateinit var sharedPrefManager: SharedPrefManager
-
     @Inject
     lateinit var roomHelper: RoomHelper
+    @Inject
+    lateinit var internetHelper: InternetHelper
 
     var location: Location = Location(LocationManager.GPS_PROVIDER)
 
