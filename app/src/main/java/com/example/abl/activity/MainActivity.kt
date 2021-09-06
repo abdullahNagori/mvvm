@@ -174,7 +174,7 @@ class MainActivity : DockActivity() {
         binding.navView.setupWithNavController(navController)
         animateNavigationDrawer(drawerLayout)
 
-        getSyncData()
+        getSyncData(isShowLoading = false)
         prepareSideMenu()
     }
 
@@ -527,7 +527,7 @@ class MainActivity : DockActivity() {
         }
     }
 
-    private fun getSyncData(isShowMessage:Boolean? = true) {
+    private fun getSyncData(isShowLoading:Boolean? = true) {
         if (!internetHelper.isNetworkAvailable()) {
             showToast("Internet is not available")
             return
@@ -538,7 +538,7 @@ class MainActivity : DockActivity() {
             return
         }
 
-        if (isShowMessage == true) {
+        if (isShowLoading == true) {
             this.showProgressIndicator()
         }
 
@@ -547,11 +547,11 @@ class MainActivity : DockActivity() {
 
             if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
                 processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
-                if (isShowMessage == true) {
+                if (isShowLoading == true) {
                     this.showSuccessMessage("Data synced successfully")
                 }
             } else {
-                if (isShowMessage == true) {
+                if (isShowLoading == true) {
                     this.showErrorMessage("Failed to sync data. Please try again")
                 }
             }
@@ -644,7 +644,7 @@ class MainActivity : DockActivity() {
                     this.hideProgressIndicator()
                     showSuccessMessage("Data uploaded successfully")
                     Handler(Looper.getMainLooper()).postDelayed(Runnable {
-                        getSyncData(isShowMessage = false)
+                        getSyncData(isShowLoading = false)
                     }, 1000)
                 }
             }

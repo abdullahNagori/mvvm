@@ -67,20 +67,16 @@ class TrainingFragment : BaseDockFragment(), ClickListner {
         super.onSuccess(liveData, tag)
         when (tag) {
             Constants.TRAINING -> {
-
                 try {
                     val routeResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, TrainingResponse::class.java)
                     if (routeResponseEnt?.training != null) {
-                        routeResponseEnt.training.forEach {
-                            adapter = TrainingListAdapter(requireContext(), this)
-                            adapter.setList(listOf(it))
-                            binding.trainingRv.adapter = adapter
-                        }
+                        adapter = TrainingListAdapter(requireContext(), this)
+                        adapter.setList(routeResponseEnt?.training)
+                        binding.trainingRv.adapter = adapter
                     }
                 } catch (e: Exception) {
                     myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
                 }
-
             }
         }
     }

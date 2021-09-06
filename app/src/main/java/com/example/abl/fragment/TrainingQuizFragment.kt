@@ -32,7 +32,6 @@ import java.lang.reflect.Type
 
 
 class TrainingQuizFragment : BaseDockFragment() {
-
     lateinit var binding: TrainingQuizFragmentBinding
     lateinit var quizadapter: QuizFormAdapter
     lateinit var trainingID: String
@@ -79,8 +78,6 @@ class TrainingQuizFragment : BaseDockFragment() {
     private fun initView() {
         binding = TrainingQuizFragmentBinding.inflate(layoutInflater)
         quizadapter = QuizFormAdapter(requireContext())
-//        binding.viewPager.adapter = quizadapter
-//        binding.viewPager.addOnPageChangeListener(onPageChangeListener)
         binding.btnNext.setOnClickListener {
             if(btn_next.text.toString() =="Next" && isChecked){
                 binding.viewPager.currentItem+=1
@@ -142,13 +139,12 @@ class TrainingQuizFragment : BaseDockFragment() {
             {
                 binding.btnNext.text = "Finish"
                 binding.btnNext.setOnClickListener {
-//                    if (isChecked) {
-//                        submitQuizData(submitQuizModel)
-//                    }
-//                    else{
-//                        myDockActivity?.showErrorMessage(getString(R.string.error_checkbox))
-//                    }
-                    submitQuizData(submitQuizModel)
+                    if (isChecked) {
+                        submitQuizData(submitQuizModel)
+                    }
+                    else{
+                        myDockActivity?.showErrorMessage(getString(R.string.error_checkbox))
+                    }
                 }
             }
         }
