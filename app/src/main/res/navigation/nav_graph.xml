@@ -220,9 +220,9 @@
         <action
             android:id="@+id/action_nav_visit_to_checkInFormFragment"
             app:launchSingleTop="true"
-            app:popUpTo="@+id/nav_home"
+            app:popUpTo="@id/checkInFormFragment"
             app:popUpToInclusive="true"
-            app:destination="@id/checkInFormFragment" />
+            app:destination="@+id/checkInFormFragment" />
 
     </fragment>
 

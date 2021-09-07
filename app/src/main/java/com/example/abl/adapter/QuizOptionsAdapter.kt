@@ -5,13 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
 import com.example.abl.databinding.ItemCheckboxOptionBinding
-import com.example.abl.model.Option
-import kotlinx.android.synthetic.main.item_checkbox.view.*
+import com.example.abl.model.trainingAndQuiz.Option
 import kotlinx.android.synthetic.main.item_checkbox_option.view.*
 
 class QuizOptionsAdapter (val context: Context?, val onclick: ClickListner) : RecyclerView.Adapter<QuizOptionsAdapter.ViewHolder>() {

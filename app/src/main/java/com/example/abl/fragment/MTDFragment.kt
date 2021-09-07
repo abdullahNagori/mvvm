@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.abl.R
+import com.example.abl.base.BaseDockFragment
 import com.example.abl.databinding.MtdFragmentBinding
 
-class MTDFragment : Fragment() {
+class MTDFragment : BaseDockFragment() {
 
     lateinit var binding: MtdFragmentBinding
 

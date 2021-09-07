@@ -51,7 +51,7 @@ object Constants {
     const val CUSTOMER_DATA = "customer_data"
     const val IS_SHIFT : String = "is_Shift"
     const val NIGHT_MODE = "night_mode"
-    const val MTD : String = "MTB"
+    const val MTD : String = "MTD"
     const val YTD : String = "YTD"
     const val LTD : String = "LTD"
     const val YTB : String = "YTB"

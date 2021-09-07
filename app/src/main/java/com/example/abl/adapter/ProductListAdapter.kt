@@ -8,10 +8,8 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
-import com.example.abl.databinding.ItemNotificationBinding
 import com.example.abl.databinding.ItemProductListAdapterBinding
-import com.example.abl.fragment.Customers
-import com.example.abl.model.CompanyProduct
+import com.example.abl.model.lov.CompanyProduct
 
 class ProductListAdapter (val context: Context?, val listner: ClickListner) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
 

@@ -2,21 +2,17 @@ package com.example.abl.fragment
 
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import com.example.abl.R
-import com.example.abl.activity.LoginActivity
-import com.example.abl.activity.MainActivity
-import com.example.abl.adapter.CallLogsAdapter
 import com.example.abl.adapter.TrainingListAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.TrainingFragmentBinding
-import com.example.abl.model.TrainingResponse
+import com.example.abl.model.trainingAndQuiz.TrainingResponse
 import com.example.abl.utils.GsonFactory
 
 class TrainingFragment : BaseDockFragment(), ClickListner {
@@ -42,21 +38,11 @@ class TrainingFragment : BaseDockFragment(), ClickListner {
         binding = TrainingFragmentBinding.inflate(layoutInflater)
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        if (args != null) {
-            MainActivity.navController.navigate(id, args)
-            return
-        }
-        MainActivity.navController.navigate(id)
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
+
+
 
     private fun getTraining() {
         myDockActivity?.showProgressIndicator()
@@ -68,10 +54,10 @@ class TrainingFragment : BaseDockFragment(), ClickListner {
         when (tag) {
             Constants.TRAINING -> {
                 try {
-                    val routeResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, TrainingResponse::class.java)
-                    if (routeResponseEnt?.training != null) {
+                    val trainingResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, TrainingResponse::class.java)
+                    if (trainingResponse?.training != null) {
                         adapter = TrainingListAdapter(requireContext(), this)
-                        adapter.setList(routeResponseEnt?.training)
+                        adapter.setList(trainingResponse?.training)
                         binding.trainingRv.adapter = adapter
                     }
                 } catch (e: Exception) {

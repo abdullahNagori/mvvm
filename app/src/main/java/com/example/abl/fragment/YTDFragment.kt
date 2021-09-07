@@ -25,7 +25,6 @@ class YTDFragment : Fragment() {
 
 
     private fun initView() {
-
         binding = YtdFragmentBinding.inflate(layoutInflater)
         binding.dataNotFound.root.visibility = View.VISIBLE
     }

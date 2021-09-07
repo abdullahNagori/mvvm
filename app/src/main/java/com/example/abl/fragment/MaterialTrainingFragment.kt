@@ -6,8 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,18 +15,14 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import com.deepakkumardk.kontactpickerlib.util.log
 import com.example.abl.R
-import com.example.abl.activity.MainActivity
-import com.example.abl.adapter.CallLogsAdapter
 import com.example.abl.adapter.MaterialAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ComprehensiveTrainingFragmentBinding
-import com.example.abl.model.MarketingCollateralItem
-import com.example.abl.model.Material
-import com.example.abl.model.Training
+import com.example.abl.model.trainingAndQuiz.Material
+import com.example.abl.model.trainingAndQuiz.Training
 import kotlinx.android.synthetic.main.marketing_collateral_item_fragment.*
 import java.io.File
 import java.util.*
@@ -65,21 +59,11 @@ class MaterialTrainingFragment : BaseDockFragment(), ClickListner {
         return binding.root
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        if (args != null) {
-            MainActivity.navController.navigate(id, args)
-            return
-        }
-        MainActivity.navController.navigate(id)
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
+
+
 
     private fun initView() {
         binding = ComprehensiveTrainingFragmentBinding.inflate(layoutInflater)

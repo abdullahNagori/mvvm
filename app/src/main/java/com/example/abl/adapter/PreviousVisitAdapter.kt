@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
 import com.example.abl.databinding.ItemPreviousBinding
-import com.example.abl.model.GetPreviousVisit
+import com.example.abl.model.previousVisits.GetPreviousVisit
 
 class PreviousVisitAdapter(val context: Context?, val onclick: ClickListner) : RecyclerView.Adapter<PreviousVisitAdapter.ViewHolder>() {
 

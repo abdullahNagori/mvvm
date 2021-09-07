@@ -3,31 +3,26 @@ package com.example.abl.fragment
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.abl.R
-import com.example.abl.activity.MainActivity
 import com.example.abl.adapter.DynamicQuizViewPagerAdapter
 import com.example.abl.adapter.QuizFormAdapter
-import com.example.abl.adapter.QuizOptionsAdapter
 import com.example.abl.base.BaseDockFragment
-import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
-import com.example.abl.databinding.TrainingFragmentBinding
 import com.example.abl.databinding.TrainingQuizFragmentBinding
 import com.example.abl.model.*
+import com.example.abl.model.generic.GenericMsgResponse
+import com.example.abl.model.trainingAndQuiz.*
 import com.google.gson.reflect.TypeToken
 import com.example.abl.utils.GsonFactory
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.item_checkbox.view.*
 import kotlinx.android.synthetic.main.item_checkbox_option.view.*
 import kotlinx.android.synthetic.main.training_quiz_fragment.*
-import org.koin.android.ext.android.bind
 import java.lang.reflect.Type
 
 
@@ -59,21 +54,11 @@ class TrainingQuizFragment : BaseDockFragment() {
         return binding.root
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        if (args != null) {
-            MainActivity.navController.navigate(id, args)
-            return
-        }
-        MainActivity.navController.navigate(id)
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
+
+
 
     private fun initView() {
         binding = TrainingQuizFragmentBinding.inflate(layoutInflater)

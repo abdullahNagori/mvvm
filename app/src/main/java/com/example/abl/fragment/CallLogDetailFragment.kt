@@ -10,8 +10,7 @@ import android.view.WindowManager
 import com.example.abl.base.BaseDialogFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.CallLogDetailFragmentBinding
-import com.example.abl.model.CheckinModel
-import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.checkin.CheckinModel
 
 class CallLogDetailFragment : BaseDialogFragment() {
 

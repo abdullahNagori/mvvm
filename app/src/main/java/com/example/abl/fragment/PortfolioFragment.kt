@@ -8,14 +8,14 @@ import android.view.animation.AnimationUtils
 import androidx.viewpager.widget.ViewPager
 import com.example.abl.R
 import com.example.abl.adapter.ViewPagerAdapter
-import com.example.abl.base.BaseFragment
+import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.PortfolioFragmentBinding
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.portfolio_fragment.*
 
 
-class PortfolioFragment : BaseFragment() {
+class PortfolioFragment : BaseDockFragment() {
 
     lateinit var binding: PortfolioFragmentBinding
 
@@ -71,7 +71,7 @@ class PortfolioFragment : BaseFragment() {
 
     private fun initView() {
         binding = PortfolioFragmentBinding.inflate(layoutInflater)
-        blockLeftDrawer()
+        //blockLeftDrawer()
     }
     private fun setUpViewPager() {
         binding.viewPager.adapter = ViewPagerAdapter(childFragmentManager)

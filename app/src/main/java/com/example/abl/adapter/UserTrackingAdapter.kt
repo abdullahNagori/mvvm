@@ -8,9 +8,8 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
-import com.example.abl.databinding.ItemPreviousBinding
 import com.example.abl.databinding.ItemUserTrackingAdapterBinding
-import com.example.abl.model.UserLocation
+import com.example.abl.model.location.UserLocation
 
 class UserTrackingAdapter(val context: Context?, val onclick: ClickListner) : RecyclerView.Adapter<UserTrackingAdapter.ViewHolder>() {
 

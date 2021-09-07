@@ -2,24 +2,16 @@ package com.example.abl.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import com.example.abl.R
-import com.example.abl.activity.LoginActivity
 import com.example.abl.activity.WelcomeActivity
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentNewPasswordBinding
-import com.example.abl.model.ResetPasswordModel
-import com.example.abl.model.ResetPwdReqResponse
-import com.example.abl.model.VerifyPassModel
-import com.example.abl.model.VerifyPwdReqResponse
-import com.example.abl.utils.GsonFactory
+import com.example.abl.model.changePassword.VerifyPassModel
 
 
 class NewPasswordFragment : BaseDockFragment() {
@@ -36,27 +28,17 @@ class NewPasswordFragment : BaseDockFragment() {
         return binding.root
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
 
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
-    }
+
+
 
     private fun initView(){
         binding = FragmentNewPasswordBinding.inflate(layoutInflater)
         binding.btnChngPass.setOnClickListener {
             if (binding.edNewPassword.text.toString() == "") {
-                showBanner(getString(R.string.error_empty_pass), Constants.ERROR)
+                myDockActivity?.showErrorMessage(getString(R.string.error_empty_pass))
             } else {
                 verifyPwdReq(binding.edNewPassword.text.toString())
             }

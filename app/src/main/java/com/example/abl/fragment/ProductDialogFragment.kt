@@ -1,17 +1,14 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
-import com.example.abl.R
 import com.example.abl.adapter.ProductAdapter
 import com.example.abl.base.BaseDialogFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.databinding.FragmentProductDialogBinding
-import com.example.abl.model.CompanyProduct
+import com.example.abl.model.lov.CompanyProduct
 
 class ProductDialogFragment(var listner: ClickListner) : BaseDialogFragment() {
 

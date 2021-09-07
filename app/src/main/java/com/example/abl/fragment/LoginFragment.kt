@@ -1,21 +1,19 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.text.TextUtils.isEmpty
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import com.example.abl.R
 import com.example.abl.activity.LoginActivity
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentLoginBinding
-import com.example.abl.model.LoginModel
-import com.example.abl.model.LoginResponse
+import com.example.abl.model.login.LoginModel
+import com.example.abl.model.login.LoginResponse
 import com.example.abl.utils.GsonFactory
 
 class LoginFragment : BaseDockFragment() {
@@ -51,10 +49,10 @@ class LoginFragment : BaseDockFragment() {
     private fun auth() {
         when {
             isEmpty(binding.edUserName.text.toString()) -> {
-                showBanner(getString(R.string.error_empty_email), Constants.ERROR)
+                myDockActivity?.showErrorMessage(getString(R.string.error_empty_email))
             }
             isEmpty(binding.edPassword.text.toString()) -> {
-                showBanner(getString(R.string.error_empty_pass), Constants.ERROR)
+                myDockActivity?.showErrorMessage(getString(R.string.error_empty_pass))
             }
 
             else -> {
@@ -106,19 +104,19 @@ class LoginFragment : BaseDockFragment() {
         }
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
-    }
+//    override fun closeDrawer() {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun navigateToFragment(id: Int, args: Bundle?) {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun setTitle(text: String) {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
+//        TODO("Not yet implemented")
+//    }
 }

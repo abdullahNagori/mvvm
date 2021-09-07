@@ -26,16 +26,8 @@ class InvestmentCalculatorFragment : BaseDockFragment() {
     private fun initView() {
         binding = InvestmentCalculatorFragmentBinding.inflate(layoutInflater)
     }
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
 
 }

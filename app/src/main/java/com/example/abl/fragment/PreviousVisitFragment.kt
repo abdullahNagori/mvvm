@@ -1,21 +1,15 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.example.abl.adapter.CustomerAdapter
 import com.example.abl.adapter.PreviousVisitAdapter
 import com.example.abl.base.BaseDockFragment
-import com.example.abl.base.BaseFragment
 import com.example.abl.base.ClickListner
-import com.example.abl.constant.Constants
 import com.example.abl.databinding.PreviousVisitFragmentBinding
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.GetPreviousVisit
-import kotlinx.android.synthetic.main.notification_fragment.*
+import com.example.abl.model.addLead.DynamicLeadsItem
+import com.example.abl.model.previousVisits.GetPreviousVisit
 
 
 class PreviousVisitFragment : BaseDockFragment(), ClickListner {
@@ -56,17 +50,9 @@ class PreviousVisitFragment : BaseDockFragment(), ClickListner {
         binding.previous.adapter = adapter
 
     }
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
 
     override fun <T> onClick(data: T, createNested: Boolean) {
 //        val logDetailsFragment = PreviousVisitDetailFragment()

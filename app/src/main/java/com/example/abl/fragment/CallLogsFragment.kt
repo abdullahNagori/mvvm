@@ -10,7 +10,7 @@ import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.CallLogsFragmentBinding
-import com.example.abl.model.CheckinModel
+import com.example.abl.model.checkin.CheckinModel
 
 class CallLogsFragment : BaseDockFragment(), ClickListner {
 
@@ -44,17 +44,9 @@ class CallLogsFragment : BaseDockFragment(), ClickListner {
         return binding.root
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
 
     private fun initView(){
         binding = CallLogsFragmentBinding.inflate(layoutInflater)

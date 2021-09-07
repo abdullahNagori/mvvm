@@ -11,7 +11,7 @@ import com.example.abl.R
 import com.example.abl.adapter.ViewPagerAdapter
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.CustomerDetailsFragmentBinding
-import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.addLead.DynamicLeadsItem
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.portfolio_fragment.*
 

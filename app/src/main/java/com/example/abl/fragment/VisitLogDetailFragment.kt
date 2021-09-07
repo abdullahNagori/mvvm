@@ -3,17 +3,14 @@ package com.example.abl.fragment
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import com.example.abl.R
 import com.example.abl.base.BaseDialogFragment
 import com.example.abl.constant.Constants
-import com.example.abl.databinding.LogDetailsFragmentBinding
 import com.example.abl.databinding.VisitLogDetailFragmentBinding
-import com.example.abl.model.CheckinModel
+import com.example.abl.model.checkin.CheckinModel
 
 class VisitLogDetailFragment : BaseDialogFragment() {
 

@@ -1,26 +1,20 @@
 package com.example.abl.fragment
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.abl.R
-import com.example.abl.activity.MainActivity
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.CustomerInfoFragmentBinding
-import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.addLead.DynamicLeadsItem
 import com.example.abl.utils.CustomEditText
 import com.example.abl.utils.DrawableClickListener
 import com.deepakkumardk.kontactpickerlib.KontactPicker
@@ -62,21 +56,11 @@ class CustomerInfoFragment : BaseDockFragment() {
         return binding.root
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        if (args != null) {
-            MainActivity.navController.navigate(id, args)
-            return
-        }
-        MainActivity.navController.navigate(id)
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
+
+
 
     private fun initView() {
         binding = CustomerInfoFragmentBinding.inflate(layoutInflater)

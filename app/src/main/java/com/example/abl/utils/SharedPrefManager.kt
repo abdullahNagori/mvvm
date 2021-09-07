@@ -2,9 +2,12 @@ package com.example.abl.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.location.Location
-import android.location.LocationManager
 import com.example.abl.model.*
+import com.example.abl.model.lov.CompanyLeadSource
+import com.example.abl.model.lov.CompanyLeadStatu
+import com.example.abl.model.lov.CompanyProduct
+import com.example.abl.model.lov.CompanyVisitStatu
+import com.example.abl.model.userDetail.UserDetailsResponse
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import javax.inject.Inject
@@ -60,7 +63,7 @@ class SharedPrefManager @Inject constructor(private val context: Context) {
         return true;
     }
 
-    fun getUserDetails():UserDetailsResponse? {
+    fun getUserDetails(): UserDetailsResponse? {
         val json = sharedPreferences.getString(KEY_USER_DETAILS, "")
         return GsonFactory.getConfiguredGson()?.fromJson(json, UserDetailsResponse::class.java)
     }

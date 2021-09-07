@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.example.abl.model.GenericMsgResponse
+import com.example.abl.model.generic.GenericMsgResponse
 import com.example.abl.network.ApiListener
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.DAOAccess

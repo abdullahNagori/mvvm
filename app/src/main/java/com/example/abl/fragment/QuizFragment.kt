@@ -1,28 +1,18 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.abl.adapter.DynamicQuizViewPagerAdapter
 import com.example.abl.adapter.QuizOptionsAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.QuizFragmentBinding
-import com.example.abl.model.Option
-import com.example.abl.model.Question
-import com.example.abl.model.QuizDetailItem
-import com.example.abl.model.SubmitQuizModel
+import com.example.abl.model.trainingAndQuiz.Option
+import com.example.abl.model.trainingAndQuiz.Question
 import com.example.abl.utils.GsonFactory
-import kotlinx.android.synthetic.main.comprehensive_training_fragment.*
-import kotlinx.android.synthetic.main.item_checkbox.view.*
 import kotlinx.android.synthetic.main.item_checkbox_option.view.*
-import org.json.JSONArray
-import org.json.JSONObject
-import java.util.*
-import kotlin.collections.ArrayList
 
 class QuizFragment : BaseDockFragment(), ClickListner {
 
@@ -59,17 +49,9 @@ class QuizFragment : BaseDockFragment(), ClickListner {
     private fun initView() {
         binding = QuizFragmentBinding.inflate(layoutInflater)
     }
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
 
     private fun initRecyclerView(optionList: List<Option>) {
         optionAdapter = QuizOptionsAdapter(requireContext(), this)

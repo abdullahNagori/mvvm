@@ -26,16 +26,8 @@ class TaxCalculatorFragment : BaseDockFragment() {
     private fun initView() {
         binding = TaxCalculatorFragmentBinding.inflate(layoutInflater)
     }
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
 
 }

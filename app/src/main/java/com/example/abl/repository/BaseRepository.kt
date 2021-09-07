@@ -1,12 +1,10 @@
 package com.example.abl.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.example.abl.model.ErrorResponseEnt
-import com.example.abl.model.ResponseEnt
+import com.example.abl.model.generic.ErrorResponseEnt
 import com.example.abl.network.ApiListener
 import com.example.abl.utils.GsonFactory
 import com.example.abl.utils.ValidationHelper
-import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback

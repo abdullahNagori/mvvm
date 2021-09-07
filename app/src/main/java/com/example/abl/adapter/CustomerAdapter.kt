@@ -1,7 +1,6 @@
 package com.example.abl.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
 import com.example.abl.databinding.ItemCustomerBinding
-import com.example.abl.fragment.Customers
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.GetPreviousVisit
+import com.example.abl.model.addLead.DynamicLeadsItem
 
 class CustomerAdapter(val context: Context?, val listner: ClickListner) : RecyclerView.Adapter<CustomerAdapter.ViewHolder>() {
 

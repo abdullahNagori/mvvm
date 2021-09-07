@@ -8,9 +8,8 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
-import com.example.abl.databinding.ItemCustomerBinding
 import com.example.abl.databinding.ItemMarketingAdapterBinding
-import com.example.abl.model.MarketingCollateralItem
+import com.example.abl.model.marketingCollateral.MarketingCollateralItem
 import kotlinx.android.synthetic.main.item_marketing_adapter.view.*
 
 class MarketingCollateralItemAdapter (val context: Context?, val listner: ClickListner) : RecyclerView.Adapter<MarketingCollateralItemAdapter.ViewHolder>() {

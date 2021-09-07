@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.adapter.CustomerAdapter
-import com.example.abl.base.BaseFragment
+import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.LtdFragmentBinding
@@ -23,7 +23,7 @@ data class Customers(
     var lead_status: String
 ):Parcelable
 
-class LTDFragment : BaseFragment(), ClickListner {
+class LTDFragment : BaseDockFragment(), ClickListner {
 
 
     lateinit var binding: LtdFragmentBinding

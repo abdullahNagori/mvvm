@@ -5,15 +5,14 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import com.example.abl.R
-import com.example.abl.activity.MainActivity
 import com.example.abl.adapter.CustomerAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentAllBinding
-import com.example.abl.model.*
+import com.example.abl.model.addLead.DynamicLeadsItem
+import com.example.abl.model.lov.CompanyLeadSource
 import com.example.abl.utils.GsonFactory
 
 class AllFragment : BaseDockFragment(), ClickListner {
@@ -49,25 +48,11 @@ class AllFragment : BaseDockFragment(), ClickListner {
 //        setData()
 //    }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        if (args != null) {
-            MainActivity.navController.navigate(id, args)
-            return
-        }
-        MainActivity.navController.navigate(id)
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
 
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
-    }
+
+
 
     private fun initRecyclerView(){
         adapter = CustomerAdapter(requireContext(), this)

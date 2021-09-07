@@ -2,16 +2,12 @@ package com.example.abl.fragment
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import com.example.abl.R
 import com.example.abl.base.BaseDockFragment
-import com.example.abl.databinding.CalculatorFragmentBinding
 import com.example.abl.databinding.MeetingQrFragmentBinding
-import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.addLead.DynamicLeadsItem
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
@@ -39,17 +35,9 @@ class MeetingQRFragment : BaseDockFragment() {
         return binding.root
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
 
     private fun initView() {
         binding = MeetingQrFragmentBinding.inflate(layoutInflater)

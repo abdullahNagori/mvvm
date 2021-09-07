@@ -28,21 +28,11 @@ class QuizAnswerDetailFragment : BaseDockFragment() {
         return binding.root
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        if (args != null) {
-            MainActivity.navController.navigate(id, args)
-            return
-        }
-        MainActivity.navController.navigate(id)
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
+
+
 
     private fun initView() {
         binding = QuizAnswerDetailFragmentBinding.inflate(layoutInflater)

@@ -14,7 +14,6 @@ import com.example.abl.databinding.SearchCustomerDialogFragmentBinding
 
 class SearchCustomerDialogFragment : BaseDialogFragment() {
 
-
     lateinit var binding: SearchCustomerDialogFragmentBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

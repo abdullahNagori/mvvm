@@ -1,16 +1,11 @@
 package com.example.abl.fragment
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.pm.PackageManager
-import android.opengl.Visibility
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -18,8 +13,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import com.example.abl.R
@@ -27,16 +20,15 @@ import com.example.abl.activity.MainActivity
 import com.example.abl.adapter.CustomArrayAdapter
 import com.example.abl.adapter.CustomVisitAdapter
 import com.example.abl.base.BaseDockFragment
-import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.CheckInFormFragmentBinding
-import com.example.abl.model.*
+import com.example.abl.model.addLead.DynamicLeadsItem
+import com.example.abl.model.checkin.CheckinModel
+import com.example.abl.model.generic.GenericMsgResponse
+import com.example.abl.model.lov.CompanyProduct
+import com.example.abl.model.lov.CompanyVisitStatu
 import com.example.abl.utils.GsonFactory
 import com.google.android.gms.location.LocationServices
-import kotlinx.android.synthetic.main.item_checkbox.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.bind
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -119,6 +111,7 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mCalender = Calendar.getInstance()
+//        MainActivity.navController.
     }
 
     private fun initView() {
@@ -353,16 +346,4 @@ class CheckInFormFragment : BaseDockFragment(), DatePickerDialog.OnDateSetListen
             }
         }
     }
-
-    override fun closeDrawer() {
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
-
 }

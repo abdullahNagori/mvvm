@@ -16,16 +16,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.abl.R
-import com.example.abl.activity.DockActivity
 import com.example.abl.activity.MainActivity
-import com.example.abl.activity.WelcomeActivity
-import com.example.abl.model.UserLocation
+import com.example.abl.model.location.UserLocation
 import com.example.abl.room.ABLDatabase
 import com.example.abl.room.RoomHelper
 import com.google.android.gms.location.*
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
 
 /**
  * Service tracks location when requested and updates Activity via binding. If Activity is

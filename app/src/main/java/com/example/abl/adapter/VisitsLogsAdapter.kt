@@ -8,10 +8,8 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
-import com.example.abl.databinding.ItemCallLogsBinding
-import com.example.abl.databinding.ItemPreviousBinding
 import com.example.abl.databinding.ItemVisitsLogBinding
-import com.example.abl.model.CheckinModel
+import com.example.abl.model.checkin.CheckinModel
 
 class VisitsLogsAdapter (val context: Context?, val onclick: ClickListner) : RecyclerView.Adapter<VisitsLogsAdapter.ViewHolder>() {
 

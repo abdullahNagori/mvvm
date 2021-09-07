@@ -1,7 +1,7 @@
 package com.example.abl.network
 
 import androidx.lifecycle.LiveData
-import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.addLead.DynamicLeadsItem
 
 /**
  * @author Abdullah Nagori

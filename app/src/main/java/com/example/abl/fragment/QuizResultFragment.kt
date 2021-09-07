@@ -1,19 +1,14 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.abl.R
-import com.example.abl.activity.MainActivity
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.QuizResultFragmentBinding
-import com.example.abl.model.Material
-import com.example.abl.model.Question
-import com.example.abl.model.SubmitQuizModel
-import kotlinx.android.synthetic.main.quiz_answer_detail_fragment.*
+import com.example.abl.model.trainingAndQuiz.Question
 
 class QuizResultFragment : BaseDockFragment() {
 
@@ -39,21 +34,11 @@ class QuizResultFragment : BaseDockFragment() {
         return binding.root
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        if (args != null) {
-            MainActivity.navController.navigate(id, args)
-            return
-        }
-        MainActivity.navController.navigate(id)
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
+
+
 
     private fun initView() {
         binding = QuizResultFragmentBinding.inflate(layoutInflater)

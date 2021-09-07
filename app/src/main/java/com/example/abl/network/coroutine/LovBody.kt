@@ -1,9 +1,9 @@
 package com.example.abl.network.coroutine
 
-import com.example.abl.model.CompanyLeadSource
-import com.example.abl.model.CompanyLeadStatu
-import com.example.abl.model.CompanyProduct
-import com.example.abl.model.CompanyVisitStatu
+import com.example.abl.model.lov.CompanyLeadSource
+import com.example.abl.model.lov.CompanyLeadStatu
+import com.example.abl.model.lov.CompanyProduct
+import com.example.abl.model.lov.CompanyVisitStatu
 
 data class LovBody(
     val company_lead_source: List<CompanyLeadSource>,

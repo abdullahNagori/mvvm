@@ -2,21 +2,17 @@ package com.example.abl.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.LiveData
 import com.example.abl.R
-import com.example.abl.adapter.DynamicViewPagerAdapter
 import com.example.abl.adapter.MarketingViewPagerAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.MarketingCollateralFragmentBinding
-import com.example.abl.model.DynamicLeadsResponse
-import com.example.abl.model.MarketingCollateralItem
-import com.example.abl.model.MarketingCollateralResponse
+import com.example.abl.model.marketingCollateral.MarketingCollateralResponse
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -42,18 +38,6 @@ class MarketingCollateralFragment : BaseDockFragment() {
 
     private fun initView() {
         binding = MarketingCollateralFragmentBinding.inflate(layoutInflater)
-    }
-
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
     }
 
     private fun getMarketingCollateral() {

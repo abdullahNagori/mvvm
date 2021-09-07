@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
 import com.example.abl.databinding.ItemMaterialListAdapterBinding
-import com.example.abl.model.Material
+import com.example.abl.model.trainingAndQuiz.Material
 
 class MaterialAdapter (val context: Context?, val onclick: ClickListner) : RecyclerView.Adapter<MaterialAdapter.ViewHolder>() {
 

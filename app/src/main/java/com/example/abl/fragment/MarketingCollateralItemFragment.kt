@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,18 +15,14 @@ import android.webkit.URLUtil
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.FileProvider
-import com.example.abl.R
-import com.example.abl.activity.MainActivity
 import com.example.abl.adapter.MarketingCollateralItemAdapter
-import com.example.abl.adapter.MarketingViewPagerAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.MarketingCollateralItemFragmentBinding
-import com.example.abl.model.MarketingCollateralItem
-import com.example.abl.model.MarketingCollateralResponse
+import com.example.abl.model.marketingCollateral.MarketingCollateralItem
+import com.example.abl.model.marketingCollateral.MarketingCollateralResponse
 import com.example.abl.utils.GsonFactory
 import kotlinx.android.synthetic.main.marketing_collateral_item_fragment.*
 import java.io.File
@@ -67,21 +62,11 @@ class MarketingCollateralItemFragment : BaseDockFragment(), ClickListner {
     private fun initView() {
         binding = MarketingCollateralItemFragmentBinding.inflate(layoutInflater)
     }
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        if (args != null) {
-            MainActivity.navController.navigate(id, args)
-            return
-        }
-        MainActivity.navController.navigate(id)
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
+
+
 
     private fun initRecyclerView(){
         adapter = MarketingCollateralItemAdapter(requireContext(), this)

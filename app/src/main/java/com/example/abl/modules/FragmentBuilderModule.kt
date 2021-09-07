@@ -119,4 +119,15 @@ interface FragmentBuilderModule {
     @ContributesAndroidInjector
     fun contributeFollowupFragment(): FollowupFragment
 
+    @ContributesAndroidInjector
+    fun contributeLTDFragment(): LTDFragment
+
+    @ContributesAndroidInjector
+    fun contributeMTDFragment(): MTDFragment
+
+    @ContributesAndroidInjector
+    fun contributeNotificationFragment(): NotificationFragment
+
+    @ContributesAndroidInjector
+    fun contributePortfolioFragment(): PortfolioFragment
 }

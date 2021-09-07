@@ -1,12 +1,6 @@
 package com.example.abl.fragment
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Context.LOCATION_SERVICE
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
@@ -15,26 +9,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LiveData
 import com.example.abl.R
-import com.example.abl.activity.DockActivity
-import com.example.abl.activity.MainActivity
 import com.example.abl.adapter.CustomArrayAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.AddFragmentBinding
-import com.example.abl.model.*
+import com.example.abl.model.addLead.DynamicLeadsItem
+import com.example.abl.model.lov.CompanyProduct
+import com.example.abl.model.previousVisits.GetPreviousVisit
 import com.example.abl.utils.GsonFactory
 import com.google.android.gms.location.LocationServices
-import kotlinx.android.synthetic.main.add_fragment.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.security.Timestamp
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -243,6 +229,10 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        Log.i("AddLeadFragment", "NotingSelected")
+    }
+
     @SuppressLint("MissingPermission")
     private fun getLocation() {
             LocationServices.getFusedLocationProviderClient(requireContext()).lastLocation.addOnSuccessListener {
@@ -258,30 +248,4 @@ class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
 
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        if (args != null) {
-            MainActivity.navController.navigate(id, args)
-            return
-        }
-        MainActivity.navController.navigate(id)
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
-//        val adapter = CustomArrayAdapter(requireContext(), R.layout.item_spinner, list)
-//        adapter.setDropDownViewResource(R.layout.item_spinner)
-//        return adapter
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("Not yet implemented")
-    }
 }

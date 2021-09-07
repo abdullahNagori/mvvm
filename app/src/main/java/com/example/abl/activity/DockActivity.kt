@@ -18,7 +18,7 @@ import com.example.abl.R
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.location.ForegroundOnlyLocationService
 import com.example.abl.location.toText
-import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.addLead.DynamicLeadsItem
 import com.example.abl.progress.ProgressDialog
 import com.example.abl.progress.ProgressIndicator
 import com.example.abl.room.RoomHelper
@@ -28,7 +28,6 @@ import com.example.abl.viewModel.UserViewModel
 import com.google.android.gms.location.LocationServices
 import com.tapadoo.alerter.Alerter
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.dialog_call.*
 import java.util.*
 import javax.inject.Inject
 

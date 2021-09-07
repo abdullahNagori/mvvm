@@ -1,7 +1,14 @@
 package com.example.abl.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.abl.model.*
+import com.example.abl.model.changePassword.ChangePasswordModel
+import com.example.abl.model.changePassword.VerifyPassModel
+import com.example.abl.model.login.LoginModel
+import com.example.abl.model.markAttendance.MarkAttendanceModel
+import com.example.abl.model.otp.OtpModel
+import com.example.abl.model.resetPassword.ResetPasswordModel
+import com.example.abl.model.trainingAndQuiz.GetQuizModel
+import com.example.abl.model.trainingAndQuiz.SubmitQuizModel
 import com.example.abl.network.ApiListener
 import com.example.abl.repository.UserRepository
 import javax.inject.Inject

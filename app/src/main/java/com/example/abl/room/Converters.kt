@@ -1,9 +1,9 @@
 package com.example.abl.room
 
 import androidx.room.TypeConverter
-import com.example.abl.model.GetPreviousVisit
-import com.example.abl.model.Material
-import com.example.abl.model.Training
+import com.example.abl.model.previousVisits.GetPreviousVisit
+import com.example.abl.model.trainingAndQuiz.Material
+import com.example.abl.model.trainingAndQuiz.Training
 import com.google.gson.Gson
 
 class Converters {

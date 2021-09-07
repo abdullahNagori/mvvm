@@ -2,16 +2,24 @@ package com.example.abl.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.abl.constant.Constants
-import com.example.abl.model.*
+import com.example.abl.model.addLead.CustomerDetail
+import com.example.abl.model.addLead.DynamicLeadsItem
+import com.example.abl.model.changePassword.ChangePasswordModel
+import com.example.abl.model.changePassword.VerifyPassModel
+import com.example.abl.model.checkin.CheckinModel
+import com.example.abl.model.generic.GenericMsgResponse
+import com.example.abl.model.location.UserLocation
+import com.example.abl.model.login.LoginModel
+import com.example.abl.model.lov.LovResponse
+import com.example.abl.model.markAttendance.MarkAttendanceModel
+import com.example.abl.model.otp.OtpModel
+import com.example.abl.model.resetPassword.ResetPasswordModel
+import com.example.abl.model.trainingAndQuiz.GetQuizModel
+import com.example.abl.model.trainingAndQuiz.SubmitQuizModel
+import com.example.abl.model.visitLogs.VisitsCallModel
 import com.example.abl.network.Api
-import com.example.abl.network.coroutine.CoroutineLOVResponse
 import com.example.abl.utils.SharedPrefManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
 import retrofit2.Call
-import java.lang.reflect.Type
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(

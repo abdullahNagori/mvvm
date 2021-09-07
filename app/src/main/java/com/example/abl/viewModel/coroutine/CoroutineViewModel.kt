@@ -1,31 +1,21 @@
 package com.example.abl.viewModel.coroutine
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.work.Worker
-import com.example.abl.constant.Constants
-import com.example.abl.model.*
-import com.example.abl.network.coroutine.WebResponse
+import com.example.abl.model.addLead.DynamicLeadsItem
+import com.example.abl.model.checkin.CheckinModel
+import com.example.abl.model.lov.LovResponse
+import com.example.abl.model.sync.SyncModel
+import com.example.abl.model.visitLogs.VisitsCallModel
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.RoomHelper
-import com.example.abl.utils.GsonFactory
 import com.example.abl.utils.SharedPrefManager
-import com.google.gson.Gson
 import kotlinx.coroutines.*
-import okhttp3.ResponseBody
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.HttpException
 import retrofit2.Response
-import java.io.IOException
 import java.lang.Exception
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class CoroutineViewModel @Inject constructor(private val userRepository: UserRepository) :

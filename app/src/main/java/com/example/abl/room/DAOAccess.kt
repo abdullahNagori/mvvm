@@ -1,13 +1,17 @@
 package com.example.abl.room
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.abl.model.*
-import com.google.android.gms.maps.model.Dash
-import io.reactivex.Flowable
+import com.example.abl.model.addLead.DynamicLeadsItem
+import com.example.abl.model.checkin.CheckinModel
+import com.example.abl.model.dashboard.DashboardResponse
+import com.example.abl.model.location.UserLocation
+import com.example.abl.model.lov.CompanyLeadStatu
+import com.example.abl.model.lov.CompanyProduct
+import com.example.abl.model.lov.CompanyVisitStatu
+import com.example.abl.model.previousVisits.GetPreviousVisit
 
 @Dao
 interface DAOAccess {

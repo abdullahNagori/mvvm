@@ -5,18 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import com.example.abl.R
 import com.example.abl.activity.LoginActivity
 import com.example.abl.base.BaseDockFragment
-import com.example.abl.base.BaseFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ReqPasswordFragmentBinding
-import com.example.abl.model.OtpModel
-import com.example.abl.model.OtpResponse
-import com.example.abl.model.ResetPasswordModel
-import com.example.abl.model.ResetPwdReqResponse
+import com.example.abl.model.resetPassword.ResetPasswordModel
+import com.example.abl.model.resetPassword.ResetPwdReqResponse
 import com.example.abl.utils.GsonFactory
 
 
@@ -77,19 +73,9 @@ class ReqPswrdFragment : BaseDockFragment() {
         myDockActivity?.hideProgressIndicator()
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
 
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
-    }
+
+
 }

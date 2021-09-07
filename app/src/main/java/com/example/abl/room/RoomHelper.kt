@@ -1,9 +1,12 @@
 package com.example.abl.room
 
-import android.util.Log
-import com.example.abl.model.*
+import com.example.abl.model.addLead.DynamicLeadsItem
+import com.example.abl.model.checkin.CheckinModel
+import com.example.abl.model.dashboard.DashboardResponse
+import com.example.abl.model.location.UserLocation
+import com.example.abl.model.lov.CompanyLeadStatu
+import com.example.abl.model.previousVisits.GetPreviousVisit
 import com.example.abl.repository.BaseRepository
-import com.example.abl.utils.GsonFactory
 import javax.inject.Inject
 
 class RoomHelper @Inject constructor(private val daoAccess: DAOAccess, private val ablDatabase: ABLDatabase) : BaseRepository() {

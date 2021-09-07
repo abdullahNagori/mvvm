@@ -4,24 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
-import androidx.navigation.Navigation
 import com.example.abl.R
 import com.example.abl.activity.LoginActivity
-import com.example.abl.activity.MainActivity
 import com.example.abl.activity.WelcomeActivity
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.OtpVerificationFragmentBinding
-import com.example.abl.fragment.CalculatorFragment.Companion.newInstance
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.OtpModel
-import com.example.abl.model.OtpResponse
+import com.example.abl.model.otp.OtpModel
+import com.example.abl.model.otp.OtpResponse
 import com.example.abl.utils.GsonFactory
 
 
@@ -104,19 +98,9 @@ class OTPVerificationFragment : BaseDockFragment() {
         }
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
 
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
-    }
+
+
 }

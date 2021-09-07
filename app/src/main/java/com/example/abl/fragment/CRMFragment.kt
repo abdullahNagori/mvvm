@@ -6,26 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
-import androidx.viewpager.widget.ViewPager
 import com.example.abl.R
 import com.example.abl.adapter.DynamicViewPagerAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentCrmBinding
-import com.example.abl.model.CompanyLeadSource
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.DynamicLeadsResponse
+import com.example.abl.model.lov.CompanyLeadSource
+import com.example.abl.model.addLead.DynamicLeadsResponse
 import com.example.abl.utils.GsonFactory
-import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_crm.*
 import kotlinx.android.synthetic.main.portfolio_fragment.*
-import kotlinx.android.synthetic.main.portfolio_fragment.tab_layout
 import java.lang.reflect.Type
-import java.util.ArrayList
 
 
 class CRMFragment : BaseDockFragment() {
@@ -102,21 +96,5 @@ class CRMFragment : BaseDockFragment() {
                 R.anim.zoomout
             )
         )
-    }
-
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        TODO("Not yet implemented")
     }
 }

@@ -2,21 +2,15 @@ package com.example.abl.fragment
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.example.abl.R
-import com.example.abl.adapter.CallLogsAdapter
 import com.example.abl.adapter.VisitsLogsAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
 import com.example.abl.constant.Constants
-import com.example.abl.databinding.PreviousVisitFragmentBinding
 import com.example.abl.databinding.VisitLogsFragmentBinding
-import com.example.abl.model.CheckinModel
+import com.example.abl.model.checkin.CheckinModel
 
 class VisitLogsFragment : BaseDockFragment(), ClickListner {
 
@@ -63,16 +57,8 @@ class VisitLogsFragment : BaseDockFragment(), ClickListner {
         logDetailsFragment.show(childFragmentManager, "visits")
     }
 
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
 
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-    }
+
 
 }

@@ -1,31 +1,18 @@
 package com.example.abl.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.SyncStateContract
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
 import com.example.abl.R
 import com.example.abl.activity.LoginActivity
-import com.example.abl.base.BaseDialogFragment
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentChangePasswordBinding
-import com.example.abl.model.ChangePasswordModel
-import com.example.abl.model.GenericMsgResponse
-import com.example.abl.model.OtpResponse
-import com.example.abl.utils.GsonFactory
-import com.example.abl.utils.ValidationHelper
-import java.lang.Exception
+import com.example.abl.model.changePassword.ChangePasswordModel
 import java.util.regex.Pattern
-import javax.inject.Inject
 
 class ChangePasswordFragment : BaseDockFragment(){
     lateinit var binding: FragmentChangePasswordBinding
@@ -73,12 +60,14 @@ class ChangePasswordFragment : BaseDockFragment(){
             return
         }
 
-        changePassword(ChangePasswordModel(
+        changePassword(
+            ChangePasswordModel(
             sharedPrefManager.getUsername(),
             binding.edNewPassword.text.toString(),
             binding.edConfirmPassword.text.toString(),
             binding.edOldPassword.text.toString(),
-           ))
+           )
+        )
     }
 
     private fun changePassword(changePasswordModel: ChangePasswordModel){
@@ -100,22 +89,5 @@ class ChangePasswordFragment : BaseDockFragment(){
         val regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+_=;*])(?=\\S+$).{4,}$"
         val p = Pattern.compile(regex)
         return p.matcher(str).matches()
-    }
-
-    override fun closeDrawer() {
-        TODO("Not yet implemented")
-    }
-
-    override fun showBanner(text: String, type: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToFragment(id: Int, args: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setTitle(text: String) {
-        TODO("Not yet implemented")
-
     }
 }
