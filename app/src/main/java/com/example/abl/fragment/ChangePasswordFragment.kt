@@ -52,11 +52,11 @@ class ChangePasswordFragment : BaseDockFragment(){
         }
 
         if(!isValidPassword(binding.edNewPassword.text.toString())){
-            showPasswordchangingInstructions(getString(R.string.error_wrong_password_pattern))
+            showPasswordChangingInstructions(getString(R.string.error_wrong_password_pattern))
             return
         }
         if(binding.edNewPassword.length()<8) {
-            showPasswordchangingInstructions(getString(R.string.error_wrong_password_pattern))
+            showPasswordChangingInstructions(getString(R.string.error_wrong_password_pattern))
             return
         }
 

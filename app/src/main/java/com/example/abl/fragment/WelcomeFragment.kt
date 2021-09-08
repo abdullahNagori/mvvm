@@ -50,11 +50,13 @@ class WelcomeFragment : BaseDockFragment() {
         myDockActivity?.getUserViewModel()?.apiListener = this
 
         binding.fab.setOnClickListener {
-//            if (myDockActivity?.latitude == "" && myDockActivity?.longitude == "") {
-//                myDockActivity?.showErrorMessage("Location not found")
-//            }
 
-            markAttendance("checkin", myDockActivity?.latitude ?:"0.0", myDockActivity?.longitude ?: "0.0")
+            if (myDockActivity?.latitude == "" && myDockActivity?.longitude == "") {
+                myDockActivity?.latitude = "0.0"
+                myDockActivity?.longitude = "0.0"
+            }
+
+            markAttendance("checkin", myDockActivity?.latitude.toString(), myDockActivity?.longitude.toString())
             //(requireActivity() as WelcomeActivity).foregroundOnlyLocationService?.
            // subscribeToLocationUpdates()
         }

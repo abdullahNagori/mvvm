@@ -83,6 +83,7 @@ class OTPVerificationFragment : BaseDockFragment() {
                                     LoginActivity.navController.navigate(R.id.action_OTPVerificationFragment_to_newPassFragment)
                                 } else {
                                     startActivity(Intent(requireContext(), WelcomeActivity::class.java))
+                                    activity?.finish()
                                 }
                             } else {
                                 myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))

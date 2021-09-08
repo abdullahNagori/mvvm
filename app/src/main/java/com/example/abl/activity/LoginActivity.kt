@@ -29,4 +29,9 @@ class LoginActivity : DockActivity() {
         navController = findNavController(R.id.nav_host_login_fragment)
         return super.onSupportNavigateUp()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        moveTaskToBack(true)
+    }
 }

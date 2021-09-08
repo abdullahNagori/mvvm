@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -64,6 +65,7 @@ class MainActivity : DockActivity() {
     companion object {
         @SuppressLint("StaticFieldLeak")
         private lateinit var unbinder: Unbinder
+
         @SuppressLint("StaticFieldLeak")
         lateinit var navController: NavController
         lateinit var drawerLayout: DrawerLayout
@@ -99,7 +101,7 @@ class MainActivity : DockActivity() {
         unbinder = ButterKnife.bind(this)
         setContentView(binding.root)
 
-        navController = findNavController(R.id.nav_host_main)
+//        navController = findNavController(R.id.nav_host_main)
         viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 
         initView()
@@ -361,7 +363,7 @@ class MainActivity : DockActivity() {
         listDataChild[listDataHeader[4]] = companyLeadSource.map { it.name }
     }
 
-    fun dropDownMenu() {
+    fun dropDownMenu(view: View) {
         showOrHide()
         binding.appBarMain.sideMenu.sync.setOnClickListener(::onCLickEvent)
         binding.appBarMain.sideMenu.upload.setOnClickListener(::onCLickEvent)
@@ -526,7 +528,8 @@ class MainActivity : DockActivity() {
         }
     }
 
-    private fun getSyncData(isShowLoading: Boolean? = true) {
+     fun getSyncData(isShowLoading: Boolean? = true) {
+         this.showProgressIndicator()
         if (!internetHelper.isNetworkAvailable()) {
             showToast("Internet is not available")
             return
@@ -545,7 +548,6 @@ class MainActivity : DockActivity() {
 
         viewModel.getLOV().observe(this) {
             this.hideProgressIndicator()
-
             if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
                 processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
                 if (isShowLoading == true) {
@@ -664,11 +666,19 @@ class MainActivity : DockActivity() {
         alertDialog.setPositiveButton(
             "Yes"
         ) { dialog, which ->
-            sharedPrefManager.logout()
-            roomHelper.clearDB()
-            // foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+
+            if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
+                    .isNotEmpty()
+            ) {
+                showErrorMessage(getString(R.string.un_synced_msg))
+            } else {
+                sharedPrefManager.logout()
+                roomHelper.clearDB()
+                // foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
+
         }
         alertDialog.setNegativeButton(
             "No"
@@ -676,8 +686,4 @@ class MainActivity : DockActivity() {
         alertDialog.show()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finishAffinity()
-    }
 }
