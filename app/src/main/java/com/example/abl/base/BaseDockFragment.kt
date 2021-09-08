@@ -60,7 +60,7 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener {
         apiListener = this
     }
 
-    protected fun getDockActivity(): DockActivity? {
+    private fun getDockActivity(): DockActivity? {
         return myDockActivity
     }
 
@@ -82,10 +82,6 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener {
     override fun onStarted() {
        // myDockActivity?.onLoadingStarted()
         //myDockActivity?.showProgressIndicator()
-    }
-
-    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
-        if (activity != null) (activity as DockActivity).showDialog(type,contact,dynamicLeadsItem)
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
@@ -110,7 +106,7 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener {
         if (activity != null) (activity as DockActivity)
     }
 
-    override fun showPasswordchangingInstructions(text: String?) {
+    override fun showPasswordChangingInstructions(text: String?) {
         val alertDialog = BottomSheetDialog(requireContext())
         val viewBinding = DialogPasswordInstructionBinding.inflate(layoutInflater)
         alertDialog.setContentView(viewBinding.root)

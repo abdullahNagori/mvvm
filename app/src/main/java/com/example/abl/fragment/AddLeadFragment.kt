@@ -25,17 +25,13 @@ import kotlin.collections.ArrayList
 
 
 class AddLeadFragment : BaseDockFragment(), AdapterView.OnItemSelectedListener {
-    lateinit var binding: AddFragmentBinding
 
+    lateinit var binding: AddFragmentBinding
     var selectedProduct: CompanyProduct? = null
 //    private var sourceOfIncome: String? = null
     private var gender: String = "male"
 //    private var occupation: String? = null
-    val random = (0..100).random()
-
-
     lateinit var productLovList: ArrayList<CompanyProduct>
-
     //var selectedList: ArrayList<String>? = null
     var latitude = 0.0
     var longitude = 0.0

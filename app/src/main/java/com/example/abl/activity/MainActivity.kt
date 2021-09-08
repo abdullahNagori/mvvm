@@ -64,7 +64,6 @@ class MainActivity : DockActivity() {
     companion object {
         @SuppressLint("StaticFieldLeak")
         private lateinit var unbinder: Unbinder
-
         @SuppressLint("StaticFieldLeak")
         lateinit var navController: NavController
         lateinit var drawerLayout: DrawerLayout
@@ -362,7 +361,7 @@ class MainActivity : DockActivity() {
         listDataChild[listDataHeader[4]] = companyLeadSource.map { it.name }
     }
 
-    fun dropDownMenu(view: View) {
+    fun dropDownMenu() {
         showOrHide()
         binding.appBarMain.sideMenu.sync.setOnClickListener(::onCLickEvent)
         binding.appBarMain.sideMenu.upload.setOnClickListener(::onCLickEvent)

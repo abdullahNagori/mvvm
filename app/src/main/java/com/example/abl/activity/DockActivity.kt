@@ -36,9 +36,8 @@ import javax.inject.Inject
  * @author Abdullah Nagori
  */
 
-
-//abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIndicator {
 abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
+
     abstract fun getDockFrameLayoutId(): Int
 
     @Inject
@@ -51,15 +50,11 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
     lateinit var internetHelper: InternetHelper
 
     var location: Location = Location(LocationManager.GPS_PROVIDER)
-
-     var latitude: String? = ""
-     var longitude: String? = ""
-
+    var latitude: String? = ""
+    var longitude: String? = ""
     var locationManager: LocationManager? = null
-
     private lateinit var progressBarDialog: ProgressDialog
     private lateinit var userViewModel: UserViewModel
-
     private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
     var foregroundOnlyLocationService: ForegroundOnlyLocationService? = null
     private var mBound = false
@@ -83,21 +78,20 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
 
         val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, Context.BIND_AUTO_CREATE)
-
     }
+
     override fun onResume() {
         super.onResume()
+
         LocalBroadcastManager.getInstance(this).registerReceiver(
             foregroundOnlyBroadcastReceiver!!,
             IntentFilter(
                 ForegroundOnlyLocationService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
             )
         )
-
     }
 
     override fun onPause() {
-        //removeCallBacks()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(
             foregroundOnlyBroadcastReceiver!!
         )
@@ -121,13 +115,16 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
 
     }
 
-    private fun initViewModels(){
+    private fun initViewModels() {
         userViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
     }
 
     fun hideKeyboard(view: View) {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(view.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS)
+        inputManager.hideSoftInputFromWindow(
+            view.applicationWindowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
     }
 
     fun replaceDockableFragmentWithoutBackStack(frag: BaseDockFragment?) {
@@ -139,42 +136,6 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
 
     fun getUserViewModel(): UserViewModel {
         return userViewModel
-    }
-
-    fun showDialog(customerType: String, contact: String?,customers: DynamicLeadsItem?) {
-//        val factory = LayoutInflater.from(this)
-//        val dialogView: View = factory.inflate(R.layout.dialog_call, null)
-//        val dialog = AlertDialog.Builder(this).setCancelable(true).create()
-//        dialog.setView(dialogView)
-//
-//        val number = dialogView.findViewById<CustomEditText>(R.id.call)
-//        contact?.let {
-//            number.setText(contact)
-//        }
-//        val btnCall = dialogView.findViewById<ImageButton>(R.id.btn_call)
-//        dialog.show()
-//
-//
-//        btnCall.setOnClickListener {
-//
-//            if (number.text?.length?.compareTo(11)!! < 0){
-//                number.error= "invalid number!"
-//            }else {
-//                dialog.dismiss()
-//                val intent = Intent(Intent.ACTION_DIAL)
-//                intent.data = Uri.parse("tel:" + number.text)
-//                val bundle = Bundle()
-//                customers?.let {
-//                    bundle.putParcelable(Constants.LEAD_DATA, customers)
-//                }
-//                bundle.putString(Constants.TYPE, Constants.CALL)
-//                bundle.putString(Constants.CUSTOMER_TYPE, customerType)
-//                bundle.putString("number", number.text.toString())
-//                navigateToFragment(R.id.checkInFormFragment, bundle)
-//                startActivity(intent)
-//            }
-//        }
-//        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     open fun showErrorMessage(message: String) {
@@ -208,7 +169,7 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
         this.showErrorMessage(message)
     }
 
-    fun <T : Iterable<*>?> nullGuard (item: T?): T {
+    fun <T : Iterable<*>?> nullGuard(item: T?): T {
         return (item ?: Collections.EMPTY_LIST) as T
     }
 
@@ -221,7 +182,7 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
     }
 
     override fun hideProgressIndicator() {
-        if (this::progressBarDialog.isInitialized && progressBarDialog.isAdded ) {
+        if (this::progressBarDialog.isInitialized && progressBarDialog.isAdded) {
             progressBarDialog.dismiss()
         }
     }
@@ -246,6 +207,7 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
     fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
     @SuppressLint("MissingPermission")
     private fun getLocation() {
         LocationServices.getFusedLocationProviderClient(this).lastLocation.addOnSuccessListener {
@@ -255,7 +217,10 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
                 }
                 latitude = it.latitude.toString()
                 longitude = it.longitude.toString()
-                Log.i("CurrentLocation", "Your Location: \nLatitude: $latitude\nLongitude: $longitude")
+                Log.i(
+                    "CurrentLocation",
+                    "Your Location: \nLatitude: $latitude\nLongitude: $longitude"
+                )
             } catch (e: java.lang.Exception) {
             }
         }
