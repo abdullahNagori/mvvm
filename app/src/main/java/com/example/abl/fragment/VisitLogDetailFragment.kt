@@ -24,7 +24,7 @@ class VisitLogDetailFragment : BaseDialogFragment() {
         // Inflate the layout for this fragment
         initView()
 
-        arguments?.getParcelable<CheckinModel>(Constants.CALL_LOGS_DETAILS).let {
+        arguments?.getParcelable<CheckinModel>(Constants.VISITS_LOGS_DETAILS).let {
             it?.let { it1 ->
                 this.customer = it1
                 setData()

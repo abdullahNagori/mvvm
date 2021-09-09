@@ -11,7 +11,8 @@ import dagger.android.ContributesAndroidInjector
  */
 
 @Module
-interface FragmentBuilderModule {
+interface
+FragmentBuilderModule {
 
 
     @ContributesAndroidInjector

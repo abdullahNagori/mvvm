@@ -59,8 +59,13 @@ class CallLogsFragment : BaseDockFragment(), ClickListner {
 
     private fun initRecyclerView(){
         adapter = CallLogsAdapter(requireContext(), this)
-        adapter.setList(logList)
-        binding.logs.adapter = adapter
+        if (logList.isNotEmpty()){
+            adapter.setList(logList)
+            binding.logs.adapter = adapter
+        }else {
+            binding.dataNotFound.root.visibility = View.VISIBLE
+        }
+
     }
     override fun <T> onClick(data: T, createNested: Boolean) {
 

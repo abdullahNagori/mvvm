@@ -61,15 +61,23 @@ class AllFragment : BaseDockFragment(), ClickListner {
 
     private fun setData() {
         val leadData = roomHelper.getLeadsData(leadSource?.record_id ?: "0")
-
         if (leadStatusName.equals("all", true)) {
             this.dataSource = leadData
-            adapter.setList(dataSource)
-            adapter.notifyDataSetChanged()
+            if (dataSource.isNotEmpty()){
+                adapter.setList(dataSource)
+                adapter.notifyDataSetChanged()
+            }else {
+                binding.dataNotFound.root.visibility = View.VISIBLE
+            }
         } else {
             this.dataSource = leadData.filter { it.lead_status_name.equals(leadStatusName, true) }
-            adapter.setList(dataSource)
-            adapter.notifyDataSetChanged()
+            if (dataSource.isNotEmpty()){
+                adapter.setList(dataSource)
+                adapter.notifyDataSetChanged()
+            }else {
+                binding.dataNotFound.root.visibility = View.VISIBLE
+            }
+
         }
     }
 

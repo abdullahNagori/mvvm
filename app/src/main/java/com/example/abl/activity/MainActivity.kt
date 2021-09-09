@@ -528,8 +528,8 @@ class MainActivity : DockActivity() {
         }
     }
 
-     fun getSyncData(isShowLoading: Boolean? = true) {
-         this.showProgressIndicator()
+    private fun getSyncData(isShowLoading: Boolean? = true) {
+      //  this.showProgressIndicator()
         if (!internetHelper.isNetworkAvailable()) {
             showToast("Internet is not available")
             return

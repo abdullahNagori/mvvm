@@ -1,12 +1,14 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.abl.adapter.PreviousVisitAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
+import com.example.abl.constant.Constants
 import com.example.abl.databinding.PreviousVisitFragmentBinding
 import com.example.abl.model.addLead.DynamicLeadsItem
 import com.example.abl.model.previousVisits.GetPreviousVisit
@@ -46,8 +48,13 @@ class PreviousVisitFragment : BaseDockFragment(), ClickListner {
         previousList = dynamicLeadsItem.get_previous_visit
         binding.totalCustomers.text = previousList.size.toString()
         adapter = PreviousVisitAdapter(requireContext(), this)
-        adapter.setList(previousList)
-        binding.previous.adapter = adapter
+        if (previousList.isNotEmpty()){
+            adapter.setList(previousList)
+            binding.previous.adapter = adapter
+        }else {
+            binding.dataNotFound.root.visibility = View.VISIBLE
+        }
+
 
     }
 
@@ -55,7 +62,10 @@ class PreviousVisitFragment : BaseDockFragment(), ClickListner {
 
 
     override fun <T> onClick(data: T, createNested: Boolean) {
-//        val logDetailsFragment = PreviousVisitDetailFragment()
-//        logDetailsFragment.show(childFragmentManager, "visits")
+        val logDetailsFragment = PreviousVisitDetailFragment()
+        val bundle = Bundle()
+        bundle.putParcelable(Constants.PREVIOUS_LOGS_DETAILS, data as Parcelable)
+        logDetailsFragment.arguments = bundle
+        logDetailsFragment.show(childFragmentManager, "visits")
     }
 }

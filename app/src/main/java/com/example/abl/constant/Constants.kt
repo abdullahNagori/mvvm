@@ -34,6 +34,7 @@ object Constants {
     const val VISIT_TYPE  = "visit_type"
     const val SUCCESS  = "Success"
     const val CALL_LOGS_DETAILS  = "call_logs_detail"
+    const val PREVIOUS_LOGS_DETAILS  = "previous_logs_detail"
     const val TRAINING_DETAILS  = "training_details"
     const val MATERIAL_LIST  = "material_list"
     const val MATERIAL  = "material"

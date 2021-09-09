@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import com.example.abl.base.BaseDialogFragment
+import com.example.abl.constant.Constants
 import com.example.abl.databinding.LogDetailsFragmentBinding
+import com.example.abl.model.checkin.CheckinModel
+import com.example.abl.model.previousVisits.GetPreviousVisit
 
 class PreviousVisitDetailFragment : BaseDialogFragment() {
 
@@ -17,6 +20,7 @@ class PreviousVisitDetailFragment : BaseDialogFragment() {
     }
 
     private lateinit var binding: LogDetailsFragmentBinding
+    lateinit var previousList: GetPreviousVisit
 
 
     override fun onCreateView(
@@ -27,6 +31,12 @@ class PreviousVisitDetailFragment : BaseDialogFragment() {
 
         initView()
 
+        arguments?.getParcelable<GetPreviousVisit>(Constants.PREVIOUS_LOGS_DETAILS).let {
+            it?.let { it1 ->
+                this.previousList = it1
+                setData()
+            }
+        }
         return binding.root
     }
 
@@ -38,6 +48,15 @@ class PreviousVisitDetailFragment : BaseDialogFragment() {
         dialog?.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
     }
+
+    private fun setData() {
+        binding.status.text = previousList.lead_status_name
+//        binding.accountNum.text = customer.account_num
+//        binding.contactNum.text = customer.mobile_phone_number
+//        binding.status.text = customer.visit_status
+//        binding.remarks.text = customer.comment
+    }
+
     private fun initView() {
         binding = LogDetailsFragmentBinding.inflate(layoutInflater)
         binding.closeAction.setOnClickListener {

@@ -1,6 +1,8 @@
 package com.example.abl.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +27,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,7 +47,7 @@ class DashboardFragment : BaseDockFragment() {
         // Inflate the layout for this fragment
         init()
         myDockActivity?.getUserViewModel()?.apiListener = this
-    //    getDashBoardCount()
+        //    getDashBoardCount()
 
         setAnim()
         val labels = monthList()
@@ -74,9 +77,9 @@ class DashboardFragment : BaseDockFragment() {
         binding.llFollowup.setOnClickListener {
             navigateToFragment(R.id.action_nav_home_to_followup)
         }
-        binding.todayCall.text = roomHelper.getCallLogsCount()
-        binding.todayVisit.text = roomHelper.getVisitLogsCount()
-        binding.todaysFollowUp.text = roomHelper.getFollowupCount()
+//        binding.todayCall.text = roomHelper.getCallLogsCount()
+//        binding.todayVisit.text = roomHelper.getVisitLogsCount()
+//        binding.todaysFollowUp.text = roomHelper.getFollowupCount()
     }
 
     private fun initChart(binding: FragmentDashboardBinding, months: List<String>?) {
@@ -279,9 +282,16 @@ class DashboardFragment : BaseDockFragment() {
 
     override fun onResume() {
         super.onResume()
-        binding.todayCall.text = roomHelper.getCallLogsCount()
-        binding.todayVisit.text = roomHelper.getVisitLogsCount()
-        binding.todaysFollowUp.text = roomHelper.getFollowupCount()
+        try {
+            Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                binding.todayCall.text = roomHelper.getCallLogsCount()
+                binding.todayVisit.text = roomHelper.getVisitLogsCount()
+                binding.todaysFollowUp.text = roomHelper.getFollowupCount()
+            }, 2000)
+        } catch (e: Exception) {
+            Log.i("DashboardCount", e.message.toString())
+        }
+
     }
 
     private fun getDashBoardCount() {

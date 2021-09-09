@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.deepakkumardk.kontactpickerlib.util.log
 import com.example.abl.adapter.VisitsLogsAdapter
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.base.ClickListner
@@ -46,14 +47,20 @@ class VisitLogsFragment : BaseDockFragment(), ClickListner {
     private fun setData() {
         logList = roomHelper.getCheckInCallData(Constants.VISIT)
         binding.totalCustomers.text = logList.size.toString()
-        adapter.setList(logList)
-        adapter.notifyDataSetChanged()
+        if (logList.isNotEmpty()) {
+            adapter.setList(logList)
+            adapter.notifyDataSetChanged()
+        }else {
+            binding.dataNotFound.root.visibility = View.VISIBLE
+        }
+
     }
 
     override fun <T> onClick(data: T, createNested: Boolean) {
         val bundle = Bundle()
         val logDetailsFragment = VisitLogDetailFragment()
         bundle.putParcelable(Constants.VISITS_LOGS_DETAILS, data as Parcelable)
+        logDetailsFragment.arguments = bundle
         logDetailsFragment.show(childFragmentManager, "visits")
     }
 
