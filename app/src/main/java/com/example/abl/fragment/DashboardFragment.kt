@@ -292,6 +292,12 @@ class DashboardFragment : BaseDockFragment() {
             Log.i("DashboardCount", e.message.toString())
         }
 
+        if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
+                .isNotEmpty() && myDockActivity?.internetHelper?.isNetworkAvailable() == true
+        ) {
+            Log.i("xxUpload", "upload")
+            (requireActivity() as MainActivity).sendLeadData()
+        }
     }
 
     private fun getDashBoardCount() {

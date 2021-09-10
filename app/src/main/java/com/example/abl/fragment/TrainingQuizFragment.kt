@@ -54,12 +54,6 @@ class TrainingQuizFragment : BaseDockFragment() {
         return binding.root
     }
 
-
-
-
-
-
-
     private fun initView() {
         binding = TrainingQuizFragmentBinding.inflate(layoutInflater)
         quizadapter = QuizFormAdapter(requireContext())

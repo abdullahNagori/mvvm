@@ -19,9 +19,9 @@ class VisitsLogsAdapter (val context: Context?, val onclick: ClickListner) : Rec
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(item: CheckinModel) {
             view.customerType.text = "Visit Type: ${item.visit_type}" ?: "-"
-            view.time.text = item.visit_date_time ?: "-"
-            view.status.text =  item.visit_status ?: "-"
-            view.visitBy.text = item.customer_name ?: "-"
+         //   view.time.text = item.visit_date_time ?: "-"
+            view.status.text =  "Status: ${item.visit_status}" ?: "-"
+            view.visitedBy.text = item.customer_name ?: "-"
         }
     }
 

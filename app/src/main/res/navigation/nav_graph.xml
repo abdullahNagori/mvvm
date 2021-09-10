@@ -109,6 +109,7 @@
             app:popUpTo="@+id/nav_graph"
             app:popUpToInclusive="true"
             app:destination="@+id/nav_training_quiz" />
+
     </fragment>
 
     <fragment
@@ -122,6 +123,11 @@
             app:popUpTo="@+id/nav_graph"
             app:popUpToInclusive="true"
             app:destination="@id/nav_result_quiz" />
+
+        <action
+            android:id="@+id/action_nav_training_quiz_to_nav_material_quiz"
+            app:destination="@+id/nav_home" />
+
     </fragment>
 
     <fragment

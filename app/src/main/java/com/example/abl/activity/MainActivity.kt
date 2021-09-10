@@ -13,6 +13,7 @@ import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -51,6 +52,7 @@ import com.example.abl.utils.Schedulers.UploadLeadWorkManager.UploadLeadWorker
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_menu_shortcut.*
+import kotlinx.android.synthetic.main.item_checkbox.view.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -107,7 +109,7 @@ class MainActivity : DockActivity() {
         initView()
         setData()
         setGesture()
-        //sendUserTracking()
+        sendUserTracking()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -115,12 +117,23 @@ class MainActivity : DockActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (supportActionBar!!.title.toString()== "Check In" && item.itemId == android.R.id.home) {
+            showCheckInAlert()
+            return true
+        }
+        else if (supportActionBar!!.title.toString()== "Quiz" && item.itemId == android.R.id.home) {
+            showQuizAlert()
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         actionBarMenu = menu
-
         val item = menu.findItem(R.id.myswitch) as MenuItem
-
         actionBarMenu.findItem(R.id.action_notification).setOnMenuItemClickListener {
             true
         }
@@ -133,7 +146,7 @@ class MainActivity : DockActivity() {
         if (switchAB.isChecked) {
             Log.i("xxChecked", "check")
             Handler(Looper.getMainLooper()).postDelayed(Runnable {
-                //  foregroundOnlyLocationService?.subscribeToLocationUpdates()
+                foregroundOnlyLocationService?.subscribeToLocationUpdates()
             }, 120000)
         }
         switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -141,12 +154,9 @@ class MainActivity : DockActivity() {
             } else {
                 Log.i("xxChecked", "uncheck")
                 sharedPrefManager.setShiftStart(false)
-                //   foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
+                foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
                 startActivity(Intent(this, WelcomeActivity::class.java))
-                //   foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
-                // LoginActivity.navController.navigate()
-                // Navigation.findNavController().navigate(R.id.nav_graph_actFirstActvity)
-
+//                   foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
             }
 
         }
@@ -174,6 +184,13 @@ class MainActivity : DockActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
         animateNavigationDrawer(drawerLayout)
+
+        if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
+                .isNotEmpty() && internetHelper.isNetworkAvailable()
+        ) {
+            Log.i("xxUpload", "upload")
+            sendLeadData()
+        }
 
         getSyncData(isShowLoading = false)
         prepareSideMenu()
@@ -529,18 +546,18 @@ class MainActivity : DockActivity() {
     }
 
     private fun getSyncData(isShowLoading: Boolean? = true) {
-      //  this.showProgressIndicator()
+        //  this.showProgressIndicator()
         if (!internetHelper.isNetworkAvailable()) {
             showToast("Internet is not available")
             return
         }
 
-        if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
-                .isNotEmpty()
-        ) {
-            showErrorMessage(getString(R.string.un_synced_msg))
-            return
-        }
+//        if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
+//                .isNotEmpty()
+//        ) {
+//            showErrorMessage(getString(R.string.un_synced_msg))
+//            return
+//        }
 
         if (isShowLoading == true) {
             this.showProgressIndicator()
@@ -620,7 +637,7 @@ class MainActivity : DockActivity() {
         }
     }
 
-    private fun sendLeadData() {
+    fun sendLeadData() {
         try {
             val workManager = WorkManager.getInstance(applicationContext)
             val uploadDataConstraints =
@@ -659,6 +676,11 @@ class MainActivity : DockActivity() {
         }
     }
 
+    fun toggleBackBtnState() {
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
+    }
+
     fun showLogoutAlert() {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle("Logout")
@@ -674,7 +696,7 @@ class MainActivity : DockActivity() {
             } else {
                 sharedPrefManager.logout()
                 roomHelper.clearDB()
-                // foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
+                foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
@@ -686,4 +708,33 @@ class MainActivity : DockActivity() {
         alertDialog.show()
     }
 
+    fun showCheckInAlert() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Alert !!")
+        alertDialog.setMessage("Do you want to discard the form?")
+        alertDialog.setPositiveButton(
+            "Yes"
+        ) { dialog, which ->
+            navigateToFragment(R.id.action_checkInFormFragment_to_nav_home)
+        }
+        alertDialog.setNegativeButton(
+            "No"
+        ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
+        alertDialog.show()
+    }
+
+    fun showQuizAlert() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Alert !!")
+        alertDialog.setMessage("Do you want to quit the quiz?")
+        alertDialog.setPositiveButton(
+            "Yes"
+        ) { dialog, which ->
+            navigateToFragment(R.id.action_nav_training_quiz_to_nav_material_quiz)
+        }
+        alertDialog.setNegativeButton(
+            "No"
+        ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
+        alertDialog.show()
+    }
 }

@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.abl.R
 import com.example.abl.activity.MainActivity
+import com.example.abl.activity.WelcomeActivity
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.FragmentWelcomeBinding
@@ -57,8 +58,8 @@ class WelcomeFragment : BaseDockFragment() {
             }
 
             markAttendance("checkin", myDockActivity?.latitude.toString(), myDockActivity?.longitude.toString())
-            //(requireActivity() as WelcomeActivity).foregroundOnlyLocationService?.
-           // subscribeToLocationUpdates()
+            (requireActivity() as WelcomeActivity).foregroundOnlyLocationService?.
+            subscribeToLocationUpdates()
         }
 
         getUserData()

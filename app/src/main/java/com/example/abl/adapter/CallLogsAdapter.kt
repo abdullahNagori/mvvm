@@ -18,9 +18,9 @@ class CallLogsAdapter(val context: Context?, val onclick: ClickListner) : Recycl
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(item: CheckinModel) {
-            view.time.text = (item.visit_date_time ?: "N/A")
-            view.mobileNumber.text = (item.mobile_phone_number ?: "N/A")
-            view.customerName.text =  (item.customer_name ?: "N/A")
+      //      view.time.text = (item.visit_date_time ?: "N/A")
+            view.contactNo.text = (item.mobile_phone_number ?: "N/A")
+            view.name.text =  (item.customer_name ?: "N/A")
             view.status.text = "Status: ${item.visit_status}"
         }
     }

@@ -164,7 +164,6 @@ class ForegroundOnlyLocationService : Service() {
 
     private fun insert(locationDevice: UserLocation) {
         Log.d(TAG, "xxDB")
-
         ablDatabase.leadDao().insertLocation(locationDevice)
 
     }
@@ -314,7 +313,7 @@ class ForegroundOnlyLocationService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             val notificationChannel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID, titleText, NotificationManager.IMPORTANCE_DEFAULT
+                NOTIFICATION_CHANNEL_ID, titleText, NotificationManager.IMPORTANCE_LOW
             )
 
             // Adds NotificationChannel to system. Attempting to create an

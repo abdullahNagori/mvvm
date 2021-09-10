@@ -40,10 +40,6 @@ class FollowupFragment : BaseDockFragment(), ClickListner {
 
     }
 
-
-
-
-
     private fun initView(){
         binding = FollowupFragmentBinding.inflate(layoutInflater)
         binding.totalCustomers.text = followupList.size.toString()
@@ -51,8 +47,13 @@ class FollowupFragment : BaseDockFragment(), ClickListner {
 
     private fun initRecyclerView(){
         adapter = CustomerAdapter(requireContext(), this)
-        adapter.setList(followupList)
-        binding.followupRv.adapter = adapter
+        if (followupList.isNotEmpty()) {
+            adapter.setList(followupList)
+            binding.followupRv.adapter = adapter
+        } else {
+            binding.dataNotFound.root.visibility = View.GONE
+        }
+
     }
 
     override fun <T> onClick(data: T, createNested: Boolean) {
