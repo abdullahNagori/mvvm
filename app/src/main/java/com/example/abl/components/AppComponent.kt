@@ -24,7 +24,8 @@ import javax.inject.Singleton
     AppDbModule::class,
     AppDaoModule::class,
     ActivityBuilderModule::class,
-    ApplicationContextModule::class])
+    ApplicationContextModule::class,
+    ServiceBuilderModule::class])
 
 interface AppComponent {
 

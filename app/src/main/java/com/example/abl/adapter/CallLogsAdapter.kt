@@ -9,25 +9,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
 import com.example.abl.databinding.ItemCallLogsBinding
-import com.example.abl.databinding.ItemPreviousBinding
-import com.example.abl.fragment.CallLogsList
+import com.example.abl.model.checkin.CheckinModel
 
 class CallLogsAdapter(val context: Context?, val onclick: ClickListner) : RecyclerView.Adapter<CallLogsAdapter.ViewHolder>() {
 
-    lateinit var callList : ArrayList<CallLogsList>
+    lateinit var callList : List<CheckinModel>
     lateinit var view: ItemCallLogsBinding
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(item: CallLogsList) {
-            view.time.text = (item.time ?: "N/A")
-            view.mobileNumber.text = (item.mobile ?: "N/A")
-            view.customerName.text =  (item.name ?: "N/A")
-            view.status.text = (item.status ?: "N/A")
+        fun bindItems(item: CheckinModel) {
+      //      view.time.text = (item.visit_date_time ?: "N/A")
+            view.contactNo.text = (item.mobile_phone_number ?: "N/A")
+            view.name.text =  (item.customer_name ?: "N/A")
+            view.status.text = "Status: ${item.visit_status}"
         }
     }
 
 
-    fun setList(list: ArrayList<CallLogsList>) {
+    fun setList(list: List<CheckinModel>) {
         callList = list
         notifyDataSetChanged()
     }

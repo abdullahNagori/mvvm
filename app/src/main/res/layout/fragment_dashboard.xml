@@ -7,7 +7,7 @@
     android:background="#FFFAFA"
     android:orientation="vertical"
     android:scrollbars="none"
-    tools:context="fragment.DashboardFragment">
+    tools:context=".fragment.dashboard.DashboardFragment">
 
 
     <RelativeLayout
@@ -140,7 +140,8 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView style="@style/dbTopCard">
+                <androidx.cardview.widget.CardView
+                    style="@style/dbTopCard">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -193,8 +194,6 @@
                             android:text="@string/fivehundred"
                             android:textSize="@dimen/_12sdp"
                             android:textStyle="bold" />
-
-
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -238,6 +237,7 @@
                     android:layout_height="@dimen/_115sdp">
 
                     <LinearLayout
+                        android:id="@+id/ll_followup"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
@@ -268,6 +268,7 @@
                     android:layout_height="@dimen/_115sdp">
 
                     <LinearLayout
+                        android:id="@+id/ll_todays_call"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
@@ -304,6 +305,7 @@
                     android:layout_height="@dimen/_115sdp">
 
                     <LinearLayout
+                        android:id="@+id/ll_todays_visit"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">

@@ -1,34 +1,37 @@
 package com.example.abl.activity
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
+import android.annotation.SuppressLint
+import android.content.*
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.os.IBinder
+import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageButton
-import androidx.annotation.IdRes
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
+import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.abl.R
 import com.example.abl.base.BaseDockFragment
-import com.example.abl.base.BaseFragment
-import com.example.abl.constant.Constants
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.network.ApiListener
+import com.example.abl.location.ForegroundOnlyLocationService
+import com.example.abl.location.toText
+import com.example.abl.model.addLead.DynamicLeadsItem
 import com.example.abl.progress.ProgressDialog
 import com.example.abl.progress.ProgressIndicator
-import com.example.abl.utils.CustomEditText
-import com.example.abl.utils.DrawableClickListener
-import com.example.abl.utils.DrawableClickListener.DrawablePosition
+import com.example.abl.room.RoomHelper
+import com.example.abl.utils.InternetHelper
 import com.example.abl.utils.SharedPrefManager
 import com.example.abl.viewModel.UserViewModel
+import com.google.android.gms.location.LocationServices
+import com.tapadoo.alerter.Alerter
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.dialog_call.*
+import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import javax.inject.Inject
 
 
@@ -36,42 +39,98 @@ import javax.inject.Inject
  * @author Abdullah Nagori
  */
 
+abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
 
-abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIndicator {
     abstract fun getDockFrameLayoutId(): Int
 
-    val KEY_FRAG_FIRST = "firstFrag"
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     @Inject
     lateinit var sharedPrefManager: SharedPrefManager
+
+    @Inject
+    lateinit var roomHelper: RoomHelper
+
+    @Inject
+    lateinit var internetHelper: InternetHelper
+
+    var location: Location = Location(LocationManager.GPS_PROVIDER)
+    var latitude: String? = ""
+    var longitude: String? = ""
+    var locationManager: LocationManager? = null
     private lateinit var progressBarDialog: ProgressDialog
     private lateinit var userViewModel: UserViewModel
-    lateinit var apiListener: ApiListener
+    private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
+    var foregroundOnlyLocationService: ForegroundOnlyLocationService? = null
+    private var mBound = false
 
+    val foregroundOnlyServiceConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            val binder = service as ForegroundOnlyLocationService.LocalBinder
+            foregroundOnlyLocationService = binder.service
+            mBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            foregroundOnlyLocationService = null
+            mBound = false
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
+        bindService(serviceIntent, foregroundOnlyServiceConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            foregroundOnlyBroadcastReceiver!!,
+            IntentFilter(
+                ForegroundOnlyLocationService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
+            )
+        )
+    }
+
+    override fun onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+            foregroundOnlyBroadcastReceiver!!
+        )
+        super.onPause()
+    }
+
+    override fun onStop() {
+        if (mBound) {
+            unbindService(foregroundOnlyServiceConnection)
+            mBound = false
+        }
+        super.onStop()
+    }
+
+    @SuppressLint("LongLogTag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModels()
-        apiListener = this
+        foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
+        getLocation()
+
     }
 
-    private fun initViewModels(){
+    private fun initViewModels() {
         userViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
-    }
-
-    fun replaceDockableFragment(frag: BaseFragment) {
-        val transaction = supportFragmentManager
-            .beginTransaction()
-
-        transaction.replace(getDockFrameLayoutId(), frag)
-        transaction
-            .addToBackStack(
-                if (supportFragmentManager.backStackEntryCount == 0) KEY_FRAG_FIRST else null).commit()
     }
 
     fun hideKeyboard(view: View) {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(view.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS)
+        inputManager.hideSoftInputFromWindow(
+            view.applicationWindowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
     }
 
     fun replaceDockableFragmentWithoutBackStack(frag: BaseDockFragment?) {
@@ -81,77 +140,43 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIn
         transaction.commit()
     }
 
-    fun replaceDockableFragmentWithAnimation(frag: BaseDockFragment?) {
-        val transaction = supportFragmentManager
-            .beginTransaction()
-        transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-        transaction.replace(getDockFrameLayoutId(), frag!!)
-        transaction
-            .addToBackStack(
-                if (supportFragmentManager.backStackEntryCount == 0) KEY_FRAG_FIRST else null).commit()
-    }
-
-    fun addDockableFragment(frag: BaseFragment?) {
-        val transaction = supportFragmentManager
-            .beginTransaction()
-        transaction.add(getDockFrameLayoutId(), frag!!)
-        transaction
-            .addToBackStack(
-                if (supportFragmentManager.backStackEntryCount == 0) KEY_FRAG_FIRST else null).commit()
-    }
-
-    fun showDialog(customerType: String, contact: String?,customers: DynamicLeadsItem?) {
-
-        val factory = LayoutInflater.from(this)
-        val dialogView: View = factory.inflate(R.layout.dialog_call, null)
-        val dialog = AlertDialog.Builder(this).setCancelable(true).create()
-        dialog.setView(dialogView)
-
-        val number = dialogView.findViewById<CustomEditText>(R.id.call)
-        contact?.let {
-            number.setText(contact)
-        }
-        val btnCall = dialogView.findViewById<ImageButton>(R.id.btn_call)
-        dialog.show()
-
-
-        btnCall.setOnClickListener {
-
-            if (number.text?.length?.compareTo(11)!! < 0){
-                number.error= "invalid number!"
-            }else {
-                dialog.dismiss()
-                val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:" + number.text)
-                val bundle = Bundle()
-                customers?.let {
-                    bundle.putParcelable(Constants.LEAD_DATA, customers)
-                }
-                bundle.putString(Constants.TYPE, Constants.CALL)
-                bundle.putString(Constants.CUSTOMER_TYPE, customerType)
-                bundle.putString("number", number.text.toString())
-                navigateToFragment(R.id.checkInFormFragment, bundle)
-                startActivity(intent)
-            }
-        }
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
-
-    }
-
     fun getUserViewModel(): UserViewModel {
         return userViewModel
     }
 
-    override fun onStarted() {
-        showProgressIndicator()
+    open fun showErrorMessage(message: String) {
+        Alerter.create(this)
+            .setTitle(getString(R.string.error))
+            .setText(message)
+            .setDuration(5000)
+            .setIcon(R.drawable.ic_close)
+            .setBackgroundColorRes(R.color.error_color)
+            .enableSwipeToDismiss()
+            .show()
     }
 
-    override fun onSuccess(liveData: LiveData<String>, tag: String) {
-     // apiListener?.onSuccess(liveData, tag)
+    open fun showSuccessMessage(message: String) {
+        Alerter.create(this)
+            .setTitle(getString(R.string.success))
+            .setText(message)
+            .setDuration(5000)
+            .setIcon(R.drawable.ic_close)
+            .setBackgroundColorRes(R.color.banner_green_color)
+            .enableSwipeToDismiss()
+            .show()
     }
 
-    override fun onFailure(message: String, tag: String) {
-        TODO("Not yet implemented")
+    open fun onSuccessResponse(liveData: LiveData<String>, tag: String) {
+        this.hideProgressIndicator()
+    }
+
+    open fun onFailureResponse(message: String, tag: String) {
+        this.hideProgressIndicator()
+        this.showErrorMessage(message)
+    }
+
+    fun <T : Iterable<*>?> nullGuard(item: T?): T {
+        return (item ?: Collections.EMPTY_LIST) as T
     }
 
     override fun showProgressIndicator() {
@@ -163,16 +188,72 @@ abstract class DockActivity : DaggerAppCompatActivity(), ApiListener, ProgressIn
     }
 
     override fun hideProgressIndicator() {
-        if (this::progressBarDialog.isInitialized && progressBarDialog.isAdded ) {
+        if (this::progressBarDialog.isInitialized && progressBarDialog.isAdded) {
             progressBarDialog.dismiss()
         }
     }
 
-    abstract fun showErrorMessage(message: String)
+    private fun logResultsToScreen(output: String) {
+        Log.i("Foreground", output)
+    }
 
-    abstract fun showSuccessMessage(message: String)
+    private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
 
-    abstract fun closeDrawer()
+        override fun onReceive(context: Context, intent: Intent) {
+            val location = intent.getParcelableExtra<Location>(
+                ForegroundOnlyLocationService.EXTRA_LOCATION
+            )
 
-    abstract fun navigateToFragment(@IdRes id: Int, args: Bundle? = null)
+            if (location != null) {
+                logResultsToScreen("Foreground location: ${location.toText()}")
+            }
+        }
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        LocationServices.getFusedLocationProviderClient(this).lastLocation.addOnSuccessListener {
+            try {
+                if (it == null) {
+                    getLocation()
+                }
+                latitude = it.latitude.toString()
+                longitude = it.longitude.toString()
+                Log.i(
+                    "CurrentLocation",
+                    "Your Location: \nLatitude: $latitude\nLongitude: $longitude"
+                )
+            } catch (e: java.lang.Exception) {
+            }
+        }
+    }
+
+    fun visibleWithAnimation(view: View) {
+        view.visibility = View.VISIBLE
+        view.startAnimation(
+            AnimationUtils.loadAnimation(
+                this,
+                R.anim.slide_in_right
+            )
+        )
+    }
+
+    fun goneWithAnimation(view: View) {
+        view.visibility = View.GONE
+        view.startAnimation(
+            AnimationUtils.loadAnimation(
+                this,
+                R.anim.slide_out_right
+            )
+        )
+    }
+
+    fun closeDrawer() {
+        drawer_layout.closeDrawer(GravityCompat.START)
+    }
+
 }

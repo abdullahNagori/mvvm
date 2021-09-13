@@ -10,7 +10,6 @@ import javax.inject.Inject
  */
 
 
-
 class InternetHelper @Inject constructor(private val context: Context) {
 
     fun isNetworkAvailable(): Boolean {

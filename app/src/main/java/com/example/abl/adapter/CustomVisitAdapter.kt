@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.abl.R
-import com.example.abl.model.CompanyProduct
-import com.example.abl.model.CompanyVisitStatu
+import com.example.abl.model.lov.CompanyVisitStatu
 
 class CustomVisitAdapter(val context: Context, var listItemsTxt: List<CompanyVisitStatu>) : BaseAdapter() {
 
 
-    val mInflater: LayoutInflater = LayoutInflater.from(context)
+    private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -30,7 +29,7 @@ class CustomVisitAdapter(val context: Context, var listItemsTxt: List<CompanyVis
         // setting adapter item height programatically.
 
         val params = view.layoutParams
-        params.height = 60
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT
         view.layoutParams = params
 
         vh.label.text = listItemsTxt[position].name
@@ -54,10 +53,6 @@ class CustomVisitAdapter(val context: Context, var listItemsTxt: List<CompanyVis
     }
 
     private class ItemRowHolder(row: View?) {
-
-        val label: TextView
-        init {
-            this.label = row?.findViewById(R.id.txtDropDownLabel) as TextView
-        }
+        val label: TextView = row?.findViewById(R.id.txtDropDownLabel) as TextView
     }
 }

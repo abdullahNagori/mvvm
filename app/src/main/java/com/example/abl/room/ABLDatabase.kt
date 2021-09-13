@@ -4,15 +4,27 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.abl.constant.Constants
-import com.example.abl.model.*
+import com.example.abl.model.addLead.DynamicLeadsItem
+import com.example.abl.model.checkin.CheckinModel
+import com.example.abl.model.dashboard.DashboardResponse
+import com.example.abl.model.location.UserLocation
+import com.example.abl.model.lov.CompanyLeadStatu
+import com.example.abl.model.lov.CompanyProduct
+import com.example.abl.model.lov.CompanyVisitStatu
+import com.example.abl.model.previousVisits.GetPreviousVisit
 
 @Database(entities = [
     DynamicLeadsItem::class,
-    CheckinModel::class,
     CompanyProduct::class,
     CompanyVisitStatu::class,
-    CompanyLeadStatu::class], version = 2, exportSchema = false)
+    CompanyLeadStatu::class,
+    GetPreviousVisit::class,
+    CheckinModel::class,
+    UserLocation::class,
+    DashboardResponse::class], version = 8, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class ABLDatabase : RoomDatabase() {
 
     abstract fun leadDao(): DAOAccess
@@ -36,6 +48,10 @@ abstract class ABLDatabase : RoomDatabase() {
 
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
             instance ?: buildDatabase(context).also { instance = it }
+        }
+
+        fun getInstance(activityContext: Context): ABLDatabase = instance ?: synchronized(this) {
+            instance ?: buildDatabase(activityContext.applicationContext).also { instance = it }
         }
     }
 }

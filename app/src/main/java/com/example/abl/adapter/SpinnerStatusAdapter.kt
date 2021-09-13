@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.CheckBox
 import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.databinding.ItemCheckboxBinding
-import com.example.abl.model.CompanyVisitStatu
+import com.example.abl.model.lov.CompanyVisitStatu
 import kotlinx.android.synthetic.main.item_checkbox.view.*
 
 class SpinnerStatusAdapter(val context: Context?, val list: List<CompanyVisitStatu>, val selectedList: ArrayList<CompanyVisitStatu>) : RecyclerView.Adapter<SpinnerStatusAdapter.ViewHolder>() {

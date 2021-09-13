@@ -36,7 +36,7 @@
                 android:id="@+id/type"
                 android:textColor="@color/colorPrimary"
                 android:textAlignment="center"
-                android:text="visit"
+                android:text="-"
                 android:layout_height="wrap_content"/>
 
 
@@ -59,7 +59,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:id="@+id/date"
-                android:text="visit"
+                android:text="-"
                 android:textColor="@color/colorPrimary"
                 android:textAlignment="center"
                 android:layout_height="wrap_content"/>
@@ -70,7 +70,7 @@
                 android:id="@+id/status"
                 android:textColor="@color/colorPrimary"
                 android:textAlignment="center"
-                android:text="visit"
+                android:text="-"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
@@ -92,6 +92,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:id="@+id/visited_by"
+                android:text="-"
                 android:textColor="@color/colorPrimary"
                 android:textAlignment="center"
                 android:layout_height="wrap_content"/>

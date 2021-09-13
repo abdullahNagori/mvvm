@@ -7,12 +7,21 @@
     android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="fragment.CalculatorFragment">
+    tools:context=".fragment.customerDetail.CalculatorFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/customers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_product_list_adapter" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <LinearLayout style="@style/greenShadow">
@@ -35,6 +44,7 @@
 
         <LinearLayout
             style="@style/greenShadow"
+
             android:layout_marginStart="@dimen/_15sdp">
 
             <ImageView
@@ -60,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
         android:gravity="center"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <LinearLayout style="@style/greenShadow">

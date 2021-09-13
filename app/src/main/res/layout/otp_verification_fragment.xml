@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/ot_frag"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="fragment.OTPVerificationFragment">
+    tools:context=".fragment.login.OTPVerificationFragment">
 
     <LinearLayout
         android:id="@+id/llOTP"

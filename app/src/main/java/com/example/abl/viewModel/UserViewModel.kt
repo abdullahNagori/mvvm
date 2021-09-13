@@ -1,7 +1,14 @@
 package com.example.abl.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.abl.model.*
+import com.example.abl.model.changePassword.ChangePasswordModel
+import com.example.abl.model.changePassword.VerifyPassModel
+import com.example.abl.model.login.LoginModel
+import com.example.abl.model.markAttendance.MarkAttendanceModel
+import com.example.abl.model.otp.OtpModel
+import com.example.abl.model.resetPassword.ResetPasswordModel
+import com.example.abl.model.trainingAndQuiz.GetQuizModel
+import com.example.abl.model.trainingAndQuiz.SubmitQuizModel
 import com.example.abl.network.ApiListener
 import com.example.abl.repository.UserRepository
 import javax.inject.Inject
@@ -40,25 +47,30 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         userRepository.markAttendance(markAttendanceModel, token)
     }
 
-   suspend fun getLovs(){
-        userRepository.apiListener = apiListener
-        userRepository.getLovs()
-    }
-
     fun getDynamicLeads(token: String){
         userRepository.apiListener = apiListener
         userRepository.getDynamicLeads(token)
     }
 
-    fun addLead(customerDetail: CustomerDetail){
+    fun getMarketingCollateral(){
         userRepository.apiListener = apiListener
-        userRepository.addLead(customerDetail)
+        userRepository.getMarketingCollateral()
     }
 
-    fun addLeadCheckin(checkinModel: CheckinModel){
+  suspend  fun getLeads(){
         userRepository.apiListener = apiListener
-        userRepository.addLeadCheckin(checkinModel)
+        userRepository.getLeads()
     }
+
+//    fun addLead(customerDetail: CustomerDetail){
+//        userRepository.apiListener = apiListener
+//        userRepository.addLead(customerDetail)
+//    }
+
+//    fun addLeadCheckin(checkinModel: CheckinModel){
+//        userRepository.apiListener = apiListener
+//        userRepository.addLeadCheckin(checkinModel)
+//    }
 
     fun getDashBoard() {
         userRepository.apiListener = apiListener
@@ -68,5 +80,20 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
     fun changePassword(changePasswordModel: ChangePasswordModel) {
         userRepository.apiListener = apiListener
         userRepository.changePassword(changePasswordModel)
+    }
+
+    fun getTrainings() {
+        userRepository.apiListener = apiListener
+        userRepository.getTrainings()
+    }
+
+    fun getQuiz(getQuizModel: GetQuizModel) {
+        userRepository.apiListener = apiListener
+        userRepository.getQuizes(getQuizModel)
+    }
+
+    fun submitQuiz(submitQuizModel: SubmitQuizModel) {
+        userRepository.apiListener = apiListener
+        userRepository.submitQuiz(submitQuizModel)
     }
 }

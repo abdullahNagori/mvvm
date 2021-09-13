@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.CheckBox
 import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.databinding.ItemCheckboxBinding
-import com.example.abl.model.CompanyProduct
+import com.example.abl.model.lov.CompanyProduct
 import kotlinx.android.synthetic.main.item_checkbox.view.*
 
 class ProductAdapter(val context: Context?, val list: List<CompanyProduct>, val selectedList: ArrayList<CompanyProduct>) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {

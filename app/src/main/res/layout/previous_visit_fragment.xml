@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.PreviousVisitFragment">
+    tools:context=".fragment.customerDetail.PreviousVisitFragment">
 
     <TextView
         android:id="@+id/heading"
@@ -36,7 +36,7 @@
         layout="@layout/data_not_found" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/visit"
+        android:id="@+id/previous"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/heading"

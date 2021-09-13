@@ -1,13 +1,9 @@
 package com.example.abl.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.abl.constant.Constants
-import com.example.abl.model.ErrorResponseEnt
-import com.example.abl.model.ResponseEnt
+import com.example.abl.model.generic.ErrorResponseEnt
 import com.example.abl.network.ApiListener
 import com.example.abl.utils.GsonFactory
-import com.example.abl.utils.UtilHelper
 import com.example.abl.utils.ValidationHelper
 import okhttp3.ResponseBody
 import retrofit2.Call

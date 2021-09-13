@@ -1,26 +1,23 @@
 package com.example.abl.base
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
-import android.widget.ArrayAdapter
+import androidx.annotation.IdRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.abl.R
-import com.example.abl.activity.ChangePasswordActivity
-import com.example.abl.activity.DockActivity
-import com.example.abl.activity.LoginActivity
-import com.example.abl.activity.WelcomeActivity
+import com.example.abl.activity.*
 import com.example.abl.common.LoadingListener
 import com.example.abl.databinding.DialogPasswordInstructionBinding
-import com.example.abl.model.DynamicLeadsItem
+import com.example.abl.model.addLead.DynamicLeadsItem
 import com.example.abl.network.ApiListener
+import com.example.abl.room.RoomHelper
 import com.example.abl.utils.DateTimeFormatter
 import com.example.abl.utils.SharedPrefManager
+import com.example.abl.utils.UtilHelper
 import com.example.abl.utils.ValidationHelper
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.android.support.DaggerFragment
@@ -32,8 +29,9 @@ import javax.inject.Inject
  */
 
 
-abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
+abstract class BaseDockFragment : DaggerFragment(), ApiListener {
     protected var myDockActivity: DockActivity? = null
+
     private var isLoading = false
 
     @Inject
@@ -43,10 +41,16 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
     lateinit var sharedPrefManager: SharedPrefManager
 
     @Inject
+    lateinit var roomHelper: RoomHelper
+
+    @Inject
     lateinit var validationhelper: ValidationHelper
 
     @Inject
     lateinit var dateTimeFormatter: DateTimeFormatter
+
+    @Inject
+    lateinit var utilHelper: UtilHelper
 
     private lateinit var apiListener: ApiListener
 
@@ -56,7 +60,7 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
         apiListener = this
     }
 
-    protected fun getDockActivity(): DockActivity? {
+    private fun getDockActivity(): DockActivity? {
         return myDockActivity
     }
 
@@ -77,36 +81,32 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
 
     override fun onStarted() {
        // myDockActivity?.onLoadingStarted()
-        myDockActivity?.showProgressIndicator()
+        //myDockActivity?.showProgressIndicator()
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
-       // myDockActivity?.onLoadingFinished()
-        myDockActivity?.hideProgressIndicator()
+        myDockActivity?.onSuccessResponse(liveData, tag)
     }
 
     override fun onFailure(message: String, tag: String) {
-        myDockActivity?.hideProgressIndicator()
-        myDockActivity?.showErrorMessage(message)
+        myDockActivity?.onFailureResponse(message, tag)
     }
 
     override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
         myDockActivity?.hideProgressIndicator()
-
         if (code == 551) {
             sharedPrefManager.clear()
             startActivity(Intent(requireContext(), LoginActivity::class.java))
         } else if (code == 552) {
-            //myDockActivity?.showErrorMessage("")
             startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
         }
     }
 
-    override fun showBanner(text: String, type: String) {
+     fun showBanner(text: String, type: String) {
         if (activity != null) (activity as DockActivity)
     }
 
-    override fun showPasswordchangingInstructions(text: String?) {
+    override fun showPasswordChangingInstructions(text: String?) {
         val alertDialog = BottomSheetDialog(requireContext())
         val viewBinding = DialogPasswordInstructionBinding.inflate(layoutInflater)
         alertDialog.setContentView(viewBinding.root)
@@ -124,13 +124,17 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener, BaseView {
             alertDialog.dismiss()
         }
     }
+    fun navigateToFragment(@IdRes id: Int, args: Bundle? = null) {
+        if (args != null) {
+            MainActivity.navController.navigate(id, args)
+            return
+        }
+        MainActivity.navController.navigate(id)
+    }
 
-    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
-        if (activity != null) (activity as DockActivity).showDialog(type,contact,dynamicLeadsItem)
-    }
-    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
-        val adapter = ArrayAdapter(requireContext(), R.layout.item_spinner, list)
-        adapter.setDropDownViewResource(R.layout.item_spinner)
-        return adapter
-    }
+//    override fun <T> initiateListArrayAdapter(list: List<T>): ArrayAdapter<T> {
+//        val adapter = ArrayAdapter(requireContext(), R.layout.item_spinner, list)
+//        adapter.setDropDownViewResource(R.layout.item_spinner)
+//        return adapter
+//    }
 }

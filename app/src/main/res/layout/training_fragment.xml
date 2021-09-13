@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.trainingAndQuiz.TrainingFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/margin_small"
+        app:strokeColor="@color/colorPrimary"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        app:strokeWidth="@dimen/_1sdp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/training_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/heading"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_training_list_adapter" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+</RelativeLayout>

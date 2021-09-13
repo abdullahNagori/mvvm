@@ -82,13 +82,11 @@
 
             <Spinner
                 android:id="@+id/product_spinner"
-                android:layout_gravity="center"
-                android:backgroundTint="@color/white"
-                style="@style/spinner_style"
                 android:layout_width="match_parent"
-                android:dropDownVerticalOffset="60dp"
-                android:layout_height="60dp"
-                android:spinnerMode="dropdown"/>
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/white"
+                android:gravity="center_vertical" />
 
             <TextView
                 android:id="@+id/product_addLead"
@@ -157,35 +155,24 @@
                 style="@style/txtStyle"
                 android:text="@string/occupation" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:background="@drawable/bg_holo_black"
-                android:layout_height="wrap_content">
-
-                <Spinner
-                    android:id="@+id/occupation"
-                    style="@style/spinnerStyle"
-                    android:entries="@array/occupation" />
-
-            </RelativeLayout>
+            <EditText
+                android:id="@+id/occupation"
+                style="@style/borderStyle"
+                android:hint="@string/enter_occupation"
+                android:maxLength="13"
+                android:inputType="number" />
 
 
             <TextView
                 style="@style/txtStyle"
                 android:text="@string/source_of_income" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:background="@drawable/bg_holo_black"
-                android:layout_height="wrap_content">
-
-
-                <Spinner
-                    android:id="@+id/source_of_income"
-                    style="@style/spinnerStyle"
-                    android:entries="@array/source_of_income" />
-
-            </RelativeLayout>
+            <EditText
+                android:id="@+id/source_of_income"
+                style="@style/borderStyle"
+                android:hint="@string/enter_source_of_income"
+                android:maxLength="13"
+                android:inputType="number" />
 
 
 

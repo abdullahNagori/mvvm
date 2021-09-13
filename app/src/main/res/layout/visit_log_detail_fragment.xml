@@ -51,7 +51,6 @@
             <TextView
                 android:id="@+id/account_title"
                 style="@style/customerInfoInputFields"
-                android:hint="@string/dummy_name"
                 android:inputType="text" />
 
 
@@ -84,9 +83,8 @@
                         android:text="@string/account_no" />
 
                     <TextView
-                        android:id="@+id/contact_num"
+                        android:id="@+id/account_num"
                         style="@style/customerInfoInputFields"
-                        android:hint="@string/dummy_account_no"
                         android:inputType="number" />
 
                 </LinearLayout>
@@ -100,9 +98,8 @@
                         android:text="@string/contact_no" />
 
                     <TextView
-                        android:id="@+id/amount"
+                        android:id="@+id/contact_num"
                         style="@style/customerInfoInputFields"
-                        android:hint="@string/dummy_number"
                         android:inputType="number" />
 
                 </LinearLayout>
@@ -195,8 +192,7 @@
 
                     <TextView
                         android:id="@+id/status"
-                        style="@style/customerInfoInputFields"
-                        android:hint="02-04-2019"/>
+                        style="@style/customerInfoInputFields"/>
 
                 </LinearLayout>
 
@@ -211,7 +207,6 @@
                     <TextView
                         android:id="@+id/date_of_conversion"
                         style="@style/customerInfoInputFields"
-                        android:hint="04:55 PM"
                         android:inputType="text" />
                 </LinearLayout>
 
@@ -231,7 +226,6 @@
                     <TextView
                         android:id="@+id/follow_up_date"
                         style="@style/customerInfoInputFields"
-                        android:hint="Follow up"
                         android:inputType="text" />
                 </LinearLayout>
 
@@ -263,7 +257,6 @@
 
                     <TextView
                         style="@style/customerInfoInputFields"
-                        android:hint="Follow up"
                         android:inputType="text" />
                 </LinearLayout>
 
@@ -277,7 +270,6 @@
 
                     <TextView
                         style="@style/customerInfoInputFields"
-                        android:hint="04:55 PM"
                         android:inputType="text" />
                 </LinearLayout>
 
@@ -285,8 +277,10 @@
 
             <TextView
                 style="@style/txtStyle"
+                android:visibility="gone"
                 android:text="@string/follow_up_date" />
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"
                 android:orientation="horizontal"
@@ -336,7 +330,6 @@
                 style="@style/customerInfoInputFields"
                 android:layout_height="@dimen/_70sdp"
                 android:gravity="top"
-                android:hint="@string/dummy_remarks"
                 android:inputType="text"
                 android:maxLines="5"
                 android:paddingBottom="@dimen/_15sdp" />

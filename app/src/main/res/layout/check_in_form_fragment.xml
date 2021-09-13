@@ -8,7 +8,7 @@
     android:background="@drawable/cardview_background"
     android:orientation="vertical"
     android:scrollbars="none"
-    tools:context=".fragment.CheckInFormFragment">
+    tools:context=".fragment.leadManagement.CheckInFormFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,13 +58,11 @@
 
             <Spinner
                 android:id="@+id/status"
-                android:layout_gravity="center"
-                android:backgroundTint="@color/white"
-                style="@style/spinner_style"
                 android:layout_width="match_parent"
-                android:dropDownVerticalOffset="60dp"
-                android:layout_height="60dp"
-                android:spinnerMode="dropdown"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/white"
+                android:gravity="center_vertical"/>
 
             <TextView
                 android:id="@+id/product_addLead"
@@ -179,7 +177,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:backgroundTint="@color/colorAccent"
+                    android:backgroundTint="@color/white"
                     android:gravity="center_vertical" />
 
                 <TextView

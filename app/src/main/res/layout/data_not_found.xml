@@ -13,6 +13,7 @@
         android:id="@+id/logo"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_150sdp"
+        android:visibility="gone"
         android:src="@drawable/logo"/>
 
     <TextView

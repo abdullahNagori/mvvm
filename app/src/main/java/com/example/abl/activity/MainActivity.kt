@@ -1,36 +1,34 @@
 package com.example.abl.activity
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
-import android.content.SharedPreferences
-import android.content.pm.PackageManager
+import android.content.*
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.annotation.IdRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import butterknife.BindView
+import androidx.work.*
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.deepakkumardk.kontactpickerlib.KontactPicker
@@ -38,90 +36,78 @@ import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
 import com.deepakkumardk.kontactpickerlib.model.SelectionMode
 import com.example.abl.R
 import com.example.abl.adapter.ExpandableListAdapter
-import com.example.abl.base.BaseActivity
 import com.example.abl.constant.Constants
 import com.example.abl.databinding.ActivityMainBinding
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.MarkAttendanceModel
-import com.example.abl.network.coroutines.WebResponse
-import com.example.abl.utils.CustomEditText
-import com.example.abl.utils.DrawableClickListener
-import com.example.abl.utils.SharedPrefKeyManager
-import com.example.abl.utils.SharedPrefManager
-import com.example.abl.viewModel.CoroutineViewModel
-import com.tapadoo.alerter.Alerter
+import com.example.abl.model.*
+import com.example.abl.model.addLead.DynamicLeadsItem
+import com.example.abl.model.checkin.CheckinModel
+import com.example.abl.model.lov.CompanyLeadSource
+import com.example.abl.model.lov.LovResponse
+import com.example.abl.utils.*
+import com.example.abl.utils.Schedulers.LocationWorkManager.LocationWorker
+import com.example.abl.utils.Schedulers.UploadCheckInWorkManager.UploadCheckInWorker
+import com.example.abl.utils.Schedulers.UploadLeadWorkManager.UploadLeadWorker
+import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_menu_shortcut.*
+import kotlinx.android.synthetic.main.item_checkbox.view.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import java.lang.reflect.Array.get
-import java.nio.file.Paths.get
-import java.util.HashMap
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.set
 
-class MainActivity : DockActivity() {
 
+class MainActivity : DockActivity(){
 
     lateinit var number: CustomEditText
-    companion object{
 
+    companion object {
         @SuppressLint("StaticFieldLeak")
         private lateinit var unbinder: Unbinder
+        @SuppressLint("StaticFieldLeak")
         lateinit var navController: NavController
         lateinit var drawerLayout: DrawerLayout
     }
 
     lateinit var binding: ActivityMainBinding
-    private lateinit var contentView: ConstraintLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
+    lateinit var contentView: ConstraintLayout
     val END_SCALE = 0.7f
     private lateinit var actionBarMenu: Menu
     private lateinit var switchAB: SwitchCompat
     private lateinit var sharedPreferences: SharedPreferences
     lateinit var viewModel: CoroutineViewModel
+    lateinit var listDataChild: HashMap<String, List<String>>
+    lateinit var listDataHeader: ArrayList<String>
+    private var x1 = 0f
+    private var x2 = 0f
+    val MIN_DISTANCE = 60
+
+    private var companyLeadSource: List<CompanyLeadSource> = emptyList()
+
     override fun getDockFrameLayoutId(): Int {
         return R.id.container
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
+    // Monitors connection to the while-in-use service.
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         unbinder = ButterKnife.bind(this)
         setContentView(binding.root)
-        navController = findNavController(R.id.nav_host_main)
 
-
-        name.text = sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
-        initView()
-        setGesture()
+//      navController = findNavController(R.id.nav_host_main)
         viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this ,arrayOf(Manifest.permission.CALL_PHONE),1);
-        }
-    }
-
-    override fun showErrorMessage(message: String) {
-        Alerter.create(this)
-            .setTitle(getString(R.string.error))
-            .setText(message)
-            .setDuration(5000)
-            .setIcon(R.drawable.ic_close)
-            .setBackgroundColorRes(R.color.error_color)
-            .enableSwipeToDismiss()
-            .show()
-    }
-
-    override fun showSuccessMessage(message: String) {
-        Alerter.create(this)
-            .setTitle(getString(R.string.success))
-            .setText(message)
-            .setDuration(5000)
-            .setIcon(R.drawable.ic_close)
-            .setBackgroundColorRes(R.color.banner_green_color)
-            .enableSwipeToDismiss()
-            .show()
+        initView()
+        setData()
+     //   setGesture()
+        sendUserTracking()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -129,49 +115,43 @@ class MainActivity : DockActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun callDialog(type: String, contact: String?, dynamicLeadsItem: DynamicLeadsItem?) {
-        showDialog(type,null,dynamicLeadsItem)
-    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (supportActionBar!!.title.toString()== "Check In" && item.itemId == android.R.id.home) {
+            showCheckInAlert()
+            return true
+        }
+        else if (supportActionBar!!.title.toString()== "Quiz" && item.itemId == android.R.id.home) {
+            showQuizAlert()
+            return true
+        }
 
-    override fun showPasswordchangingInstructions(text: String?) {
-        TODO("Not yet implemented")
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         actionBarMenu = menu
-
         val item = menu.findItem(R.id.myswitch) as MenuItem
-
-
         actionBarMenu.findItem(R.id.action_notification).setOnMenuItemClickListener {
-//            if (SharedPrefKeyManager.get<Boolean>(Constants.IS_SHIFT) == true)
-//                navController.navigate(R.id.nav_notification)
-//            else
-//                showErrorMessage(getString(R.string.start_your_shift))
             true
         }
-
 
         item.setActionView(R.layout.switch_layout)
         switchAB = item.actionView.findViewById(R.id.switchAB)
         sharedPreferences = this.getSharedPreferences("SharedPrefs", MODE_PRIVATE)
 
-//        if (SharedPrefKeyManager.get<Boolean>(Constants.IS_SHIFT) == true) {
-//            switchAB.isChecked = true
-//        }
-
+        if (switchAB.isChecked) {
+            Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                foregroundOnlyLocationService?.subscribeToLocationUpdates()
+            }, 120000)
+        }
         switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
-
-                Log.i("xxChecked", "check")
-            }else{
-                Log.i("xxChecked", "uncheck")
+            if (isChecked) {
+            } else {
                 sharedPrefManager.setShiftStart(false)
+                foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
                 startActivity(Intent(this, WelcomeActivity::class.java))
-            // LoginActivity.navController.navigate()
-           // Navigation.findNavController().navigate(R.id.nav_graph_actFirstActvity)
-
+//                   foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
             }
 
         }
@@ -179,12 +159,10 @@ class MainActivity : DockActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-
     private fun initView() {
+
         drawerLayout = binding.drawerLayout
-
         setSupportActionBar(findViewById(R.id.toolBar))
-
         contentView = binding.appBarMain.content
         navController = findNavController(R.id.nav_host_main)
 
@@ -192,7 +170,7 @@ class MainActivity : DockActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home,
+                R.id.nav_home
             ), drawerLayout
         )
 
@@ -200,8 +178,21 @@ class MainActivity : DockActivity() {
         binding.navView.setupWithNavController(navController)
         animateNavigationDrawer(drawerLayout)
 
-        prepareSideMenu()
+        if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
+                .isNotEmpty() && internetHelper.isNetworkAvailable()
+        ) {
+            Log.i("xxUpload", "upload")
+            sendLeadData()
+        }
 
+        getSyncData(isShowLoading = false)
+        prepareSideMenu()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setData() {
+        name.text =
+            sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
     }
 
     private fun animateNavigationDrawer(drawerLayout: DrawerLayout) {
@@ -230,19 +221,14 @@ class MainActivity : DockActivity() {
         })
     }
 
-    private fun fragmentClickEvent(itemString: String?) {
+    private fun fragmentClickEvent(itemString: String) {
+        when (itemString) {
 
-        when(itemString){
             Constants.DASHBOARD -> {
             }
 
             Constants.PORTFOLIO -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_profile)
-                closeDrawer()
-            }
-
-            Constants.MY_LEADS -> {
-                navigateToFragment(R.id.action_nav_home_to_nav_crm)
                 closeDrawer()
             }
 
@@ -260,10 +246,17 @@ class MainActivity : DockActivity() {
                 navigateToFragment(R.id.action_nav_home_to_company_provided_leads)
                 closeDrawer()
             }
+
+            Constants.MARKETING_COLLATERAL -> {
+                navigateToFragment(R.id.action_nav_home_to_nav_marketing_collateral)
+                closeDrawer()
+            }
+
             Constants.SALES_PIPELINE -> {
                 navigateToFragment(R.id.action_nav_home_to_company_provided_leads)
                 closeDrawer()
             }
+
             Constants.NOTIFICATIONS -> {
                 navigateToFragment(R.id.action_nav_home_to_nav_notification)
                 closeDrawer()
@@ -274,19 +267,31 @@ class MainActivity : DockActivity() {
                 closeDrawer()
             }
 
-            Constants.LOGOUT -> {
-                sharedPrefManager.logout()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
+            Constants.TRAINING -> {
+                navigateToFragment(R.id.action_nav_home_to_nav_training)
                 closeDrawer()
             }
+
+//            Constants.TRACKING -> {
+//                navigateToFragment(R.id.action_nav_home_to_nav_tracking)
+//            }
+
+            Constants.PASSWORD_CHANGE -> {
+                navigateToFragment(R.id.action_nav_home_to_nav_change_password)
+                closeDrawer()
+            }
+
+            Constants.LOGOUT -> {
+                showLogOutAlert()
+            }
         }
+
     }
 
     private fun prepareSideMenu() {
 
-        val listDataHeader = ArrayList<String>()
-        val listDataChild = HashMap<String, List<String>>()
+        listDataHeader = ArrayList<String>()
+        listDataChild = HashMap<String, List<String>>()
         val icons = ArrayList<Int>()
 
         icons.add(R.drawable.ic_dashboard) //0
@@ -301,8 +306,8 @@ class MainActivity : DockActivity() {
         icons.add(R.drawable.ic_notification_drawer) //9
         icons.add(R.drawable.ic_forgot) //10
         icons.add(R.drawable.ic_joinvisit) //11
-        icons.add(R.drawable.ic_logout) //12
-
+        icons.add(R.drawable.ic_marketing) //12
+        icons.add(R.drawable.ic_logout) //13
 
         listDataHeader.add(Constants.DASHBOARD) //0
         listDataHeader.add(Constants.PORTFOLIO) //1
@@ -312,16 +317,12 @@ class MainActivity : DockActivity() {
         listDataHeader.add(Constants.MARKETING_COLLATERAL) //5
         listDataHeader.add(Constants.CALCULATOR) //6
         listDataHeader.add(Constants.TRAINING) //7
-
-
-
         listDataHeader.add(Constants.LEADER_BOARD) //8
         listDataHeader.add(Constants.NOTIFICATIONS) //9
         listDataHeader.add(Constants.PASSWORD_CHANGE) //10
         listDataHeader.add(Constants.JOIN_VISIT) //11
-        listDataHeader.add(Constants.LOGOUT) //12
-
-
+//      listDataHeader.add(Constants.TRACKING) //12
+        listDataHeader.add(Constants.LOGOUT) //13
 
         val listAdapter = ExpandableListAdapter(
             this,
@@ -330,82 +331,70 @@ class MainActivity : DockActivity() {
             icons
         )
 
+        // Sales management child nodes
         val salesManagement: MutableList<String> = ArrayList()
         salesManagement.add(Constants.CALL_LOG)
         salesManagement.add(Constants.VISIT_LOG)
-
-        val leadManagement: MutableList<String> = ArrayList()
-        leadManagement.add(Constants.MY_LEADS)
-        leadManagement.add(Constants.COMPANY_PROVIDED_LEADS)
-        leadManagement.add(Constants.SALES_PIPELINE)
-
         listDataChild[listDataHeader[3]] = salesManagement
-        listDataChild[listDataHeader[4]] = leadManagement
 
+        // Lead management child nodes
+        setLeadManagementChildNodes()
 
         // setting list adapter
         binding.sideLayout.lvExp.setAdapter(listAdapter)
 
-
         // Listview on child click listener
         binding.sideLayout.lvExp.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
-
-            Log.i("xxGroup", "child")
             val str = listDataChild[listDataHeader[groupPosition]]!![childPosition]
-                fragmentClickEvent(str)
+            if (groupPosition == 4) {
+                val bundle = Bundle()
+                bundle.putString(
+                    Constants.LEAD_SOURCE_DATA,
+                    GsonFactory.getConfiguredGson()?.toJson(companyLeadSource[childPosition])
+                )
+                navigateToFragment(R.id.action_nav_home_to_nav_crm, bundle)
                 closeDrawer()
+            } else {
+                fragmentClickEvent(str)
+            }
             false
         }
 
-
+        // Listview parent node click listener
         binding.sideLayout.lvExp.setOnGroupExpandListener { groupPosition: Int ->
-            Log.i("xxGroup", "group")
             fragmentClickEvent(listDataHeader[groupPosition])
         }
     }
 
-    private fun callLead() {
-        showDialog_new(Constants.NTB, null, null)
+    private fun setLeadManagementChildNodes() {
+        companyLeadSource = sharedPrefManager.getLeadSource() ?: emptyList()
+        listDataChild[listDataHeader[4]] = companyLeadSource.map { it.name }
     }
 
     fun dropDownMenu(view: View) {
-            showOrHide()
-            binding.appBarMain.sideMenu.sync.setOnClickListener(::onCLickEvent)
-            binding.appBarMain.sideMenu.upload.setOnClickListener(::onCLickEvent)
-            binding.appBarMain.sideMenu.coldCalling.setOnClickListener(::onCLickEvent)
-            binding.appBarMain.sideMenu.addLead.setOnClickListener(::onCLickEvent)
-            binding.appBarMain.sideMenu.followup.setOnClickListener(::onCLickEvent)
-            binding.appBarMain.sideMenu.close.setOnClickListener(::onCLickEvent)
+        showOrHide()
+        binding.appBarMain.sideMenu.sync.setOnClickListener(::onCLickEvent)
+        binding.appBarMain.sideMenu.upload.setOnClickListener(::onCLickEvent)
+        binding.appBarMain.sideMenu.coldCalling.setOnClickListener(::onCLickEvent)
+        binding.appBarMain.sideMenu.addLead.setOnClickListener(::onCLickEvent)
+        binding.appBarMain.sideMenu.followup.setOnClickListener(::onCLickEvent)
+        binding.appBarMain.sideMenu.close.setOnClickListener(::onCLickEvent)
     }
 
-    private fun getSyncData() {
-        viewModel.getLOV().observe(this) {
-            when (it) {
-                WebResponse.Loading -> {
-                    showProgressIndicator()
-                }
-                is WebResponse.Success<*> -> {
-                    hideProgressIndicator()
-                }
-                is WebResponse.Error -> {
-                    hideProgressIndicator()
-                }
-            }
-        }
-    }
     private fun onCLickEvent(view: View) {
         showOrHide()
         when (view.id) {
-
             R.id.sync -> {
                 getSyncData()
             }
-            R.id.upload -> {Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()}
-            R.id.cold_calling ->  callLead()
+            R.id.upload -> {
+                sendLeadData()
+            }
+            R.id.cold_calling -> coldCallDialog(Constants.NTB, null, null)
             R.id.addLead -> {
                 val bundle = Bundle()
-                bundle.putString(Constants.TYPE, Constants.VISIT)
-                navigateToFragment(R.id.nav_visit)
+                bundle.putString(Constants.VISIT_TYPE, Constants.VISIT)
+                navigateToFragment(R.id.nav_visit, bundle)
             }
             R.id.followup -> {
                 navigateToFragment(R.id.followup_fragment)
@@ -427,30 +416,6 @@ class MainActivity : DockActivity() {
         }
     }
 
-    private fun visibleWithAnimation(view: View) {
-        view.visibility = View.VISIBLE
-        view.startAnimation(
-            AnimationUtils.loadAnimation(
-                this,
-                R.anim.slide_in_right
-            )
-        )
-    }
-
-    private fun goneWithAnimation(view: View) {
-        view.visibility = View.GONE
-        view.startAnimation(
-            AnimationUtils.loadAnimation(
-                this,
-                R.anim.slide_out_right
-            )
-        )
-    }
-
-    private var x1 = 0f
-    private var x2 = 0f
-    val MIN_DISTANCE = 60
-
     @SuppressLint("ClickableViewAccessibility")
     private fun setGesture() {
         binding.appBarMain.sideMenu.root.setOnTouchListener { p0, p1 ->
@@ -470,11 +435,7 @@ class MainActivity : DockActivity() {
         }
     }
 
-    override fun closeDrawer() {
-        drawer_layout.closeDrawer(GravityCompat.START)
-    }
-
-    override fun navigateToFragment(@IdRes id: Int, args: Bundle?) {
+    private fun navigateToFragment(@IdRes id: Int, args: Bundle? = null) {
         if (args != null) {
             navController.navigate(id, args)
             return
@@ -482,11 +443,7 @@ class MainActivity : DockActivity() {
         navController.navigate(id)
     }
 
-    override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
-        TODO("Not yet implemented")
-    }
-
-    fun showDialog_new(customerType: String, contact: String?,customers: DynamicLeadsItem?) {
+    fun coldCallDialog(customerType: String, contact: String?, customers: DynamicLeadsItem?) {
 
         val factory = LayoutInflater.from(this)
         val dialogView: View = factory.inflate(R.layout.dialog_call, null)
@@ -505,7 +462,8 @@ class MainActivity : DockActivity() {
                         val item = KontactPickerItem().apply {
                             debugMode = true
                             selectionMode = SelectionMode.Single
-                            textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)
+                            textBgColor =
+                                ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)
                         }
                         KontactPicker().startPickerForResult(this@MainActivity, item, 3000)
                     }
@@ -517,31 +475,24 @@ class MainActivity : DockActivity() {
         val btnCall = dialogView.findViewById<ImageButton>(R.id.btn_call)
         dialog.show()
 
-
         btnCall.setOnClickListener {
 
-            if (number.text?.length?.compareTo(11)!! < 0){
-                number.error= "invalid number!"
-            }else {
+            if (number.text?.length?.compareTo(11)!! < 0) {
+                number.error = "invalid number!"
+            } else {
                 dialog.dismiss()
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this ,arrayOf(Manifest.permission.CALL_PHONE),1);
+                val intent = Intent(Intent.ACTION_CALL)
+                intent.data = Uri.parse("tel:" + number.text)
+                val bundle = Bundle()
+                customers?.let {
+                    //  bundle.putParcelable(Constants.LOCAL_LEAD_DATA, customers)
                 }
-                else
-                {
-                    val intent = Intent(Intent.ACTION_CALL)
-                    intent.data = Uri.parse("tel:" + number.text)
-                    val bundle = Bundle()
-                    customers?.let {
-                        bundle.putParcelable(Constants.LEAD_DATA, customers)
-                    }
-                    bundle.putString(Constants.TYPE, Constants.CALL)
-                    bundle.putString(Constants.CUSTOMER_TYPE, customerType)
-                    bundle.putString("number", number.text.toString())
-                    navigateToFragment(R.id.addLeadFragment, bundle)
-                    startActivity(intent)
-                }
-
+                bundle.putString(Constants.VISIT_TYPE, Constants.CALL)
+                bundle.putString(Constants.CUSTOMER_TYPE, customerType)
+                bundle.putString(Constants.CUSTOMER_NUMBER, number.text.toString())
+                bundle.putString("number", number.text.toString())
+                navigateToFragment(R.id.nav_visit, bundle)
+                startActivity(intent)
             }
         }
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
@@ -552,16 +503,199 @@ class MainActivity : DockActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 3000) {
             val list = KontactPicker.getSelectedKontacts(data) //ArrayList<MyContacts>
-            if (list!!.isNotEmpty()){
-                list?.get(0)?.contactNumber?.let {
-//                    val intent = Intent(Intent.ACTION_CALL)
-//                    intent.data = Uri.parse(it)
+            if (list!!.isNotEmpty()) {
+                list[0].contactNumber?.let {
                     number.setText(it)
                 }
             }
-
-
-            //Log.i("xxNumber", list[0].)
         }
+    }
+
+    private fun getSyncData(isShowLoading: Boolean? = true) {
+        //  this.showProgressIndicator()
+        if (!internetHelper.isNetworkAvailable()) {
+            showToast("Internet is not available")
+            return
+        }
+
+//        if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
+//                .isNotEmpty()
+//        ) {
+//            showErrorMessage(getString(R.string.un_synced_msg))
+//            return
+//        }
+
+        if (isShowLoading == true) {
+            this.showProgressIndicator()
+        }
+
+        viewModel.getLOV().observe(this) {
+            this.hideProgressIndicator()
+            if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
+                processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
+                if (isShowLoading == true) {
+                    this.showSuccessMessage("Data synced successfully")
+                }
+            } else {
+                if (isShowLoading == true) {
+                    this.showErrorMessage("Failed to sync data. Please try again")
+                }
+            }
+        }
+    }
+
+    private fun processData(
+        lovResponse: LovResponse,
+        dynamicLeadsItem: ArrayList<DynamicLeadsItem>?,
+        visitsCallResponseItem: ArrayList<CheckinModel>?
+    ) {
+        sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
+        sharedPrefManager.setCompanyProducts(lovResponse.company_products)
+        sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
+        sharedPrefManager.setLeadSource(lovResponse.company_lead_source)
+
+        // Set leads data in local DB
+        if (dynamicLeadsItem != null) {
+            roomHelper.deleteLeadData()
+            roomHelper.insertLeadData(dynamicLeadsItem)
+        }
+
+        // Set checkIn data in local DB
+        if (visitsCallResponseItem != null) {
+            roomHelper.deleteCheckInData()
+            roomHelper.insertVisitCallData(visitsCallResponseItem)
+        }
+
+        prepareSideMenu()
+    }
+
+    private fun sendUserTracking() {
+        val workManager = WorkManager.getInstance(application)
+        val constraints: androidx.work.Constraints = androidx.work.Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        try {
+
+            // Periodic Request
+            val periodicSyncDataWork = PeriodicWorkRequest.Builder(
+                LocationWorker::class.java,
+                30,
+                TimeUnit.MINUTES,
+                15,
+                TimeUnit.MINUTES
+            )
+                .addTag(Constants.SYNC_LOCATION)
+                .setConstraints(constraints)
+                .setBackoffCriteria(
+                    BackoffPolicy.LINEAR,
+                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                    TimeUnit.MILLISECONDS
+                )
+                .build()
+            workManager.enqueueUniquePeriodicWork(
+                Constants.SYNC_UPLOADED,
+                ExistingPeriodicWorkPolicy.KEEP,
+                periodicSyncDataWork
+            )
+        } catch (e: Exception) {
+            Log.i("LocationWorkerException", e.message.toString())
+        }
+    }
+
+    fun sendLeadData() {
+        try {
+            val workManager = WorkManager.getInstance(applicationContext)
+            val uploadDataConstraints =
+                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+
+            val uploadLeadWorkRequest = OneTimeWorkRequestBuilder<UploadLeadWorker>()
+                .addTag("leadWorker")
+                .setConstraints(uploadDataConstraints)
+                .build()
+
+            val uploadCheckInWorkRequest = OneTimeWorkRequestBuilder<UploadCheckInWorker>()
+                .addTag("checkInWorker")
+                .setConstraints(uploadDataConstraints)
+                .build()
+
+            this.showProgressIndicator()
+
+            workManager.beginWith(uploadLeadWorkRequest)
+                .then(uploadCheckInWorkRequest)
+                .enqueue()
+
+
+            workManager.getWorkInfoByIdLiveData(uploadCheckInWorkRequest.id)
+                .observe(this) { workInfo ->
+                    if (workInfo.state.isFinished) {
+                        this.hideProgressIndicator()
+                        showSuccessMessage("Data uploaded successfully")
+                        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                            getSyncData(isShowLoading = false)
+                        }, 1000)
+                    }
+                }
+
+        } catch (e: Exception) {
+            Log.i("UploadWorkerLocation", e.message.toString())
+        }
+    }
+
+    fun showLogOutAlert() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Logout")
+        alertDialog.setMessage("Do you want to Logout?")
+        alertDialog.setPositiveButton(
+            "Yes"
+        ) { dialog, which ->
+
+            if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
+                    .isNotEmpty()
+            ) {
+                showErrorMessage(getString(R.string.un_synced_msg))
+            } else {
+                sharedPrefManager.logout()
+                roomHelper.clearDB()
+                foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
+
+        }
+        alertDialog.setNegativeButton(
+            "No"
+        ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
+        alertDialog.show()
+    }
+
+    fun showCheckInAlert() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Alert !!")
+        alertDialog.setMessage("Do you want to discard the form?")
+        alertDialog.setPositiveButton(
+            "Yes"
+        ) { dialog, which ->
+            navigateToFragment(R.id.action_checkInFormFragment_to_nav_home)
+        }
+        alertDialog.setNegativeButton(
+            "No"
+        ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
+        alertDialog.show()
+    }
+
+    private fun showQuizAlert() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Alert !!")
+        alertDialog.setMessage("Do you want to quit the quiz?")
+        alertDialog.setPositiveButton(
+            "Yes"
+        ) { dialog, which ->
+            navigateToFragment(R.id.action_nav_training_quiz_to_nav_material_quiz)
+        }
+        alertDialog.setNegativeButton(
+            "No"
+        ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
+        alertDialog.show()
     }
 }
