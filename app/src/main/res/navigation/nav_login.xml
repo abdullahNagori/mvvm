@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.abl.fragment.LoginFragment"
+        android:name="com.example.abl.fragment.login.LoginFragment"
         android:label="login_fragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/forgotPassFragment"
-        android:name="com.example.abl.fragment.ForgotPasswordFragment"
+        android:name="com.example.abl.fragment.login.ForgotPasswordFragment"
         android:label="forgot_pass_fragment"
         tools:layout="@layout/fragment_forgot_password" >
         <action
@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/OTPVerificationFragment"
-        android:name="com.example.abl.fragment.OTPVerificationFragment"
+        android:name="com.example.abl.fragment.login.OTPVerificationFragment"
         android:label="o_t_p_verification_fragment">
 
         <action
@@ -92,7 +92,7 @@
 
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.example.abl.fragment.ForgotPasswordFragment"
+        android:name="com.example.abl.fragment.login.ForgotPasswordFragment"
         android:label="new_password_fragment"
         tools:layout="@layout/fragment_forgot_password" >
         <action
@@ -115,7 +115,7 @@
 
     <fragment
         android:id="@+id/newPassFragment"
-        android:name="com.example.abl.fragment.NewPasswordFragment"
+        android:name="com.example.abl.fragment.login.NewPasswordFragment"
         android:label="new_password_fragment"
         tools:layout="@layout/req_password_fragment" >
         <action
@@ -131,7 +131,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.example.abl.fragment.WelcomeFragment"
+        android:name="com.example.abl.fragment.login.WelcomeFragment"
         android:label="new_password_fragment"
         tools:layout="@layout/fragment_welcome" />
 </navigation>

@@ -2,6 +2,19 @@ package com.example.abl.modules
 
 import com.example.abl.base.BaseDockFragment
 import com.example.abl.fragment.*
+import com.example.abl.fragment.customerDetail.*
+import com.example.abl.fragment.dashboard.DashboardFragment
+import com.example.abl.fragment.leadManagement.*
+import com.example.abl.fragment.login.*
+import com.example.abl.fragment.marketingCollateral.MarketingCollateralFragment
+import com.example.abl.fragment.marketingCollateral.MarketingCollateralItemFragment
+import com.example.abl.fragment.notification.NotificationFragment
+import com.example.abl.fragment.portfolio.LTDFragment
+import com.example.abl.fragment.portfolio.MTDFragment
+import com.example.abl.fragment.portfolio.PortfolioFragment
+import com.example.abl.fragment.salesManagement.CallLogsFragment
+import com.example.abl.fragment.salesManagement.VisitLogsFragment
+import com.example.abl.fragment.trainingAndQuiz.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -59,9 +72,6 @@ FragmentBuilderModule {
 
     @ContributesAndroidInjector
     fun contributeCallLogsFragment(): CallLogsFragment
-
-    @ContributesAndroidInjector
-    fun contributeCompanyProvidedLeadFragment(): CompanyProvidedLeadFragment
 
     @ContributesAndroidInjector
     fun contributePreviousVisitFragment(): PreviousVisitFragment

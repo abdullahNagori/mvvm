@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/margin_normal"
     android:background="@color/white"
     app:cardCornerRadius="@dimen/margin_small"
-    tools:context=".fragment.PortfolioFragment">
+    tools:context=".fragment.portfolio.PortfolioFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

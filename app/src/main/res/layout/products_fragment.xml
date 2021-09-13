@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="fragment.CalculatorFragment">
+    tools:context=".fragment.customerDetail.CalculatorFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/customers"

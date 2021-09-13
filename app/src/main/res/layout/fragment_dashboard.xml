@@ -7,7 +7,7 @@
     android:background="#FFFAFA"
     android:orientation="vertical"
     android:scrollbars="none"
-    tools:context="fragment.DashboardFragment">
+    tools:context=".fragment.dashboard.DashboardFragment">
 
 
     <RelativeLayout

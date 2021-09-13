@@ -2,8 +2,8 @@ package com.example.abl.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.abl.fragment.QuizFragment
-import com.example.abl.fragment.TrainingQuizFragment
+import com.example.abl.fragment.trainingAndQuiz.QuizFragment
+import com.example.abl.fragment.trainingAndQuiz.TrainingQuizFragment
 import com.example.abl.model.trainingAndQuiz.QuizResponse
 import com.example.abl.utils.GsonFactory
 

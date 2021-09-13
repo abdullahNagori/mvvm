@@ -12,8 +12,6 @@ import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
-import android.widget.Toast
-import android.widget.Toolbar
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -61,21 +59,21 @@ import kotlin.collections.HashMap
 import kotlin.collections.set
 
 
-class MainActivity : DockActivity() {
+class MainActivity : DockActivity(){
+
     lateinit var number: CustomEditText
 
     companion object {
         @SuppressLint("StaticFieldLeak")
         private lateinit var unbinder: Unbinder
-
         @SuppressLint("StaticFieldLeak")
         lateinit var navController: NavController
         lateinit var drawerLayout: DrawerLayout
     }
 
     lateinit var binding: ActivityMainBinding
-    private lateinit var contentView: ConstraintLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
+    lateinit var contentView: ConstraintLayout
     val END_SCALE = 0.7f
     private lateinit var actionBarMenu: Menu
     private lateinit var switchAB: SwitchCompat
@@ -103,12 +101,12 @@ class MainActivity : DockActivity() {
         unbinder = ButterKnife.bind(this)
         setContentView(binding.root)
 
-//        navController = findNavController(R.id.nav_host_main)
+//      navController = findNavController(R.id.nav_host_main)
         viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
 
         initView()
         setData()
-        setGesture()
+     //   setGesture()
         sendUserTracking()
     }
 
@@ -138,13 +136,11 @@ class MainActivity : DockActivity() {
             true
         }
 
-
         item.setActionView(R.layout.switch_layout)
         switchAB = item.actionView.findViewById(R.id.switchAB)
         sharedPreferences = this.getSharedPreferences("SharedPrefs", MODE_PRIVATE)
 
         if (switchAB.isChecked) {
-            Log.i("xxChecked", "check")
             Handler(Looper.getMainLooper()).postDelayed(Runnable {
                 foregroundOnlyLocationService?.subscribeToLocationUpdates()
             }, 120000)
@@ -152,7 +148,6 @@ class MainActivity : DockActivity() {
         switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
             } else {
-                Log.i("xxChecked", "uncheck")
                 sharedPrefManager.setShiftStart(false)
                 foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
                 startActivity(Intent(this, WelcomeActivity::class.java))
@@ -167,9 +162,7 @@ class MainActivity : DockActivity() {
     private fun initView() {
 
         drawerLayout = binding.drawerLayout
-
         setSupportActionBar(findViewById(R.id.toolBar))
-
         contentView = binding.appBarMain.content
         navController = findNavController(R.id.nav_host_main)
 
@@ -232,7 +225,6 @@ class MainActivity : DockActivity() {
         when (itemString) {
 
             Constants.DASHBOARD -> {
-                closeDrawer()
             }
 
             Constants.PORTFOLIO -> {
@@ -282,7 +274,6 @@ class MainActivity : DockActivity() {
 
 //            Constants.TRACKING -> {
 //                navigateToFragment(R.id.action_nav_home_to_nav_tracking)
-//                closeDrawer()
 //            }
 
             Constants.PASSWORD_CHANGE -> {
@@ -291,10 +282,10 @@ class MainActivity : DockActivity() {
             }
 
             Constants.LOGOUT -> {
-                closeDrawer()
-                showLogoutAlert()
+                showLogOutAlert()
             }
         }
+
     }
 
     private fun prepareSideMenu() {
@@ -330,7 +321,7 @@ class MainActivity : DockActivity() {
         listDataHeader.add(Constants.NOTIFICATIONS) //9
         listDataHeader.add(Constants.PASSWORD_CHANGE) //10
         listDataHeader.add(Constants.JOIN_VISIT) //11
-//        listDataHeader.add(Constants.TRACKING) //12
+//      listDataHeader.add(Constants.TRACKING) //12
         listDataHeader.add(Constants.LOGOUT) //13
 
         val listAdapter = ExpandableListAdapter(
@@ -354,7 +345,7 @@ class MainActivity : DockActivity() {
 
         // Listview on child click listener
         binding.sideLayout.lvExp.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
-            var str = listDataChild[listDataHeader[groupPosition]]!![childPosition]
+            val str = listDataChild[listDataHeader[groupPosition]]!![childPosition]
             if (groupPosition == 4) {
                 val bundle = Bundle()
                 bundle.putString(
@@ -425,30 +416,6 @@ class MainActivity : DockActivity() {
         }
     }
 
-    private fun visibleWithAnimation(view: View) {
-        view.visibility = View.VISIBLE
-        view.startAnimation(
-            AnimationUtils.loadAnimation(
-                this,
-                R.anim.slide_in_right
-            )
-        )
-    }
-
-    private fun goneWithAnimation(view: View) {
-        view.visibility = View.GONE
-        view.startAnimation(
-            AnimationUtils.loadAnimation(
-                this,
-                R.anim.slide_out_right
-            )
-        )
-    }
-
-    private fun closeDrawer() {
-        drawer_layout.closeDrawer(GravityCompat.START)
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     private fun setGesture() {
         binding.appBarMain.sideMenu.root.setOnTouchListener { p0, p1 ->
@@ -507,7 +474,6 @@ class MainActivity : DockActivity() {
         })
         val btnCall = dialogView.findViewById<ImageButton>(R.id.btn_call)
         dialog.show()
-
 
         btnCall.setOnClickListener {
 
@@ -676,12 +642,7 @@ class MainActivity : DockActivity() {
         }
     }
 
-    fun toggleBackBtnState() {
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
-    }
-
-    fun showLogoutAlert() {
+    fun showLogOutAlert() {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle("Logout")
         alertDialog.setMessage("Do you want to Logout?")
@@ -723,7 +684,7 @@ class MainActivity : DockActivity() {
         alertDialog.show()
     }
 
-    fun showQuizAlert() {
+    private fun showQuizAlert() {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle("Alert !!")
         alertDialog.setMessage("Do you want to quit the quiz?")

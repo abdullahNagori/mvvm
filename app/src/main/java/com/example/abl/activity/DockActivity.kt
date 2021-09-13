@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -28,6 +30,7 @@ import com.example.abl.viewModel.UserViewModel
 import com.google.android.gms.location.LocationServices
 import com.tapadoo.alerter.Alerter
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import javax.inject.Inject
 
@@ -42,10 +45,13 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     @Inject
     lateinit var sharedPrefManager: SharedPrefManager
+
     @Inject
     lateinit var roomHelper: RoomHelper
+
     @Inject
     lateinit var internetHelper: InternetHelper
 
@@ -224,6 +230,30 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
             } catch (e: java.lang.Exception) {
             }
         }
-
     }
+
+    fun visibleWithAnimation(view: View) {
+        view.visibility = View.VISIBLE
+        view.startAnimation(
+            AnimationUtils.loadAnimation(
+                this,
+                R.anim.slide_in_right
+            )
+        )
+    }
+
+    fun goneWithAnimation(view: View) {
+        view.visibility = View.GONE
+        view.startAnimation(
+            AnimationUtils.loadAnimation(
+                this,
+                R.anim.slide_out_right
+            )
+        )
+    }
+
+    fun closeDrawer() {
+        drawer_layout.closeDrawer(GravityCompat.START)
+    }
+
 }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/white_cueve_bg"
-    tools:context="fragment.LoginFragment">
+    tools:context=".fragment.login.LoginFragment">
 
 <!--    <EditText-->
 <!--        android:id="@+id/edUserName"-->

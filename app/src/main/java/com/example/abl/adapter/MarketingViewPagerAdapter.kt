@@ -3,7 +3,7 @@ package com.example.abl.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.abl.fragment.MarketingCollateralItemFragment
+import com.example.abl.fragment.marketingCollateral.MarketingCollateralItemFragment
 import com.example.abl.model.marketingCollateral.MarketingCollateralResponse
 import com.example.abl.utils.GsonFactory
 

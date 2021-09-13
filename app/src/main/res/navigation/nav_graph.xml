@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.abl.fragment.DashboardFragment"
+        android:name="com.example.abl.fragment.dashboard.DashboardFragment"
         android:label="@string/Home"
         tools:layout="@layout/fragment_dashboard" >
 
@@ -64,13 +64,13 @@
 
     <fragment
         android:id="@+id/nav_change_pass"
-        android:name="com.example.abl.fragment.ChangePasswordFragment"
+        android:name="com.example.abl.fragment.login.ChangePasswordFragment"
         android:label="@string/change_password"
         tools:layout="@layout/fragment_change_password"/>
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.example.abl.fragment.PortfolioFragment"
+        android:name="com.example.abl.fragment.portfolio.PortfolioFragment"
         android:label="@string/portfolio"
         tools:layout="@layout/portfolio_fragment">
 
@@ -82,13 +82,13 @@
 
     <fragment
         android:id="@+id/nav_followup_fragment"
-        android:name="com.example.abl.fragment.FollowupFragment"
+        android:name="com.example.abl.fragment.leadManagement.FollowupFragment"
         android:label="Followup"
         tools:layout="@layout/followup_fragment" />
 
     <fragment
         android:id="@+id/nav_training"
-        android:name="com.example.abl.fragment.TrainingFragment"
+        android:name="com.example.abl.fragment.trainingAndQuiz.TrainingFragment"
         android:label="Training"
         tools:layout="@layout/training_fragment" >
 
@@ -100,7 +100,7 @@
 
     <fragment
         android:id="@+id/nav_comprehensive"
-        android:name="com.example.abl.fragment.MaterialTrainingFragment"
+        android:name="com.example.abl.fragment.trainingAndQuiz.MaterialTrainingFragment"
         android:label="Material"
         tools:layout="@layout/comprehensive_training_fragment" >
 
@@ -114,7 +114,7 @@
 
     <fragment
         android:id="@+id/nav_training_quiz"
-        android:name="com.example.abl.fragment.TrainingQuizFragment"
+        android:name="com.example.abl.fragment.trainingAndQuiz.TrainingQuizFragment"
         android:label="Quiz"
         tools:layout="@layout/training_quiz_fragment" >
 
@@ -132,7 +132,7 @@
 
     <fragment
         android:id="@+id/nav_result_quiz"
-        android:name="com.example.abl.fragment.QuizResultFragment"
+        android:name="com.example.abl.fragment.trainingAndQuiz.QuizResultFragment"
         android:label="Training"
         tools:layout="@layout/quiz_result_fragment" >
 
@@ -148,7 +148,7 @@
 
     <fragment
         android:id="@+id/nav_answer_quiz"
-        android:name="com.example.abl.fragment.QuizAnswerDetailFragment"
+        android:name="com.example.abl.fragment.trainingAndQuiz.QuizAnswerDetailFragment"
         android:label="@string/comprehensive_training"
         tools:layout="@layout/quiz_answer_detail_fragment" >
 
@@ -167,13 +167,13 @@
 
     <fragment
         android:id="@+id/nav_marketing"
-        android:name="com.example.abl.fragment.MarketingCollateralFragment"
+        android:name="com.example.abl.fragment.marketingCollateral.MarketingCollateralFragment"
         android:label="Marketing Collateral"
         tools:layout="@layout/marketing_collateral_fragment" />
 
     <fragment
         android:id="@+id/customerDetailsFragment"
-        android:name="com.example.abl.fragment.CustomerDetailsFragment"
+        android:name="com.example.abl.fragment.customerDetail.CustomerDetailsFragment"
         android:label="Customer Details"
         tools:layout="@layout/customer_details_fragment" >
 
@@ -184,14 +184,14 @@
 
     <fragment
         android:id="@+id/taxCalculatorFragment"
-        android:name="com.example.abl.fragment.TaxCalculatorFragment"
+        android:name="com.example.abl.fragment.customerDetail.TaxCalculatorFragment"
         android:label="@string/tax_calculator"
         tools:layout="@layout/check_in_form_fragment" />
 
 
     <fragment
         android:id="@+id/checkInFormFragment"
-        android:name="com.example.abl.fragment.CheckInFormFragment"
+        android:name="com.example.abl.fragment.leadManagement.CheckInFormFragment"
         android:label="@string/check_in_cap"
         tools:layout="@layout/check_in_form_fragment" >
 
@@ -205,7 +205,7 @@
 
     <fragment
         android:id="@+id/addLeadFragment"
-        android:name="com.example.abl.fragment.AddLeadFragment"
+        android:name="com.example.abl.fragment.leadManagement.AddLeadFragment"
         android:label="@string/add_lead"
         tools:layout="@layout/add_fragment" >
 
@@ -219,7 +219,7 @@
 
     <fragment
         android:id="@+id/nav_visit"
-        android:name="com.example.abl.fragment.AddLeadFragment"
+        android:name="com.example.abl.fragment.leadManagement.AddLeadFragment"
         android:label="@string/add_lead"
         tools:layout="@layout/add_fragment" >
 
@@ -234,7 +234,7 @@
 
     <fragment
         android:id="@+id/followup_fragment"
-        android:name="com.example.abl.fragment.FollowupFragment"
+        android:name="com.example.abl.fragment.leadManagement.FollowupFragment"
         android:label="@string/followup_meeting_scheduler_fragment"
         tools:layout="@layout/followup_fragment" >
 
@@ -247,31 +247,31 @@
 
     <fragment
         android:id="@+id/nav_call_logs"
-        android:name="com.example.abl.fragment.CallLogsFragment"
+        android:name="com.example.abl.fragment.salesManagement.CallLogsFragment"
         android:label="@string/call_log"
         tools:layout="@layout/call_logs_fragment" />
 
     <fragment
         android:id="@+id/nav_visit_logs"
-        android:name="com.example.abl.fragment.VisitLogsFragment"
+        android:name="com.example.abl.fragment.salesManagement.VisitLogsFragment"
         android:label="@string/visit_log"
         tools:layout="@layout/visit_logs_fragment" />
 
     <fragment
         android:id="@+id/nav_welcome_fragment"
-        android:name="com.example.abl.fragment.WelcomeFragment"
+        android:name="com.example.abl.fragment.login.WelcomeFragment"
         android:label="@string/visit_log"
         tools:layout="@layout/fragment_welcome" />
 
     <fragment
         android:id="@+id/nav_notification"
-        android:name="com.example.abl.fragment.NotificationFragment"
+        android:name="com.example.abl.fragment.notification.NotificationFragment"
         android:label="@string/notification"
         tools:layout="@layout/notification_fragment" />
 
     <fragment
         android:id="@+id/nav_calculator"
-        android:name="com.example.abl.fragment.CalculatorFragment"
+        android:name="com.example.abl.fragment.customerDetail.CalculatorFragment"
         android:label="@string/calculator"
         tools:layout="@layout/calculator_fragment" />
 
@@ -283,7 +283,7 @@
 
     <fragment
     android:id="@+id/nav_crm"
-    android:name="com.example.abl.fragment.CRMFragment"
+    android:name="com.example.abl.fragment.leadManagement.CRMFragment"
     android:label="@string/lead_management"
     tools:layout="@layout/fragment_crm" />
 

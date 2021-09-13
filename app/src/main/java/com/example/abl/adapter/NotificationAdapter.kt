@@ -8,9 +8,8 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.base.ClickListner
-import com.example.abl.databinding.ItemCustomerBinding
 import com.example.abl.databinding.ItemNotificationBinding
-import com.example.abl.fragment.Customers
+import com.example.abl.fragment.portfolio.Customers
 
 class NotificationAdapter(val context: Context?, val listner: ClickListner) : RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
 

@@ -3,7 +3,7 @@ package com.example.abl.activity
 import android.os.Bundle
 import com.example.abl.R
 import com.example.abl.databinding.ActivityChangePasswordBinding
-import com.example.abl.fragment.ChangePasswordFragment
+import com.example.abl.fragment.login.ChangePasswordFragment
 
 class ChangePasswordActivity : DockActivity() {
     lateinit var binding: ActivityChangePasswordBinding

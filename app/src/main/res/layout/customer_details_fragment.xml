@@ -6,7 +6,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragment.CustomerDetailsFragment">
+    tools:context=".fragment.customerDetail.CustomerDetailsFragment">
 
 
     <com.google.android.material.card.MaterialCardView
@@ -17,7 +17,7 @@
         app:strokeColor="@color/colorPrimary"
         android:theme="@style/Theme.MaterialComponents.Light"
         app:strokeWidth="@dimen/_1sdp"
-        tools:context=".fragment.PortfolioFragment">
+        tools:context=".fragment.portfolio.PortfolioFragment">
 
 
         <LinearLayout
