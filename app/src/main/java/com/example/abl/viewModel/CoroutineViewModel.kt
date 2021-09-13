@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.abl.constant.Constants
-import com.example.abl.model.CompanyLeadStatu
-import com.example.abl.model.DynamicLeadsItem
-import com.example.abl.model.LovResponse
+import com.example.abl.model.lov.LovResponse
 import com.example.abl.network.coroutines.WebResponse
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.RoomHelper
@@ -83,7 +81,7 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
         var lov = GsonFactory.getConfiguredGson()?.toJson(lovResponse)
         val array: List<String> = lov?.toCharArray()?.map { it.toString() }?.toTypedArray()?.toList()!!
 
-        roomHelper.insertLeadStatus(lovResponse.company_lead_status)
+//        roomHelper.insertLeadStatus(lovResponse.company_lead_status)
 
 //        sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
 //        if (dynamicLeadsItem != null) {
