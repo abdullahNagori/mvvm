@@ -47,30 +47,11 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         userRepository.markAttendance(markAttendanceModel, token)
     }
 
-    fun getDynamicLeads(token: String){
-        userRepository.apiListener = apiListener
-        userRepository.getDynamicLeads(token)
-    }
 
     fun getMarketingCollateral(){
         userRepository.apiListener = apiListener
         userRepository.getMarketingCollateral()
     }
-
-  suspend  fun getLeads(){
-        userRepository.apiListener = apiListener
-        userRepository.getLeads()
-    }
-
-//    fun addLead(customerDetail: CustomerDetail){
-//        userRepository.apiListener = apiListener
-//        userRepository.addLead(customerDetail)
-//    }
-
-//    fun addLeadCheckin(checkinModel: CheckinModel){
-//        userRepository.apiListener = apiListener
-//        userRepository.addLeadCheckin(checkinModel)
-//    }
 
     fun getDashBoard() {
         userRepository.apiListener = apiListener

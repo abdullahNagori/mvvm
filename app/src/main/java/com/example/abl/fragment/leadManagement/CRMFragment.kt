@@ -48,9 +48,6 @@ class CRMFragment : BaseDockFragment() {
         setupViewPager()
     }
 
-    private fun getDynamicData(token: String){
-        myDockActivity?.getUserViewModel()?.getDynamicLeads(token)
-    }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
         super.onSuccess(liveData, tag)

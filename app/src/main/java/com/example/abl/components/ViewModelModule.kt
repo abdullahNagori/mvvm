@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.abl.keys.ViewModelKey
 import com.example.abl.viewModel.BaseViewModel
+import com.example.abl.viewModel.LeadsViewModel
 import com.example.abl.viewModel.UserViewModel
 import com.example.abl.viewModel.ViewModelFactory
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
@@ -21,12 +22,10 @@ interface ViewModelModule {
     @Binds
     fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
 
-
     @Binds
     @IntoMap
     @ViewModelKey(BaseViewModel::class)
     fun bindBaseViewModel(baseViewModel: BaseViewModel): ViewModel
-
 
     @Binds
     @IntoMap
@@ -38,5 +37,9 @@ interface ViewModelModule {
     @ViewModelKey(CoroutineViewModel::class)
     fun bindCoroutineViewModel(coroutineViewModel: CoroutineViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(LeadsViewModel::class)
+    fun bindLeadsViewModel(leadViewModel: LeadsViewModel): ViewModel
 
 }

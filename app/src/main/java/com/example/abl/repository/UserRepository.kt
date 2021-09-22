@@ -26,6 +26,7 @@ class UserRepository @Inject constructor(
     private val api: Api,
     private val sharedPrefManager: SharedPrefManager
 ) : BaseRepository() {
+
     fun login(loginModel: LoginModel): MutableLiveData<String> {
         return callApi(api.login(loginModel), Constants.LOGIN)
     }
@@ -68,13 +69,6 @@ class UserRepository @Inject constructor(
 
     suspend fun getLovs(): LovResponse {
         return api.getLovs("Bearer " + sharedPrefManager.getToken())
-    }
-
-    fun getDynamicLeads(token: String): MutableLiveData<String> {
-        return callApi(
-            api.getLeadsForDynamicData("Bearer " + sharedPrefManager.getToken()),
-            Constants.GET_DYNAMIC_LEADS
-        )
     }
 
     suspend fun getLeads(): ArrayList<DynamicLeadsItem> {
