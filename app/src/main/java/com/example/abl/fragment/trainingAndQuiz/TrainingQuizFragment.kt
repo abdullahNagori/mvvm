@@ -69,11 +69,11 @@ class TrainingQuizFragment : BaseDockFragment() {
     }
 
     private fun getQuizData(getQuizModel: GetQuizModel){
-        myDockActivity?.getUserViewModel()?.getQuiz(getQuizModel)
+        myDockActivity?.getTrainingViewModel()?.getQuiz(getQuizModel)
     }
 
     private fun submitQuizData(submitQuizModel: SubmitQuizModel){
-        myDockActivity?.getUserViewModel()?.submitQuiz(submitQuizModel)
+        myDockActivity?.getTrainingViewModel()?.submitQuiz(submitQuizModel)
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {

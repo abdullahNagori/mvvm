@@ -30,6 +30,7 @@ import javax.inject.Inject
 
 
 abstract class BaseDockFragment : DaggerFragment(), ApiListener {
+
     protected var myDockActivity: DockActivity? = null
 
     private var isLoading = false

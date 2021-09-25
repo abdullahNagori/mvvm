@@ -26,6 +26,8 @@ import com.example.abl.progress.ProgressIndicator
 import com.example.abl.room.RoomHelper
 import com.example.abl.utils.InternetHelper
 import com.example.abl.utils.SharedPrefManager
+import com.example.abl.viewModel.MiscellaneousViewModel
+import com.example.abl.viewModel.TrainingViewModel
 import com.example.abl.viewModel.UserViewModel
 import com.google.android.gms.location.LocationServices
 import com.tapadoo.alerter.Alerter
@@ -61,6 +63,8 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
     var locationManager: LocationManager? = null
     private lateinit var progressBarDialog: ProgressDialog
     private lateinit var userViewModel: UserViewModel
+    private lateinit var trainingViewModel: TrainingViewModel
+    private lateinit var miscellaneousViewModel: MiscellaneousViewModel
     private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
     var foregroundOnlyLocationService: ForegroundOnlyLocationService? = null
     private var mBound = false
@@ -123,6 +127,8 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
 
     private fun initViewModels() {
         userViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
+        trainingViewModel = ViewModelProviders.of(this, viewModelFactory).get(TrainingViewModel::class.java)
+        miscellaneousViewModel = ViewModelProviders.of(this, viewModelFactory).get(MiscellaneousViewModel::class.java)
     }
 
     fun hideKeyboard(view: View) {
@@ -142,6 +148,14 @@ abstract class DockActivity : DaggerAppCompatActivity(), ProgressIndicator {
 
     fun getUserViewModel(): UserViewModel {
         return userViewModel
+    }
+
+    fun getTrainingViewModel(): TrainingViewModel {
+        return trainingViewModel
+    }
+
+    fun getMiscellaneousViewModel(): MiscellaneousViewModel {
+        return miscellaneousViewModel
     }
 
     open fun showErrorMessage(message: String) {

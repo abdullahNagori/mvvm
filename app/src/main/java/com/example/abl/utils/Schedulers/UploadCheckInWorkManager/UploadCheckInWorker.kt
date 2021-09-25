@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.abl.repository.LeadsRepository
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.DAOAccess
 import com.example.abl.utils.Schedulers.UploadLeadWorkManager.UploadLeadWorker
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UploadCheckInWorker @Inject constructor(
-    private val userRepository: UserRepository,
+    private val leadsRepository: LeadsRepository,
     private val daoAccess: DAOAccess,
     var appContext: Context,
     var workerParams: WorkerParameters
@@ -31,7 +32,7 @@ class UploadCheckInWorker @Inject constructor(
             val checkInData = daoAccess.getUnSyncedCheckInData("false")
             if (checkInData.isNotEmpty()) {
                 checkInData.forEach {
-                    val response = userRepository.addLeadCheckin(it.getCheckInData()).execute()
+                    val response = leadsRepository.addLeadCheckin(it.getCheckInData()).execute()
                     if (response.body() != null) {
                         daoAccess.updateCheckInStatus(it.lead_id!!)
                         daoAccess.updateLeadStatus(it.lead_id)

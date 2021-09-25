@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.abl.constant.Constants
 import com.example.abl.model.lov.LovResponse
 import com.example.abl.network.coroutines.WebResponse
+import com.example.abl.repository.LeadsRepository
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.RoomHelper
 import com.example.abl.utils.GsonFactory
@@ -18,7 +19,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class CoroutineViewModel @Inject constructor(private val userRepository: UserRepository) : ViewModel() {
+class CoroutineViewModel @Inject constructor(private val leadsRepository: LeadsRepository) : ViewModel() {
 
     var handler = CoroutineExceptionHandler { _, exception ->
         println("Caught $exception")
@@ -37,7 +38,7 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
         viewModelScope.launch {
             supervisorScope {
                 try {
-                    val callLov = async {  userRepository.getLovs()}
+                    val callLov = async {  leadsRepository.getLovs()}
 //                    val callLeads = async {  userRepository.getLeads()}
 //
 //                    val leadResponse: List<DynamicLeadsItem>? = try {
@@ -98,7 +99,7 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
 
         scope.launch {
             try {
-                val response = userRepository.getLeads()
+                val response = leadsRepository.getLeads()
                 withContext(Dispatchers.Main) {
                     data.postValue(WebResponse.Success(response))
                     Log.i("xxLeadRes1", response.toString())

@@ -3,10 +3,7 @@ package com.example.abl.components
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.abl.keys.ViewModelKey
-import com.example.abl.viewModel.BaseViewModel
-import com.example.abl.viewModel.LeadsViewModel
-import com.example.abl.viewModel.UserViewModel
-import com.example.abl.viewModel.ViewModelFactory
+import com.example.abl.viewModel.*
 import com.example.abl.viewModel.coroutine.CoroutineViewModel
 import dagger.Binds
 import dagger.Module
@@ -42,4 +39,13 @@ interface ViewModelModule {
     @ViewModelKey(LeadsViewModel::class)
     fun bindLeadsViewModel(leadViewModel: LeadsViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(TrainingViewModel::class)
+    fun bindTrainingViewModel(trainingViewModel: TrainingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MiscellaneousViewModel::class)
+    fun bindMiscellaneousViewModel(miscellaneousViewModel: MiscellaneousViewModel): ViewModel
 }

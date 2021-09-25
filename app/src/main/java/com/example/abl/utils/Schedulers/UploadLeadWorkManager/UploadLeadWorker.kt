@@ -7,13 +7,14 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.abl.network.ApiListener
+import com.example.abl.repository.LeadsRepository
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.DAOAccess
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class UploadLeadWorker @Inject constructor(
-    private val userRepository: UserRepository,
+    private val leadsRepository: LeadsRepository,
     private val daoAccess: DAOAccess,
     var appContext: Context,
     var workerParams: WorkerParameters
@@ -32,7 +33,7 @@ class UploadLeadWorker @Inject constructor(
             val leadData = daoAccess.getUnSyncLeadData()
             if (leadData.isNotEmpty()) {
                 leadData.forEach {
-                    val response = userRepository.addLead(it.getCustomerDetail()).execute()
+                    val response = leadsRepository.addLead(it.getCustomerDetail()).execute()
                     if (response.body() != null && response.body()?.lead_id != null) {
                         daoAccess.updateLeadData(response.body()?.lead_id.toString(), it.local_lead_id.toString())
                         daoAccess.updateCheckInLeadStatus(response.body()?.lead_id.toString(), it.local_lead_id.toString())

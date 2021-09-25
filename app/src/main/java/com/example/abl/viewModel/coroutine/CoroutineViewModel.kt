@@ -9,6 +9,7 @@ import com.example.abl.model.checkin.CheckinModel
 import com.example.abl.model.lov.LovResponse
 import com.example.abl.model.sync.SyncModel
 import com.example.abl.model.visitLogs.VisitsCallModel
+import com.example.abl.repository.LeadsRepository
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.RoomHelper
 import com.example.abl.utils.SharedPrefManager
@@ -18,7 +19,7 @@ import java.lang.Exception
 import java.time.LocalDate
 import javax.inject.Inject
 
-class CoroutineViewModel @Inject constructor(private val userRepository: UserRepository) :
+class CoroutineViewModel @Inject constructor(private val leadsRepository: LeadsRepository) :
     ViewModel() {
 
     var handler = CoroutineExceptionHandler { _, exception ->
@@ -43,10 +44,10 @@ class CoroutineViewModel @Inject constructor(private val userRepository: UserRep
                     val toDate = LocalDate.now()
                     val fromDate = toDate.minusMonths(1)
 
-                    val callLov = async { userRepository.getLovs() }
-                    val callLeads = async { userRepository.getLeads() }
+                    val callLov = async { leadsRepository.getLovs() }
+                    val callLeads = async { leadsRepository.getLeads() }
                     val visitCall = async {
-                        userRepository.getVisitCalls(
+                        leadsRepository.getVisitCalls(
                             VisitsCallModel(
                                 "all",
                                 fromDate.toString(),

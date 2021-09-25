@@ -38,15 +38,9 @@ class TrainingFragment : BaseDockFragment(), ClickListner {
         binding = TrainingFragmentBinding.inflate(layoutInflater)
     }
 
-
-
-
-
-
-
     private fun getTraining() {
         myDockActivity?.showProgressIndicator()
-        myDockActivity?.getUserViewModel()?.getTrainings()
+        myDockActivity?.getTrainingViewModel()?.getTrainings()
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {
@@ -57,7 +51,7 @@ class TrainingFragment : BaseDockFragment(), ClickListner {
                     val trainingResponse = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, TrainingResponse::class.java)
                     if (trainingResponse?.training != null) {
                         adapter = TrainingListAdapter(requireContext(), this)
-                        adapter.setList(trainingResponse?.training)
+                        adapter.setList(trainingResponse.training)
                         binding.trainingRv.adapter = adapter
                     }
                 } catch (e: Exception) {

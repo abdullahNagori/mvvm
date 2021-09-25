@@ -301,7 +301,7 @@ class DashboardFragment : BaseDockFragment() {
     }
 
     private fun getDashBoardCount() {
-        myDockActivity?.getUserViewModel()?.getDashBoard()
+        myDockActivity?.getMiscellaneousViewModel()?.getDashBoard()
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {

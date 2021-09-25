@@ -41,8 +41,8 @@ class MarketingCollateralFragment : BaseDockFragment() {
     }
 
     private fun getMarketingCollateral() {
-        myDockActivity?.showProgressIndicator()
-        myDockActivity?.getUserViewModel()?.getMarketingCollateral()
+//        myDockActivity?.showProgressIndicator()
+        myDockActivity?.getMiscellaneousViewModel()?.getMarketingCollateral()
     }
 
     override fun onSuccess(liveData: LiveData<String>, tag: String) {

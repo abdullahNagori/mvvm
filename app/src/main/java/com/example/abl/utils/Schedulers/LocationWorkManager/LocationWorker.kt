@@ -6,13 +6,14 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.abl.model.generic.GenericMsgResponse
 import com.example.abl.network.ApiListener
+import com.example.abl.repository.MiscellaneousRepository
 import com.example.abl.repository.UserRepository
 import com.example.abl.room.DAOAccess
 import com.example.abl.utils.GsonFactory
 import javax.inject.Inject
 
 class LocationWorker @Inject constructor(
-    private val userRepository: UserRepository,
+    private val miscellaneousRepository: MiscellaneousRepository,
     private val daoAccess: DAOAccess,
     var appContext: Context,
     var workerParams: WorkerParameters
@@ -25,7 +26,7 @@ class LocationWorker @Inject constructor(
         return try {
             val userList = daoAccess.getUserLocation()
             //userRepository.apiListener = apiListener
-            val call = userRepository.uploadUserLocation(userList)
+            val call = miscellaneousRepository.uploadUserLocation(userList)
             val response = GsonFactory.getConfiguredGson()?.fromJson(call.value, GenericMsgResponse::class.java)
 
             if (response?.message == "Successful") {

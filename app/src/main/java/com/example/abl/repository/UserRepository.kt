@@ -67,64 +67,12 @@ class UserRepository @Inject constructor(
         )
     }
 
-    suspend fun getLovs(): LovResponse {
-        return api.getLovs("Bearer " + sharedPrefManager.getToken())
-    }
-
-    suspend fun getLeads(): ArrayList<DynamicLeadsItem> {
-        return api.getLeads("Bearer " + sharedPrefManager.getToken())
-    }
-
-     fun getTrainings(): MutableLiveData<String> {
-        return callApi(api.getTrainings("Bearer " + sharedPrefManager.getToken()),Constants.TRAINING)
-    }
-
-    fun getQuizes(getQuizModel: GetQuizModel): MutableLiveData<String> {
-        return callApi(api.getQuizes(getQuizModel,"Bearer " + sharedPrefManager.getToken()),Constants.MATERIAL)
-    }
-
-    fun submitQuiz(submitQuizModel: SubmitQuizModel): MutableLiveData<String> {
-        return callApi(api.submitQuiz(submitQuizModel,"Bearer " + sharedPrefManager.getToken()),Constants.SUBMIT_QUIZ)
-    }
-
-     fun getVisitCalls(visitsCallModel: VisitsCallModel): Call<ArrayList<CheckinModel>> {
-        return api.getVisitsCalls(visitsCallModel,"Bearer " + sharedPrefManager.getToken())
-    }
-
-    fun uploadUserLocation(userLocation: List<UserLocation>): MutableLiveData<String> {
-        return callApi(
-            api.userLocation(userLocation, "Bearer " + sharedPrefManager.getToken()),
-            Constants.UPDATE_LOCATION
-        )
-
-    }
-
-   fun addLead(customerDetail: CustomerDetail): Call<DynamicLeadsItem> {
-        return api.addLead(customerDetail, "Bearer " + sharedPrefManager.getToken())
-    }
-
-    fun addLeadCheckin(checkinModel: CheckinModel): Call<GenericMsgResponse> {
-        return api.addLeadCheckin(checkinModel, "Bearer " + sharedPrefManager.getToken())
-    }
-
-    fun getDashboard(): MutableLiveData<String> {
-        return callApi(api.getDashboard("Bearer " + sharedPrefManager.getToken()), Constants.DASHBOARD_COUNT)
-
-    }
-
     fun changePassword(changePasswordModel: ChangePasswordModel): MutableLiveData<String> {
         return callApi(
             api.changePassword(
                 changePasswordModel,
                 "Bearer " + sharedPrefManager.getToken()
             ), Constants.CHANGE_PASSWORD
-        )
-    }
-
-    fun getMarketingCollateral(): MutableLiveData<String> {
-        return callApi(
-            api.getmarketingcollateral("Bearer " + sharedPrefManager.getToken()),
-            Constants.MARKETING_COLLATERAL
         )
     }
 
