@@ -27,7 +27,7 @@ class TrainingFragment : BaseDockFragment(), ClickListner {
         // Inflate the layout for this fragment
         initView()
 
-        myDockActivity?.getUserViewModel()?.apiListener = this
+        myDockActivity?.getTrainingViewModel()?.apiListener = this
 
         getTraining()
 

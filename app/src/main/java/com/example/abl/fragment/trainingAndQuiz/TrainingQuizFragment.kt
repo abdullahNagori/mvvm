@@ -40,7 +40,7 @@ class TrainingQuizFragment : BaseDockFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        myDockActivity?.getUserViewModel()?.apiListener = this
+        myDockActivity?.getTrainingViewModel()?.apiListener = this
         initView()
         arguments?.getParcelableArrayList<Material>(Constants.MATERIAL_LIST).let {
             trainingID = it?.get(0)?.training_id.toString()

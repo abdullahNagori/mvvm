@@ -27,7 +27,7 @@ class MarketingCollateralFragment : BaseDockFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        myDockActivity?.getUserViewModel()?.apiListener = this
+        myDockActivity?.getMiscellaneousViewModel()?.apiListener = this
 
         getMarketingCollateral()
 
@@ -41,7 +41,7 @@ class MarketingCollateralFragment : BaseDockFragment() {
     }
 
     private fun getMarketingCollateral() {
-//        myDockActivity?.showProgressIndicator()
+        myDockActivity?.showProgressIndicator()
         myDockActivity?.getMiscellaneousViewModel()?.getMarketingCollateral()
     }
 
