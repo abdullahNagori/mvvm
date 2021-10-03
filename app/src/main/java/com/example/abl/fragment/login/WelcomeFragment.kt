@@ -26,6 +26,7 @@ class WelcomeFragment : BaseDockFragment() {
     lateinit var binding: FragmentWelcomeBinding
     var latitude = ""
     var longitude = ""
+    var twoFactor = "yes"
 
     companion object {
         fun newInstance(): WelcomeFragment {
@@ -49,6 +50,12 @@ class WelcomeFragment : BaseDockFragment() {
         SharedPrefKeyManager.with(requireContext())
         initView()
         myDockActivity?.getUserViewModel()?.apiListener = this
+
+        twoFactor = arguments?.getString(Constants.LOGIN_TWO_FACTOR).toString()
+
+        if (twoFactor == "no"){
+            binding.imgLogo.visibility = View.GONE
+        }
 
         binding.fab.setOnClickListener {
 

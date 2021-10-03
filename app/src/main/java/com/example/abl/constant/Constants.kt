@@ -15,6 +15,7 @@ object Constants {
     const val GET_LEADS : String = "get_leads"
     const val ADD_LEAD : String = "add_lead"
     const val VISIT : String = "visit"
+    const val LOGIN_TWO_FACTOR : String = "login_two_factor"
     const val ADD_LEAD_CHECKIN : String = "add_lead_checkin"
     const val DASHBOARD_COUNT : String = "dashboard_count"
     const val LOGIN_ID : String = "login_id"

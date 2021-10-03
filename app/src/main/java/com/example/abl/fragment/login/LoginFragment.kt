@@ -82,9 +82,13 @@ class LoginFragment : BaseDockFragment() {
                         bundle.putString("LOGIN_ID", binding.edUserName.text.toString())
                         sharedPrefManager.setUsername(binding.edUserName.text.toString())
                         LoginActivity.navController.navigate(R.id.action_loginFragment_to_otpFragment, bundle)
+
                     } else {
                         if (loginResponseEnt?.token != null && (loginResponseEnt?.token)!!.isNotEmpty()) {
-                            LoginActivity.navController.navigate(R.id.action_loginFragment_to_welcomeFragment)
+                            sharedPrefManager.setToken(loginResponseEnt.token.toString())
+                            val bundle = Bundle()
+                            bundle.putString(Constants.LOGIN_TWO_FACTOR, "no")
+                            LoginActivity.navController.navigate(R.id.action_loginFragment_to_welcomeFragment,bundle)
                         } else {
                             myDockActivity?.showErrorMessage(getString(R.string.something_went_wrong))
                         }
