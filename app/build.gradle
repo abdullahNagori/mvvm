@@ -22,7 +22,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_URL", "\"http://thesalesforceapiuat.avengers.pk/api/v1/\"")
+        buildConfigField("String", "API_URL", "\"http://alliedamcapi.avengers.pk/api/v1/\"")
     }
 
     android {
