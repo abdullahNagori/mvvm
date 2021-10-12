@@ -1,0 +1,58 @@
+package com.uhfsolutions.abl.fragment.customerDetail
+
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.uhfsolutions.abl.adapter.ProductListAdapter
+import com.uhfsolutions.abl.base.BaseDockFragment
+import com.uhfsolutions.abl.base.ClickListner
+import com.uhfsolutions.abl.databinding.ProductsFragmentBinding
+import com.uhfsolutions.abl.model.lov.CompanyProduct
+import com.uhfsolutions.abl.model.addLead.DynamicLeadsItem
+
+
+class ProductsFragment : BaseDockFragment(), ClickListner {
+
+    companion object {
+        fun newInstance() = ProductsFragment()
+    }
+
+    lateinit var dynamicLeadsItem: DynamicLeadsItem
+    lateinit var binding: ProductsFragmentBinding
+    lateinit var adapter: ProductListAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        initView()
+
+        return binding.root
+    }
+
+    private fun initView() {
+        binding = ProductsFragmentBinding.inflate(layoutInflater)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initRecyclerView()
+    }
+
+
+
+
+
+    private fun initRecyclerView(){
+        adapter = ProductListAdapter(requireContext(), this)
+        adapter.setList(sharedPrefManager.getCompanyProducts() as ArrayList<CompanyProduct>)
+        binding.customers.adapter = adapter
+    }
+
+    override fun <T> onClick(data: T, createNested: Boolean) {
+        Log.i("xxProduct", "product")
+    }
+}

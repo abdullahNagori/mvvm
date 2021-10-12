@@ -1,0 +1,136 @@
+package com.uhfsolutions.abl.fragment.trainingAndQuiz
+
+import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.viewpager2.widget.ViewPager2
+import com.uhfsolutions.abl.R
+import com.uhfsolutions.abl.adapter.DynamicQuizViewPagerAdapter
+import com.uhfsolutions.abl.adapter.QuizFormAdapter
+import com.uhfsolutions.abl.base.BaseDockFragment
+import com.uhfsolutions.abl.constant.Constants
+import com.uhfsolutions.abl.databinding.TrainingQuizFragmentBinding
+import com.uhfsolutions.abl.model.generic.GenericMsgResponse
+import com.uhfsolutions.abl.model.trainingAndQuiz.*
+import com.google.gson.reflect.TypeToken
+import com.uhfsolutions.abl.utils.GsonFactory
+import com.google.gson.Gson
+import kotlinx.android.synthetic.main.training_quiz_fragment.*
+import java.lang.reflect.Type
+
+
+class TrainingQuizFragment : BaseDockFragment() {
+    lateinit var binding: TrainingQuizFragmentBinding
+    lateinit var quizadapter: QuizFormAdapter
+    lateinit var trainingID: String
+    lateinit var questionsList: ArrayList<Question>
+    var quizDetail = ArrayList<QuizDetailItem>()
+    val submitQuizModel= SubmitQuizModel("", ArrayList<QuizDetailItem>())
+    var isChecked = false
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        myDockActivity?.getTrainingViewModel()?.apiListener = this
+        initView()
+        arguments?.getParcelableArrayList<Material>(Constants.MATERIAL_LIST).let {
+            trainingID = it?.get(0)?.training_id.toString()
+        }
+        getQuizData(
+            GetQuizModel(
+            trainingID
+        )
+        )
+
+        return binding.root
+    }
+
+    private fun initView() {
+        binding = TrainingQuizFragmentBinding.inflate(layoutInflater)
+        quizadapter = QuizFormAdapter(requireContext())
+        binding.btnNext.setOnClickListener {
+            if(btn_next.text.toString() =="Next" && isChecked){
+                binding.viewPager.currentItem+=1
+                isChecked = false
+            }
+            else {
+                myDockActivity?.showErrorMessage(getString(R.string.error_checkbox))
+            }
+        }
+    }
+
+    private fun getQuizData(getQuizModel: GetQuizModel){
+        myDockActivity?.getTrainingViewModel()?.getQuiz(getQuizModel)
+    }
+
+    private fun submitQuizData(submitQuizModel: SubmitQuizModel){
+        myDockActivity?.getTrainingViewModel()?.submitQuiz(submitQuizModel)
+    }
+
+    override fun onSuccess(liveData: LiveData<String>, tag: String) {
+        super.onSuccess(liveData, tag)
+        when (tag) {
+            Constants.MATERIAL -> {
+                try {
+                    Log.d("liveDataValue", liveData.value.toString())
+                    val gson = Gson()
+                    val listType: Type = object : TypeToken<QuizResponse?>() {}.type
+                    val posts: QuizResponse = gson.fromJson<QuizResponse>(liveData.value, listType)
+                    questionsList = posts.quiz[0].questions as ArrayList<Question>
+                    setupViewPager(posts)
+                } catch (e: Exception) {
+                    Log.d("Exception", e.message.toString())
+                }
+            }
+
+            Constants.SUBMIT_QUIZ -> {
+                val submitQuizResponseEnt = GsonFactory.getConfiguredGson()?.fromJson(liveData.value, GenericMsgResponse::class.java)
+                if (submitQuizResponseEnt?.message?.toLowerCase()?.contains("success")!!){
+                    val bundle = Bundle()
+                    bundle.putParcelableArrayList(Constants.QUESTION_LIST, questionsList)
+                    bundle.putParcelable(Constants.SUBMIT_QUIZ, submitQuizModel as Parcelable)
+                    navigateToFragment(R.id.action_nav_training_quiz_to_nav_result_quiz, bundle)
+                }
+            }
+        }
+    }
+
+    private fun setupViewPager(data: QuizResponse) {
+        binding.viewPager.isUserInputEnabled = false
+        binding.viewPager.adapter = DynamicQuizViewPagerAdapter(this, data.quiz[0].questions.size, data)
+        binding.viewPager.registerOnPageChangeCallback(onPageChangeListener)
+
+    }
+    private val onPageChangeListener = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        }
+        override fun onPageSelected(position: Int) {
+            if (position  == binding.viewPager.adapter?.itemCount!!-1)
+            {
+                binding.btnNext.text = "Finish"
+                binding.btnNext.setOnClickListener {
+                    if (isChecked) {
+                        submitQuizData(submitQuizModel)
+                    }
+                    else{
+                        myDockActivity?.showErrorMessage(getString(R.string.error_checkbox))
+                    }
+                }
+            }
+        }
+
+        override fun onPageScrollStateChanged(state: Int) {
+        }
+    }
+
+    fun setSubmissionRequest(quizId:String,questionId:String,answer:String){
+        submitQuizModel.quiz_id = quizId
+        submitQuizModel.quiz_details.add(QuizDetailItem(questionId,answer))
+    }
+}

@@ -14,7 +14,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.abl"
+        applicationId "com.uhfsolutions.abl"
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1

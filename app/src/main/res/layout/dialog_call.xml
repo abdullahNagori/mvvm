@@ -9,7 +9,7 @@
     android:padding="@dimen/_20sdp">
 
 
-    <com.example.abl.utils.CustomEditText
+    <com.uhfsolutions.abl.utils.CustomEditText
         android:id="@+id/call"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="parent">
         <requestFocus />
 
-    </com.example.abl.utils.CustomEditText>
+    </com.uhfsolutions.abl.utils.CustomEditText>
 
     <ImageButton
         android:id="@+id/btn_call"

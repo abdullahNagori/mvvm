@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.abl">
+    package="com.uhfsolutions.abl">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,26 +14,26 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
-        android:name=".App"
+        android:name="com.uhfsolutions.abl.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_abl"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.ChangePasswordActivity">
+        <activity android:name="com.uhfsolutions.abl.activity.ChangePasswordActivity">
 
         </activity>
         <activity
-            android:name=".activity.WelcomeActivity"
+            android:name="com.uhfsolutions.abl.activity.WelcomeActivity"
             android:screenOrientation="portrait">
 
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name="com.uhfsolutions.abl.activity.LoginActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.SplashActivity"
+            android:name="com.uhfsolutions.abl.activity.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.uhfsolutions.abl.activity.MainActivity"
             android:screenOrientation="portrait">
 
         </activity>
@@ -51,14 +51,14 @@
             android:value="AIzaSyDLcz0kMX5XISsZKYfZcduPM3MQc0JOx7k" />
 
         <service
-            android:name="com.example.abl.location.ForegroundOnlyLocationService"
+            android:name="com.uhfsolutions.abl.location.ForegroundOnlyLocationService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="location" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="com.example.abl.utils.Schedulers.LocationWorkManager.LocationWorker.workmanager-init"
+            android:authorities="com.uhfsolutions.abl.utils.Schedulers.LocationWorkManager.LocationWorker.workmanager-init"
             tools:node="remove" />
 
         <!--        <provider-->
