@@ -17,7 +17,6 @@ import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.uhfsolutions.abl.R
 import com.uhfsolutions.abl.activity.MainActivity
-import com.uhfsolutions.abl.model.location.UserLocation
 import com.uhfsolutions.abl.room.ABLDatabase
 import com.uhfsolutions.abl.room.RoomHelper
 import com.google.android.gms.location.*
@@ -143,30 +142,12 @@ class ForegroundOnlyLocationService : Service() {
     private fun onNewLocation(location: Location) {
         Log.d(TAG, "New location: $location")
         mLocation = location
-        val locationDevice = UserLocation()
-        locationDevice.latitude = location.latitude
-        locationDevice.longitude = location.longitude
-        locationDevice.location_time = (System.currentTimeMillis() / 1000).toString()
-
-//        val locationDevice = ArrayList<UserLocation>()
-//        val locationArray = UserLocation(location.latitude.toString(), location.longitude.toString())
-//        locationDevice.add(locationArray)
-        Log.d(TAG, location.latitude.toString())
-        GlobalScope.launch {
-            insert(locationDevice)
-        }
-
         // Notify anyone listening for broadcasts about the new location.
         val intent = Intent(ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST)
         intent.putExtra(EXTRA_LOCATION, currentLocation)
         LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
     }
 
-    private fun insert(locationDevice: UserLocation) {
-        Log.d(TAG, "xxDB")
-        ablDatabase.leadDao().insertLocation(locationDevice)
-
-    }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand()")

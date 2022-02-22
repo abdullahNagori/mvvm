@@ -1,65 +1,31 @@
 package com.uhfsolutions.abl.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.*
-import android.net.Uri
+
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.*
-import android.widget.ImageButton
-import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.work.*
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import com.deepakkumardk.kontactpickerlib.KontactPicker
-import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
-import com.deepakkumardk.kontactpickerlib.model.SelectionMode
 import com.uhfsolutions.abl.R
 import com.uhfsolutions.abl.adapter.ExpandableListAdapter
 import com.uhfsolutions.abl.constant.Constants
 import com.uhfsolutions.abl.databinding.ActivityMainBinding
-import com.uhfsolutions.abl.model.*
-import com.uhfsolutions.abl.model.addLead.DynamicLeadsItem
-import com.uhfsolutions.abl.model.checkin.CheckinModel
-import com.uhfsolutions.abl.model.lov.CompanyLeadSource
-import com.uhfsolutions.abl.model.lov.LovResponse
 import com.uhfsolutions.abl.utils.*
-import com.uhfsolutions.abl.utils.Schedulers.LocationWorkManager.LocationWorker
-import com.uhfsolutions.abl.utils.Schedulers.UploadCheckInWorkManager.UploadCheckInWorker
-import com.uhfsolutions.abl.utils.Schedulers.UploadLeadWorkManager.UploadLeadWorker
-import com.uhfsolutions.abl.viewModel.coroutine.CoroutineViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.dialog_menu_shortcut.*
-import kotlinx.android.synthetic.main.item_checkbox.view.*
-import kotlinx.android.synthetic.main.nav_header_main.*
-import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.collections.set
 
 
 class MainActivity : DockActivity(){
-
-    lateinit var number: CustomEditText
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -74,16 +40,8 @@ class MainActivity : DockActivity(){
     lateinit var contentView: ConstraintLayout
     val END_SCALE = 0.7f
     private lateinit var actionBarMenu: Menu
-    private lateinit var switchAB: SwitchCompat
-    private lateinit var sharedPreferences: SharedPreferences
-    lateinit var viewModel: CoroutineViewModel
     lateinit var listDataChild: HashMap<String, List<String>>
     lateinit var listDataHeader: ArrayList<String>
-    private var x1 = 0f
-    private var x2 = 0f
-    val MIN_DISTANCE = 60
-
-    private var companyLeadSource: List<CompanyLeadSource> = emptyList()
 
     override fun getDockFrameLayoutId(): Int {
         return R.id.container
@@ -99,13 +57,7 @@ class MainActivity : DockActivity(){
         unbinder = ButterKnife.bind(this)
         setContentView(binding.root)
 
-//      navController = findNavController(R.id.nav_host_main)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(CoroutineViewModel::class.java)
-
         initView()
-        setData()
-     //   setGesture()
-        sendUserTracking()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -113,45 +65,11 @@ class MainActivity : DockActivity(){
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (supportActionBar!!.title.toString()== "Check In" && item.itemId == android.R.id.home) {
-            showCheckInAlert()
-            return true
-        }
-        else if (supportActionBar!!.title.toString()== "Quiz" && item.itemId == android.R.id.home) {
-            showQuizAlert()
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         actionBarMenu = menu
-        val item = menu.findItem(R.id.myswitch) as MenuItem
         actionBarMenu.findItem(R.id.action_notification).setOnMenuItemClickListener {
             true
-        }
-
-        item.setActionView(R.layout.switch_layout)
-        switchAB = item.actionView.findViewById(R.id.switchAB)
-        sharedPreferences = this.getSharedPreferences("SharedPrefs", MODE_PRIVATE)
-
-        if (switchAB.isChecked) {
-            Handler(Looper.getMainLooper()).postDelayed(Runnable {
-                foregroundOnlyLocationService?.subscribeToLocationUpdates()
-            }, 120000)
-        }
-        switchAB.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-            } else {
-                sharedPrefManager.setShiftStart(false)
-                foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
-                startActivity(Intent(this, WelcomeActivity::class.java))
-//                   foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
-            }
-
         }
 
         return super.onCreateOptionsMenu(menu)
@@ -176,28 +94,10 @@ class MainActivity : DockActivity(){
         binding.navView.setupWithNavController(navController)
         animateNavigationDrawer(drawerLayout)
 
-        if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
-                .isNotEmpty() && internetHelper.isNetworkAvailable()
-        ) {
-            Log.i("xxUpload", "upload")
-            sendLeadData()
-        }
-
-        getSyncData(isShowLoading = false)
         prepareSideMenu()
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setData() {
-        name.text =
-            sharedPrefManager.getUserDetails()?.first_name + " " + sharedPrefManager.getUserDetails()?.last_name
-    }
-
     private fun animateNavigationDrawer(drawerLayout: DrawerLayout) {
-
-        //Add any color or remove it to use the default one!
-        //To make it transparent use Color.Transparent in side setScrimColor();
-        //drawerLayout.setScrimColor(Color.TRANSPARENT);
 
         drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
@@ -222,66 +122,6 @@ class MainActivity : DockActivity(){
     private fun fragmentClickEvent(itemString: String) {
         when (itemString) {
 
-            Constants.DASHBOARD -> {
-            }
-
-            Constants.PORTFOLIO -> {
-                navigateToFragment(R.id.action_nav_home_to_nav_profile)
-                closeDrawer()
-            }
-
-            Constants.CALL_LOG -> {
-                navigateToFragment(R.id.action_nav_home_to_call_logs)
-                closeDrawer()
-            }
-
-            Constants.VISIT_LOG -> {
-                navigateToFragment(R.id.action_nav_home_to_visit_logs)
-                closeDrawer()
-            }
-
-//            Constants.COMPANY_PROVIDED_LEADS -> {
-//                navigateToFragment(R.id.action_nav_home_to_company_provided_leads)
-//                closeDrawer()
-//            }
-
-            Constants.MARKETING_COLLATERAL -> {
-                navigateToFragment(R.id.action_nav_home_to_nav_marketing_collateral)
-                closeDrawer()
-            }
-
-//            Constants.SALES_PIPELINE -> {
-//                navigateToFragment(R.id.action_nav_home_to_company_provided_leads)
-//                closeDrawer()
-//            }
-
-            Constants.NOTIFICATIONS -> {
-                navigateToFragment(R.id.action_nav_home_to_nav_notification)
-                closeDrawer()
-            }
-
-            Constants.CALCULATOR -> {
-                navigateToFragment(R.id.action_nav_home_to_nav_calculator)
-                closeDrawer()
-            }
-
-            Constants.TRAINING -> {
-                navigateToFragment(R.id.action_nav_home_to_nav_training)
-                closeDrawer()
-            }
-
-//            Constants.TRACKING -> {
-//                navigateToFragment(R.id.action_nav_home_to_nav_tracking)
-//            }
-
-            Constants.PASSWORD_CHANGE -> {
-                navigateToFragment(R.id.action_nav_home_to_nav_change_password)
-                closeDrawer()
-            }
-
-            Constants.LOGOUT -> {
-                showLogOutAlert()
-            }
         }
 
     }
@@ -307,20 +147,7 @@ class MainActivity : DockActivity(){
         icons.add(R.drawable.ic_marketing) //12
         icons.add(R.drawable.ic_logout) //13
 
-        listDataHeader.add(Constants.DASHBOARD) //0
-        listDataHeader.add(Constants.PORTFOLIO) //1
-        listDataHeader.add(Constants.REPORT) //2
-        listDataHeader.add(Constants.SALES_MANAGEMENT) //3
-        listDataHeader.add(Constants.LEAD_MANAGEMENT) //4
-        listDataHeader.add(Constants.MARKETING_COLLATERAL) //5
-        listDataHeader.add(Constants.CALCULATOR) //6
-        listDataHeader.add(Constants.TRAINING) //7
-        listDataHeader.add(Constants.LEADER_BOARD) //8
-        listDataHeader.add(Constants.NOTIFICATIONS) //9
-        listDataHeader.add(Constants.PASSWORD_CHANGE) //10
-        listDataHeader.add(Constants.JOIN_VISIT) //11
-//      listDataHeader.add(Constants.TRACKING) //12
-        listDataHeader.add(Constants.LOGOUT) //13
+        listDataHeader.add(Constants.HOME) //0
 
         val listAdapter = ExpandableListAdapter(
             this,
@@ -329,34 +156,9 @@ class MainActivity : DockActivity(){
             icons
         )
 
-        // Sales management child nodes
-        val salesManagement: MutableList<String> = ArrayList()
-        salesManagement.add(Constants.CALL_LOG)
-        salesManagement.add(Constants.VISIT_LOG)
-        listDataChild[listDataHeader[3]] = salesManagement
-
-        // Lead management child nodes
-        setLeadManagementChildNodes()
-
         // setting list adapter
         binding.sideLayout.lvExp.setAdapter(listAdapter)
 
-        // Listview on child click listener
-        binding.sideLayout.lvExp.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
-            val str = listDataChild[listDataHeader[groupPosition]]!![childPosition]
-            if (groupPosition == 4) {
-                val bundle = Bundle()
-                bundle.putString(
-                    Constants.LEAD_SOURCE_DATA,
-                    GsonFactory.getConfiguredGson()?.toJson(companyLeadSource[childPosition])
-                )
-                navigateToFragment(R.id.action_nav_home_to_nav_crm, bundle)
-                closeDrawer()
-            } else {
-                fragmentClickEvent(str)
-            }
-            false
-        }
 
         // Listview parent node click listener
         binding.sideLayout.lvExp.setOnGroupExpandListener { groupPosition: Int ->
@@ -364,336 +166,5 @@ class MainActivity : DockActivity(){
         }
     }
 
-    private fun setLeadManagementChildNodes() {
-        companyLeadSource = sharedPrefManager.getLeadSource() ?: emptyList()
-        listDataChild[listDataHeader[4]] = companyLeadSource.map { it.name }
-    }
 
-    fun dropDownMenu(view: View) {
-        showOrHide()
-        binding.appBarMain.sideMenu.sync.setOnClickListener(::onCLickEvent)
-        binding.appBarMain.sideMenu.upload.setOnClickListener(::onCLickEvent)
-        binding.appBarMain.sideMenu.coldCalling.setOnClickListener(::onCLickEvent)
-        binding.appBarMain.sideMenu.addLead.setOnClickListener(::onCLickEvent)
-        binding.appBarMain.sideMenu.followup.setOnClickListener(::onCLickEvent)
-        binding.appBarMain.sideMenu.close.setOnClickListener(::onCLickEvent)
-    }
-
-    private fun onCLickEvent(view: View) {
-        showOrHide()
-        when (view.id) {
-            R.id.sync -> {
-                getSyncData()
-            }
-            R.id.upload -> {
-                sendLeadData()
-            }
-            R.id.cold_calling -> coldCallDialog(Constants.NTB, null, null)
-            R.id.addLead -> {
-                val bundle = Bundle()
-                bundle.putString(Constants.VISIT_TYPE, Constants.VISIT)
-                navigateToFragment(R.id.nav_visit, bundle)
-            }
-            R.id.followup -> {
-                navigateToFragment(R.id.followup_fragment)
-            }
-            R.id.close -> {
-                goneWithAnimation(binding.appBarMain.sideMenu.root)
-                visibleWithAnimation(binding.appBarMain.dropdownMenu)
-            }
-        }
-    }
-
-    private fun showOrHide() {
-        if (!binding.appBarMain.sideMenu.root.isVisible) {
-            goneWithAnimation(binding.appBarMain.dropdownMenu)
-            visibleWithAnimation(binding.appBarMain.sideMenu.root)
-        } else {
-            visibleWithAnimation(binding.appBarMain.dropdownMenu)
-            goneWithAnimation(binding.appBarMain.sideMenu.root)
-        }
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setGesture() {
-        binding.appBarMain.sideMenu.root.setOnTouchListener { p0, p1 ->
-            if (p1 != null) {
-                when (p1.action) {
-                    MotionEvent.ACTION_DOWN -> x1 = p1.x
-                    MotionEvent.ACTION_UP -> {
-                        x2 = p1.x
-                        val deltaX: Float = x2 - x1
-                        if (Math.abs(deltaX) > MIN_DISTANCE) {
-                            showOrHide()
-                        }
-                    }
-                }
-            }
-            true
-        }
-    }
-
-    private fun navigateToFragment(@IdRes id: Int, args: Bundle? = null) {
-        if (args != null) {
-            navController.navigate(id, args)
-            return
-        }
-        navController.navigate(id)
-    }
-
-    fun coldCallDialog(customerType: String, contact: String?, customers: DynamicLeadsItem?) {
-
-        val factory = LayoutInflater.from(this)
-        val dialogView: View = factory.inflate(R.layout.dialog_call, null)
-        val dialog = AlertDialog.Builder(this).setCancelable(true).create()
-        dialog.setView(dialogView)
-
-        number = dialogView.findViewById<CustomEditText>(R.id.call)
-        contact?.let {
-            number.setText(contact)
-        }
-
-        number.setDrawableClickListener(object : DrawableClickListener {
-            override fun onClick(target: DrawableClickListener.DrawablePosition?) {
-                when (target) {
-                    DrawableClickListener.DrawablePosition.RIGHT -> {
-                        val item = KontactPickerItem().apply {
-                            debugMode = true
-                            selectionMode = SelectionMode.Single
-                            textBgColor =
-                                ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)
-                        }
-                        KontactPicker().startPickerForResult(this@MainActivity, item, 3000)
-                    }
-                    else -> {
-                    }
-                }
-            }
-        })
-        val btnCall = dialogView.findViewById<ImageButton>(R.id.btn_call)
-        dialog.show()
-
-        btnCall.setOnClickListener {
-
-            if (number.text?.length?.compareTo(11)!! < 0) {
-                number.error = "invalid number!"
-            } else {
-                dialog.dismiss()
-                val intent = Intent(Intent.ACTION_CALL)
-                intent.data = Uri.parse("tel:" + number.text)
-                val bundle = Bundle()
-                customers?.let {
-                    //  bundle.putParcelable(Constants.LOCAL_LEAD_DATA, customers)
-                }
-                bundle.putString(Constants.VISIT_TYPE, Constants.CALL)
-                bundle.putString(Constants.CUSTOMER_TYPE, customerType)
-                bundle.putString(Constants.CUSTOMER_NUMBER, number.text.toString())
-                bundle.putString("number", number.text.toString())
-                navigateToFragment(R.id.nav_visit, bundle)
-                startActivity(intent)
-            }
-        }
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == 3000) {
-            val list = KontactPicker.getSelectedKontacts(data) //ArrayList<MyContacts>
-            if (list!!.isNotEmpty()) {
-                list[0].contactNumber?.let {
-                    number.setText(it)
-                }
-            }
-        }
-    }
-
-    private fun getSyncData(isShowLoading: Boolean? = true) {
-        //  this.showProgressIndicator()
-        if (!internetHelper.isNetworkAvailable()) {
-            showToast("Internet is not available")
-            return
-        }
-
-//        if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
-//                .isNotEmpty()
-//        ) {
-//            showErrorMessage(getString(R.string.un_synced_msg))
-//            return
-//        }
-
-        if (isShowLoading == true) {
-            this.showProgressIndicator()
-        }
-
-        viewModel.getLOV().observe(this) {
-            this.hideProgressIndicator()
-            if (it.lovResponse != null && it.lovResponse.company_lead_source.isNotEmpty() && it.lovResponse.company_lead_status.isNotEmpty()) {
-                processData(it.lovResponse, it.dynamicList, it.visitCallResponse)
-                if (isShowLoading == true) {
-                    this.showSuccessMessage("Data synced successfully")
-                }
-            } else {
-                if (isShowLoading == true) {
-                    this.showErrorMessage("Failed to sync data. Please try again")
-                }
-            }
-        }
-    }
-
-    private fun processData(
-        lovResponse: LovResponse,
-        dynamicLeadsItem: ArrayList<DynamicLeadsItem>?,
-        visitsCallResponseItem: ArrayList<CheckinModel>?
-    ) {
-        sharedPrefManager.setLeadStatus(lovResponse.company_lead_status)
-        sharedPrefManager.setCompanyProducts(lovResponse.company_products)
-        sharedPrefManager.setVisitStatus(lovResponse.company_visit_status)
-        sharedPrefManager.setLeadSource(lovResponse.company_lead_source)
-
-        // Set leads data in local DB
-        if (dynamicLeadsItem != null) {
-            roomHelper.deleteLeadData()
-            roomHelper.insertLeadData(dynamicLeadsItem)
-        }
-
-        // Set checkIn data in local DB
-        if (visitsCallResponseItem != null) {
-            roomHelper.deleteCheckInData()
-            roomHelper.insertVisitCallData(visitsCallResponseItem)
-        }
-
-        prepareSideMenu()
-    }
-
-    private fun sendUserTracking() {
-        val workManager = WorkManager.getInstance(application)
-        val constraints: androidx.work.Constraints = androidx.work.Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-
-        try {
-
-            // Periodic Request
-            val periodicSyncDataWork = PeriodicWorkRequest.Builder(
-                LocationWorker::class.java,
-                30,
-                TimeUnit.MINUTES,
-                15,
-                TimeUnit.MINUTES
-            )
-                .addTag(Constants.SYNC_LOCATION)
-                .setConstraints(constraints)
-                .setBackoffCriteria(
-                    BackoffPolicy.LINEAR,
-                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                    TimeUnit.MILLISECONDS
-                )
-                .build()
-            workManager.enqueueUniquePeriodicWork(
-                Constants.SYNC_UPLOADED,
-                ExistingPeriodicWorkPolicy.KEEP,
-                periodicSyncDataWork
-            )
-        } catch (e: Exception) {
-            Log.i("LocationWorkerException", e.message.toString())
-        }
-    }
-
-    fun sendLeadData() {
-        try {
-            val workManager = WorkManager.getInstance(applicationContext)
-            val uploadDataConstraints =
-                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-
-            val uploadLeadWorkRequest = OneTimeWorkRequestBuilder<UploadLeadWorker>()
-                .addTag("leadWorker")
-                .setConstraints(uploadDataConstraints)
-                .build()
-
-            val uploadCheckInWorkRequest = OneTimeWorkRequestBuilder<UploadCheckInWorker>()
-                .addTag("checkInWorker")
-                .setConstraints(uploadDataConstraints)
-                .build()
-
-            this.showProgressIndicator()
-
-            workManager.beginWith(uploadLeadWorkRequest)
-                .then(uploadCheckInWorkRequest)
-                .enqueue()
-
-
-            workManager.getWorkInfoByIdLiveData(uploadCheckInWorkRequest.id)
-                .observe(this) { workInfo ->
-                    if (workInfo.state.isFinished) {
-                        this.hideProgressIndicator()
-                        showSuccessMessage("Data uploaded successfully")
-                        Handler(Looper.getMainLooper()).postDelayed(Runnable {
-                            getSyncData(isShowLoading = false)
-                        }, 1000)
-                    }
-                }
-
-        } catch (e: Exception) {
-            Log.i("UploadWorkerLocation", e.message.toString())
-        }
-    }
-
-    fun showLogOutAlert() {
-        val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setTitle("Logout")
-        alertDialog.setMessage("Do you want to Logout?")
-        alertDialog.setPositiveButton(
-            "Yes"
-        ) { dialog, which ->
-
-            if (roomHelper.checkUnSyncLeadData().isNotEmpty() || roomHelper.checkUnSyncCheckInData()
-                    .isNotEmpty()
-            ) {
-                showErrorMessage(getString(R.string.un_synced_msg))
-            } else {
-                sharedPrefManager.logout()
-                roomHelper.clearDB()
-                foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
-
-        }
-        alertDialog.setNegativeButton(
-            "No"
-        ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
-        alertDialog.show()
-    }
-
-    fun showCheckInAlert() {
-        val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setTitle("Alert !!")
-        alertDialog.setMessage("Do you want to discard the form?")
-        alertDialog.setPositiveButton(
-            "Yes"
-        ) { dialog, which ->
-            navigateToFragment(R.id.action_checkInFormFragment_to_nav_home)
-        }
-        alertDialog.setNegativeButton(
-            "No"
-        ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
-        alertDialog.show()
-    }
-
-    private fun showQuizAlert() {
-        val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setTitle("Alert !!")
-        alertDialog.setMessage("Do you want to quit the quiz?")
-        alertDialog.setPositiveButton(
-            "Yes"
-        ) { dialog, which ->
-            navigateToFragment(R.id.action_nav_training_quiz_to_nav_material_quiz)
-        }
-        alertDialog.setNegativeButton(
-            "No"
-        ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
-        alertDialog.show()
-    }
 }

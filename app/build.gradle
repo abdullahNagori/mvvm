@@ -82,6 +82,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -194,11 +195,6 @@ dependencies {
     // qr generator
     implementation 'com.google.zxing:core:3.3.3'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0@aar'
-
-    //Work Manager
-    def work_version = "2.5.0"
-    implementation "androidx.work:work-runtime-ktx:$work_version"
-    implementation "androidx.work:work-multiprocess:$work_version"
 
 
 }

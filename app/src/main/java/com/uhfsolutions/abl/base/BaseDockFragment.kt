@@ -11,7 +11,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.uhfsolutions.abl.activity.*
 import com.uhfsolutions.abl.common.LoadingListener
-import com.uhfsolutions.abl.databinding.DialogPasswordInstructionBinding
 import com.uhfsolutions.abl.network.ApiListener
 import com.uhfsolutions.abl.room.RoomHelper
 import com.uhfsolutions.abl.utils.DateTimeFormatter
@@ -94,36 +93,18 @@ abstract class BaseDockFragment : DaggerFragment(), ApiListener {
 
     override fun onFailureWithResponseCode(code: Int, message: String, tag: String) {
         myDockActivity?.hideProgressIndicator()
-        if (code == 551) {
-            sharedPrefManager.clear()
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
-        } else if (code == 552) {
-            startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
-        }
+//        if (code == 551) {
+//            sharedPrefManager.clear()
+//            startActivity(Intent(requireContext(), LoginActivity::class.java))
+//        } else if (code == 552) {
+//            startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
+//        }
     }
 
      fun showBanner(text: String, type: String) {
         if (activity != null) (activity as DockActivity)
     }
 
-    override fun showPasswordChangingInstructions(text: String?) {
-        val alertDialog = BottomSheetDialog(requireContext())
-        val viewBinding = DialogPasswordInstructionBinding.inflate(layoutInflater)
-        alertDialog.setContentView(viewBinding.root)
-        alertDialog.setCancelable(false)
-
-        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        alertDialog.show()
-        if (!text.isNullOrEmpty()) {
-            viewBinding.txtPasswordInstructions.gravity = Gravity.LEFT
-            viewBinding.txtPasswordInstructions.text = text
-        }
-
-        viewBinding.btnAvow.setOnClickListener {
-            alertDialog.dismiss()
-        }
-    }
     fun navigateToFragment(@IdRes id: Int, args: Bundle? = null) {
         if (args != null) {
             MainActivity.navController.navigate(id, args)

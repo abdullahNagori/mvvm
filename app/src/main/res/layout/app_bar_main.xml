@@ -52,18 +52,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/banner" />
 
-    <include
-        android:id="@+id/side_menu"
-        layout="@layout/dialog_menu_shortcut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_7sdp"
-        android:elevation="@dimen/_5sdp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/dropdown_menu"
-        app:layout_constraintTop_toTopOf="@+id/dropdown_menu"
-        app:layout_constraintVertical_bias="0.0" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

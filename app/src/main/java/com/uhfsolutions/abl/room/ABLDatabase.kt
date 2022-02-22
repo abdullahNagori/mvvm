@@ -6,25 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.uhfsolutions.abl.constant.Constants
-import com.uhfsolutions.abl.model.addLead.DynamicLeadsItem
-import com.uhfsolutions.abl.model.checkin.CheckinModel
-import com.uhfsolutions.abl.model.dashboard.DashboardResponse
-import com.uhfsolutions.abl.model.location.UserLocation
-import com.uhfsolutions.abl.model.lov.CompanyLeadStatu
-import com.uhfsolutions.abl.model.lov.CompanyProduct
-import com.uhfsolutions.abl.model.lov.CompanyVisitStatu
-import com.uhfsolutions.abl.model.previousVisits.GetPreviousVisit
+import com.uhfsolutions.abl.model.DummyModel
 
-@Database(entities = [
-    DynamicLeadsItem::class,
-    CompanyProduct::class,
-    CompanyVisitStatu::class,
-    CompanyLeadStatu::class,
-    GetPreviousVisit::class,
-    CheckinModel::class,
-    UserLocation::class,
-    DashboardResponse::class], version = 8, exportSchema = false)
-@TypeConverters(Converters::class)
+@Database(entities = [DummyModel::class], version = 1, exportSchema = false)
 abstract class ABLDatabase : RoomDatabase() {
 
     abstract fun leadDao(): DAOAccess

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.uhfsolutions.abl.keys.ViewModelKey
 import com.uhfsolutions.abl.viewModel.*
-import com.uhfsolutions.abl.viewModel.coroutine.CoroutineViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -29,23 +28,4 @@ interface ViewModelModule {
     @ViewModelKey(UserViewModel::class)
     fun bindUserViewModel(userViewModel: UserViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(CoroutineViewModel::class)
-    fun bindCoroutineViewModel(coroutineViewModel: CoroutineViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(LeadsViewModel::class)
-    fun bindLeadsViewModel(leadViewModel: LeadsViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(TrainingViewModel::class)
-    fun bindTrainingViewModel(trainingViewModel: TrainingViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(MiscellaneousViewModel::class)
-    fun bindMiscellaneousViewModel(miscellaneousViewModel: MiscellaneousViewModel): ViewModel
 }

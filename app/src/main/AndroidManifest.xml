@@ -21,17 +21,7 @@
         android:networkSecurityConfig="@xml/network_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.uhfsolutions.abl.activity.ChangePasswordActivity">
 
-        </activity>
-        <activity
-            android:name="com.uhfsolutions.abl.activity.WelcomeActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity
-            android:name="com.uhfsolutions.abl.activity.LoginActivity"
-            android:screenOrientation="portrait"/>
         <activity
             android:name="com.uhfsolutions.abl.activity.SplashActivity"
             android:screenOrientation="portrait">
@@ -40,10 +30,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.uhfsolutions.abl.activity.MainActivity"
             android:screenOrientation="portrait">
-
         </activity>
 
         <meta-data
@@ -56,15 +46,6 @@
             android:exported="false"
             android:foregroundServiceType="location" />
 
-        <provider
-            android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="com.uhfsolutions.abl.utils.Schedulers.LocationWorkManager.LocationWorker.workmanager-init"
-            tools:node="remove" />
-
-        <!--        <provider-->
-        <!--            android:name="androidx.work.impl.WorkManagerInitializer"-->
-        <!--            android:authorities="com.example.abl.utils.Schedulers.UploadWorkManager.UploadWorker.workmanager-init"-->
-        <!--            tools:node="remove" />-->
     </application>
 
 </manifest>

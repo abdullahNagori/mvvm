@@ -1,7 +1,6 @@
 package com.uhfsolutions.abl
 
 import android.app.Application
-import androidx.work.Configuration
 import com.uhfsolutions.abl.components.AppComponent
 import com.uhfsolutions.abl.components.DaggerAppComponent
 import com.uhfsolutions.abl.modules.AppInjector
@@ -10,13 +9,10 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class App: Application(), HasAndroidInjector, Configuration.Provider {
+class App: Application(), HasAndroidInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
     private lateinit var appComponent: AppComponent
-
-    @Inject
-    lateinit var workerConfiguration: Configuration
 
     override fun onCreate() {
         super.onCreate()
@@ -30,10 +26,6 @@ class App: Application(), HasAndroidInjector, Configuration.Provider {
 
     override fun androidInjector(): AndroidInjector<Any> {
         return dispatchingAndroidInjector
-    }
-
-    override fun getWorkManagerConfiguration(): Configuration {
-        return workerConfiguration
     }
 
 }

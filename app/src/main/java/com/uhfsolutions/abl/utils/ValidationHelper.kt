@@ -8,8 +8,6 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import com.uhfsolutions.abl.R
-import com.uhfsolutions.abl.activity.ChangePasswordActivity
-import com.uhfsolutions.abl.activity.LoginActivity
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -94,38 +92,6 @@ class ValidationHelper @Inject constructor(private val context: Context) {
         }
     }
 
-//    fun validCnic(evCnic: EditText): Boolean {
-//        var evCnicTxt = evCnic.text.toString()
-//        evCnicTxt = evCnicTxt.replace("-", "")
-//        if (evCnicTxt.length == 13) {
-//            evCnic.error = null
-//            return true
-//        } else {
-//            evCnic.error = context.getString(R.string.please_enter_valid_cnic_number)
-//            return false
-//        }
-//    }
-
-//    fun validCnic(expiryDate: MaskEditText): Boolean {
-//        if (expiryDate.rawText?.length == 13) {
-//            expiryDate.error = null
-//            return true
-//        } else {
-//            expiryDate.error = context.getString(R.string.please_enter_valid_cnic_number)
-//            return false
-//        }
-//    }
-
-    fun navigateToLogin() {
-        val loginIntent = Intent(context, LoginActivity::class.java)
-        //loginIntent.addFlags(FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(loginIntent)
-    }
-
-    fun navigateToChangePassword() {
-        val changePassIntent = Intent(context, ChangePasswordActivity::class.java)
-        context.startActivity(changePassIntent)
-    }
 
     fun validateSpinner(spinner: Spinner, error: String?): Boolean {
         val selectedView: View = spinner.getSelectedView()

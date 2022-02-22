@@ -65,20 +65,6 @@ class SplashActivity : AppCompatActivity() {
     private fun nextView() {
         val sharedPrefManager = SharedPrefManager(this)
 
-        if (sharedPrefManager.getToken().isNotEmpty()) {
-            if (sharedPrefManager.getShiftStart()){
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
-            else{
-                startActivity(Intent(this, WelcomeActivity::class.java))
-                finish()
-            }
-        } else {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-
         overridePendingTransition(R.anim.fadein, R.anim.fadeout)
     }
 }

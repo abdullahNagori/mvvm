@@ -1,7 +1,7 @@
 package com.uhfsolutions.abl.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.uhfsolutions.abl.model.generic.ErrorResponseEnt
+import com.uhfsolutions.abl.model.ErrorResponseEnt
 import com.uhfsolutions.abl.network.ApiListener
 import com.uhfsolutions.abl.utils.GsonFactory
 import com.uhfsolutions.abl.utils.ValidationHelper
